@@ -54,7 +54,7 @@ class User {
    **/
 
   static async register(
-    { username, password, email, isAdmin }
+    { username, password, email, isAdmin = false }
   ) {
     const duplicateCheck = await db.query(
       `SELECT username
@@ -64,7 +64,7 @@ class User {
     );
 
     if (duplicateCheck.rows[0]) {
-      throw new BadRequestError(`Duplicate username: ${username}`);
+      throw new BadRequestError(`Invalid username: ${username}`);
     }
 
     const hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
@@ -76,7 +76,7 @@ class User {
         email,
         is_admin)
         VALUES ($1, $2, $3, $4)
-        RETURNING username, email, is_admin AS "isAdmin"`,
+        RETURNING id, username, email, is_admin AS "isAdmin"`,
       [
         username,
         hashedPassword,
