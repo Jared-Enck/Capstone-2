@@ -18,12 +18,16 @@
       "minLength": 6,
       "maxLength": 60,
       "format": "email"
+    },
+    "isAdmin": {
+      "type": "boolean"
     }
   },
   "additionalProperties": false,
   "required": [
     "username",
     "password",
-    "email"
+    "email",
+    "isAdmin"
   ]
 }
