@@ -31,7 +31,7 @@ describe("authenticate", function () {
     });
   });
 
-  it("unauth if no such user", async function () {
+  it("throws unauth if no such user", async function () {
     try {
       await User.authenticate("nope", "password");
       fail();
@@ -40,7 +40,7 @@ describe("authenticate", function () {
     }
   });
 
-  it("unauth if wrong password", async function () {
+  it("throws unauth if wrong password", async function () {
     try {
       await User.authenticate("u1", "wrong");
       fail();
@@ -84,7 +84,7 @@ describe("register", function () {
     expect(found.rows[0].password.startsWith("$2b$")).toEqual(true);
   });
 
-  it("bad request with dup data", async function () {
+  it("throws bad request with dup data", async function () {
     try {
       await User.register({
         ...newUser,
@@ -151,7 +151,7 @@ describe("get", function () {
     });
   });
 
-  it("not found if no such user", async function () {
+  it("throws not found if no such user", async function () {
     try {
       await User.get(0);
       fail();
@@ -225,7 +225,7 @@ describe("remove", function () {
     expect(res.rows.length).toEqual(0);
   });
 
-  it("not found if no such user", async function () {
+  it("throws not found if no such user", async function () {
     try {
       await User.remove(0);
       fail();

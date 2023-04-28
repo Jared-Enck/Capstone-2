@@ -13,7 +13,6 @@ const { BadRequestError } = require("../expressError");
 const User = require("../models/user");
 const { createToken } = require("../helpers/tokens");
 const userNewSchema = require("../schemas/userNew.json");
-const userRegisterSchema = require("../schemas/userRegister.json");
 const userUpdateSchema = require("../schemas/userUpdate.json");
 
 const router = express.Router();
@@ -34,27 +33,6 @@ const router = express.Router();
 router.post("/admin", ensureLoggedIn, ensureAdmin, async function (req, res, next) {
   try {
     const validator = jsonschema.validate(req.body, userNewSchema);
-    if (!validator.valid) {
-      const errs = validator.errors.map(e => e.stack);
-      throw new BadRequestError(errs);
-    }
-
-    const user = await User.register(req.body);
-    const token = createToken(user);
-    return res.status(201).json({ user, token });
-  } catch (err) {
-    return next(err);
-  }
-});
-
-/** POST / { user }  => { user, token }
- * 
- * General user registration. 
- **/
-
-router.post("/", async function (req, res, next) {
-  try {
-    const validator = jsonschema.validate(req.body, userRegisterSchema);
     if (!validator.valid) {
       const errs = validator.errors.map(e => e.stack);
       throw new BadRequestError(errs);
@@ -140,3 +118,5 @@ router.delete("/:userID", ensureLoggedIn, ensureOwnerOrAdmin, async function (re
     return next(err);
   }
 });
+
+module.exports = router;
