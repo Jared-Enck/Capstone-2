@@ -9,6 +9,7 @@ require("colors");
 const SECRET_KEY = env.SECRET_KEY || "secret-dev";
 
 const PORT = +env.PORT || 3001;
+const IOPORT = +env.IOPORT || 5000;
 
 // Use dev database or testing database
 
@@ -26,6 +27,7 @@ const BCRYPT_WORK_FACTOR = env.NODE_ENV === "test" ? 1 : 13;
 module.exports = {
   SECRET_KEY,
   PORT,
+  IOPORT,
   BCRYPT_WORK_FACTOR,
   getDatabaseUri,
 };

@@ -1,5 +1,4 @@
 "use strict";
-
 const {
   NotFoundError,
   BadRequestError,
@@ -12,6 +11,7 @@ const {
   commonBeforeEach,
   commonAfterEach,
   commonAfterAll,
+  getUsers
 } = require("./_testCommon");
 
 beforeAll(commonBeforeAll);
@@ -26,8 +26,7 @@ describe("authenticate", function () {
     const user = await User.authenticate("u1", "password1");
     expect(user).toEqual({
       username: "u1",
-      email: "u1@email.com",
-      isAdmin: false,
+      email: "u1@email.com"
     });
   });
 
@@ -55,8 +54,7 @@ describe("authenticate", function () {
 describe("register", function () {
   const newUser = {
     username: "new",
-    email: "it@it.com",
-    isAdmin: false,
+    email: "it@it.com"
   };
 
   it("works", async function () {
@@ -67,20 +65,6 @@ describe("register", function () {
     expect(user).toEqual({...newUser, id: user.id});
     const found = await db.query("SELECT * FROM users WHERE username = 'new'");
     expect(found.rows.length).toEqual(1);
-    expect(found.rows[0].is_admin).toEqual(false);
-    expect(found.rows[0].password.startsWith("$2b$")).toEqual(true);
-  });
-
-  it("works: adds admin", async function () {
-    let user = await User.register({
-      ...newUser,
-      password: "password",
-      isAdmin: true,
-    });
-    expect(user).toEqual({ ...newUser, isAdmin: true, id: user.id });
-    const found = await db.query("SELECT * FROM users WHERE username = 'new'");
-    expect(found.rows.length).toEqual(1);
-    expect(found.rows[0].is_admin).toEqual(true);
     expect(found.rows[0].password.startsWith("$2b$")).toEqual(true);
   });
 
@@ -108,22 +92,19 @@ describe("findAll", function () {
     const users = await User.findAll();
     expect(users).toEqual([
       {
-        id: 1,
+        id: users[0].id,
         username: "u1",
-        email: "u1@email.com",
-        isAdmin: false
+        email: "u1@email.com"
       },
       { 
-        id: 2,
+        id: users[1].id,
         username: "u2",
-        email: "u2@email.com",
-        isAdmin: false
+        email: "u2@email.com"
       },
       {
-        id: 3,
+        id: users[2].id,
         username: "u3",
-        email: "u3@email.com",
-        isAdmin: false
+        email: "u3@email.com"
       }
     ]);
   });
@@ -133,21 +114,23 @@ describe("findAll", function () {
 
 describe("get", function () {
   it("works", async function () {
-    let user = await User.get(1);
+    const users = await User.findAll();
+
+    let user = await User.get(users[0].id);
     expect(user).toEqual({
       username: "u1",
       email: "u1@email.com",
-      isAdmin: false,
       games: ['e44jncYuUp']
     });
   });
 
   it("works if no games for user", async function () {
-    let user = await User.get(3);
+    const users = await User.findAll();
+
+    let user = await User.get(users[2].id);
     expect(user).toEqual({
       username: "u3",
-      email: "u3@email.com",
-      isAdmin: false
+      email: "u3@email.com"
     });
   });
 
@@ -165,30 +148,32 @@ describe("get", function () {
 
 describe("update", function () {
   const updateData = {
-    email: "new@email.com",
-    isAdmin: true,
+    email: "new@email.com"
   };
 
   it("works", async function () {
-    let res = await User.update(1, updateData);
+    const users = await User.findAll();
+
+    let res = await User.update(users[0].id, updateData);
     expect(res).toEqual({
-      id: 1,
+      id: users[0].id,
       username: "u1",
       ...updateData,
     });
   });
 
   it("works: set password", async function () {
-    let res = await User.update(1, {
+    const users = await User.findAll();
+
+    let res = await User.update(users[0].id, {
       password: "new",
     });
     expect(res).toEqual({
-      id: 1,
+      id: users[0].id,
       username: "u1",
-      email: "u1@email.com",
-      isAdmin: false,
+      email: "u1@email.com"
     });
-    const found = await db.query("SELECT * FROM users WHERE id = 1");
+    const found = await db.query("SELECT * FROM users WHERE id = $1",[users[0].id]);
     expect(found.rows.length).toEqual(1);
     expect(found.rows[0].password.startsWith("$2b$")).toEqual(true);
   });
@@ -205,9 +190,11 @@ describe("update", function () {
   });
 
   it("throws bad request if no data", async function () {
+    const users = await User.findAll();
+
     expect.assertions(1);
     try {
-      await User.update(1, {});
+      await User.update(users[0].id, {});
       fail();
     } catch (err) {
       expect(err instanceof BadRequestError).toBeTruthy();
@@ -219,9 +206,11 @@ describe("update", function () {
 
 describe("remove", function () {
   it("works", async function () {
-    await User.remove(1);
+    const users = await User.findAll();
+
+    await User.remove(users[0].id);
     const res = await db.query(
-        "SELECT * FROM users WHERE id=1");
+        `SELECT * FROM users WHERE id=${users[0].id}`);
     expect(res.rows.length).toEqual(0);
   });
 

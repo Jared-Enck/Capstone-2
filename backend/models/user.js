@@ -16,7 +16,7 @@ const { BCRYPT_WORK_FACTOR } = require("../config.js");
 class User {
   /** authenticate user with username, password.
    *
-   * Returns { username, email, is_admin }
+   * Returns { username, email }
    *
    * Throws UnauthorizedError is user not found or wrong password.
    **/
@@ -25,8 +25,7 @@ class User {
     const result = await db.query(
       `SELECT username,
               password,
-              email,
-              is_admin AS "isAdmin"
+              email
         FROM users
         WHERE username = $1`,
       [username],
@@ -48,13 +47,13 @@ class User {
 
   /** Register user with data.
    *
-   * Returns { username, email, isAdmin }
+   * Returns { username, email }
    *
    * Throws BadRequestError on duplicates.
    **/
 
   static async register(
-    { username, password, email, isAdmin = false }
+    { username, password, email }
   ) {
     const duplicateCheck = await db.query(
       `SELECT username
@@ -73,15 +72,13 @@ class User {
       `INSERT INTO users
         (username,
         password,
-        email,
-        is_admin)
-        VALUES ($1, $2, $3, $4)
-        RETURNING id, username, email, is_admin AS "isAdmin"`,
+        email)
+        VALUES ($1, $2, $3)
+        RETURNING id, username, email`,
       [
         username,
         hashedPassword,
-        email,
-        isAdmin,
+        email
       ],
     );
 
@@ -92,7 +89,7 @@ class User {
 
   /** Find all users.
    *
-   * Returns [{ id, username, email, is_admin }, ...]
+   * Returns [{ id, username, email }, ...]
    **/
 
   static async findAll() {
@@ -100,8 +97,7 @@ class User {
       SELECT 
         id,
         username,
-        email,
-        is_admin AS "isAdmin"
+        email
       FROM users
       ORDER BY username`,
     );
@@ -110,7 +106,7 @@ class User {
 
   /** Given a username, return data about user.
    *
-   * Returns { username, is_admin, games }
+   * Returns { username, email, games }
    *   where games is { gameID, ... }
    *
    * Throws NotFoundError if user not found.
@@ -122,7 +118,6 @@ class User {
           u.id,
           u.username,
           u.email,
-          u.is_admin AS "isAdmin",
           gc.game_id AS "gameID"
       FROM users u
         LEFT JOIN game_collections gc
@@ -133,7 +128,7 @@ class User {
 
     if (!userRes.rows[0]) throw new NotFoundError(`No user: ${userID}`);
 
-    const {username,email,isAdmin} = userRes.rows[0];
+    const {username,email} = userRes.rows[0];
 
     const games = (userRes.rows[0].gameID) ? 
       userRes.rows.map(r => r.gameID) :
@@ -143,13 +138,11 @@ class User {
       {
         username,
         email,
-        isAdmin,
         games
       } :
       {
         username,
         email,
-        isAdmin
       }
     return user;
   }
@@ -176,11 +169,20 @@ class User {
       data.password = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR);
     }
 
-    const { setCols, values } = sqlForPartialUpdate(
-        data,
-        {
-          isAdmin: "is_admin",
-        });
+    if (data.username) {
+      const duplicateCheck = await db.query(
+        `SELECT username
+        FROM users
+        WHERE username = $1`,
+        [data.username],
+      );
+  
+      if (duplicateCheck.rows[0]) {
+        throw new BadRequestError(`Invalid username: ${username}`);
+      }
+    }
+
+    const { setCols, values } = sqlForPartialUpdate(data);
     const idVarIdx = "$" + (values.length + 1);
 
     const querySql = `UPDATE users 
@@ -188,8 +190,7 @@ class User {
                       WHERE id = ${idVarIdx} 
                       RETURNING id,
                                 username,
-                                email,
-                                is_admin AS "isAdmin"`;
+                                email`;
     const result = await db.query(querySql, [...values, id]);
     const user = result.rows[0];
 

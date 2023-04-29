@@ -5,72 +5,23 @@
 const jsonschema = require("jsonschema");
 const express = require("express");
 const { 
-  ensureLoggedIn, 
-  ensureAdmin, 
-  ensureOwnerOrAdmin 
+  ensureLoggedIn,
+  ensureOwner 
 } = require("../middleware/auth");
 const { BadRequestError } = require("../expressError");
 const User = require("../models/user");
-const { createToken } = require("../helpers/tokens");
-const userNewSchema = require("../schemas/userNew.json");
 const userUpdateSchema = require("../schemas/userUpdate.json");
 
 const router = express.Router();
 
-
-/** POST /admin { user }  => { user, token }
- *
- * Adds a new user. This is not the registration endpoint --- instead, this is
- * only for admin users to add new users. The new user being added can be an
- * admin.
- *
- * This returns the newly created user and an authentication token for them:
- *  {user: { id, username, email, isAdmin }, token }
- *
- * Authorization required: login, admin
- **/
-
-router.post("/admin", ensureLoggedIn, ensureAdmin, async function (req, res, next) {
-  try {
-    const validator = jsonschema.validate(req.body, userNewSchema);
-    if (!validator.valid) {
-      const errs = validator.errors.map(e => e.stack);
-      throw new BadRequestError(errs);
-    }
-
-    const user = await User.register(req.body);
-    const token = createToken(user);
-    return res.status(201).json({ user, token });
-  } catch (err) {
-    return next(err);
-  }
-});
-
-/** GET / => { users: [ {username, email }, ... ] }
- *
- * Returns list of all users.
- *
- * Authorization required: login, admin
- **/
-
-router.get("/", ensureLoggedIn, ensureAdmin, async function (req, res, next) {
-  try {
-    const users = await User.findAll();
-    return res.json({ users });
-  } catch (err) {
-    return next(err);
-  }
-});
-
-
 /** GET /[userID] => { user }
  *
- * Returns { userID, username, email, isAdmin }
- *
- * Authorization required: login, owner user, or admin
+ * Returns { userID, username, email, games }
+ *  games = [gameID, ...]
+ * Authorization required: login, owner user
  **/
 
-router.get("/:userID", ensureLoggedIn, ensureOwnerOrAdmin, async function (req, res, next) {
+router.get("/:userID", ensureLoggedIn, ensureOwner, async function (req, res, next) {
   try {
     const user = await User.get(req.params.userID);
     return res.json({ user });
@@ -85,12 +36,12 @@ router.get("/:userID", ensureLoggedIn, ensureOwnerOrAdmin, async function (req, 
  * Data can include:
  *   { username, password, email }
  *
- * Returns { userID, username, email, isAdmin }
+ * Returns { userID, username, email }
  *
- * Authorization required: login, owner user, or admin
+ * Authorization required: login, owner user
  **/
 
-router.patch("/:userID", ensureLoggedIn, ensureOwnerOrAdmin, async function (req, res, next) {
+router.patch("/:userID", ensureLoggedIn, ensureOwner, async function (req, res, next) {
   try {
     const validator = jsonschema.validate(req.body, userUpdateSchema);
     if (!validator.valid) {
@@ -107,10 +58,10 @@ router.patch("/:userID", ensureLoggedIn, ensureOwnerOrAdmin, async function (req
 
 /** DELETE /[userID]  =>  { deleted: userID }
  *
- * Authorization required: login, owner user, or admin
+ * Authorization required: login, owner user
  **/
 
-router.delete("/:userID", ensureLoggedIn, ensureOwnerOrAdmin, async function (req, res, next) {
+router.delete("/:userID", ensureLoggedIn, ensureOwner, async function (req, res, next) {
   try {
     await User.remove(req.params.userID);
     return res.json({ deleted: req.params.userID });

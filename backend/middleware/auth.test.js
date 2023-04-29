@@ -5,14 +5,13 @@ const { UnauthorizedError } = require("../expressError");
 const {
   authenticateJWT,
   ensureLoggedIn,
-  ensureAdmin,
-  ensureOwnerOrAdmin
+  ensureOwner
 } = require("./auth");
 
 
 const { SECRET_KEY } = require("../config");
-const testJwt = jwt.sign({ username: "test", isAdmin: false }, SECRET_KEY);
-const badJwt = jwt.sign({ username: "test", isAdmin: false }, "wrong");
+const testJwt = jwt.sign({ username: "test" }, SECRET_KEY);
+const badJwt = jwt.sign({ username: "test" }, "wrong");
 
 
 describe("authenticateJWT", function () {
@@ -28,8 +27,7 @@ describe("authenticateJWT", function () {
     expect(res.locals).toEqual({
       user: {
         iat: expect.any(Number),
-        username: "test",
-        isAdmin: false,
+        username: "test"
       },
     });
   });
@@ -62,7 +60,7 @@ describe("ensureLoggedIn", function () {
   it("works", function () {
     expect.assertions(1);
     const req = {};
-    const res = { locals: { user: { username: "test", isAdmin: false } } };
+    const res = { locals: { user: { username: "test" } } };
     const next = function (err) {
       expect(err).toBeFalsy();
     };
@@ -80,56 +78,24 @@ describe("ensureLoggedIn", function () {
   });
 });
 
-describe("ensureAdmin", function () {
-  it("works for admin", function () {
-    expect.assertions(1);
-    const req = {};
-    const res = { locals: { user: { username: "test", isAdmin: true } } };
-    const next = function (err) {
-      expect(err).toBeFalsy();
-    };
-    ensureAdmin(req, res, next);
-  });
-
-  it("throws unauth if isAdmin is not true", function () {
-    expect.assertions(1);
-    const req = {};
-    const res = { locals: { user: { username: "test", isAdmin: false } } };
-    const next = function (err) {
-      expect(err instanceof UnauthorizedError).toBeTruthy();
-    };
-    ensureAdmin(req, res, next);
-  });
-});
-
-describe("ensureOwnerOrAdmin", function () {
+describe("ensureOwner", function () {
   it("works for owner", function () {
     expect.assertions(1);
     const req = { params: { username: "test1" } };
-    const res = { locals: { user: { username: "test1", isAdmin: false } } };
+    const res = { locals: { user: { username: "test1" } } };
     const next = function (err) {
       expect(err).toBeFalsy();
     };
-    ensureOwnerOrAdmin(req, res, next);
+    ensureOwner(req, res, next);
   });
 
-  it("works for admin", function () {
+  it("throws unauth if not owner", function () {
     expect.assertions(1);
     const req = { params: { username: "test1" } };
-    const res = { locals: { user: { username: "test2", isAdmin: true } } };
-    const next = function (err) {
-      expect(err).toBeFalsy();
-    };
-    ensureOwnerOrAdmin(req, res, next);
-  });
-
-  it("throws unauth if not owner and isAdmin is not true", function () {
-    expect.assertions(1);
-    const req = { params: { username: "test1" } };
-    const res = { locals: { user: { username: "test3", isAdmin: false } } };
+    const res = { locals: { user: { username: "test3" } } };
     const next = function (err) {
       expect(err instanceof UnauthorizedError).toBeTruthy();
     };
-    ensureOwnerOrAdmin(req, res, next);
+    ensureOwner(req, res, next);
   });
 });

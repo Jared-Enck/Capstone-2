@@ -1,8 +1,15 @@
 "use strict";
-
+const http = require("http");
 const app = require("./app");
-const { PORT } = require("./config");
+const server = http.createServer(app);
+const socketio = require("socket.io")
+const io = socketio(server)
+const { PORT, IOPORT } = require("./config");
 
-app.listen(PORT, function () {
+server.listen(IOPORT, () => {
+  console.log(`IO Server is Quannected to Port ${IOPORT}`)
+})
+
+app.listen(PORT, () => {
   console.log(`Express server running on http://localhost:${PORT}`);
 });
