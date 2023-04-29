@@ -7,10 +7,14 @@
       "type": "string",
       "minLength": 1,
       "maxLength": 30
+    },
+    "admin": {
+      "type": "integer"
     }
   },
   "additionalProperties": false,
   "required": [
-    "name"
+    "name",
+    "admin"
   ]
 }
