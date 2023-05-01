@@ -21,8 +21,8 @@ afterAll(commonAfterAll);
 
 /************************************** create */
 
-describe("create", function () {
-  it("works", async function () {
+describe("create", () => {
+  it("works", async () => {
     const usersRes = await User.findAll();
     const u1 = usersRes[0];
 
@@ -51,7 +51,7 @@ describe("create", function () {
     ]);
   });
 
-  it("works with multiple users assigned at creation.", async function () {
+  it("works with multiple users assigned at creation.", async () => {
     const usersRes = await User.findAll();
     const u1 = usersRes[0];
     const u2 = usersRes[1];
@@ -107,7 +107,7 @@ describe("create", function () {
     ]);
   });
 
-  it("throws bad request with dupe", async function () {
+  it("throws bad request with dupe", async () => {
     const usersRes = await User.findAll();
     const u1 = usersRes[0];
 
@@ -128,8 +128,8 @@ describe("create", function () {
 });
 
 /************************************** getUsers */
-describe("getUsers", function () {
-  it("works", async function () {
+describe("getUsers", () => {
+  it("works", async () => {
     const usersRes = await User.findAll();
     const u1 = usersRes[0];
     const u2 = usersRes[1];
@@ -156,3 +156,6 @@ describe("getUsers", function () {
     ]);
   });
 });
+
+/************************************** addUsers */
+// describe("addUsers" )

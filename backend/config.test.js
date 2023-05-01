@@ -2,7 +2,7 @@
 
 const env = process.env
 
-describe("config can come from env", function () {
+describe("config can come from env", () => {
   it("works", function() {
     env.SECRET_KEY = "abc";
     env.PORT = "3001";

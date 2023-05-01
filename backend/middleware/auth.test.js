@@ -14,8 +14,8 @@ const testJwt = jwt.sign({ username: "test" }, SECRET_KEY);
 const badJwt = jwt.sign({ username: "test" }, "wrong");
 
 
-describe("authenticateJWT", function () {
-  it("works: via header", function () {
+describe("authenticateJWT", () => {
+  it("works: via header", () => {
     expect.assertions(2);
 
     const req = { headers: { authorization: `Bearer ${testJwt}` } };
@@ -32,7 +32,7 @@ describe("authenticateJWT", function () {
     });
   });
 
-  it("works: no header", function () {
+  it("works: no header", () => {
     expect.assertions(2);
     const req = {};
     const res = { locals: {} };
@@ -43,7 +43,7 @@ describe("authenticateJWT", function () {
     expect(res.locals).toEqual({});
   });
 
-  it("works: invalid token", function () {
+  it("works: invalid token", () => {
     expect.assertions(2);
     const req = { headers: { authorization: `Bearer ${badJwt}` } };
     const res = { locals: {} };
@@ -56,8 +56,8 @@ describe("authenticateJWT", function () {
 });
 
 
-describe("ensureLoggedIn", function () {
-  it("works", function () {
+describe("ensureLoggedIn", () => {
+  it("works", () => {
     expect.assertions(1);
     const req = {};
     const res = { locals: { user: { username: "test" } } };
@@ -67,7 +67,7 @@ describe("ensureLoggedIn", function () {
     ensureLoggedIn(req, res, next);
   });
 
-  it("throws unauth if no login", function () {
+  it("throws unauth if no login", () => {
     expect.assertions(1);
     const req = {};
     const res = { locals: {} };
@@ -78,8 +78,8 @@ describe("ensureLoggedIn", function () {
   });
 });
 
-describe("ensureOwner", function () {
-  it("works for owner", function () {
+describe("ensureOwner", () => {
+  it("works for owner", () => {
     expect.assertions(1);
     const req = { params: { username: "test1" } };
     const res = { locals: { user: { username: "test1" } } };
@@ -89,7 +89,7 @@ describe("ensureOwner", function () {
     ensureOwner(req, res, next);
   });
 
-  it("throws unauth if not owner", function () {
+  it("throws unauth if not owner", () => {
     expect.assertions(1);
     const req = { params: { username: "test1" } };
     const res = { locals: { user: { username: "test3" } } };

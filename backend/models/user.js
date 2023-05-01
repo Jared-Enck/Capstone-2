@@ -153,15 +153,11 @@ class User {
    * all the fields; this only changes provided ones.
    *
    * Data can include:
-   *   { username, password, email, isAdmin }
+   *   { username, password, email }
    *
-   * Returns { id, username, email, isAdmin }
+   * Returns { id, username, email }
    *
    * Throws NotFoundError if not found.
-   *
-   * WARNING: this function can set a new password or make a user an admin.
-   * Callers of this function must be certain they have validated inputs to this
-   * or a serious security risks are opened.
    */
 
   static async update(id, data) {
@@ -200,7 +196,10 @@ class User {
     return user;
   }
 
-  /** Delete given user from database; returns undefined. */
+  /** Delete given user from database; returns undefined.
+   * 
+   * Throws NotFoundError if not found.
+   */
 
   static async remove(id) {
     let result = await db.query(

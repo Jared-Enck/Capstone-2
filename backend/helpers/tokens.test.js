@@ -2,8 +2,8 @@ const jwt = require("jsonwebtoken");
 const { createToken } = require("./tokens");
 const { SECRET_KEY } = require("../config");
 
-describe("createToken", function () {
-  it("works", function () {
+describe("createToken", () => {
+  it("works", () => {
     const token = createToken({ username: "test" });
     const payload = jwt.verify(token, SECRET_KEY);
     expect(payload).toEqual({

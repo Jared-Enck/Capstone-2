@@ -18,8 +18,8 @@ afterAll(commonAfterAll);
 
 /************************************** POST /auth/token */
 
-describe("POST /auth/token", function () {
-  it("works", async function () {
+describe("POST /auth/token", () => {
+  it("works", async () => {
     const resp = await request(app)
         .post("/auth/token")
         .send({
@@ -31,7 +31,7 @@ describe("POST /auth/token", function () {
     });
   });
 
-  it("throws unauth with non-existent user", async function () {
+  it("throws unauth with non-existent user", async () => {
     const resp = await request(app)
         .post("/auth/token")
         .send({
@@ -41,7 +41,7 @@ describe("POST /auth/token", function () {
     expect(resp.statusCode).toEqual(401);
   });
 
-  it("throws unauth with wrong password", async function () {
+  it("throws unauth with wrong password", async () => {
     const resp = await request(app)
         .post("/auth/token")
         .send({
@@ -51,7 +51,7 @@ describe("POST /auth/token", function () {
     expect(resp.statusCode).toEqual(401);
   });
 
-  it("throws bad request with missing data", async function () {
+  it("throws bad request with missing data", async () => {
     const resp = await request(app)
         .post("/auth/token")
         .send({
@@ -60,7 +60,7 @@ describe("POST /auth/token", function () {
     expect(resp.statusCode).toEqual(400);
   });
 
-  it("throws bad request with invalid data", async function () {
+  it("throws bad request with invalid data", async () => {
     const resp = await request(app)
         .post("/auth/token")
         .send({
@@ -73,8 +73,8 @@ describe("POST /auth/token", function () {
 
 /************************************** POST /auth/register */
 
-describe("POST /auth/register", function () {
-  it("works for anon", async function () {
+describe("POST /auth/register", () => {
+  it("works for anon", async () => {
     const resp = await request(app)
         .post("/auth/register")
         .send({
@@ -88,7 +88,7 @@ describe("POST /auth/register", function () {
     });
   });
 
-  it("throws bad request with missing fields", async function () {
+  it("throws bad request with missing fields", async () => {
     const resp = await request(app)
         .post("/auth/register")
         .send({
@@ -97,7 +97,7 @@ describe("POST /auth/register", function () {
     expect(resp.statusCode).toEqual(400);
   });
 
-  it("throws bad request with invalid data", async function () {
+  it("throws bad request with invalid data", async () => {
     const resp = await request(app)
         .post("/auth/register")
         .send({

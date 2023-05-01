@@ -21,8 +21,8 @@ afterAll(commonAfterAll);
 
 /************************************** authenticate */
 
-describe("authenticate", function () {
-  it("works", async function () {
+describe("authenticate", () => {
+  it("works", async () => {
     const user = await User.authenticate("u1", "password1");
     expect(user).toEqual({
       username: "u1",
@@ -30,7 +30,7 @@ describe("authenticate", function () {
     });
   });
 
-  it("throws unauth if no such user", async function () {
+  it("throws unauth if no such user", async () => {
     try {
       await User.authenticate("nope", "password");
       fail();
@@ -39,7 +39,7 @@ describe("authenticate", function () {
     }
   });
 
-  it("throws unauth if wrong password", async function () {
+  it("throws unauth if wrong password", async () => {
     try {
       await User.authenticate("u1", "wrong");
       fail();
@@ -51,13 +51,13 @@ describe("authenticate", function () {
 
 /************************************** register */
 
-describe("register", function () {
+describe("register", () => {
   const newUser = {
     username: "new",
     email: "it@it.com"
   };
 
-  it("works", async function () {
+  it("works", async () => {
     let user = await User.register({
       ...newUser,
       password: "password",
@@ -68,7 +68,7 @@ describe("register", function () {
     expect(found.rows[0].password.startsWith("$2b$")).toEqual(true);
   });
 
-  it("throws bad request with dup data", async function () {
+  it("throws bad request with dup data", async () => {
     try {
       await User.register({
         ...newUser,
@@ -87,8 +87,8 @@ describe("register", function () {
 
 /************************************** findAll */
 
-describe("findAll", function () {
-  it("works", async function () {
+describe("findAll", () => {
+  it("works", async () => {
     const users = await User.findAll();
     expect(users).toEqual([
       {
@@ -112,8 +112,8 @@ describe("findAll", function () {
 
 /************************************** get */
 
-describe("get", function () {
-  it("works", async function () {
+describe("get", () => {
+  it("works", async () => {
     const users = await User.findAll();
 
     let user = await User.get(users[0].id);
@@ -124,7 +124,7 @@ describe("get", function () {
     });
   });
 
-  it("works if no games for user", async function () {
+  it("works if no games for user", async () => {
     const users = await User.findAll();
 
     let user = await User.get(users[2].id);
@@ -134,7 +134,7 @@ describe("get", function () {
     });
   });
 
-  it("throws not found if no such user", async function () {
+  it("throws not found if no such user", async () => {
     try {
       await User.get(0);
       fail();
@@ -146,12 +146,12 @@ describe("get", function () {
 
 /************************************** update */
 
-describe("update", function () {
+describe("update", () => {
   const updateData = {
     email: "new@email.com"
   };
 
-  it("works", async function () {
+  it("works", async () => {
     const users = await User.findAll();
 
     let res = await User.update(users[0].id, updateData);
@@ -162,7 +162,7 @@ describe("update", function () {
     });
   });
 
-  it("works: set password", async function () {
+  it("works: set password", async () => {
     const users = await User.findAll();
 
     let res = await User.update(users[0].id, {
@@ -178,7 +178,7 @@ describe("update", function () {
     expect(found.rows[0].password.startsWith("$2b$")).toEqual(true);
   });
 
-  it("throws not found if no such user", async function () {
+  it("throws not found if no such user", async () => {
     try {
       await User.update(0, {
         username: "it",
@@ -189,7 +189,7 @@ describe("update", function () {
     }
   });
 
-  it("throws bad request if no data", async function () {
+  it("throws bad request if no data", async () => {
     const users = await User.findAll();
 
     expect.assertions(1);
@@ -204,8 +204,8 @@ describe("update", function () {
 
 /************************************** remove */
 
-describe("remove", function () {
-  it("works", async function () {
+describe("remove", () => {
+  it("works", async () => {
     const users = await User.findAll();
 
     await User.remove(users[0].id);
@@ -214,7 +214,7 @@ describe("remove", function () {
     expect(res.rows.length).toEqual(0);
   });
 
-  it("throws not found if no such user", async function () {
+  it("throws not found if no such user", async () => {
     try {
       await User.remove(0);
       fail();

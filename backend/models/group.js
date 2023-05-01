@@ -92,6 +92,21 @@ class Group {
 
     return addUsers;
   }
+
+  /** Allows a user to leave a group.
+   * 
+   * Returns { id, name }
+   */
+
+  static async leave(groupID,userID) {
+    return await db.query(`
+      DELETE FROM users_groups
+        (group_id, user_id)
+      VALUES 
+        ($1,$2)
+      RETURNING user_id AS "userID"`
+      ,[groupID,userID])
+  }
 }
 
 module.exports = Group
