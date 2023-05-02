@@ -1,5 +1,6 @@
 "use strict";
 
+const { urlencoded } = require("express");
 const db = require("../db");
 const {
   NotFoundError,
@@ -36,8 +37,13 @@ class Group {
     const groupRes = await db.query(
       `INSERT INTO groups
         (name, admin_user_id)
-        VALUES ($1, $2)
-        RETURNING id, name, admin_user_id AS "adminUserID"`,
+      VALUES 
+        ($1, $2)
+      RETURNING 
+        id, 
+        name, 
+        admin_user_id AS "adminUserID", 
+        image_url AS "imageURL"`,
       [ name, adminUserID ],
     );
     
@@ -45,7 +51,10 @@ class Group {
 
     await this.addUsers(group.id, userIDs)
 
-    return group;
+    return {
+      ...group,
+      users: userIDs
+    };
   }
 
   /** Get a group's users with groupID
@@ -101,11 +110,9 @@ class Group {
   static async leave(groupID,userID) {
     return await db.query(`
       DELETE FROM users_groups
-        (group_id, user_id)
-      VALUES 
-        ($1,$2)
+      WHERE group_id = $1 AND user_id = $2
       RETURNING user_id AS "userID"`
-      ,[groupID,userID])
+      ,[groupID,userID]);
   }
 }
 
