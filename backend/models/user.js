@@ -106,8 +106,9 @@ class User {
 
   /** Given a username, return data about user.
    *
-   * Returns { username, email, games }
-   *   where games is { gameID, ... }
+   * Returns { username, email, games, groups }
+   *   where games is Set { gameID, ... }
+   *   and groups is Set { groupID, ... }
    *
    * Throws NotFoundError if user not found.
    **/
@@ -115,36 +116,61 @@ class User {
   static async get(userID) {
     const userRes = await db.query(
       `SELECT 
-          u.id,
-          u.username,
-          u.email,
-          gc.game_id AS "gameID"
+        u.id,
+        u.username,
+        u.email,
+        u.image_url AS "imageURL",
+        gc.game_id AS "gameID",
+        ug.group_id AS "groupID"
       FROM users u
         LEFT JOIN game_collections gc
           ON gc.user_id = u.id
+        LEFT JOIN users_groups ug
+          ON ug.user_id = u.id
       WHERE u.id = $1`,
       [userID],
     );
 
     if (!userRes.rows[0]) throw new NotFoundError(`No user: ${userID}`);
 
-    const {username,email} = userRes.rows[0];
+    const {id,username,email,imageURL} = userRes.rows[0];
 
-    const games = (userRes.rows[0].gameID) ? 
-      userRes.rows.map(r => r.gameID) :
-      false;
+    const games = 
+      (userRes.rows[0].gameID) 
+        ? new Set(userRes.rows.map(r => r.gameID))
+        : null;
 
-    const user = (games) ? 
-      {
+    const groups = 
+      (userRes.rows[0].groupID) 
+        ? new Set(userRes.rows.map(r => r.groupID))
+        : null;
+    
+    return {
+      user: {
+        id,
         username,
         email,
-        games
-      } :
-      {
-        username,
-        email,
+        imageURL,
+        games,
+        groups
       }
-    return user;
+    };
+  }
+  /** Get all groups for a user. */
+  static async getGroups(userID) {
+    const results = await db.query(`
+      SELECT 
+        g.id,
+        g.name,
+        g.admin_user_id AS "adminUserID",
+        g.image_url AS "imageURL"
+      FROM groups g
+      LEFT JOIN users_groups ug
+        ON ug.user_id = $1
+      ORDER BY g.name`,
+      [userID],
+    );
+    return results.rows
   }
 
   /** Update user data with `data`.
@@ -178,7 +204,9 @@ class User {
       }
     }
 
-    const { setCols, values } = sqlForPartialUpdate(data);
+    const { setCols, values } = sqlForPartialUpdate(data, {
+      imageURL: "image_url"
+    });
     const idVarIdx = "$" + (values.length + 1);
 
     const querySql = `UPDATE users 
@@ -186,7 +214,8 @@ class User {
                       WHERE id = ${idVarIdx} 
                       RETURNING id,
                                 username,
-                                email`;
+                                email,
+                                image_url AS "imageURL"`;
     const result = await db.query(querySql, [...values, id]);
     const user = result.rows[0];
 

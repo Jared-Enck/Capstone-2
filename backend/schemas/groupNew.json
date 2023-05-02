@@ -8,13 +8,16 @@
       "minLength": 1,
       "maxLength": 30
     },
-    "admin": {
+    "admin_user_id": {
       "type": "integer"
+    },
+    "image_url": {
+      "type": "string"
     }
   },
   "additionalProperties": false,
   "required": [
     "name",
-    "admin"
+    "admin_user_id"
   ]
 }

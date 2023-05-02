@@ -35,6 +35,7 @@ async function commonBeforeAll() {
       (user_id, game_id)
     VALUES 
       ($1, 'e44jncYuUp'),
+      ($1, 'nSZTnbgacm'),
       ($2, '78ZDzlpvdb')
   `,[u1.id,u2.id]);
   
@@ -43,21 +44,24 @@ async function commonBeforeAll() {
       (name,admin_user_id)
     VALUES
       ('group1',$1),
-      ('group2',$2)
+      ('group2',$2),
+      ('group3',$1)
     RETURNING id
   `,[u1.id,u2.id]);
   
   const g1 = groupsRes.rows[0];
   const g2 = groupsRes.rows[1];
+  const g3 = groupsRes.rows[1];
 
   await db.query(`
     INSERT INTO users_groups
       (group_id, user_id)
     VALUES
-      ($1,$3),
       ($1,$4),
-      ($2,$4)
-  `,[g1.id,g2.id,u1.id,u2.id]);
+      ($1,$5),
+      ($2,$5),
+      ($3,$4)
+  `,[g1.id,g2.id,g3.id,u1.id,u2.id]);
 }
 
 async function commonBeforeEach() {

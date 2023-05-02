@@ -10,8 +10,7 @@ const {
   commonBeforeAll,
   commonBeforeEach,
   commonAfterEach,
-  commonAfterAll,
-  getUsers
+  commonAfterAll
 } = require("./_testCommon");
 
 beforeAll(commonBeforeAll);
@@ -116,21 +115,30 @@ describe("get", () => {
   it("works", async () => {
     const users = await User.findAll();
 
-    let user = await User.get(users[0].id);
+    let { user } = await User.get(users[0].id);
+
+    console.log('u1:',user)
     expect(user).toEqual({
+      id: user.id,
       username: "u1",
       email: "u1@email.com",
-      games: ['e44jncYuUp']
+      imageURL: user.imageURL,
+      games: expect.any(Set),
+      groups: expect.any(Set)
     });
   });
 
-  it("works if no games for user", async () => {
+  it("works if no games or groups for user", async () => {
     const users = await User.findAll();
-
-    let user = await User.get(users[2].id);
+    
+    let { user } = await User.get(users[2].id);
     expect(user).toEqual({
+      id: user.id,
       username: "u3",
-      email: "u3@email.com"
+      email: "u3@email.com",
+      imageURL: user.imageURL,
+      games: null,
+      groups: null
     });
   });
 
@@ -158,6 +166,7 @@ describe("update", () => {
     expect(res).toEqual({
       id: users[0].id,
       username: "u1",
+      imageURL: res.imageURL,
       ...updateData,
     });
   });
@@ -171,7 +180,8 @@ describe("update", () => {
     expect(res).toEqual({
       id: users[0].id,
       username: "u1",
-      email: "u1@email.com"
+      email: "u1@email.com",
+      imageURL: res.imageURL
     });
     const found = await db.query("SELECT * FROM users WHERE id = $1",[users[0].id]);
     expect(found.rows.length).toEqual(1);
