@@ -28,6 +28,7 @@ describe("POST /auth/token", () => {
         });
     expect(resp.body).toEqual({
       "token": expect.any(String),
+      "user": expect.any(Object)
     });
   });
 
@@ -76,15 +77,16 @@ describe("POST /auth/token", () => {
 describe("POST /auth/register", () => {
   it("works for anon", async () => {
     const resp = await request(app)
-        .post("/auth/register")
-        .send({
-          username: "new",
-          password: "password",
-          email: "new@email.com",
-        });
+      .post("/auth/register")
+      .send({
+        username: "new",
+        password: "password",
+        email: "new@email.com",
+      });
     expect(resp.statusCode).toEqual(201);
     expect(resp.body).toEqual({
       "token": expect.any(String),
+      "user": expect.any(Object)
     });
   });
 
@@ -104,6 +106,28 @@ describe("POST /auth/register", () => {
           username: "new",
           password: "password",
           email: "not-an-email",
+        });
+    expect(resp.statusCode).toEqual(400);
+  });
+
+  it("throws bad request with duplicate username", async () => {
+    const resp = await request(app)
+        .post("/auth/register")
+        .send({
+          username: "u1",
+          password: "password",
+          email: "new@email.com",
+        });
+    expect(resp.statusCode).toEqual(400);
+  });
+
+  it("throws bad request with duplicate email", async () => {
+    const resp = await request(app)
+        .post("/auth/register")
+        .send({
+          username: "new",
+          password: "password",
+          email: "u1@email.com",
         });
     expect(resp.statusCode).toEqual(400);
   });
