@@ -10,15 +10,15 @@ const {
 
 
 const { SECRET_KEY } = require("../config");
-const testJwt = jwt.sign({ username: "test" }, SECRET_KEY);
-const badJwt = jwt.sign({ username: "test" }, "wrong");
+const testJwt = jwt.sign({ id: 1, username: "test" }, SECRET_KEY);
+const badJwt = jwt.sign({ id: 1, username: "test" }, "wrong");
 
 
 describe("authenticateJWT", () => {
   it("works: via header", () => {
     expect.assertions(2);
 
-    const req = { headers: { authorization: `Bearer ${testJwt}` } };
+    const req = { headers: { authorization: testJwt } };
     const res = { locals: {} };
     const next = function (err) {
       expect(err).toBeFalsy();
@@ -27,6 +27,7 @@ describe("authenticateJWT", () => {
     expect(res.locals).toEqual({
       user: {
         iat: expect.any(Number),
+        id: 1,
         username: "test"
       },
     });
@@ -45,7 +46,7 @@ describe("authenticateJWT", () => {
 
   it("works: invalid token", () => {
     expect.assertions(2);
-    const req = { headers: { authorization: `Bearer ${badJwt}` } };
+    const req = { headers: { authorization: badJwt } };
     const res = { locals: {} };
     const next = function (err) {
       expect(err).toBeFalsy();
@@ -60,7 +61,7 @@ describe("ensureLoggedIn", () => {
   it("works", () => {
     expect.assertions(1);
     const req = {};
-    const res = { locals: { user: { username: "test" } } };
+    const res = { locals: { user: { id: 1, username: "test" } } };
     const next = function (err) {
       expect(err).toBeFalsy();
     };
@@ -81,8 +82,8 @@ describe("ensureLoggedIn", () => {
 describe("ensureOwner", () => {
   it("works for owner", () => {
     expect.assertions(1);
-    const req = { params: { username: "test1" } };
-    const res = { locals: { user: { username: "test1" } } };
+    const req = { params: { userID: 1 } };
+    const res = { locals: { user: { id: 1 } } };
     const next = function (err) {
       expect(err).toBeFalsy();
     };
@@ -91,8 +92,8 @@ describe("ensureOwner", () => {
 
   it("throws unauth if not owner", () => {
     expect.assertions(1);
-    const req = { params: { username: "test1" } };
-    const res = { locals: { user: { username: "test3" } } };
+    const req = { params: { id: 1 } };
+    const res = { locals: { user: { id: 2 } } };
     const next = function (err) {
       expect(err instanceof UnauthorizedError).toBeTruthy();
     };

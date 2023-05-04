@@ -2,17 +2,15 @@
 
 const db = require("../db.js");
 const { 
-  BadRequestError,
-  NotFoundError
+  BadRequestError
 } = require("../expressError.js")
-const User = require("./user.js");
 const Group = require("./group.js");
 const {
   commonBeforeAll,
   commonBeforeEach,
   commonAfterEach,
   commonAfterAll
-} = require("./_testCommon");
+} = require("../_testCommon");
 
 beforeAll(commonBeforeAll);
 beforeEach(commonBeforeEach);
@@ -22,13 +20,10 @@ afterAll(commonAfterAll);
 /************************************** create */
 describe("create", () => {
   it("works", async () => {
-    const usersRes = await User.findAll();
-    const u1 = usersRes[0];
-
     const newGroup = {
-      userIDs: [u1.id],
+      userIDs: [1],
       name: "New",
-      adminUserID: u1.id,
+      adminUserID: 1,
     };
 
     let group = await Group.create(newGroup);
@@ -38,7 +33,7 @@ describe("create", () => {
       ...newGroup, 
       id: group.id,
       imageURL: group.imageURL,
-      users: [...group.users]
+      users: [1]
     });
 
     const result = await db.query(
@@ -56,22 +51,17 @@ describe("create", () => {
       {
         id: group.id,
         name: "New",
-        adminUserID: group.adminUserID,
+        adminUserID: 1,
         imageURL: group.imageURL
       },
     ]);
   });
 
   it("works with multiple users assigned at creation.", async () => {
-    const usersRes = await User.findAll();
-    const u1 = usersRes[0];
-    const u2 = usersRes[1];
-    const u3 = usersRes[2];
-
     const newGroup2 = {
-      userIDs: [u1.id,u2.id,u3.id],
+      userIDs: [1,2,3],
       name: "New2",
-      adminUserID: u2.id
+      adminUserID: 2
     };
 
     let group2 = await Group.create(newGroup2);
@@ -81,7 +71,7 @@ describe("create", () => {
       ...newGroup2, 
       id: group2.id,
       imageURL: group2.imageURL,
-      users: [...group2.users]
+      users: [1,2,3]
     });
 
     const result = await db.query(
@@ -99,7 +89,7 @@ describe("create", () => {
       {
         id: group2.id,
         name: "New2",
-        adminUserID: u2.id,
+        adminUserID: 2,
         imageURL: group2.imageURL
       },
     ]);
@@ -116,28 +106,25 @@ describe("create", () => {
     
     expect(groupUsers.rows).toEqual([
       {
-        id: u1.id,
+        id: 1,
         username: 'u1'
       },
       {
-        id: u2.id,
+        id: 2,
         username: 'u2'
       },
       {
-        id: u3.id,
+        id: 3,
         username: 'u3'
       }
     ]);
   });
 
   it("throws bad request with dupe", async () => {
-    const usersRes = await User.findAll();
-    const u1 = usersRes[0];
-
     const newGroup = {
-      userIDs: [u1.id],
+      userIDs: [1],
       name: "New",
-      adminUserID: u1.id
+      adminUserID: 1
     };
 
     try {
@@ -153,27 +140,15 @@ describe("create", () => {
 /************************************** getUsers */
 describe("getUsers", () => {
   it("works", async () => {
-    const usersRes = await User.findAll();
-    const u1 = usersRes[0];
-    const u2 = usersRes[1];
-
-    const newGroup = {
-      userIDs: [u1.id,u2.id],
-      name: "New",
-      adminUserID: u1.id
-    };
-
-    const group = await Group.create(newGroup);
-
-    let users = await Group.getUsers(group.id);
+    let users = await Group.getUsers(1);
 
     expect(users).toEqual([
       {
-        id: u1.id,
+        id: 1,
         username: 'u1'
       },
       {
-        id: u2.id,
+        id: 2,
         username: 'u2'
       }
     ]);
@@ -183,45 +158,33 @@ describe("getUsers", () => {
 /************************************** addUsers */
 describe("addUsers", () => {
   it("works", async () => {
-    const usersRes = await User.findAll();
-    const u1 = usersRes[0];
-    const u2 = usersRes[1];
-    const u3 = usersRes[2]
+    let groupUsers1 = await Group.getUsers(1);
 
-    const newGroup = {
-      userIDs: [u1.id,u2.id],
-      name: "New",
-      adminUserID: u1.id
-    };
-
-    const group = await Group.create(newGroup);
-
-    let groupUsers1 = await Group.getUsers(group.id);
     expect(groupUsers1).toEqual([
       {
-        id: u1.id,
+        id: 1,
         username: 'u1'
       },
       {
-        id: u2.id,
+        id: 2,
         username: 'u2'
       }
     ]);
 
-    await Group.addUsers(group.id,[u3.id]);
+    await Group.addUsers(1,[3]);
 
-    let newGroupUsers = await Group.getUsers(group.id);
+    let newGroupUsers = await Group.getUsers(1);
     expect(newGroupUsers).toEqual([
       {
-        id: u1.id,
+        id: 1,
         username: 'u1'
       },
       {
-        id: u2.id,
+        id: 2,
         username: 'u2'
       },
       {
-        id: u3.id,
+        id: 3,
         username: 'u3'
       }
     ]);
@@ -230,39 +193,27 @@ describe("addUsers", () => {
 
 /************************************** leave */
 describe("leave", () => {
-  it("works", async () => {
-    const usersRes = await User.findAll();
-    const u1 = usersRes[0];
-    const u2 = usersRes[1];
-
-    const newGroup = {
-      userIDs: [u1.id,u2.id],
-      name: "New",
-      adminUserID: u1.id
-    };
-
-    const group = await Group.create(newGroup);
-
-    let users = await Group.getUsers(group.id);
+  it("works", async () => {1
+    let users = await Group.getUsers(1);
 
     expect(users).toEqual([
       {
-        id: u1.id,
+        id: 1,
         username: 'u1'
       },
       {
-        id: u2.id,
+        id: 2,
         username: 'u2'
       }
     ]);
 
-    await Group.leave(group.id,u2.id);
+    await Group.leave(1,2);
 
-    let updatedUsers = await Group.getUsers(group.id);
+    let updatedUsers = await Group.getUsers(1);
 
     expect(updatedUsers).toEqual([
       {
-        id: u1.id,
+        id: 1,
         username: 'u1'
       }
     ]);

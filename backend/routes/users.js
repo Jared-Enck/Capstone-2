@@ -64,7 +64,7 @@ router.patch("/:userID", ensureLoggedIn, ensureOwner, async function (req, res, 
 router.delete("/:userID", ensureLoggedIn, ensureOwner, async function (req, res, next) {
   try {
     await User.remove(req.params.userID);
-    return res.json({ deleted: req.params.userID });
+    return res.json({ deleted: Number(req.params.userID) });
   } catch (err) {
     return next(err);
   }

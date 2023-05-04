@@ -8,7 +8,7 @@
       "minLength": 1,
       "maxLength": 20
     },
-    "newPassword": {
+    "password": {
       "type": "string",
       "minLength": 5,
       "maxLength": 25

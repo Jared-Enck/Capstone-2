@@ -49,7 +49,7 @@ class Group {
     
     const group = groupRes.rows[0];
 
-    await this.addUsers(group.id, userIDs)
+    await Group.addUsers(group.id, userIDs)
 
     return {
       ...group,

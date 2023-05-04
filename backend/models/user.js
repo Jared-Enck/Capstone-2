@@ -23,21 +23,22 @@ class User {
   static async authenticate(username, password) {
     // try to find the user first
     const result = await db.query(
-      `SELECT username,
-              password,
-              email
-        FROM users
-        WHERE username = $1`,
+      `SELECT 
+        id,
+        username,
+        password
+      FROM users
+      WHERE username = $1`,
       [username],
     );
 
-    const user = result.rows[0];
+    let userBasic = result.rows[0];
 
-    if (user) {
+    if (userBasic) {
       // compare hashed password to a new hash from password
-      const isValid = await bcrypt.compare(password, user.password);
+      const isValid = await bcrypt.compare(password, userBasic.password);
       if (isValid === true) {
-        delete user.password;
+        const {user} = await User.get(userBasic.id);
         return user;
       }
     }
@@ -70,11 +71,9 @@ class User {
 
     const result = await db.query(
       `INSERT INTO users
-        (username,
-        password,
-        email)
-        VALUES ($1, $2, $3)
-        RETURNING id, username, email`,
+        (username, password, email)
+      VALUES ($1, $2, $3)
+      RETURNING id`,
       [
         username,
         hashedPassword,
@@ -82,26 +81,9 @@ class User {
       ],
     );
 
-    const user = result.rows[0];
+    const { user } = await User.get(result.rows[0].id);
 
     return user;
-  }
-
-  /** Find all users.
-   *
-   * Returns [{ id, username, email }, ...]
-   **/
-
-  static async findAll() {
-    const results = await db.query(`
-      SELECT 
-        id,
-        username,
-        email
-      FROM users
-      ORDER BY username`,
-    );
-    return results.rows
   }
 
   /** Given a username, return data about user.

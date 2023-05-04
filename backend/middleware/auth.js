@@ -19,8 +19,7 @@ function authenticateJWT(req, res, next) {
   try {
     const authHeader = req.headers && req.headers.authorization;
     if (authHeader) {
-      const token = authHeader.replace(/^[Bb]earer /, "").trim();
-      res.locals.user = jwt.verify(token, SECRET_KEY);
+      res.locals.user = jwt.verify(authHeader, SECRET_KEY);
     }
     return next();
   } catch (err) {
@@ -50,7 +49,8 @@ function ensureLoggedIn(req, res, next) {
 function ensureOwner(req, res, next) {
   try {
     const currUser = res.locals.user
-    const isOwner = req.params.username === currUser.username
+    const reqUserID = Number(req.params.userID)
+    const isOwner = reqUserID === currUser.id
 
     if (!isOwner) throw new UnauthorizedError();
     return next();

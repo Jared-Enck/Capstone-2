@@ -11,7 +11,7 @@ const {
   commonBeforeEach,
   commonAfterEach,
   commonAfterAll
-} = require("./_testCommon");
+} = require("../_testCommon");
 
 beforeAll(commonBeforeAll);
 beforeEach(commonBeforeEach);
@@ -24,8 +24,12 @@ describe("authenticate", () => {
   it("works", async () => {
     const user = await User.authenticate("u1", "password1");
     expect(user).toEqual({
+      id: 1,
       username: "u1",
-      email: "u1@email.com"
+      email: "u1@email.com",
+      imageURL: user.imageURL,
+      games: expect.any(Set),
+      groups: expect.any(Set)
     });
   });
 
@@ -61,7 +65,13 @@ describe("register", () => {
       ...newUser,
       password: "password",
     });
-    expect(user).toEqual({...newUser, id: user.id});
+    expect(user).toEqual({
+      ...newUser, 
+      id: user.id,
+      games: null,
+      groups: null,
+      imageURL: user.imageURL
+    });
     const found = await db.query("SELECT * FROM users WHERE username = 'new'");
     expect(found.rows.length).toEqual(1);
     expect(found.rows[0].password.startsWith("$2b$")).toEqual(true);
@@ -84,42 +94,14 @@ describe("register", () => {
   });
 });
 
-/************************************** findAll */
-
-describe("findAll", () => {
-  it("works", async () => {
-    const users = await User.findAll();
-    expect(users).toEqual([
-      {
-        id: users[0].id,
-        username: "u1",
-        email: "u1@email.com"
-      },
-      { 
-        id: users[1].id,
-        username: "u2",
-        email: "u2@email.com"
-      },
-      {
-        id: users[2].id,
-        username: "u3",
-        email: "u3@email.com"
-      }
-    ]);
-  });
-});
-
 /************************************** get */
 
 describe("get", () => {
   it("works", async () => {
-    const users = await User.findAll();
+    let { user } = await User.get(1);
 
-    let { user } = await User.get(users[0].id);
-
-    console.log('u1:',user)
     expect(user).toEqual({
-      id: user.id,
+      id: 1,
       username: "u1",
       email: "u1@email.com",
       imageURL: user.imageURL,
@@ -128,12 +110,11 @@ describe("get", () => {
     });
   });
 
-  it("works if no games or groups for user", async () => {
-    const users = await User.findAll();
-    
-    let { user } = await User.get(users[2].id);
+  it("works if no games or groups for user", async () => {  
+    let { user } = await User.get(3);
+
     expect(user).toEqual({
-      id: user.id,
+      id: 3,
       username: "u3",
       email: "u3@email.com",
       imageURL: user.imageURL,
@@ -160,30 +141,26 @@ describe("update", () => {
   };
 
   it("works", async () => {
-    const users = await User.findAll();
-
-    let res = await User.update(users[0].id, updateData);
+    let res = await User.update(1, updateData);
     expect(res).toEqual({
-      id: users[0].id,
+      id: 1,
       username: "u1",
-      imageURL: res.imageURL,
-      ...updateData,
+      email: "new@email.com",
+      imageURL: res.imageURL
     });
   });
 
   it("works: set password", async () => {
-    const users = await User.findAll();
-
-    let res = await User.update(users[0].id, {
+    let res = await User.update(1, {
       password: "new",
     });
     expect(res).toEqual({
-      id: users[0].id,
+      id: 1,
       username: "u1",
       email: "u1@email.com",
       imageURL: res.imageURL
     });
-    const found = await db.query("SELECT * FROM users WHERE id = $1",[users[0].id]);
+    const found = await db.query("SELECT * FROM users WHERE id = $1",[1]);
     expect(found.rows.length).toEqual(1);
     expect(found.rows[0].password.startsWith("$2b$")).toEqual(true);
   });
@@ -200,11 +177,9 @@ describe("update", () => {
   });
 
   it("throws bad request if no data", async () => {
-    const users = await User.findAll();
-
     expect.assertions(1);
     try {
-      await User.update(users[0].id, {});
+      await User.update(1, {});
       fail();
     } catch (err) {
       expect(err instanceof BadRequestError).toBeTruthy();
@@ -216,11 +191,9 @@ describe("update", () => {
 
 describe("remove", () => {
   it("works", async () => {
-    const users = await User.findAll();
-
-    await User.remove(users[0].id);
+    await User.remove(1);
     const res = await db.query(
-        `SELECT * FROM users WHERE id=${users[0].id}`);
+        `SELECT * FROM users WHERE id=1`);
     expect(res.rows.length).toEqual(0);
   });
 
