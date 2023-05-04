@@ -30,7 +30,7 @@ router.post("/token", async function (req, res, next) {
     const { username, password } = req.body;
     const user = await User.authenticate(username, password);
     const token = createToken(user);
-    return res.json({ token });
+    return res.json({ token, user });
   } catch (err) {
     return next(err);
   }
@@ -54,9 +54,9 @@ router.post("/register", async function (req, res, next) {
       throw new BadRequestError(errs);
     }
 
-    const newUser = await User.register({ ...req.body });
-    const token = createToken(newUser);
-    return res.status(201).json({ token });
+    const user = await User.register({ ...req.body });
+    const token = createToken(user);
+    return res.status(201).json({ token, user });
   } catch (err) {
     return next(err);
   }
