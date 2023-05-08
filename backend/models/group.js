@@ -106,6 +106,24 @@ class Group {
     };
   }
 
+  /** Delete given group from database; returns undefined.
+   * 
+   * Throws NotFoundError if not found.
+   */
+
+  static async delete(id) {
+    let result = await db.query(
+      `DELETE
+        FROM groups
+        WHERE id = $1
+        RETURNING id`,
+      [id],
+    );
+    const group = result.rows[0];
+
+    if (!group) throw new NotFoundError(`No group: ${id}`);
+  }
+
   /** Allows a user to leave a group.
    * 
    * Returns { id, name }
