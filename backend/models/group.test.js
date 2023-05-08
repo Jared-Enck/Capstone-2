@@ -2,7 +2,8 @@
 
 const db = require("../db.js");
 const { 
-  BadRequestError
+  BadRequestError,
+  NotFoundError
 } = require("../expressError.js")
 const Group = require("./group.js");
 const {
@@ -158,6 +159,26 @@ describe("addUsers", () => {
         username: 'u3'
       }
     ]);
+  });
+});
+
+/************************************** remove */
+
+describe("delete", () => {
+  it("works", async () => {
+    await Group.delete(1);
+    const res = await db.query(
+      `SELECT * FROM groups WHERE id=1`);
+    expect(res.rows.length).toEqual(0);
+  });
+
+  it("throws not found if no such group", async () => {
+    try {
+      await Group.delete(0);
+      fail();
+    } catch (err) {
+      expect(err instanceof NotFoundError).toBeTruthy();
+    }
   });
 });
 
