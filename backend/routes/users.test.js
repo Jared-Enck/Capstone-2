@@ -96,5 +96,18 @@ describe("DELETE /users/:userID", function () {
       .set("authorization", u2Token);
     expect(resp.body).toEqual({ deleted: 2 });
   });
+
+  it("throws unauth for not owner", async function () {
+    const resp = await request(app)
+      .delete(`/users/1`)
+      .set("authorization", u2Token);
+    expect(resp.statusCode).toEqual(401);
+  });
+
+  it("throws unauth for anon user", async function () {
+    const resp = await request(app)
+      .delete(`/users/1`)
+    expect(resp.statusCode).toEqual(401);
+  });
 });
 

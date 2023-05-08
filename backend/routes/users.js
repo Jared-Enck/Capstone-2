@@ -49,14 +49,14 @@ router.patch("/:userID", ensureLoggedIn, ensureOwner, async function (req, res, 
       throw new BadRequestError(errs);
     }
     const user = await User.update(req.params.userID, req.body);
-    return res.json({ user });
+    return res.status(200).json({ user });
   } catch (err) {
     return next(err);
   }
 });
 
 
-/** DELETE /[userID]  =>  { deleted: userID }
+/** DELETE /:userID  =>  { deleted: userID }
  *
  * Authorization required: login, owner user
  **/
