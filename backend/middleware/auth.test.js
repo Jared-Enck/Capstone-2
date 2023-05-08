@@ -5,9 +5,19 @@ const { UnauthorizedError } = require("../expressError");
 const {
   authenticateJWT,
   ensureLoggedIn,
-  ensureOwner
+  ensureOwner,
+  ensureGroupAdmin
 } = require("./auth");
 
+const {
+  commonBeforeEach,
+  commonAfterEach,
+  commonAfterAll
+} = require("../_testCommon");
+
+beforeEach(commonBeforeEach);
+afterEach(commonAfterEach);
+afterAll(commonAfterAll);
 
 const { SECRET_KEY } = require("../config");
 const testJwt = jwt.sign({ id: 1, username: "test" }, SECRET_KEY);
@@ -98,5 +108,33 @@ describe("ensureOwner", () => {
       expect(err instanceof UnauthorizedError).toBeTruthy();
     };
     ensureOwner(req, res, next);
+  });
+});
+
+describe("ensureGroupAdmin", () => {
+  it("works for group admin user", () => {
+    expect.assertions(1);
+    const req = { 
+      params: { groupID: 1 },
+      body: { adminUserID: 1 }
+    };
+    const res = { locals: { user: { id: 1 } } };
+    const next = function (err) {
+      expect(err).toBeFalsy();
+    };
+    ensureGroupAdmin(req, res, next);
+  });
+
+  it("throws unauth if not group admin user", () => {
+    expect.assertions(1);
+    const req = { 
+      params: { groupID: 1 },
+      body: { adminUserID: 1 }
+    };
+    const res = { locals: { user: { id: 2 } } };
+    const next = function (err) {
+      expect(err instanceof UnauthorizedError).toBeTruthy();
+    };
+    ensureGroupAdmin(req, res, next);
   });
 });
