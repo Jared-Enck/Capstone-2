@@ -47,8 +47,8 @@ function ensureLoggedIn(req, res, next) {
 
 function ensureOwner(req, res, next) {
   try {
-    const currUser = res.locals.user
-    const reqUserID = Number(req.params.userID)
+    const currUser = res.locals.user;
+    const reqUserID = Number(req.params.userID);
     const isOwner = reqUserID === currUser.id
 
     if (!isOwner) throw new UnauthorizedError();
@@ -65,8 +65,8 @@ function ensureOwner(req, res, next) {
 
 function ensureGroupAdmin(req, res, next) {
   try {
-    const currUser = res.locals.user
-    const adminID = req.body.adminUserID
+    const currUser = res.locals.user;
+    const adminID = req.body.adminUserID;
 
     const isGroupAdmin = adminID === currUser.id;
 
@@ -77,9 +77,29 @@ function ensureGroupAdmin(req, res, next) {
   }
 }
 
+/** Middleware to use when they must be group user.
+ *
+ * If not, raises Unauthorized.
+ */
+
+function ensureGroupUser(req, res, next) {
+  try {
+    const currUser = res.locals.user;
+    const userIDs = new Set(req.body.userIDs);
+
+    const isGroupUser = userIDs.has(currUser.id);
+
+    if (!isGroupUser) throw new UnauthorizedError();
+    return next();
+  } catch (err) {
+    return next(err);
+  }
+}
+
 module.exports = {
   authenticateJWT,
   ensureLoggedIn,
   ensureOwner,
-  ensureGroupAdmin
+  ensureGroupAdmin,
+  ensureGroupUser
 };
