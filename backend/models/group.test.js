@@ -162,6 +162,43 @@ describe("addUsers", () => {
   });
 });
 
+/************************************** update */
+
+describe("update", () => {
+  const updateData = {
+    name: "newGroupName"
+  };
+
+  it("works", async () => {
+    let res = await Group.update(1, updateData);
+    expect(res).toEqual({
+      id: 1,
+      name: "newGroupName",
+      imageURL: expect.any(String)
+    });
+  });
+
+  it("throws not found if no such group", async () => {
+    try {
+      await Group.update(0, {
+        name: "it",
+      });
+      fail();
+    } catch (err) {
+      expect(err instanceof NotFoundError).toBeTruthy();
+    }
+  });
+
+  it("throws bad request if no data", async () => {
+    expect.assertions(1);
+    try {
+      await Group.update(1, {});
+      fail();
+    } catch (err) {
+      expect(err instanceof BadRequestError).toBeTruthy();
+    }
+  });
+});
 /************************************** remove */
 
 describe("delete", () => {
