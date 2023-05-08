@@ -6,7 +6,8 @@ const jsonschema = require("jsonschema");
 const express = require("express");
 const { 
   ensureLoggedIn,
-  ensureOwner 
+  ensureOwner,
+  ensureGroupAdmin
 } = require("../middleware/auth");
 const { BadRequestError } = require("../expressError");
 const Group = require("../models/group");
@@ -62,6 +63,21 @@ router.post("/:groupID", ensureLoggedIn, async function (req, res, next) {
 
     const { msg } = await Group.addUsers({groupID, users});
     return res.status(201).json( msg );
+  } catch (err) {
+    return next(err);
+  }
+});
+
+/** DELETE /:groupID  =>  { deleted: groupID }
+ *
+ * Authorization required: login, group admin user
+ **/
+
+router.delete("/:groupID", ensureLoggedIn, ensureGroupAdmin, async function (req, res, next) {
+  try {
+    const groupID = Number(req.params.groupID);
+    await Group.delete(groupID);
+    return res.json({ deleted: Number(req.params.groupID) });
   } catch (err) {
     return next(err);
   }
