@@ -6,13 +6,14 @@ const jsonschema = require("jsonschema");
 const express = require("express");
 const { 
   ensureLoggedIn,
-  ensureOwner,
-  ensureGroupAdmin
+  ensureGroupAdmin,
+  ensureGroupUser
 } = require("../middleware/auth");
 const { BadRequestError } = require("../expressError");
 const Group = require("../models/group");
 const newGroupSchema = require("../schemas/groupNew.json");
 const groupAddUsersSchema = require("../schemas/groupAddUsers.json");
+const groupUpdateSchema = require("../schemas/groupUpdate.json");
 
 const router = express.Router();
 
@@ -49,11 +50,10 @@ router.post("/", ensureLoggedIn, async function (req, res, next) {
  * Authorization required: login
  */
 
-router.post("/:groupID", ensureLoggedIn, async function (req, res, next) {
+router.post("/:groupID", ensureLoggedIn, ensureGroupUser, async function (req, res, next) {
   try {
     const validator = jsonschema.validate(req.body, groupAddUsersSchema);
     if (!validator.valid) {
-      console.log('schema issue')
       const errs = validator.errors.map(e => e.stack);
       throw new BadRequestError(errs);
     }
@@ -63,6 +63,35 @@ router.post("/:groupID", ensureLoggedIn, async function (req, res, next) {
 
     const { msg } = await Group.addUsers({groupID, users});
     return res.status(201).json( msg );
+  } catch (err) {
+    return next(err);
+  }
+});
+
+/** PATCH /:groupID/edit { group } => { group }
+ *
+ * Data can include:
+ *   { name, imageURL }
+ *
+ * Returns { groupID, name, imageURL }
+ *
+ * Authorization required: login, ensureGroupUser
+ **/
+
+router.patch("/:groupID/edit", ensureLoggedIn, ensureGroupUser, async function (req, res, next) {
+  try {
+    const validator = jsonschema.validate(req.body, groupUpdateSchema);
+    if (!validator.valid) {
+      console.log('validator?')
+      const errs = validator.errors.map(e => e.stack);
+      throw new BadRequestError(errs);
+    }
+    delete req.body.userIDs;
+
+    const groupID = Number(req.params.groupID)
+
+    const group = await Group.update(groupID, req.body);
+    return res.json( group );
   } catch (err) {
     return next(err);
   }
