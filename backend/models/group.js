@@ -1,7 +1,7 @@
 "use strict";
 
-const { urlencoded } = require("express");
 const db = require("../db");
+const addUsersSorter = require('../helpers/addUsersSorter')
 const {
   NotFoundError,
   BadRequestError,
@@ -11,14 +11,20 @@ const {
 /** Related functions for groups. */
 
 class Group {
-  /** Create group with name under userID
+  /** Create group with name and array of userIDs
    * 
-   * Returns { id, name }
+   * adds each userID to the users_groups table
+   * 
+   * Returns { id, name, users, adminUserID, imageURL }
+   *  where users = [userID, ...]
    * 
    * Throws BadRequestError on duplicates.
    **/
   static async create(newGroup) {
-    const { userIDs, name, adminUserID } = newGroup;
+    if (!newGroup) {
+      throw new BadRequestError(`Invalid data: ${newGroup}`);
+    }
+    const { users, name, adminUserID = users[0].id } = newGroup;
 
     const lowerName = name.toLowerCase();
     const duplicateCheck = await db.query(
@@ -49,11 +55,11 @@ class Group {
     
     const group = groupRes.rows[0];
 
-    await Group.addUsers(group.id, userIDs)
+    const { msg } = await Group.addUsers({groupID: group.id, users})
 
     return {
-      ...group,
-      users: userIDs
+      group,
+      msg
     };
   }
 
@@ -77,29 +83,27 @@ class Group {
     return usersRes.rows;
   }
 
-  /** Add a user to the group with userID
+  /** Add users to a group with groupID and userIDs array
    * 
    * Returns { id, name }
    * 
    * Throws NotFoundError if can't userID.
    **/
 
-  static async addUsers(groupID, userIDs) {
-    const groupIDVarIdx = "$" + (userIDs.length + 1);
-
-    const vals = userIDs.map((u,idx) => `(${groupIDVarIdx}, $${idx + 1})`);
+  static async addUsers({groupID, users}) {
+    const {sqlVals, userIDs, usernames} = addUsersSorter(users);
 
     const querySql = 
       `INSERT INTO users_groups
           (group_id, user_id)
         VALUES
-          ${vals.join(',')}
-        RETURNING user_id AS "userID"
-        `;
+          ${sqlVals.join(',')}`;
 
-    const addUsers = await db.query(querySql,[...userIDs, groupID]);
+    await db.query(querySql,[...userIDs, groupID]);
 
-    return addUsers;
+    return {
+      msg: `${usernames.join(', ')} were added to the group.`
+    };
   }
 
   /** Allows a user to leave a group.
