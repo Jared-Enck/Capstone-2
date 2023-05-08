@@ -66,7 +66,7 @@ function ensureOwner(req, res, next) {
 function ensureGroupAdmin(req, res, next) {
   try {
     const currUser = res.locals.user;
-    const adminID = req.body.adminUserID;
+    const adminID = Number(req.body.adminUserID);
 
     const isGroupAdmin = adminID === currUser.id;
 
