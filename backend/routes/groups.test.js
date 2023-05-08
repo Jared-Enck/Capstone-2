@@ -182,3 +182,30 @@ describe("PATCH /groups/:groupID/edit", () => {
     expect(resp.statusCode).toEqual(401);
   });
 });
+
+/************************************** DELETE /groups/:groupID */
+
+describe("DELETE /groups/:groupID", function () {
+  it("works for group admin user", async function () {
+    const resp = await request(app)
+      .delete(`/groups/1`)
+      .send({ adminUserID: 1 })
+      .set("authorization", u1Token);
+    expect(resp.body).toEqual({ deleted: 1 });
+  });
+
+  it("throws unauth for not group admin user", async function () {
+    const resp = await request(app)
+      .delete(`/groups/1`)
+      .send({ adminUserID: 1 })
+      .set("authorization", u2Token);
+    expect(resp.statusCode).toEqual(401);
+  });
+
+  it("throws unauth for anon user", async function () {
+    const resp = await request(app)
+      .delete(`/groups/1`)
+      .send({ adminUserID: 1 })
+    expect(resp.statusCode).toEqual(401);
+  });
+});

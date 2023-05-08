@@ -106,7 +106,7 @@ router.delete("/:groupID", ensureLoggedIn, ensureGroupAdmin, async function (req
   try {
     const groupID = Number(req.params.groupID);
     await Group.delete(groupID);
-    return res.json({ deleted: Number(req.params.groupID) });
+    return res.json({ deleted: groupID });
   } catch (err) {
     return next(err);
   }
