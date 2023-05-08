@@ -6,7 +6,8 @@ const {
   authenticateJWT,
   ensureLoggedIn,
   ensureOwner,
-  ensureGroupAdmin
+  ensureGroupAdmin,
+  ensureGroupUser
 } = require("./auth");
 
 const {
@@ -136,5 +137,33 @@ describe("ensureGroupAdmin", () => {
       expect(err instanceof UnauthorizedError).toBeTruthy();
     };
     ensureGroupAdmin(req, res, next);
+  });
+});
+
+describe("ensureGroupUser", () => {
+  it("works for group user", () => {
+    expect.assertions(1);
+    const req = { 
+      params: { groupID: 1 },
+      body: { userIDs: [1,2] }
+    };
+    const res = { locals: { user: { id: 1 } } };
+    const next = function (err) {
+      expect(err).toBeFalsy();
+    };
+    ensureGroupUser(req, res, next);
+  });
+
+  it("throws unauth if not group user", () => {
+    expect.assertions(1);
+    const req = { 
+      params: { groupID: 1 },
+      body: { userIDs: [1,2] }
+    };
+    const res = { locals: { user: { id: 3 } } };
+    const next = function (err) {
+      expect(err instanceof UnauthorizedError).toBeTruthy();
+    };
+    ensureGroupUser(req, res, next);
   });
 });
