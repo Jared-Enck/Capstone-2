@@ -2,6 +2,7 @@
 
 const db = require("../db");
 const addUsersSorter = require('../helpers/addUsersSorter')
+const sqlForPartialUpdate = require('../helpers/sql')
 const {
   NotFoundError,
   BadRequestError,
@@ -104,6 +105,55 @@ class Group {
     return {
       msg: `${usernames.join(', ')} were added to the group.`
     };
+  }
+
+  /** Update group data with `data`.
+   *
+   * This is a "partial update" --- it's fine if data doesn't contain
+   * all the fields; this only changes provided ones.
+   *
+   * Data can include:
+   *   { name, imageURL }
+   *
+   * Returns { id, name, imageURL }
+   *
+   * Throws NotFoundError if not found.
+   */
+
+  static async update(id, data) {
+    // if (data.name) {
+    //   const {name} = data;
+    //   const lowerName = name.toLowerCase();
+    //   const duplicateCheck = await db.query(
+    //     `SELECT g.name
+    //     FROM groups g
+    //       LEFT JOIN users_groups ug
+    //         ON ug.user_id = $2
+    //     WHERE lower(g.name) = $1`,
+    //     [lowerName, adminUserID],
+    //   );
+
+    //   if (duplicateCheck.rows[0]) {
+    //     throw new BadRequestError(`Duplicate group: ${name}`);
+    //   }
+    // }
+    const { setCols, values } = sqlForPartialUpdate(data, {
+      imageURL: "image_url"
+    });
+    const idVarIdx = "$" + (values.length + 1);
+    const querySql = `UPDATE groups 
+                      SET ${setCols} 
+                      WHERE id = ${idVarIdx} 
+                      RETURNING id,
+                                name,
+                                image_url AS "imageURL"
+    `;
+
+    const result = await db.query(querySql, [...values, id]);
+    const group = result.rows[0];
+    if (!group) throw new NotFoundError(`No group: ${id}`);
+
+    return group;
   }
 
   /** Delete given group from database; returns undefined.
