@@ -1,7 +1,6 @@
 "use strict";
 
 const request = require("supertest");
-const Group = require("../models/group")
 const app = require("../app");
 
 const {
@@ -100,11 +99,86 @@ describe("POST /groups/:groupID", () => {
   it("works", async () => {
     const resp = await request(app)
       .post("/groups/1")
-      .send({users: [{id: 3, username: 'u3'}]})
+      .send({
+        userIDs: [1,2],
+        users: [{id: 3, username: 'u3'}]
+      })
       .set("authorization", u1Token);
     expect(resp.statusCode).toEqual(201);
     expect(resp.body).toEqual(
       expect.any(String)
     );
+  });
+
+  it("throws bad request with invalid data", async () => {
+    const resp = await request(app)
+      .post("/groups/1")
+      .send({
+        userIDs: [1,2],
+        users: [{id: '3', username: 'u3'}]
+      })
+      .set("authorization", u1Token);
+    expect(resp.statusCode).toEqual(400);
+  });
+
+  it("throws unauth with anon user", async () => {
+    const resp = await request(app)
+      .post("/groups/1")
+      .send({
+        userIDs: [1,2],
+        users: [{id: 3, username: 'u3'}]
+      });
+    expect(resp.statusCode).toEqual(401);
+  });
+
+  it("throws unauth with non group user", async () => {
+    const resp = await request(app)
+      .post("/groups/2")
+      .send({
+        userIDs: [2],
+        users: [{id: 1, username: 'u1'}]
+      })
+      .set("authorization", u1Token);
+    expect(resp.statusCode).toEqual(401);
+  });
+});
+
+/************************************** PATCH /groups/:groups/edit */
+
+describe("PATCH /groups/:groupID/edit", () => {
+  it("works for group user", async () => {
+    const resp = await request(app)
+      .patch("/groups/1/edit")
+      .send({
+        userIDs: [1,2],
+        name: 'newGroupName'
+      })
+      .set("authorization", u2Token);
+    expect(resp.body).toEqual({
+      id: 1,
+      name: 'newGroupName',
+      imageURL: expect.any(String)
+    });
+  });
+
+  it("throws unauth with anon user", async () => {
+    const resp = await request(app)
+      .patch("/groups/1/edit")
+      .send({
+        userIDs: [1,2],
+        name: 'newGroupName'
+      });
+    expect(resp.statusCode).toEqual(401);
+  });
+
+  it("throws unauth with non group user", async () => {
+    const resp = await request(app)
+      .patch("/groups/2/edit")
+      .send({
+        userIDs: [2],
+        name: 'newGroupName'
+      })
+      .set("authorization", u1Token);
+    expect(resp.statusCode).toEqual(401);
   });
 });
