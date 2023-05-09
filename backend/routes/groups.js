@@ -112,4 +112,20 @@ router.delete("/:groupID", ensureLoggedIn, ensureGroupAdmin, async function (req
   }
 });
 
+/** PATCH /:groupID/leave => { msg: 'username' left the group }
+ *
+ * Authorization required: login 
+ **/
+
+router.patch("/:groupID/leave", ensureLoggedIn, async function (req, res, next) {
+  try {
+    const groupID = Number(req.params.groupID);
+    const user = req.body.user
+    await Group.leave(groupID,user.id);
+    return res.json({ msg: `${user.username} left the group.`})
+  } catch (err) {
+    return next(err)
+  }
+});
+
 module.exports = router;
