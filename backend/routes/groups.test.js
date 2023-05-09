@@ -209,3 +209,22 @@ describe("DELETE /groups/:groupID", function () {
     expect(resp.statusCode).toEqual(401);
   });
 });
+
+/************************************** PATCH /groups/:groupID/leave */
+
+describe("PATCH /groups/:groupID/leave", function () {
+  it("works", async function () {
+    const resp = await request(app)
+      .patch(`/groups/1/leave`)
+      .send({ user: {id: 2, username: 'u2'} })
+      .set("authorization", u2Token);
+    expect(resp.body).toEqual({ msg: `u2 left the group.` });
+  });
+
+  it("throws unauth for anon user", async function () {
+    const resp = await request(app)
+      .patch(`/groups/1/leave`)
+      .send({ user: {id: 2, username: 'u2'} })
+    expect(resp.statusCode).toEqual(401);
+  });
+});
