@@ -50,3 +50,5 @@ class GameNightApi {
     return res.token
   }
 };
+
+module.exports = GameNightApi;
