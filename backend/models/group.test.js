@@ -124,6 +124,15 @@ describe("getUsers", () => {
       }
     ]);
   });
+
+  it("throws not found if no such group", async () => {
+    try {
+      await Group.getUsers(0);
+      fail();
+    } catch (err) {
+      expect(err instanceof NotFoundError).toBeTruthy();
+    }
+  });
 });
 
 /************************************** addUsers */
@@ -159,6 +168,15 @@ describe("addUsers", () => {
         username: 'u3'
       }
     ]);
+  });
+
+  it("throws not found if no such group", async () => {
+    try {
+      await Group.addUsers({groupID: 0, users: [{id: 3, username: 'u3'}]});
+      fail();
+    } catch (err) {
+      expect(err instanceof NotFoundError).toBeTruthy();
+    }
   });
 });
 
@@ -245,5 +263,14 @@ describe("leave", () => {
         username: 'u1'
       }
     ]);
+  });
+  
+  it("throws not found if no such group", async () => {
+    try {
+      await Group.leave(0,2);
+      fail();
+    } catch (err) {
+      expect(err instanceof NotFoundError).toBeTruthy();
+    }
   });
 });
