@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
-import NotFoundPage from './general/NotFoudPage';
-import Home from './general/Home';
+import NotFoundPage from './NotFoudPage';
+import Home from './Home';
 
 export default function AllRoutes() {
   return (
