@@ -93,7 +93,7 @@ describe("POST /groups", () => {
   });
 });
 
-/************************************** POST /groups/:groups */
+/************************************** POST /groups/:groupID */
 
 describe("POST /groups/:groupID", () => {
   it("works", async () => {
@@ -105,9 +105,9 @@ describe("POST /groups/:groupID", () => {
       })
       .set("authorization", u1Token);
     expect(resp.statusCode).toEqual(201);
-    expect(resp.body).toEqual(
-      expect.any(String)
-    );
+    expect(resp.body).toEqual({
+      msg: expect.any(String)
+    });
   });
 
   it("throws bad request with invalid data", async () => {

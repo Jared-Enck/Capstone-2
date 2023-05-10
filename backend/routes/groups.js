@@ -61,8 +61,8 @@ router.post("/:groupID", ensureLoggedIn, ensureGroupUser, async function (req, r
     const groupID = Number(req.params.groupID);
     const { users } = req.body
 
-    const { msg } = await Group.addUsers({groupID, users});
-    return res.status(201).json( msg );
+    const resp = await Group.addUsers({groupID, users});
+    return res.status(201).json( resp );
   } catch (err) {
     return next(err);
   }
