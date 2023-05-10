@@ -1,11 +1,5 @@
 "use strict";
-
-const db = require("../db.js");
 const User = require("./user");
-const { 
-  BadRequestError,
-  NotFoundError
-} = require("../expressError.js");
 const GameCollection = require("./gameCollection.js");
 const {
   commonBeforeAll,
