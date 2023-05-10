@@ -56,7 +56,15 @@ class Group {
     
     const group = groupRes.rows[0];
 
-    const { msg } = await Group.addUsers({groupID: group.id, users})
+    const justCreated = true;
+
+    const { msg } = await Group.addUsers(
+      {
+        groupID: group.id, 
+        users
+      }, 
+      justCreated
+    );
 
     return {
       group,
@@ -81,18 +89,30 @@ class Group {
       [groupID]
     ); 
     
-    return usersRes.rows;
+    const users = usersRes.rows;
+    if (!users.length) throw new NotFoundError(`No group: ${groupID}`);
+
+    return users;
   }
 
   /** Add users to a group with groupID and userIDs array
    * 
    * Returns { id, name }
    * 
-   * Throws NotFoundError if can't userID.
    **/
 
-  static async addUsers({groupID, users}) {
+  static async addUsers({groupID, users}, justCreated = false) {
     const {sqlVals, userIDs, usernames} = addUsersSorter(users);
+
+    if (!justCreated) {
+      const groupExists = await db.query(`
+        SELECT id 
+        FROM groups
+        WHERE id = $1
+      `,[groupID])
+
+      if (!groupExists.rows[0]) throw new NotFoundError(`No group: ${groupID}`);
+    }
 
     const querySql = 
       `INSERT INTO users_groups
@@ -161,17 +181,17 @@ class Group {
    * Throws NotFoundError if not found.
    */
 
-  static async delete(id) {
+  static async delete(groupID) {
     let result = await db.query(
       `DELETE
         FROM groups
         WHERE id = $1
         RETURNING id`,
-      [id],
+      [groupID],
     );
     const group = result.rows[0];
 
-    if (!group) throw new NotFoundError(`No group: ${id}`);
+    if (!group) throw new NotFoundError(`No group: ${groupID}`);
   }
 
   /** Allows a user to leave a group.
@@ -180,11 +200,15 @@ class Group {
    */
 
   static async leave(groupID,userID) {
-    return await db.query(`
+    const result = await db.query(`
       DELETE FROM users_groups
       WHERE group_id = $1 AND user_id = $2
-      RETURNING user_id AS "userID"`
+      RETURNING group_id AS "groupID"`
       ,[groupID,userID]);
+    
+    const group = result.rows[0];
+
+    if (!group) throw new NotFoundError(`No group: ${groupID}`);
   }
 }
 
