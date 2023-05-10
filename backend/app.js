@@ -9,6 +9,7 @@ const { authenticateJWT } = require("./middleware/auth");
 const authRoutes = require("./routes/auth");
 const usersRoutes = require("./routes/users");
 const groupsRoutes = require("./routes/groups");
+const gameCollectionsRoutes = require("./routes/gameCollections");
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(authenticateJWT);
 app.use("/auth", authRoutes);
 app.use("/users", usersRoutes);
 app.use("/groups", groupsRoutes);
+app.use("/gameCollections", gameCollectionsRoutes);
 
 
 /** Handle 404 errors -- this matches everything */
