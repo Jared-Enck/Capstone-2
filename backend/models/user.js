@@ -23,8 +23,7 @@ class User {
   static async authenticate(username, password) {
     // try to find the user first
     const result = await db.query(
-      `SELECT 
-        id,
+      `SELECT
         username,
         password
       FROM users
@@ -32,17 +31,17 @@ class User {
       [username],
     );
 
-    let userBasic = result.rows[0];
+    const user = result.rows[0];
 
-    if (userBasic) {
+    if (user) {
       // compare hashed password to a new hash from password
-      const isValid = await bcrypt.compare(password, userBasic.password);
+      const isValid = await bcrypt.compare(password, user.password);
       if (isValid === true) {
-        const {user} = await User.get(userBasic.id);
+        delete user.password
         return user;
       }
     }
-
+    
     throw new UnauthorizedError("Invalid username/password");
   }
 
@@ -73,7 +72,7 @@ class User {
     }
 
     if (duplicateEmailCheck.rows[0]) {
-      throw new BadRequestError(`Duplicate email: ${username}`);
+      throw new BadRequestError(`Duplicate email: ${email}`);
     }
 
     const hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
@@ -82,7 +81,7 @@ class User {
       `INSERT INTO users
         (username, password, email)
       VALUES ($1, $2, $3)
-      RETURNING id`,
+      RETURNING username`,
       [
         username,
         hashedPassword,
@@ -90,7 +89,7 @@ class User {
       ],
     );
 
-    const { user } = await User.get(result.rows[0].id);
+    const user = result.rows[0];
 
     return user;
   }
@@ -104,10 +103,9 @@ class User {
    * Throws NotFoundError if user not found.
    **/
 
-  static async get(userID) {
+  static async get(reqUsername) {
     const userRes = await db.query(
       `SELECT 
-        u.id,
         u.username,
         u.email,
         u.image_url AS "imageURL",
@@ -115,16 +113,16 @@ class User {
         ug.group_id AS "groupID"
       FROM users u
         LEFT JOIN game_collections gc
-          ON gc.user_id = u.id
+          ON gc.username = u.username
         LEFT JOIN users_groups ug
-          ON ug.user_id = u.id
-      WHERE u.id = $1`,
-      [userID],
+          ON ug.username = u.username
+      WHERE u.username = $1`,
+      [reqUsername],
     );
 
-    if (!userRes.rows[0]) throw new NotFoundError(`No user: ${userID}`);
+    if (!userRes.rows[0]) throw new NotFoundError(`No user: ${reqUsername}`);
 
-    const {id,username,email,imageURL} = userRes.rows[0];
+    const {username,email,imageURL} = userRes.rows[0];
 
     const games = 
       (userRes.rows[0].gameID) 
@@ -138,7 +136,6 @@ class User {
     
     return {
       user: {
-        id,
         username,
         email,
         imageURL,
@@ -148,18 +145,18 @@ class User {
     };
   }
   /** Get all groups for a user. */
-  static async getGroups(userID) {
+  static async getGroups(username) {
     const results = await db.query(`
       SELECT 
         g.id,
         g.name,
-        g.admin_user_id AS "adminUserID",
+        g.admin_username AS "adminUserID",
         g.image_url AS "imageURL"
       FROM groups g
       LEFT JOIN users_groups ug
-        ON ug.user_id = $1
+        ON ug.username = $1
       ORDER BY g.name`,
-      [userID],
+      [username],
     );
     return results.rows
   }
@@ -172,12 +169,12 @@ class User {
    * Data can include:
    *   { username, password, email }
    *
-   * Returns { id, username, email }
+   * Returns { username, email }
    *
    * Throws NotFoundError if not found.
    */
 
-  static async update(id, data) {
+  static async update(username, data) {
     if (data.password) {
       data.password = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR);
     }
@@ -202,15 +199,14 @@ class User {
 
     const querySql = `UPDATE users 
                       SET ${setCols} 
-                      WHERE id = ${idVarIdx} 
-                      RETURNING id,
-                                username,
+                      WHERE username = ${idVarIdx} 
+                      RETURNING username,
                                 email,
                                 image_url AS "imageURL"`;
-    const result = await db.query(querySql, [...values, id]);
+    const result = await db.query(querySql, [...values, username]);
     const user = result.rows[0];
 
-    if (!user) throw new NotFoundError(`No user: ${id}`);
+    if (!user) throw new NotFoundError(`No user: ${username}`);
 
     delete user.password;
     return user;
@@ -221,17 +217,16 @@ class User {
    * Throws NotFoundError if not found.
    */
 
-  static async remove(id) {
+  static async remove(username) {
     let result = await db.query(
-      `DELETE
-        FROM users
-        WHERE id = $1
-        RETURNING id`,
-      [id],
+      `DELETE FROM users
+        WHERE username = $1
+        RETURNING username`,
+      [username],
     );
     const user = result.rows[0];
 
-    if (!user) throw new NotFoundError(`No user: ${id}`);
+    if (!user) throw new NotFoundError(`No user: ${username}`);
   }
 }
 

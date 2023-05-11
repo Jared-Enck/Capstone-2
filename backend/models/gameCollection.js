@@ -4,42 +4,42 @@ const db = require("../db");
 /** Related functions for collections. */
 
 class GameCollection {
-  /** Add games to a user's collection with userID and game object
+  /** Add games to a user's collection with username and game object
    * 
-   * {userID: 1, game: {id: 'e44jncYuUp', name: 'Dune: Imperium'}}
+   * {username: 'u1', game: {id: 'e44jncYuUp', name: 'Dune: Imperium'}}
    * 
    * Returns { msg: `${game.name} has been added to your collection.` }
    * 
    **/
 
-  static async addGame({userID, game}) {
+  static async addGame({username, game}) {
     const querySql = 
       `INSERT INTO game_collections
-          (user_id, game_id)
+          (username, game_id)
         VALUES
           ($1,$2)`;
 
-    await db.query(querySql,[userID, game.id]);
+    await db.query(querySql,[username, game.id]);
 
     return {
       msg: `${game.name} has been added to your collection.`
     };
   };
 
-  /** Remove games from a user's collection with userID and game object
+  /** Remove games from a user's collection with username and game object
    * 
-   * {userID: 1, game: {id: 'e44jncYuUp', name: 'Dune: Imperium'}}
+   * {username: 'u1', game: {id: 'e44jncYuUp', name: 'Dune: Imperium'}}
    * 
    * Returns { msg: `${game.name} has been removed from your collection.` }
    * 
    **/
 
-  static async removeGame({userID, game}) {
+  static async removeGame({username, game}) {
     const querySql = 
       `DELETE FROM game_collections
-        WHERE user_id = $1 AND game_id = $2`;
+        WHERE username = $1 AND game_id = $2`;
 
-    await db.query(querySql,[userID, game.id]);
+    await db.query(querySql,[username, game.id]);
 
     return {
       msg: `${game.name} has been removed from your collection.`

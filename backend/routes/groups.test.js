@@ -21,16 +21,7 @@ afterAll(commonAfterAll);
 
 describe("POST /groups", () => {
   const newGroup = {
-    users: [
-      {
-        id: 1, 
-        username: 'u1'
-      },
-      {
-        id: 2, 
-        username: 'u2'
-      }
-    ],
+    users: ['u1','u2'],
     name: "newGroup"
   }
   it("works", async () => {
@@ -43,7 +34,7 @@ describe("POST /groups", () => {
       group: {
         id: expect.any(Number),
         name: "newGroup",
-        adminUserID: 1,
+        adminUsername: 'u1',
         imageURL: expect.any(String)
       },
       msg: expect.any(String)
@@ -54,7 +45,7 @@ describe("POST /groups", () => {
     const resp = await request(app)
       .post("/groups")
       .send({
-        users: [{id: 1, username: 'u1'}]
+        users: ['u1']
       })
       .set("authorization", u2Token);
     expect(resp.statusCode).toEqual(400);
@@ -64,7 +55,7 @@ describe("POST /groups", () => {
     const resp = await request(app)
       .post("/groups")
       .send({
-        users: [{id: '3', username: 'u3'}],
+        users: [3],
         name: "newGroup"
       })
       .set("authorization", u1Token);
@@ -75,7 +66,7 @@ describe("POST /groups", () => {
     const resp = await request(app)
       .post("/groups")
       .send({
-        users: [{id: 1, username: 'u1'}],
+        users: ['u1'],
         name: "group1"
       })
       .set("authorization", u1Token);
@@ -86,7 +77,7 @@ describe("POST /groups", () => {
     const resp = await request(app)
       .post("/groups")
       .send({
-        users: [{id: 3, username: 'u3'}],
+        users: ['u3'],
         name: "newGroup"
       })
     expect(resp.statusCode).toEqual(401);
@@ -100,8 +91,8 @@ describe("POST /groups/:groupID", () => {
     const resp = await request(app)
       .post("/groups/1")
       .send({
-        userIDs: [1,2],
-        users: [{id: 3, username: 'u3'}]
+        groupUsers: ['u1','u2'],
+        addUsers: ['u3']
       })
       .set("authorization", u1Token);
     expect(resp.statusCode).toEqual(201);
@@ -114,8 +105,8 @@ describe("POST /groups/:groupID", () => {
     const resp = await request(app)
       .post("/groups/1")
       .send({
-        userIDs: [1,2],
-        users: [{id: '3', username: 'u3'}]
+        groupUsers: ['u1','u2'],
+        addUsers: [3]
       })
       .set("authorization", u1Token);
     expect(resp.statusCode).toEqual(400);
@@ -125,8 +116,8 @@ describe("POST /groups/:groupID", () => {
     const resp = await request(app)
       .post("/groups/1")
       .send({
-        userIDs: [1,2],
-        users: [{id: 3, username: 'u3'}]
+        groupUsers: ['u1','u2'],
+        addUsers: ['u3']
       });
     expect(resp.statusCode).toEqual(401);
   });
@@ -135,8 +126,8 @@ describe("POST /groups/:groupID", () => {
     const resp = await request(app)
       .post("/groups/2")
       .send({
-        userIDs: [2],
-        users: [{id: 1, username: 'u1'}]
+        groupUsers: ['u2'],
+        addUsers: ['u1']
       })
       .set("authorization", u1Token);
     expect(resp.statusCode).toEqual(401);
@@ -150,7 +141,7 @@ describe("PATCH /groups/:groupID/edit", () => {
     const resp = await request(app)
       .patch("/groups/1/edit")
       .send({
-        userIDs: [1,2],
+        groupUsers: ['u1','u2'],
         name: 'newGroupName'
       })
       .set("authorization", u2Token);
@@ -165,7 +156,7 @@ describe("PATCH /groups/:groupID/edit", () => {
     const resp = await request(app)
       .patch("/groups/1/edit")
       .send({
-        userIDs: [1,2],
+        groupUsers: ['u1','u2'],
         name: 'newGroupName'
       });
     expect(resp.statusCode).toEqual(401);
@@ -175,7 +166,7 @@ describe("PATCH /groups/:groupID/edit", () => {
     const resp = await request(app)
       .patch("/groups/2/edit")
       .send({
-        userIDs: [2],
+        groupUsers: ['u2'],
         name: 'newGroupName'
       })
       .set("authorization", u1Token);
@@ -189,7 +180,7 @@ describe("DELETE /groups/:groupID", function () {
   it("works for group admin user", async function () {
     const resp = await request(app)
       .delete(`/groups/1`)
-      .send({ adminUserID: 1 })
+      .send({ adminUsername: 'u1' })
       .set("authorization", u1Token);
     expect(resp.body).toEqual({ deleted: 1 });
   });
@@ -197,7 +188,7 @@ describe("DELETE /groups/:groupID", function () {
   it("throws unauth for not group admin user", async function () {
     const resp = await request(app)
       .delete(`/groups/1`)
-      .send({ adminUserID: 1 })
+      .send({ adminUsername: 'u1' })
       .set("authorization", u2Token);
     expect(resp.statusCode).toEqual(401);
   });
@@ -205,7 +196,7 @@ describe("DELETE /groups/:groupID", function () {
   it("throws unauth for anon user", async function () {
     const resp = await request(app)
       .delete(`/groups/1`)
-      .send({ adminUserID: 1 })
+      .send({ adminUsername: 'u1' })
     expect(resp.statusCode).toEqual(401);
   });
 });
@@ -216,7 +207,7 @@ describe("PATCH /groups/:groupID/leave", function () {
   it("works", async function () {
     const resp = await request(app)
       .patch(`/groups/1/leave`)
-      .send({ user: {id: 2, username: 'u2'} })
+      .send({ username: 'u2'})
       .set("authorization", u2Token);
     expect(resp.body).toEqual({ msg: `u2 left the group.` });
   });
@@ -224,7 +215,7 @@ describe("PATCH /groups/:groupID/leave", function () {
   it("throws unauth for anon user", async function () {
     const resp = await request(app)
       .patch(`/groups/1/leave`)
-      .send({ user: {id: 2, username: 'u2'} })
+      .send({ username: 'u2'})
     expect(resp.statusCode).toEqual(401);
   });
 });

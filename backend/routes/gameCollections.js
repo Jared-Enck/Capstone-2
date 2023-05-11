@@ -8,42 +8,42 @@ const GameCollection = require("../models/gameCollection");
 
 const router = express.Router();
 
-/** POST /gameCollections/:userID  { userID, game } => { msg }
+/** POST /gameCollections/:username  { username, game } => { msg }
  * 
  * where addGameObj = {
- *  userID: 1, 
+ *  username: 'u1', 
  *  game: {id: 'e44jncYuUp', name: 'Dune: Imperium'}
  * }
  *  
  * Authorization required: login, owner
  */
 
-router.post("/:userID", ensureLoggedIn, ensureOwner, async function (req, res, next) {
+router.post("/:username", ensureLoggedIn, ensureOwner, async function (req, res, next) {
   try {
-    const userID = Number(req.params.userID);
+    const username = req.params.username;
     const game = req.body;
-    const resp = await GameCollection.addGame({ userID, game });
+    const resp = await GameCollection.addGame({ username, game });
     return res.json( resp );
   } catch (err) {
     return next(err);
   }
 });
 
-/** DELETE /gameCollections/:userID  { userID, game } => { msg }
+/** DELETE /gameCollections/:username  { username, game } => { msg }
  * 
  * where addGameObj = {
- *  userID: 1, 
+ *  username: 'u1', 
  *  game: {id: 'e44jncYuUp', name: 'Dune: Imperium'}
  * }
  *  
  * Authorization required: login, owner
  */
 
-router.delete("/:userID", ensureLoggedIn, ensureOwner, async function (req, res, next) {
+router.delete("/:username", ensureLoggedIn, ensureOwner, async function (req, res, next) {
   try {
-    const userID = Number(req.params.userID);
+    const username = req.params.username;
     const game = req.body;
-    const resp = await GameCollection.removeGame({ userID, game });
+    const resp = await GameCollection.removeGame({ username, game });
     return res.json( resp );
   } catch (err) {
     return next(err);

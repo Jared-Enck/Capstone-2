@@ -7,7 +7,8 @@ const express = require("express");
 const { 
   ensureLoggedIn,
   ensureGroupAdmin,
-  ensureGroupUser
+  ensureGroupUser,
+  ensureOwner
 } = require("../middleware/auth");
 const { BadRequestError } = require("../expressError");
 const Group = require("../models/group");
@@ -17,12 +18,12 @@ const groupUpdateSchema = require("../schemas/groupUpdate.json");
 
 const router = express.Router();
 
-/** POST /groups   { group } => { id, name, adminUserID, imageURL, msg }
+/** POST /groups   { group } => { id, name, adminUsername, imageURL, msg }
  *
  * Create new group
  * 
  * group must include { users , name }
- *  where users = [{id: 1, username: 'u1'}, ...]
+ *  where users = ['u1', ...]
  *
  * Authorization required: login
  */
@@ -45,9 +46,9 @@ router.post("/", ensureLoggedIn, async function (req, res, next) {
  * 
  * Add users to existing group
  * 
- * where users = [{id: 1, username: 'u1'}, ...]
+ * where users = ['u1', ...]
  *
- * Authorization required: login
+ * Authorization required: login, group user
  */
 
 router.post("/:groupID", ensureLoggedIn, ensureGroupUser, async function (req, res, next) {
@@ -57,11 +58,10 @@ router.post("/:groupID", ensureLoggedIn, ensureGroupUser, async function (req, r
       const errs = validator.errors.map(e => e.stack);
       throw new BadRequestError(errs);
     }
-
     const groupID = Number(req.params.groupID);
-    const { users } = req.body
-
-    const resp = await Group.addUsers({groupID, users});
+    const { addUsers } = req.body
+    console.log(addUsers)
+    const resp = await Group.addUsers(groupID, addUsers);
     return res.status(201).json( resp );
   } catch (err) {
     return next(err);
@@ -75,18 +75,17 @@ router.post("/:groupID", ensureLoggedIn, ensureGroupUser, async function (req, r
  *
  * Returns { groupID, name, imageURL }
  *
- * Authorization required: login, ensureGroupUser
+ * Authorization required: login, group user
  **/
 
 router.patch("/:groupID/edit", ensureLoggedIn, ensureGroupUser, async function (req, res, next) {
   try {
     const validator = jsonschema.validate(req.body, groupUpdateSchema);
     if (!validator.valid) {
-      console.log('validator?')
       const errs = validator.errors.map(e => e.stack);
       throw new BadRequestError(errs);
     }
-    delete req.body.userIDs;
+    delete req.body.groupUsers;
 
     const groupID = Number(req.params.groupID)
 
@@ -114,15 +113,15 @@ router.delete("/:groupID", ensureLoggedIn, ensureGroupAdmin, async function (req
 
 /** PATCH /:groupID/leave => { msg: 'username' left the group }
  *
- * Authorization required: login 
+ * Authorization required: login, owner, group user
  **/
 
 router.patch("/:groupID/leave", ensureLoggedIn, async function (req, res, next) {
   try {
     const groupID = Number(req.params.groupID);
-    const user = req.body.user
-    await Group.leave(groupID,user.id);
-    return res.json({ msg: `${user.username} left the group.`})
+    const username = req.body.username
+    await Group.leave(groupID,username);
+    return res.json({ msg: `${username} left the group.`})
   } catch (err) {
     return next(err)
   }

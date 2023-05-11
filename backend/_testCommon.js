@@ -13,15 +13,14 @@ async function commonBeforeAll() {
 
   await db.query(`
     INSERT INTO users(
-      id,
       username,
       password,
       email
     )
-    VALUES (1,'u1', $1, 'u1@email.com'),
-           (2,'u2', $2, 'u2@email.com'),
-           (3,'u3', $3, 'u3@email.com')
-    RETURNING id`,
+    VALUES ('u1', $1, 'u1@email.com'),
+           ('u2', $2, 'u2@email.com'),
+           ('u3', $3, 'u3@email.com')
+    RETURNING username`,
     [
       await bcrypt.hash("password1", BCRYPT_WORK_FACTOR),
       await bcrypt.hash("password2", BCRYPT_WORK_FACTOR),
@@ -31,31 +30,30 @@ async function commonBeforeAll() {
 
   await db.query(`
     INSERT INTO game_collections
-      (user_id, game_id)
+      (username, game_id)
     VALUES 
-      (1, 'e44jncYuUp'),
-      (1, 'nSZTnbgacm'),
-      (2, '78ZDzlpvdb')
+      ('u1', 'e44jncYuUp'),
+      ('u1', 'nSZTnbgacm'),
+      ('u2', '78ZDzlpvdb')
   `);
   
   await db.query(`
     INSERT INTO groups
-      (id,name,admin_user_id)
+      (id,name,admin_username)
     VALUES
-      (1,'group1',1),
-      (2,'group2',2),
-      (3,'group3',1)
-    RETURNING id
+      (1,'group1','u1'),
+      (2,'group2','u2'),
+      (3,'group3','u1')
   `);
 
   await db.query(`
     INSERT INTO users_groups
-      (group_id, user_id)
+      (group_id, username)
     VALUES
-      (1,1),
-      (1,2),
-      (2,2),
-      (3,1)
+      (1,'u1'),
+      (1,'u2'),
+      (2,'u2'),
+      (3,'u1')
   `);
 }
 
@@ -71,8 +69,8 @@ async function commonAfterAll() {
   await db.end();
 }
 
-const u1Token = createToken({id: 1, username: 'u1'});
-const u2Token = createToken({id: 2, username: 'u2'});
+const u1Token = createToken({username: 'u1'});
+const u2Token = createToken({username: 'u2'});
 
 module.exports = {
   commonBeforeAll,

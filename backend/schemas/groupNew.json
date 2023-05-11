@@ -6,16 +6,7 @@
     "users": {
       "type": "array",
       "items": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer"
-          },
-          "username": {
-            "type": "string"
-          }
-        },
-        "additionalItems": false
+        "type": "string"
       }
     },
     "name": {

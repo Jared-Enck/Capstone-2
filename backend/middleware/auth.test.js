@@ -21,8 +21,8 @@ afterEach(commonAfterEach);
 afterAll(commonAfterAll);
 
 const { SECRET_KEY } = require("../config");
-const testJwt = jwt.sign({ id: 1, username: "test" }, SECRET_KEY);
-const badJwt = jwt.sign({ id: 1, username: "test" }, "wrong");
+const testJwt = jwt.sign({ username: "test" }, SECRET_KEY);
+const badJwt = jwt.sign({ username: "test" }, "wrong");
 
 
 describe("authenticateJWT", () => {
@@ -38,7 +38,6 @@ describe("authenticateJWT", () => {
     expect(res.locals).toEqual({
       user: {
         iat: expect.any(Number),
-        id: 1,
         username: "test"
       },
     });
@@ -72,7 +71,7 @@ describe("ensureLoggedIn", () => {
   it("works", () => {
     expect.assertions(1);
     const req = {};
-    const res = { locals: { user: { id: 1, username: "test" } } };
+    const res = { locals: { user: { username: "test" } } };
     const next = function (err) {
       expect(err).toBeFalsy();
     };
@@ -93,8 +92,8 @@ describe("ensureLoggedIn", () => {
 describe("ensureOwner", () => {
   it("works for owner", () => {
     expect.assertions(1);
-    const req = { params: { userID: 1 } };
-    const res = { locals: { user: { id: 1 } } };
+    const req = { params: { username: 'u1' } };
+    const res = { locals: { user: { username: 'u1' } } };
     const next = function (err) {
       expect(err).toBeFalsy();
     };
@@ -103,8 +102,8 @@ describe("ensureOwner", () => {
 
   it("throws unauth if not owner", () => {
     expect.assertions(1);
-    const req = { params: { id: 1 } };
-    const res = { locals: { user: { id: 2 } } };
+    const req = { params: { username: 'u1' } };
+    const res = { locals: { user: { username: 'u2' } } };
     const next = function (err) {
       expect(err instanceof UnauthorizedError).toBeTruthy();
     };
@@ -117,9 +116,9 @@ describe("ensureGroupAdmin", () => {
     expect.assertions(1);
     const req = { 
       params: { groupID: 1 },
-      body: { adminUserID: 1 }
+      body: { adminUsername: 'u1' }
     };
-    const res = { locals: { user: { id: 1 } } };
+    const res = { locals: { user: { username: 'u1' } } };
     const next = function (err) {
       expect(err).toBeFalsy();
     };
@@ -130,9 +129,9 @@ describe("ensureGroupAdmin", () => {
     expect.assertions(1);
     const req = { 
       params: { groupID: 1 },
-      body: { adminUserID: 1 }
+      body: { adminUsername: 'u1' }
     };
-    const res = { locals: { user: { id: 2 } } };
+    const res = { locals: { user: { username: 'u2' } } };
     const next = function (err) {
       expect(err instanceof UnauthorizedError).toBeTruthy();
     };
@@ -145,9 +144,9 @@ describe("ensureGroupUser", () => {
     expect.assertions(1);
     const req = { 
       params: { groupID: 1 },
-      body: { userIDs: [1,2] }
+      body: { groupUsers: ['u1','u2'] }
     };
-    const res = { locals: { user: { id: 1 } } };
+    const res = { locals: { user: { username: 'u1' } } };
     const next = function (err) {
       expect(err).toBeFalsy();
     };
@@ -158,9 +157,9 @@ describe("ensureGroupUser", () => {
     expect.assertions(1);
     const req = { 
       params: { groupID: 1 },
-      body: { userIDs: [1,2] }
+      body: { groupUsers: ['u1','u2'] }
     };
-    const res = { locals: { user: { id: 3 } } };
+    const res = { locals: { user: { username: 'u3' } } };
     const next = function (err) {
       expect(err instanceof UnauthorizedError).toBeTruthy();
     };

@@ -3,22 +3,20 @@
   "$id": "http://localhost:3001/groupNew.json",
   "type": "object",
   "properties": {
-    "users": {
+    "groupUsers": {
       "type": "array",
       "items": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer"
-          },
-          "username": {
-            "type": "string"
-          }
-        }
+        "type": "string"
+      }
+    },
+    "addUsers": {
+      "type": "array",
+      "items": {
+        "type": "string"
       }
     }
   },
   "required": [
-    "users"
+    "addUsers"
   ]
 }

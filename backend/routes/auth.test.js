@@ -27,8 +27,7 @@ describe("POST /auth/token", () => {
           password: "password1",
         });
     expect(resp.body).toEqual({
-      token: expect.any(String),
-      user: expect.any(Object)
+      token: expect.any(String)
     });
   });
 
@@ -85,8 +84,7 @@ describe("POST /auth/register", () => {
       });
     expect(resp.statusCode).toEqual(201);
     expect(resp.body).toEqual({
-      token: expect.any(String),
-      user: expect.any(Object)
+      token: expect.any(String)
     });
   });
 

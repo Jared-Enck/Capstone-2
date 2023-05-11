@@ -1,7 +1,7 @@
 "use strict";
 
 const db = require("../db");
-const addUsersSorter = require('../helpers/addUsersSorter')
+const addUsersSql = require('../helpers/addUsersSql')
 const sqlForPartialUpdate = require('../helpers/sql')
 const {
   NotFoundError,
@@ -12,12 +12,12 @@ const {
 /** Related functions for groups. */
 
 class Group {
-  /** Create group with name and array of userIDs
+  /** Create group with name and array of usernames
    * 
-   * adds each userID to the users_groups table
+   * adds each username to the users_groups table
    * 
-   * Returns { id, name, users, adminUserID, imageURL }
-   *  where users = [userID, ...]
+   * Returns { id, name, users, adminUsername, imageURL }
+   *  where users = [username, ...]
    * 
    * Throws BadRequestError on duplicates.
    **/
@@ -25,16 +25,15 @@ class Group {
     if (!newGroup) {
       throw new BadRequestError(`Invalid data: ${newGroup}`);
     }
-    const { users, name, adminUserID = users[0].id } = newGroup;
-
+    const { users, name, adminUsername = users[0] } = newGroup;
     const lowerName = name.toLowerCase();
     const duplicateCheck = await db.query(
       `SELECT g.name
       FROM groups g
         LEFT JOIN users_groups ug
-          ON ug.user_id = $2
+          ON ug.username = $2
       WHERE lower(g.name) = $1`,
-      [lowerName, adminUserID],
+      [lowerName, adminUsername],
     );
 
     if (duplicateCheck.rows[0]) {
@@ -43,27 +42,23 @@ class Group {
 
     const groupRes = await db.query(
       `INSERT INTO groups
-        (name, admin_user_id)
+        (name, admin_username)
       VALUES 
         ($1, $2)
       RETURNING 
         id, 
         name, 
-        admin_user_id AS "adminUserID", 
+        admin_username AS "adminUsername", 
         image_url AS "imageURL"`,
-      [ name, adminUserID ],
+      [ name, adminUsername ],
     );
-    
     const group = groupRes.rows[0];
-
-    const justCreated = true;
+    const isNewGroup = true;
 
     const { msg } = await Group.addUsers(
-      {
-        groupID: group.id, 
-        users
-      }, 
-      justCreated
+      group.id, 
+      users, 
+      isNewGroup
     );
 
     return {
@@ -74,17 +69,16 @@ class Group {
 
   /** Get a group's users with groupID
    * 
-   * Returns { id, name }
+   * Returns { username }
    **/
 
   static async getUsers(groupID) {
     const usersRes = await db.query(
       `SELECT
-        u.id,
         u.username
       FROM users u
         LEFT JOIN users_groups ug
-          ON ug.user_id = u.id
+          ON ug.username = u.username
       WHERE ug.group_id = $1`,
       [groupID]
     ); 
@@ -95,16 +89,15 @@ class Group {
     return users;
   }
 
-  /** Add users to a group with groupID and userIDs array
+  /** Add users to a group with groupID and users array
    * 
-   * Returns { id, name }
+   * Returns { username }
    * 
    **/
 
-  static async addUsers({groupID, users}, justCreated = false) {
-    const {sqlVals, userIDs, usernames} = addUsersSorter(users);
-
-    if (!justCreated) {
+  static async addUsers(groupID, users, isNewGroup = false) {
+    const {sqlVals} = addUsersSql(users.length);
+    if (!isNewGroup) {
       const groupExists = await db.query(`
         SELECT id 
         FROM groups
@@ -113,17 +106,16 @@ class Group {
 
       if (!groupExists.rows[0]) throw new NotFoundError(`No group: ${groupID}`);
     }
-
     const querySql = 
       `INSERT INTO users_groups
-          (group_id, user_id)
+          (group_id, username)
         VALUES
           ${sqlVals.join(',')}`;
 
-    await db.query(querySql,[...userIDs, groupID]);
+    await db.query(querySql,[...users, groupID]);
 
     return {
-      msg: `${usernames.join(', ')} were added to the group.`
+      msg: `${users.join(', ')} were added to the group.`
     };
   }
 
@@ -199,12 +191,12 @@ class Group {
    * Returns { id, name }
    */
 
-  static async leave(groupID,userID) {
+  static async leave(groupID,username) {
     const result = await db.query(`
       DELETE FROM users_groups
-      WHERE group_id = $1 AND user_id = $2
+      WHERE group_id = $1 AND username = $2
       RETURNING group_id AS "groupID"`
-      ,[groupID,userID]);
+      ,[groupID,username]);
     
     const group = result.rows[0];
 

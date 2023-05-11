@@ -46,7 +46,6 @@ export default function UserProvider({children}) {
     if (token) {
       try {
         const {id} = jwt_decode(token);
-        GameNightApi.token = token;
         const user = await GameNightApi.getCurrentUser(id);
         setCurrentUser(user);
         // navigate('/');

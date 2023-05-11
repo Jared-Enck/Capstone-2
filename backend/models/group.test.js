@@ -20,25 +20,12 @@ afterAll(commonAfterAll);
 
 /************************************** create */
 describe("create", () => {
-  const userArr = [
-    {
-      id: 1,
-      username: 'u1'
-    },
-    {
-      id: 2,
-      username: 'u2'
-    },
-    {
-      id: 3,
-      username: 'u3'
-    }
-  ];
+  const userArr = ['u1','u2','u3'];
   it("works", async () => {
     const newGroup = {
       users: [userArr[0]],
       name: "New",
-      adminUserID: 1,
+      adminUsername: 'u1',
     };
 
     let res = await Group.create(newGroup);
@@ -47,7 +34,7 @@ describe("create", () => {
       group: {
         id: expect.any(Number),
         name: "New",
-        adminUserID: 1, 
+        adminUsername: 'u1', 
         imageURL: expect.any(String)
       },
       msg: expect.any(String)
@@ -58,7 +45,7 @@ describe("create", () => {
     const newGroup2 = {
       users: [...userArr],
       name: "New2",
-      adminUserID: 2
+      adminUsername: 'u2'
     };
 
     let res = await Group.create(newGroup2);
@@ -67,7 +54,7 @@ describe("create", () => {
       group: {
         id: expect.any(Number),
         name: "New2",
-        adminUserID: 2, 
+        adminUsername: 'u2', 
         imageURL: expect.any(String)
       },
       msg: expect.any(String)
@@ -77,15 +64,12 @@ describe("create", () => {
     
     expect(groupUsers).toEqual([
       {
-        id: 1,
         username: 'u1'
       },
       {
-        id: 2,
         username: 'u2'
       },
       {
-        id: 3,
         username: 'u3'
       }
     ]);
@@ -93,9 +77,9 @@ describe("create", () => {
 
   it("throws bad request with dupe", async () => {
     const newGroup = {
-      users: [{id: 1, username: 'u1'}],
+      users: ['u1'],
       name: "New",
-      adminUserID: 1
+      adminUserID: 'u1'
     };
 
     try {
@@ -115,11 +99,9 @@ describe("getUsers", () => {
 
     expect(users).toEqual([
       {
-        id: 1,
         username: 'u1'
       },
       {
-        id: 2,
         username: 'u2'
       }
     ]);
@@ -142,29 +124,24 @@ describe("addUsers", () => {
 
     expect(groupUsers1).toEqual([
       {
-        id: 1,
         username: 'u1'
       },
       {
-        id: 2,
         username: 'u2'
       }
     ]);
 
-    await Group.addUsers({groupID: 1, users: [{id: 3, username: 'u3'}]});
+    await Group.addUsers(1, ['u3']);
 
     let newGroupUsers = await Group.getUsers(1);
     expect(newGroupUsers).toEqual([
       {
-        id: 1,
         username: 'u1'
       },
       {
-        id: 2,
         username: 'u2'
       },
       {
-        id: 3,
         username: 'u3'
       }
     ]);
@@ -172,7 +149,7 @@ describe("addUsers", () => {
 
   it("throws not found if no such group", async () => {
     try {
-      await Group.addUsers({groupID: 0, users: [{id: 3, username: 'u3'}]});
+      await Group.addUsers(0, ['u3']);
       fail();
     } catch (err) {
       expect(err instanceof NotFoundError).toBeTruthy();
@@ -244,22 +221,19 @@ describe("leave", () => {
 
     expect(users).toEqual([
       {
-        id: 1,
         username: 'u1'
       },
       {
-        id: 2,
         username: 'u2'
       }
     ]);
 
-    await Group.leave(1,2);
+    await Group.leave(1,'u2');
 
     let updatedUsers = await Group.getUsers(1);
 
     expect(updatedUsers).toEqual([
       {
-        id: 1,
         username: 'u1'
       }
     ]);
@@ -267,7 +241,7 @@ describe("leave", () => {
   
   it("throws not found if no such group", async () => {
     try {
-      await Group.leave(0,2);
+      await Group.leave(0,'u2');
       fail();
     } catch (err) {
       expect(err instanceof NotFoundError).toBeTruthy();

@@ -17,20 +17,20 @@ afterAll(commonAfterAll);
 
 describe("addGame", () => {
   const addGameObj = {
-    userID: 1,
+    username: 'u1',
     game: {
       id: "78ZDzlpvdb",
       name: "Moonrakers"
     }
   };
   it("works", async () => {
-    const {user} = await User.get(1);
+    const {user} = await User.get('u1');
 
     expect(user.games.has("78ZDzlpvdb")).toBe(false);
 
     const res = await GameCollection.addGame(addGameObj);
 
-    const updatedUser = (await User.get(1)).user;
+    const updatedUser = (await User.get('u1')).user;
 
     expect(updatedUser.games.has("78ZDzlpvdb")).toBe(true);
     expect(res).toEqual({
@@ -43,7 +43,7 @@ describe("addGame", () => {
 
 describe("removeGame", () => {
   const removeGameObj = {
-    userID: 1,
+    username: 'u1',
     game: {
       id: "nSZTnbgacm",
       name: "Dinosaur Island"
@@ -51,13 +51,13 @@ describe("removeGame", () => {
   }
 
   it("works", async () => {
-    const {user} = await User.get(1);
+    const {user} = await User.get('u1');
 
     expect(user.games.has("nSZTnbgacm")).toBe(true);
 
     const res = await GameCollection.removeGame(removeGameObj);
 
-    const updatedUser = (await User.get(1)).user;
+    const updatedUser = (await User.get('u1')).user;
 
     expect(updatedUser.games.has("nSZTnbgacm")).toBe(false);
     expect(res).toEqual({

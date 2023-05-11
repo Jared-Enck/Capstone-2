@@ -17,16 +17,16 @@ beforeEach(commonBeforeEach);
 afterEach(commonAfterEach);
 afterAll(commonAfterAll);
 
-/************************************** POST /gameCollections/:userID */
+/************************************** POST /gameCollections/:username */
 
-describe("POST /gameCollections/:userID", () => {
+describe("POST /gameCollections/:username", () => {
   const addGameObj = {
     id: "78ZDzlpvdb",
     name: "Moonrakers"
   }
   it("works for owner", async () => {
     const resp = await request(app)
-      .post("/gameCollections/1")
+      .post("/gameCollections/u1")
       .send(addGameObj)
       .set("authorization", u1Token);
     expect(resp.body).toEqual({
@@ -36,7 +36,7 @@ describe("POST /gameCollections/:userID", () => {
 
   it("throws unauth for not owner", async function () {
     const resp = await request(app)
-      .post("/gameCollections/1")
+      .post("/gameCollections/u1")
       .send(addGameObj)
       .set("authorization", u2Token);
     expect(resp.statusCode).toEqual(401);
@@ -44,22 +44,22 @@ describe("POST /gameCollections/:userID", () => {
 
   it("throws unauth with anon user", async () => {
     const resp = await request(app)
-      .post("/gameCollections/1")
+      .post("/gameCollections/u1")
       .send(addGameObj);
     expect(resp.statusCode).toEqual(401);
   });
 });
 
-/************************************** DELETE /gameCollections/:userID */
+/************************************** DELETE /gameCollections/:username */
 
-describe("DELETE /gameCollections/:userID", () => {
+describe("DELETE /gameCollections/:username", () => {
   const removeGameObj = {
     id: "nSZTnbgacm",
     name: "Dinosaur Island"
   }
   it("works for owner", async () => {
     const resp = await request(app)
-      .delete("/gameCollections/1")
+      .delete("/gameCollections/u1")
       .send(removeGameObj)
       .set("authorization", u1Token);
     expect(resp.body).toEqual({
@@ -69,7 +69,7 @@ describe("DELETE /gameCollections/:userID", () => {
 
   it("throws unauth for not owner", async function () {
     const resp = await request(app)
-      .delete("/gameCollections/1")
+      .delete("/gameCollections/u1")
       .send(removeGameObj)
       .set("authorization", u2Token);
     expect(resp.statusCode).toEqual(401);
@@ -77,7 +77,7 @@ describe("DELETE /gameCollections/:userID", () => {
 
   it("throws unauth with anon user", async () => {
     const resp = await request(app)
-      .delete("/gameCollections/1")
+      .delete("/gameCollections/u1")
       .send(removeGameObj);
     expect(resp.statusCode).toEqual(401);
   });

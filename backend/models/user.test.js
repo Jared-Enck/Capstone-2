@@ -24,12 +24,7 @@ describe("authenticate", () => {
   it("works", async () => {
     const user = await User.authenticate("u1", "password1");
     expect(user).toEqual({
-      id: 1,
       username: "u1",
-      email: "u1@email.com",
-      imageURL: user.imageURL,
-      games: expect.any(Set),
-      groups: expect.any(Set)
     });
   });
 
@@ -66,11 +61,7 @@ describe("register", () => {
       password: "password",
     });
     expect(user).toEqual({
-      ...newUser, 
-      id: user.id,
-      games: null,
-      groups: null,
-      imageURL: user.imageURL
+      username: "new"
     });
     const found = await db.query("SELECT * FROM users WHERE username = 'new'");
     expect(found.rows.length).toEqual(1);
@@ -98,10 +89,9 @@ describe("register", () => {
 
 describe("get", () => {
   it("works", async () => {
-    let { user } = await User.get(1);
+    let { user } = await User.get('u1');
 
     expect(user).toEqual({
-      id: 1,
       username: "u1",
       email: "u1@email.com",
       imageURL: user.imageURL,
@@ -111,10 +101,9 @@ describe("get", () => {
   });
 
   it("works if no games or groups for user", async () => {  
-    let { user } = await User.get(3);
+    let { user } = await User.get('u3');
 
     expect(user).toEqual({
-      id: 3,
       username: "u3",
       email: "u3@email.com",
       imageURL: user.imageURL,
@@ -141,9 +130,8 @@ describe("update", () => {
   };
 
   it("works", async () => {
-    let res = await User.update(1, updateData);
+    let res = await User.update('u1', updateData);
     expect(res).toEqual({
-      id: 1,
       username: "u1",
       email: "new@email.com",
       imageURL: res.imageURL
@@ -151,23 +139,22 @@ describe("update", () => {
   });
 
   it("works: set password", async () => {
-    let res = await User.update(1, {
+    let res = await User.update('u1', {
       password: "new",
     });
     expect(res).toEqual({
-      id: 1,
       username: "u1",
       email: "u1@email.com",
       imageURL: res.imageURL
     });
-    const found = await db.query("SELECT * FROM users WHERE id = $1",[1]);
+    const found = await db.query("SELECT * FROM users WHERE username = $1",['u1']);
     expect(found.rows.length).toEqual(1);
     expect(found.rows[0].password.startsWith("$2b$")).toEqual(true);
   });
 
   it("throws not found if no such user", async () => {
     try {
-      await User.update(0, {
+      await User.update('nope', {
         username: "it",
       });
       fail();
@@ -179,7 +166,7 @@ describe("update", () => {
   it("throws bad request if no data", async () => {
     expect.assertions(1);
     try {
-      await User.update(1, {});
+      await User.update('u1', {});
       fail();
     } catch (err) {
       expect(err instanceof BadRequestError).toBeTruthy();
@@ -191,15 +178,15 @@ describe("update", () => {
 
 describe("remove", () => {
   it("works", async () => {
-    await User.remove(1);
+    await User.remove('u1');
     const res = await db.query(
-        `SELECT * FROM users WHERE id=1`);
+        `SELECT * FROM users WHERE username = 'u1'`);
     expect(res.rows.length).toEqual(0);
   });
 
   it("throws not found if no such user", async () => {
     try {
-      await User.remove(0);
+      await User.remove('nope');
       fail();
     } catch (err) {
       expect(err instanceof NotFoundError).toBeTruthy();

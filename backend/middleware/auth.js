@@ -48,8 +48,8 @@ function ensureLoggedIn(req, res, next) {
 function ensureOwner(req, res, next) {
   try {
     const currUser = res.locals.user;
-    const reqUserID = Number(req.params.userID);
-    const isOwner = reqUserID === currUser.id
+    const reqUser= req.params.username;
+    const isOwner = reqUser === currUser.username
 
     if (!isOwner) throw new UnauthorizedError();
     return next();
@@ -66,9 +66,9 @@ function ensureOwner(req, res, next) {
 function ensureGroupAdmin(req, res, next) {
   try {
     const currUser = res.locals.user;
-    const adminID = Number(req.body.adminUserID);
+    const adminUsername = req.body.adminUsername;
 
-    const isGroupAdmin = adminID === currUser.id;
+    const isGroupAdmin = adminUsername === currUser.username;
 
     if (!isGroupAdmin) throw new UnauthorizedError();
     return next();
@@ -85,9 +85,9 @@ function ensureGroupAdmin(req, res, next) {
 function ensureGroupUser(req, res, next) {
   try {
     const currUser = res.locals.user;
-    const userIDs = new Set(req.body.userIDs);
+    const groupUsers = new Set(req.body.groupUsers);
 
-    const isGroupUser = userIDs.has(currUser.id);
+    const isGroupUser = groupUsers.has(currUser.username);
 
     if (!isGroupUser) throw new UnauthorizedError();
     return next();

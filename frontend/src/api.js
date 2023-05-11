@@ -1,8 +1,7 @@
-"use strict";
 import axios from "axios";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001";
-const BGA_BASE_URL = process.env.BGA_API_BASE_URL;
+// const BGA_BASE_URL = process.env.BGA_API_BASE_URL;
 
 /** API Class.
  *
@@ -12,7 +11,7 @@ const BGA_BASE_URL = process.env.BGA_API_BASE_URL;
  *
  */
 
-class GameNightApi {
+export default class GameNightApi {
   // the token for interactive with the API will be stored here.
   static token;
 
@@ -49,6 +48,11 @@ class GameNightApi {
     let res = await this.request('auth/token', data, 'post')
     return res.token
   }
-};
 
-module.exports = GameNightApi;
+  /** Gets user info */
+
+  static async getCurrentUser(data) {
+    let res = await this.request('auth/token', data, 'post')
+    return res.token
+  }
+};
