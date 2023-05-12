@@ -1,14 +1,13 @@
 import "./App.css";
-// import NavBar from "./navBar/NavBar.js";
 import AllRoutes from "./AllRoutes";
-import PrimaryNavBar from "./PrimaryNavBar";
+import PrimaryAppBar from "./nav/PrimaryAppBar";
 import UserProvider from "./context/UserProvider";
 
 export default function App() {
   return (
     <div className="App">
       <UserProvider>
-        <PrimaryNavBar />
+        <PrimaryAppBar />
         <AllRoutes />
       </UserProvider>
     </div>
