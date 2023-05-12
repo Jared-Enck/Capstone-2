@@ -20,17 +20,16 @@ afterAll(commonAfterAll);
 
 /************************************** PATCH /users/:userID */
 
-describe("PATCH /users/:userID", () => {
+describe("PATCH /users/:username", () => {
   it("works for owner user", async function () {
     const resp = await request(app)
-      .patch(`/users/1`)
+      .patch(`/users/u1`)
       .send({
         username: "NewU1"
       })
       .set("authorization", u1Token);
     expect(resp.body).toEqual({
       user: {
-        id: expect.any(Number),
         username: "NewU1",
         email: "u1@email.com",
         imageURL: expect.any(String)
@@ -40,7 +39,7 @@ describe("PATCH /users/:userID", () => {
 
   it("throws unauth for not owner", async function () {
     const resp = await request(app)
-      .patch(`/users/1`)
+      .patch(`/users/u1`)
       .send({
         username: "NewU1"
       })
@@ -50,7 +49,7 @@ describe("PATCH /users/:userID", () => {
 
   test("throws unauth for anon", async function () {
     const resp = await request(app)
-      .patch(`/users/1`)
+      .patch(`/users/u1`)
       .send({
         username: "NewU1"
       });
@@ -59,7 +58,7 @@ describe("PATCH /users/:userID", () => {
 
   it("throws bad request if invalid data", async function () {
     const resp = await request(app)
-      .patch(`/users/1`)
+      .patch(`/users/u1`)
       .send({
         username: 42,
       })
@@ -69,14 +68,13 @@ describe("PATCH /users/:userID", () => {
 
   test("works: set new password", async function () {
     const resp = await request(app)
-        .patch(`/users/1`)
+        .patch(`/users/u1`)
         .send({
           password: "new-password",
         })
         .set("authorization", u1Token);
     expect(resp.body).toEqual({
       user: {
-        id: expect.any(Number),
         username: "u1",
         email: "u1@email.com",
         imageURL: expect.any(String)
@@ -87,26 +85,26 @@ describe("PATCH /users/:userID", () => {
   });
 });
 
-/************************************** DELETE /users/:userID */
+/************************************** DELETE /users/:username */
 
-describe("DELETE /users/:userID", function () {
+describe("DELETE /users/:username", function () {
   it("works for owner user", async function () {
     const resp = await request(app)
-      .delete(`/users/2`)
+      .delete(`/users/u2`)
       .set("authorization", u2Token);
-    expect(resp.body).toEqual({ deleted: 2 });
+    expect(resp.body).toEqual({ deleted: 'u2' });
   });
 
   it("throws unauth for not owner", async function () {
     const resp = await request(app)
-      .delete(`/users/1`)
+      .delete(`/users/u1`)
       .set("authorization", u2Token);
     expect(resp.statusCode).toEqual(401);
   });
 
   it("throws unauth for anon user", async function () {
     const resp = await request(app)
-      .delete(`/users/1`)
+      .delete(`/users/u1`)
     expect(resp.statusCode).toEqual(401);
   });
 });
