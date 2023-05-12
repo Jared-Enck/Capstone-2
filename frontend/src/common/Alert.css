@@ -1,0 +1,6 @@
+.alert-container {
+  position: relative;
+}
+#alert {
+  position: absolute;
+}
