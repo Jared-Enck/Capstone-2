@@ -4,7 +4,7 @@ import React, {
   useCallback, 
   useMemo 
 } from "react";
-// import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import UserContext from "./UserContext";
 import GameNightApi from "../api";
 import useLocalStorage from '../hooks/useLocalStorage';
@@ -18,7 +18,7 @@ export default function UserProvider({children}) {
   const [currentUser, setCurrentUser] = useState('');
   const [token, setToken] = useLocalStorage(TOKEN_STORAGE_ID);
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   async function registerUser(registerData) {
     try {
@@ -42,13 +42,20 @@ export default function UserProvider({children}) {
     };
   };
 
+  const logout = () => {
+    setCurrentUser('')
+    setToken('')
+    navigate('/')
+  }
+
   const getCurrentUser = useCallback(async () => {
     if (token) {
       try {
-        const {id} = jwt_decode(token);
-        const user = await GameNightApi.getCurrentUser(id);
+        const { username } = jwt_decode(token);
+        GameNightApi.token = token;
+        const { user } = await GameNightApi.getCurrentUser(username);
         setCurrentUser(user);
-        // navigate('/');
+        navigate('/');
       } catch (err) {
         console.log(err);
         setCurrentUser('');
@@ -62,9 +69,9 @@ export default function UserProvider({children}) {
     getCurrentUser();
   },[token, getCurrentUser]);
 
-  const onHomepage = window.location.pathname === '/';
+  // const onHomepage = window.location.pathname === '/';
 
-  if (isLoading && !onHomepage) return <LoadingSpinner />;
+  if (isLoading) return <LoadingSpinner />;
 
   return (
     <UserContext.Provider
@@ -73,7 +80,8 @@ export default function UserProvider({children}) {
           setIsLoading,
           currentUser,
           registerUser,
-          loginUser
+          loginUser,
+          logout
         }
       }
     >

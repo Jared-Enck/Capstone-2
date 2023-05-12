@@ -38,21 +38,21 @@ export default class GameNightApi {
 
   static async register(data) {
     // { username, password, email }
-    let res = await this.request('auth/register', data, 'post')
-    return res.token
-  }
+    let res = await this.request('auth/register', data, 'post');
+    return res.token;
+  };
 
   /** Logs user in if username and password are correct */
 
   static async login(data) {
-    let res = await this.request('auth/token', data, 'post')
-    return res.token
-  }
+    let res = await this.request('auth/token', data, 'post');
+    return res.token;
+  };
 
   /** Gets user info */
 
-  static async getCurrentUser(data) {
-    let res = await this.request('auth/token', data, 'post')
-    return res.token
-  }
+  static async getCurrentUser(username) {
+    let res = await this.request(`users/${username}`);
+    return res.user;
+  };
 };
