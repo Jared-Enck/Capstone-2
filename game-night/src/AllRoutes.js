@@ -1,14 +1,14 @@
 import React, { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { LinearProgress } from '@mui/material';
+import CircularLoading from './components/CircularLoading';
 
 const HomeComponent = lazy(
-  () => import("./Home")
+  () => import("./components/Home")
 )
 
 export default function AllRoutes() {
   return (
-    <Suspense fallback={<LinearProgress />}>
+    <Suspense fallback={<CircularLoading />}>
       <Routes>
         <Route path='*' />
         <Route path='/' element={<HomeComponent />} />
