@@ -7,14 +7,12 @@ import React, {
 import { useNavigate } from "react-router-dom"
 import UserContext from "./UserContext";
 import GameNightApi from "../gameNightApi";
-import CircularLoading from "../components/CircularLoading";
 import useLocalStorage from '../hooks/useLocalStorage';
 import jwt_decode from "jwt-decode";
 
 export const TOKEN_STORAGE_ID = "game-night-token";
 
 export default function UserProvider({children}) {
-  const [isLoading, setIsLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState('');
   const [token, setToken] = useLocalStorage(TOKEN_STORAGE_ID);
 
@@ -61,23 +59,18 @@ export default function UserProvider({children}) {
         setCurrentUser('');
       };
     };
-    setIsLoading(false);
   },[token]);
 
   useEffect(() => {
-    setIsLoading(true);
     getCurrentUser();
   },[token, getCurrentUser]);
 
   // const onHomepage = window.location.pathname === '/';
 
-  if (isLoading) return <CircularLoading />;
-
   return (
     <UserContext.Provider
       value={
         {
-          setIsLoading,
           currentUser,
           registerUser,
           loginUser,
