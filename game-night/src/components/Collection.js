@@ -22,7 +22,7 @@ export default function Collection() {
            ? currentUser.games.map(g => {
             <Grid key={g.id} item>
               <span>
-                {g.name}
+                {g.id}
               </span>
             </Grid>
            })
