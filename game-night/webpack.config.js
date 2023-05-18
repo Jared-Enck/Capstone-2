@@ -1,36 +1,46 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
-  mode: "development",
-  entry: "/src/index.js", // main js
+  // webpack will take the files from ./src/index
+  entry: './src/index',
+  // and output it into /dist as bundle.js
   output: {
-    path: path.resolve(__dirname, "dist"), // output folder
-    publicPath: "/",
+    path: path.join(__dirname, '/dist'),
+    filename: 'bundle.js',
+    publicPath: '/'
+  },
+  resolve: {
+    extensions: ['.js']
   },
   module: {
     rules: [
-      {
-        test: /\.?js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: ["@babel/preset-env", "@babel/preset-react"],
-          },
-        },
+      // we use babel-loader to load our jsx files
+    {
+      test: /\.(js)x?$/,
+      exclude: /node_modules/,
+      use: {
+        loader: 'babel-loader'
       },
-      {
-        test: /\.css$/,
-        use: [
-          "style-loader",
-          "css-loader", // for styles
-        ],
-      },
-    ],
-  },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: "./public/index.html", // base html
-    }),
-  ],
+    },
+    // css-loader to bundle all the css files into one file and style-loader to add all the styles  inside the style tag of the document
+    {
+      test: /\.(css)$/,
+      use: ['style-loader', 'css-loader']
+    },
+    {
+      test: /\.(png|svg|jpg|jpeg|gif|ico)$/,
+      exclude: /node_modules/,
+      use: ['file-loader?name=[name].[ext]'] // ?name=[name].[ext] is only necessary to preserve the original file name
+    }
+  ]
+},
+devServer: {
+  historyApiFallback: true,
+},
+plugins: [
+  new HtmlWebpackPlugin({
+    template: './public/index.html',
+    // favicon: './public/favicon.ico'
+  })
+ ]
 };

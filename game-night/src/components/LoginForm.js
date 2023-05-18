@@ -36,6 +36,7 @@ export default function LoginForm() {
     formErrors,
     setFormErrors
   ] = useFields(initialState);
+  
   const {loginUser} = useContext(UserContext);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
