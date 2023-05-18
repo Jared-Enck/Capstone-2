@@ -22,21 +22,21 @@ export const StyledGrid = styled(Grid)(() => ({
 }));
 
 export const StyledContainer = styled(Container)(() => ({
-  backgroundColor: theme.palette.secondary.main,
+  backgroundColor: theme.palette.primary.main,
   height: '4rem'
 }));
 
 export const Brand = styled(Typography)(() => ({
   marginLeft: '2rem',
   fontSize: '1.7rem',
-  color: theme.palette.primary.main
+  color: theme.palette.primary.contrastText
 }));
 
 export const StyledNavLink = styled(NavLink)(() => ({
   color: 'inherit',
   marginRight: '2rem',
   '&:hover': {
-    color: theme.palette.primary.main
+    color: theme.palette.primary.contrastText
   }
 }));
 
@@ -88,14 +88,14 @@ export const StyledInputBase = styled(InputBase)(() => ({
 }));
 
 // Forms
+export const FormBackGround = styled('div')(() => ({
+  backgroundColor: alpha(theme.palette.primary.light, .5),
+  padding: '2rem'
+}));
+
 export const FormBox = styled(Box)(() => ({
-  padding: '2rem',
-  maxWidth: '500px',
-  backgroundColor: theme.palette.secondary.main,
-  borderRadius: theme.shape.borderRadius,
-  boxShadow: `.5rem .3rem .3rem ${
-    alpha(theme.palette.common.black, .2)
-  }`
+  maxWidth: '400px',
+  margin: 'auto'
 }));
 
 export const FormOutlinedInput = styled(OutlinedInput)(() => ({

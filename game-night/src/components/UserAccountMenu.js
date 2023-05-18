@@ -58,6 +58,7 @@ export default function UserAccountMenu() {
               height: 32,
               ml: -0.5,
               mr: 1,
+              bgcolor:'primary.light'
             },
             '&:before': {
               content: '""',
@@ -67,7 +68,7 @@ export default function UserAccountMenu() {
               right: 14,
               width: 10,
               height: 10,
-              bgcolor: 'background.paper',
+              bgcolor: 'primary.light',
               transform: 'translateY(-50%) rotate(45deg)',
               zIndex: 0,
             },
