@@ -1,34 +1,44 @@
-import React from "react";
-import { NavLink, Link } from "react-router-dom";
-import { Container, Typography, Grid } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import React, {useContext} from "react";
+import { Link } from "react-router-dom";
+import { 
+  Grid,
+  Typography
+} from "@mui/material";
+import UserContext from "../context/UserContext"
+import LoggedInLinks from "./LoggedInLinks";
+import AnonUserLinks from "./AnonUserLinks";
+import { StyledGrid, StyledContainer } from "./styled";
 import theme from "../theme";
 
-const StyledNavLink = styled(NavLink)`
-  color: inherit;
-  text-decoration: none;
-
-  :hover {
-    color: green;
-  }
-`;
-
 export default function Navbar() {
+  const {currentUser} = useContext(UserContext)
+
   return (
-    <Container maxWidth="xl">
-      <Typography color="inherit">
-        <Link to="/">
-          Game Night
-        </Link>
-      </Typography>
-      <Grid display={"flex"} spacing={3}>
-        <StyledNavLink to="/login">
-          Login
-        </StyledNavLink>
-        <StyledNavLink to="/signup">
-          Sign Up
-        </StyledNavLink>
-      </Grid>
-    </Container>
+    <StyledContainer maxWidth="xl">
+      <StyledGrid container>
+        <Grid alignItems="center" item xs={2}>
+          <Typography variant="h5">
+            <Link to="/">
+              Game Night
+            </Link>
+          </Typography>
+        </Grid>
+        <Grid height="100%" item xs={4}>
+          <Grid 
+            container
+            direction="row"
+            alignItems="center"
+            justifyContent="flex-end"
+            height="100%"
+          >
+            {
+              currentUser
+                ? <LoggedInLinks />
+                : <AnonUserLinks />
+            }
+          </Grid>     
+        </Grid>
+      </StyledGrid>
+    </StyledContainer>
   );
 };
