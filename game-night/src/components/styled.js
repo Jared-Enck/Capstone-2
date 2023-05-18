@@ -9,22 +9,22 @@ import {
   Box,
   OutlinedInput
 } from "@mui/material";
-import styled from "@mui/styled-engine-sc";
+import styled from "@emotion/styled";
 import theme from "../theme";
 
 // Navbar
-export const StyledGrid = styled(Grid)`
-  grid-template-rows: auto;
-  justify-content: space-between;
-  align-items: center;
-  height: 100%;
-  font-size: 1.2rem;
-`;
+export const StyledGrid = styled(Grid)(() => ({
+  gridTemplateRows: 'auto',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  height: '100%',
+  fontSize: '1.2rem',
+}));
 
-export const StyledContainer = styled(Container)`
-  background-color: ${theme.palette.secondary.main};
-  height: 4rem;
-`;
+export const StyledContainer = styled(Container)(() => ({
+  backgroundColor: theme.palette.secondary.main,
+  height: '4rem'
+}));
 
 export const Brand = styled(Typography)(() => ({
   marginLeft: '2rem',
@@ -32,20 +32,20 @@ export const Brand = styled(Typography)(() => ({
   color: theme.palette.primary.main
 }));
 
-export const StyledNavLink = styled(NavLink)`
-  color: inherit;
-  margin-right: 2rem;
-  :hover {
-    color: ${theme.palette.primary.main}
+export const StyledNavLink = styled(NavLink)(() => ({
+  color: 'inherit',
+  marginRight: '2rem',
+  '&:hover': {
+    color: theme.palette.primary.main
   }
-`;
+}));
 
 export const Search = styled('div')(() => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.25),
+  backgroundColor: alpha(theme.palette.common.white, 0.45),
   '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.35),
+    backgroundColor: alpha(theme.palette.common.white, 0.60),
   },
   marginLeft: 0,
   width: '100%',
@@ -99,10 +99,10 @@ export const FormBox = styled(Box)(() => ({
 }));
 
 export const FormOutlinedInput = styled(OutlinedInput)(() => ({
-  backgroundColor: alpha(theme.palette.common.white, 0.25),
+  backgroundColor: alpha(theme.palette.common.white, 0.45),
   '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.35),
-  },
+    backgroundColor: alpha(theme.palette.common.white, 0.60),
+  }
 }));
 
 // Misc
