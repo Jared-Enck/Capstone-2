@@ -7,8 +7,12 @@ import {
 import UserContext from "../context/UserContext"
 import LoggedInLinks from "./LoggedInLinks";
 import AnonUserLinks from "./AnonUserLinks";
-import { StyledGrid, StyledContainer } from "./styled";
-import theme from "../theme";
+import { 
+  StyledGrid, 
+  StyledContainer,
+  Brand
+} from "./styled";
+import SearchForm from "./SearchForm";
 
 export default function Navbar() {
   const {currentUser} = useContext(UserContext)
@@ -16,14 +20,15 @@ export default function Navbar() {
   return (
     <StyledContainer maxWidth="xl">
       <StyledGrid container>
-        <Grid alignItems="center" item xs={2}>
-          <Typography variant="h5">
-            <Link to="/">
-              Game Night
-            </Link>
-          </Typography>
-        </Grid>
-        <Grid height="100%" item xs={4}>
+        <Link to="/">
+          <Brand>
+            Game Night
+          </Brand>
+        </Link>
+
+        <SearchForm />
+
+        <Grid item>
           <Grid 
             container
             direction="row"
@@ -36,7 +41,7 @@ export default function Navbar() {
                 ? <LoggedInLinks />
                 : <AnonUserLinks />
             }
-          </Grid>     
+          </Grid>
         </Grid>
       </StyledGrid>
     </StyledContainer>
