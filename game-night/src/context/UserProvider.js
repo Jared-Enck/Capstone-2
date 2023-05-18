@@ -7,6 +7,7 @@ import React, {
 import { useNavigate } from "react-router-dom"
 import UserContext from "./UserContext";
 import GameNightApi from "../gameNightApi";
+import CircularLoading from "../components/CircularLoading";
 import useLocalStorage from '../hooks/useLocalStorage';
 import jwt_decode from "jwt-decode";
 
@@ -70,7 +71,7 @@ export default function UserProvider({children}) {
 
   // const onHomepage = window.location.pathname === '/';
 
-  if (isLoading) return <LoadingSpinner />;
+  if (isLoading) return <CircularLoading />;
 
   return (
     <UserContext.Provider

@@ -10,7 +10,7 @@ Heading,
 } from "./FooterStyles";
 import Copyright from './Copyright'
 
-const Footer = () => {
+export default function Footer() {
 return (
 	<Box>
     <Container>
@@ -31,4 +31,3 @@ return (
 	</Box>
 );
 };
-export default Footer;
