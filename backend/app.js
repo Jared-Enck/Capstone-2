@@ -10,6 +10,7 @@ const authRoutes = require("./routes/auth");
 const usersRoutes = require("./routes/users");
 const groupsRoutes = require("./routes/groups");
 const gameCollectionsRoutes = require("./routes/gameCollections");
+const cacheRoutes = require("./routes/cache");
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use("/auth", authRoutes);
 app.use("/users", usersRoutes);
 app.use("/groups", groupsRoutes);
 app.use("/gameCollections", gameCollectionsRoutes);
+app.use("/cache", cacheRoutes);
 
 
 /** Handle 404 errors -- this matches everything */
