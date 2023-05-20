@@ -73,6 +73,7 @@ export const StyledInputBase = styled(InputBase)(() => ({
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     width: '100%',
+    border: '2px solid rgba(0,0,0,0)',
     [theme.breakpoints.up('sm')]: {
       width: '12ch',
       '&:focus': {
@@ -80,8 +81,7 @@ export const StyledInputBase = styled(InputBase)(() => ({
       },
     },
     '&:focus': {
-      borderInline: 'none',
-      border: `2px solid ${theme.palette.primary.main}`,
+      border: `2px solid ${theme.palette.secondary.light}`,
       borderRadius: theme.shape.borderRadius,
     }
   },
