@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { Link } from "react-router-dom";
 import UserContext from '../context/UserContext';
 import {
   InputLabel,
@@ -105,17 +106,25 @@ export default function LoginForm() {
             />
           </FormControl>
           <FormControl>
-          {
-            formErrors
-              ? formErrors.map((e,idx) => genError(e,idx))
-              : null
-          }
-            <PrimaryButton
-              type="submit"
-              size="medium"
-            >
-              Login
-            </PrimaryButton>
+          <Stack spacing={2}>
+            {
+              formErrors
+                ? formErrors.map((e,idx) => genError(e,idx))
+                : null
+            }
+            <span>
+              Don't have an account? Sign up {' '}
+              <Link to={"/signup"}>
+                here.
+              </Link>
+            </span>
+              <PrimaryButton
+                type="submit"
+                size="medium"
+              >
+                Login
+              </PrimaryButton>
+          </Stack>
           </FormControl>
         </Stack>
       </FormBox>
