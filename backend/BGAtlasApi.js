@@ -1,7 +1,7 @@
 const axios = require("axios");
-
+const NodeCache = require("node-cache");
 const { CLIENT_ID, API_BASE_URL } = require("./config");
-
+const cache = new NodeCache({ stdTTL: 15 });
 
 class BGAtlasApi {
   static async request(endpoint, data = {}, method = "get") {
