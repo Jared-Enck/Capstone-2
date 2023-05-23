@@ -13,7 +13,7 @@ export default function useFields(initialState) {
       [name]: value
     }));
     
-    if (formErrors) {
+    if (formErrors.length) {
       setFormErrors([]);
     }
   };
