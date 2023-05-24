@@ -1,7 +1,7 @@
 const axios = require("axios");
-const NodeCache = require("node-cache");
 const { CLIENT_ID, API_BASE_URL } = require("./config");
-const cache = new NodeCache({ stdTTL: 15 });
+const NodeCache = require("node-cache");
+const myCache = new NodeCache();
 
 class BGAtlasApi {
   static async request(endpoint, data = {}, method = "get") {
@@ -24,29 +24,28 @@ class BGAtlasApi {
 
   // Individual API routes
 
-  // Get top 100 games
-  static async getTopGames() {
+  // Get common data
+  static async cacheCommon() {
     const fields = 'id,name,year_published,min_players,max_players,min_playtime,max_playtime,min_age,description,description_preview,thumb_url,image_url,primary_publisher,mechanics,categories,designers,developers';
     const data = {
       limit: 100,
       order_by: 'rank',
       fields
     };
-    let res = await this.request('search', data);
-    return res;
+    const results = await Promise.allSettled([
+      this.request('search', data),
+      this.request('game/mechanics'),
+      this.request('game/categories')
+    ])
+
+    myCache.mset([
+      {key: "games", val: results[0].value.games, ttl: 86400},
+      {key: "mechanics", val: results[1].value.mechanics, ttl: 86400},
+      {key: "categories", val: results[2].value.categories, ttl: 86400}
+    ])
+    return results;
   };
 
-  // Get game mechanics
-  static async getGameMechanics() {
-    let res = await this.request('game/mechanics');
-    return res;
-  }
-
-  // Get game categories
-  static async getGameCategories() {
-    let res = await this.request('game/categories');
-    return res;
-  }
 };
 
 module.exports = BGAtlasApi;
