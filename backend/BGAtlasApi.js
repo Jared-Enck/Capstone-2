@@ -36,16 +36,21 @@ class BGAtlasApi {
       this.request('search', data),
       this.request('game/mechanics'),
       this.request('game/categories')
-    ])
+    ]);
+
+    const failedResults = results.filter(r => r.status === 'rejected');
+
+    if (failedResults.length) console.error({ errors: failedResults })
 
     myCache.mset([
       {key: "games", val: results[0].value.games, ttl: 86400},
       {key: "mechanics", val: results[1].value.mechanics, ttl: 86400},
       {key: "categories", val: results[2].value.categories, ttl: 86400}
-    ])
-    return results;
+    ]);
+
+    return { msg: 'Successfully cached data.' };
   };
 
 };
 
-module.exports = BGAtlasApi;
+module.exports = { BGAtlasApi, myCache };

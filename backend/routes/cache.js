@@ -22,8 +22,8 @@ const BGAtlasApi = require("../BGAtlasApi");
 
 router.get("/common", async function (req, res, next) {
   try {
-    const data = await BGAtlasApi.cacheCommon();
-    return res.json(data);
+    const { msg } = await BGAtlasApi.cacheCommon();
+    return res.json(msg);
   } catch (err) {
     return next(err);
   }
