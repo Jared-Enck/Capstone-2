@@ -9,49 +9,21 @@ const router = new express.Router();
 const { BadRequestError } = require("../expressError");
 const BGAtlasApi = require("../BGAtlasApi");
 
-/** GET /cache/games:  { } => {  }
+/** GET /cache/common: => { 
+ *  games: [{game},...],
+ *  mechanics: [{mechanic},...],
+ *  categories: [{category},...]
+ * }
  *
- * Returns json for top rated games limit 100.
- *
- * Authorization required: none
- */
-
-router.get("/games", async function (req, res, next) {
-  try {
-    const games = await BGAtlasApi.getTopGames();
-    return res.json(games);
-  } catch (err) {
-    return next(err);
-  }
-});
-
-/** GET /cache/mechanics:  { } => {  }
- *
- * Returns json for game mechanics.
+ * Returns json for top rated games limit 100, mechanics, and categories.
  *
  * Authorization required: none
  */
 
-router.get("/mechanics", async function (req, res, next) {
+router.get("/common", async function (req, res, next) {
   try {
-    const mechanics = await BGAtlasApi.getGameMechanics();
-    return res.json(mechanics);
-  } catch (err) {
-    return next(err);
-  }
-});
-
-/** GET /cache/categories:  { } => {  }
- *
- * Returns json for game categories.
- *
- * Authorization required: none
- */
-
-router.get("/categories", async function (req, res, next) {
-  try {
-    const cagtegories = await BGAtlasApi.getGameCategories();
-    return res.json(cagtegories);
+    const data = await BGAtlasApi.cacheCommon();
+    return res.json(data);
   } catch (err) {
     return next(err);
   }
