@@ -7,7 +7,7 @@ const jsonschema = require("jsonschema");
 const express = require("express");
 const router = new express.Router();
 const { BadRequestError } = require("../expressError");
-const BGAtlasApi = require("../ThirdPartyApi");
+const ThirdPartyApi = require("../ThirdPartyApi");
 
 /** GET /api/cache: => { 
  *  games: [{game},...],
@@ -22,7 +22,7 @@ const BGAtlasApi = require("../ThirdPartyApi");
 
 router.get("/cache", async function (req, res, next) {
   try {
-    const {msg} = await BGAtlasApi.cacheCommon();
+    const {msg} = await ThirdPartyApi.cacheCommon();
     return res.json(msg);
   } catch (err) {
     return next(err);
@@ -41,7 +41,7 @@ router.get("/cache", async function (req, res, next) {
 router.get("/search", async function (req, res, next) {
   try {
     const term = req.query.term.toLowerCase();
-    const results = await BGAtlasApi.getSearchResults(term);
+    const results = await ThirdPartyApi.getSearchResults(term);
     return res.json(results);
   } catch (err) {
     return next(err);
