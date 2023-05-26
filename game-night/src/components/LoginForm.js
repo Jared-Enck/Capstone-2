@@ -108,7 +108,7 @@ export default function LoginForm() {
           <FormControl>
           <Stack spacing={2}>
             {
-              formErrors
+              formErrors.length
                 ? formErrors.map((e,idx) => genError(e,idx))
                 : null
             }
