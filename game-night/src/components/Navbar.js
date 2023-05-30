@@ -12,7 +12,7 @@ import {
   StyledContainer,
   Brand
 } from "./styled";
-import SearchForm from "./SearchForm";
+import SearchBar from "./SearchBar";
 
 export default function Navbar() {
   const {currentUser} = useContext(UserContext)
@@ -26,7 +26,7 @@ export default function Navbar() {
           </Brand>
         </Link>
 
-        <SearchForm />
+        <SearchBar />
 
         <Grid item>
           <Grid 
