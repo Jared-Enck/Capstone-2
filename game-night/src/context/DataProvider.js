@@ -1,22 +1,22 @@
-import React, { useState, useEffect, useCallback} from "react";
+import React, { useState } from "react";
 import DataContext from "./DataContext";
-import BGAtlasApi from "../BGAtlasApi";
+import useDebounce from "../hooks/useDebounce";
+import GameNightApi from "../gameNightApi";
 
 export default function DataProvider({children}) {
-  const [searchTerm, setSearchTerm] = useState('');
+  const initialState = {
+    search: ''
+  };
+  const [searchTerm, setSearchTerm] = useState(initialState);
   const [listGames, setListGames] = useState([]);
-
-  const getLikeGames = useCallback(async () => {
+  
+  const debouncedRequest = useDebounce(async () => {
     if (searchTerm) {
-      const games = await BGAtlasApi.getLikeName(searchTerm);
+      const { games } = await GameNightApi.getSearchResults(searchTerm);
       setListGames(games);
-      console.log(listGames);
+      console.log(games)
     }
-  },[searchTerm]);
-
-  useEffect(() => {
-    getLikeGames();
-  },[searchTerm, getLikeGames])
+  });
   
   return (
     <DataContext.Provider
@@ -24,7 +24,8 @@ export default function DataProvider({children}) {
         {
           listGames,
           setSearchTerm,
-          setListGames
+          setListGames,
+          debouncedRequest
         }
       }
     >
