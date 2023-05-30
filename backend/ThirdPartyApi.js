@@ -48,26 +48,21 @@ class ThirdPartyApi {
 
   // Get common data
   static async cacheCommon() {
-    const data = {
-      limit: 100,
-      order_by: 'rank',
-      fields
-    };
-    const results = await Promise.allSettled([
-      this.request('search', data),
-      this.request('game/mechanics'),
-      this.request('game/categories'),
-    ]);
-
-    const failed = results.filter(r => r.status === 'rejected');
-
-    if (failed.length) console.error({ errors: failed });
-
-    this.cacheData(results[0].value.games, games);
-    this.cacheData(results[1].value.mechanics, mechanics);
-    this.cacheData(results[2].value.categories, categories);
-
-    return { msg: 'Successfully cached data.' };
+    if (!Object.keys(mechanics.data).length && !Object.keys(categories.data).length) {
+      const results = await Promise.allSettled([
+        this.request('game/mechanics'),
+        this.request('game/categories'),
+      ]);
+  
+      const failed = results.filter(r => r.status === 'rejected');
+  
+      if (failed.length) console.error({ errors: failed });
+  
+      this.cacheData(results[0].value.mechanics, mechanics);
+      this.cacheData(results[1].value.categories, categories);
+  
+      return { msg: 'Successfully cached data.' };
+    }
   };
 
   static async getSearchResults(term) {
@@ -77,8 +72,8 @@ class ThirdPartyApi {
     if (!game && !mechanic && !category) {
       // call api
       console.log('calling API with game:', term)
-      const result = await this.request('/search',{name: term, limit: 10})
-      this.cacheData(result.games, games)
+      const result = await this.request('/search',{name: term, fields})
+      this.cacheData(result.games, games, [ 3600 ])
       return result;
     };
     return found;
