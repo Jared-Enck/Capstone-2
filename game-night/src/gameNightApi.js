@@ -7,7 +7,7 @@ export default class GameNightApi {
   static token;
 
   static async request(endpoint, data = {}, method = "get") {
-    console.debug("API Call:", endpoint, data, method);
+    console.debug("API Server Call:", endpoint, data, method);
 
     const url = `${BASE_URL}/${endpoint}`;
     
@@ -47,5 +47,12 @@ export default class GameNightApi {
     let res = await this.request(`users/${username}`);
     return res.user;
   };
+
+  /** Get search results */
+
+  static async getSearchResults(term) {
+    let res = await this.request(`api/search?term=${term}`)
+    return res
+  }
 
 };
