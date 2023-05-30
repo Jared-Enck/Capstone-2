@@ -22,7 +22,7 @@ const ThirdPartyApi = require("../ThirdPartyApi");
 
 router.get("/cache", async function (req, res, next) {
   try {
-    const {msg} = await ThirdPartyApi.cacheCommon();
+    const msg = await ThirdPartyApi.cacheCommon();
     return res.json(msg);
   } catch (err) {
     return next(err);
