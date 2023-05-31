@@ -12,9 +12,9 @@ export default function DataProvider({children}) {
   
   const debouncedRequest = useDebounce(async () => {
     if (searchTerm) {
-      const { games } = await GameNightApi.getSearchResults(searchTerm);
-      setListGames(games);
-      console.log(games)
+      const results = await GameNightApi.getSearchResults(searchTerm);
+    
+      console.log(results)
     }
   });
   
