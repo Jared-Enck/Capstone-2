@@ -14,6 +14,9 @@ const SignUpComponent = lazy(
 const CollectionComponent = lazy(
   () => import("./components/Collection")
 )
+const SearchResultsPageComponent = lazy(
+  () => import("./components/SearchResultsPage")
+)
 
 export default function AllRoutes() {
   return (
@@ -24,6 +27,10 @@ export default function AllRoutes() {
         <Route path='/login' element={<LoginComponent />} />
         <Route path='/signup' element={<SignUpComponent />} />
         <Route path='/collection' element={<CollectionComponent />} />
+        <Route 
+          path='/search/results' 
+          element={<SearchResultsPageComponent />} 
+        />
       </Routes>
     </Suspense>
   );
