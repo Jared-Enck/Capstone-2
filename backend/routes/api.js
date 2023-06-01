@@ -40,8 +40,13 @@ router.get("/cache", async function (req, res, next) {
 
 router.get("/search", async function (req, res, next) {
   try {
-    const term = req.query.term.toLowerCase();
-    const results = await ThirdPartyApi.getSearchResults(term);
+    const query = req.query
+    const term = query.term;
+    if (term) {
+      const results = await ThirdPartyApi.getSearchResults(term.toLowerCase());
+      return res.json(results);
+    }
+    const results = await ThirdPartyApi.getRefinedResults(query);
     return res.json(results);
   } catch (err) {
     return next(err);
