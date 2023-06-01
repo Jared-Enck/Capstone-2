@@ -70,10 +70,23 @@ class ThirdPartyApi {
     const cachedGames = results.foundGames;
 
     if (!cachedGames.length || cachedGames.length < 5) {
-      const { games } = await this.request('/search',{ name: term, fields });
+      const data = { 
+        name: term, 
+        fields 
+      }
+      const { games } = await this.request('/search', data);
       results.foundGames = games;
     }
     return results;
+  };
+
+  static async getRefinedResults(query) {
+    const data = {
+      ...query,
+      fields
+    }
+    const { games } = await this.request('/search',data);
+    return games;
   };
 
   static cacheGame(game) {
