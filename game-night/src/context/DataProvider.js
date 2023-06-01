@@ -1,31 +1,32 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import DataContext from "./DataContext";
-import useDebounce from "../hooks/useDebounce";
 import GameNightApi from "../gameNightApi";
 
 export default function DataProvider({children}) {
-  const initialState = {
-    search: ''
-  };
-  const [searchTerm, setSearchTerm] = useState(initialState);
-  const [listGames, setListGames] = useState([]);
-  
-  const debouncedRequest = useDebounce(async () => {
-    if (searchTerm) {
-      const results = await GameNightApi.getSearchResults(searchTerm);
-    
-      console.log(results)
+  const [refinedSearch, setRefinedSearch] = useState('');
+  const [refinedResults, setRefinedResults] = useState('');
+  const navigate = useNavigate();
+
+  const getRefinedResults = useCallback(async () => {
+    if (refinedSearch) {
+      const res = await GameNightApi.getRefinedSearch(refinedSearch);
+      setRefinedResults(res);
+      navigate('/search/results');
     }
-  });
+  },[refinedSearch]);
+
+  useEffect(() => {
+    getRefinedResults();
+  },[refinedSearch, getRefinedResults]);
   
   return (
     <DataContext.Provider
       value={
         {
-          listGames,
-          setSearchTerm,
-          setListGames,
-          debouncedRequest
+          refinedResults,
+          setRefinedResults,
+          setRefinedSearch
         }
       }
     >
