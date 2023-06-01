@@ -51,8 +51,13 @@ export default class GameNightApi {
   /** Get search results */
 
   static async getSearchResults(term) {
-    let res = await this.request(`api/search?term=${term}`)
-    return res
-  }
+    let res = await this.request(`api/search?term=${term}`);
+    return res;
+  };
 
+  /** Get results for specific mechanic, category, or game */
+  static async getRefinedSearch({path, id}) {
+    let res = await this.request(`api/search?${path}=${id}`);
+    return res;
+  };
 };
