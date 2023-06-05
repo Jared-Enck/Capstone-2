@@ -6,10 +6,12 @@ import GameNightApi from "../gameNightApi";
 export default function DataProvider({children}) {
   const [refinedSearch, setRefinedSearch] = useState('');
   const [refinedResults, setRefinedResults] = useState('');
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
   const getRefinedResults = useCallback(async () => {
     if (refinedSearch) {
+      setOpen(false);
       const res = await GameNightApi.getRefinedSearch(refinedSearch);
       setRefinedResults(res);
       navigate('/search/results');
@@ -26,7 +28,9 @@ export default function DataProvider({children}) {
         {
           refinedResults,
           setRefinedResults,
-          setRefinedSearch
+          setRefinedSearch,
+          open,
+          setOpen
         }
       }
     >
