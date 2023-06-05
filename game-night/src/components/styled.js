@@ -77,7 +77,7 @@ export const StyledInputBase = styled(InputBase)(() => ({
     [theme.breakpoints.up('sm')]: {
       width: '12ch',
       '&:focus': {
-        width: '20ch',
+        width: '30ch',
       },
     },
     '&:focus': {
@@ -114,6 +114,17 @@ export const PrimaryButton = styled(Button)(() => ({
     backgroundColor: theme.palette.primary.dark
   }
 }));
+
+export const SearchBoxButton = styled(Button)(() => ({
+  borderRadius: '9999px',
+  backgroundColor: theme.palette.primary.main,
+  color: theme.palette.primary.contrastText,
+  '&:hover': {
+    backgroundColor: theme.palette.primary.dark
+  },
+  height: '1rem',
+  fontSize: '.7rem'
+}))
 
 export const ErrorSpan = styled('span')(() => ({
   color: theme.palette.error.main
