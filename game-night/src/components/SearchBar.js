@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useState, useEffect } from "react";
 import useDebounce from "../hooks/useDebounce";
 import GameNightApi from "../gameNightApi";
+import DataContext from "../context/DataContext";
 import SearchBoxResults from "./SearchBoxResults";
 import {
   Search,
@@ -8,38 +9,44 @@ import {
   StyledInputBase
 } from './styled'
 import SearchIcon from '@mui/icons-material/Search';
+import { Collapse } from "@mui/material";
 
 export default function SearchBar() {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState({});
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const searchBar = document.getElementById('search-bar');
+  const {open, setOpen} = useContext(DataContext);
+  // const search = document.getElementById("search");
 
   const handleResults = useCallback((results) => {
     setSearchResults(results);
-    setAnchorEl(searchBar);
   });
   
   const debouncedRequest = useDebounce(async () => {
-    if (searchTerm) {
+    if (searchTerm && searchTerm.length > 2) {
+      setOpen(true);
       const results = await GameNightApi.getSearchResults(searchTerm);
       handleResults(results);
     }
   });
 
+  // useEffect(() => {
+  //   if (!search.classList.contains('Mui-focused')) setOpen(false);
+  // },[])
+
   const handleChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
+
     debouncedRequest();
   };
 
   return (
-    <Search id="search-bar">
+    <Search>
       <SearchIconWrapper>
         <SearchIcon />
       </SearchIconWrapper>
       <StyledInputBase
+        id="search"
         name="search"
         placeholder="Search…"
         inputProps={{ 'aria-label': 'search' }}
@@ -47,12 +54,13 @@ export default function SearchBar() {
         value={searchTerm}
         autoComplete="off"
       />
-      <SearchBoxResults 
-        results={searchResults}
-        anchorEl={anchorEl}
-        setAnchorEl={setAnchorEl}
-        open={open}
-      />
+      <Collapse in={open}>
+        <SearchBoxResults 
+          results={searchResults}
+          setSearchTerm={setSearchTerm}
+          setSearchResults={setSearchResults}
+        />      
+      </Collapse>
     </Search>
   )
 }
