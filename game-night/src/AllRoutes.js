@@ -4,19 +4,22 @@ import CircularLoading from './components/CircularLoading';
 
 const HomeComponent = lazy(
   () => import("./components/Home")
-)
+);
 const LoginComponent = lazy(
   () => import("./components/LoginForm")
-)
+);
 const SignUpComponent = lazy(
   () => import("./components/SignUpForm")
-)
+);
 const CollectionComponent = lazy(
   () => import("./components/Collection")
-)
+);
 const SearchResultsPageComponent = lazy(
   () => import("./components/SearchResultsPage")
-)
+);
+const GameDetailsComponent = lazy(
+  () => import("./components/GameDetails")
+);
 
 export default function AllRoutes() {
   return (
@@ -30,6 +33,10 @@ export default function AllRoutes() {
         <Route 
           path='/search/results' 
           element={<SearchResultsPageComponent />} 
+        />
+        <Route
+          path='/games/:id'
+          element={<GameDetailsComponent />}
         />
       </Routes>
     </Suspense>
