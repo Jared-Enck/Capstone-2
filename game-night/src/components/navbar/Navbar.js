@@ -4,15 +4,15 @@ import {
   Grid,
   Typography
 } from "@mui/material";
-import UserContext from "../context/UserContext"
+import UserContext from "../../context/UserContext"
 import LoggedInLinks from "./LoggedInLinks";
 import AnonUserLinks from "./AnonUserLinks";
 import { 
   StyledGrid, 
   StyledContainer,
   Brand
-} from "./styled";
-import SearchBar from "./SearchBar";
+} from "../styled";
+import SearchBar from "../search/SearchBar";
 
 export default function Navbar() {
   const {currentUser} = useContext(UserContext)

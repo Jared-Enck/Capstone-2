@@ -1,6 +1,6 @@
 import React from "react";
-import UserAccountMenu from "./UserAccountMenu";
-import { StyledNavLink } from "./styled";
+import UserAccountMenu from "../account/UserAccountMenu";
+import { StyledNavLink } from "../styled";
 
 export default function LoggedInLinks() {
   return (

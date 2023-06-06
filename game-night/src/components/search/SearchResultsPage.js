@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import DataContext from "../context/DataContext";
+import DataContext from "../../context/DataContext";
 import { 
   Box, 
   Grid,
@@ -41,7 +41,7 @@ export default function SearchResultsPage() {
             ? (
               refinedResults.map(r =>
                 (
-                  <Grid item alignItems="flex-start" key={r.id}>
+                  <Grid item alignitems="flex-start" key={r.id}>
                     <Card sx={{ width: 345, height: 420 }}>
                       <CardActionArea>
                         <CardMedia

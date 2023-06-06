@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { StyledNavLink } from "./styled";
+import { StyledNavLink } from "../styled";
 
 export default function AnonUserLinks() {
   return (

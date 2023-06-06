@@ -5,8 +5,8 @@ import {
   Stack,
   Divider
 } from "@mui/material";
-import DataContext from "../context/DataContext";
-import theme from "../theme";
+import DataContext from "../../context/DataContext";
+import theme from "../../theme";
 
 export default function SearchBoxResults({
   results,

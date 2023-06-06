@@ -11,7 +11,7 @@ import {
   Settings,
   Logout
 } from '@mui/icons-material';
-import UserContext from "../context/UserContext";
+import UserContext from "../../context/UserContext";
 
 export default function UserAccountMenu() {
   const [anchorEl, setAnchorEl] = useState(null);

@@ -4,7 +4,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
 import UserProvider from "./context/UserProvider";
 import DataProvider from "./context/DataProvider";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/navbar/Navbar";
 import AllRoutes from "./AllRoutes";
 // import Footer from "./components/Footer";
 

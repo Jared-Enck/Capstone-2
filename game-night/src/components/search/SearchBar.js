@@ -1,13 +1,13 @@
 import React, { useCallback, useContext, useState, useEffect } from "react";
-import useDebounce from "../hooks/useDebounce";
-import GameNightApi from "../gameNightApi";
-import DataContext from "../context/DataContext";
+import useDebounce from "../../hooks/useDebounce";
+import GameNightApi from "../../gameNightApi";
+import DataContext from "../../context/DataContext";
 import SearchBoxResults from "./SearchBoxResults";
 import {
   Search,
   SearchIconWrapper,
   StyledInputBase
-} from './styled'
+} from '../styled'
 import SearchIcon from '@mui/icons-material/Search';
 import { Collapse } from "@mui/material";
 

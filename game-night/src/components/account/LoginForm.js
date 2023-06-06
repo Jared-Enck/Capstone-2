@@ -1,21 +1,22 @@
 import React, { useState, useContext } from "react";
-import UserContext from '../context/UserContext';
+import { Link } from "react-router-dom";
+import UserContext from '../../context/UserContext';
 import {
   InputLabel,
   FormControl,
-  Stack,
   InputAdornment,
-  IconButton
+  IconButton,
+  Stack,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import {
-  FormBox,
+import { 
   PrimaryButton, 
   ErrorSpan,
+  FormBox,
   FormOutlinedInput,
   FormBackGround
-} from "./styled";
-import useFields from "../hooks/useFields";
+} from "../styled";
+import useFields from "../../hooks/useFields";
 
 const genError = (err, idx) => {
   return (
@@ -25,12 +26,11 @@ const genError = (err, idx) => {
   )
 }
 
-export default function SignUpForm() {
+export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const initialState = {
     username: '', 
-    password: '',
-    email: '',
+    password: ''
   };
   const [
     formData, 
@@ -38,7 +38,8 @@ export default function SignUpForm() {
     formErrors,
     setFormErrors
   ] = useFields(initialState);
-  const {registerUser} = useContext(UserContext);
+  
+  const {loginUser} = useContext(UserContext);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -47,12 +48,12 @@ export default function SignUpForm() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const result = await registerUser(formData);
+    e.preventDefault()
+    const result = await loginUser(formData)
     if (!result.success) {
-      setFormErrors(result.err);
-    };
-  };
+      setFormErrors(result.err)
+    }
+  }
 
   return (
     <FormBackGround>
@@ -104,35 +105,26 @@ export default function SignUpForm() {
               onChange={handleChange}
             />
           </FormControl>
-
           <FormControl>
-            <InputLabel 
-              htmlFor="email"
-            >
-              Email
-            </InputLabel>
-            <FormOutlinedInput
-              type="text"
-              label="Email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-            />
-          </FormControl>
-
-          <FormControl>
+          <Stack spacing={2}>
             {
-              formErrors
+              formErrors.length
                 ? formErrors.map((e,idx) => genError(e,idx))
                 : null
             }
-
-            <PrimaryButton
-              type="submit"
-              size="medium"
-            >
-              Sign Up
-            </PrimaryButton>
+            <span>
+              Don't have an account? Sign up {' '}
+              <Link to={"/signup"}>
+                here.
+              </Link>
+            </span>
+              <PrimaryButton
+                type="submit"
+                size="medium"
+              >
+                Login
+              </PrimaryButton>
+          </Stack>
           </FormControl>
         </Stack>
       </FormBox>

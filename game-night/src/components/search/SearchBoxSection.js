@@ -8,7 +8,7 @@ import {
   ListItemButton,
   Avatar
 } from "@mui/material"
-import { SearchBoxButton } from "./styled";
+import { SearchBoxButton } from "../styled";
 
 export default function SearchBoxSection({
   sectionName = null, 
@@ -25,7 +25,7 @@ export default function SearchBoxSection({
           ? items.map(i => (
             
             <ListItemButton 
-              alignItems={"flex-start"} 
+              alignitems={"flex-start"} 
               key={i.id} 
               sx={{
                 padding:" 0", 
@@ -37,7 +37,7 @@ export default function SearchBoxSection({
               <ListItemAvatar>
                 <Avatar alt={i.name} src={i.image_url} />
               </ListItemAvatar>
-                <ListItemText alignItems={"center"}>
+                <ListItemText alignitems={"center"}>
                   {i.name}
                 </ListItemText>
             </ListItemButton>
