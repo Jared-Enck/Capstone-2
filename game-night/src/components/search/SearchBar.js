@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState, useEffect } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import useDebounce from "../../hooks/useDebounce";
 import GameNightApi from "../../gameNightApi";
 import DataContext from "../../context/DataContext";
@@ -17,15 +17,15 @@ export default function SearchBar() {
   const {open, setOpen} = useContext(DataContext);
   // const search = document.getElementById("search");
 
-  const handleResults = useCallback((results) => {
-    setSearchResults(results);
-  });
+  // const handleResults = useCallback((results) => {
+  //   setSearchResults(results);
+  // });
   
   const debouncedRequest = useDebounce(async () => {
     if (searchTerm && searchTerm.length > 2) {
       setOpen(true);
       const results = await GameNightApi.getSearchResults(searchTerm);
-      handleResults(results);
+      setSearchResults(results);
     }
   });
 
@@ -54,13 +54,19 @@ export default function SearchBar() {
         value={searchTerm}
         autoComplete="off"
       />
-      <Collapse in={open}>
-        <SearchBoxResults 
-          results={searchResults}
-          setSearchTerm={setSearchTerm}
-          setSearchResults={setSearchResults}
-        />      
-      </Collapse>
+      {
+        searchResults
+        ? (
+          <Collapse in={open}>
+            <SearchBoxResults 
+              results={searchResults}
+              setSearchTerm={setSearchTerm}
+              setSearchResults={setSearchResults}
+            />      
+          </Collapse>
+        )
+        : null
+      }
     </Search>
   )
 }

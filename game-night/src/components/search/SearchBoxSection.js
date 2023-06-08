@@ -1,12 +1,7 @@
 import React from "react";
 import {
   Typography,
-  Grid,
-  List,
-  ListItemAvatar,
-  ListItemText,
-  ListItemButton,
-  Avatar
+  Grid
 } from "@mui/material"
 import { SearchBoxButton } from "../styled";
 
@@ -15,77 +10,37 @@ export default function SearchBoxSection({
   items, 
   handleClick
 }) {
-  const gameItems = (
+  return (
     <>
-      <List
-        sx={{ width: 328 }}
+      <Typography sx={{
+        marginLeft: '.3rem',
+        textAlign: 'left'
+      }}>
+        {sectionName}
+      </Typography>
+      <Grid 
+        container
+        direction={'row'}
+        sx={{
+          padding: '0.3rem',
+          maxWidth: '328px'
+        }}
       >
         {
           items
           ? items.map(i => (
-            
-            <ListItemButton 
-              alignitems={"flex-start"} 
-              key={i.id} 
-              sx={{
-                padding:" 0", 
-                margin: "0",
-                fontSize: ".7rem"
-              }}
-              onClick={() => handleClick("ids", [i.id])}
-            >
-              <ListItemAvatar>
-                <Avatar alt={i.name} src={i.image_url} />
-              </ListItemAvatar>
-                <ListItemText alignitems={"center"}>
-                  {i.name}
-                </ListItemText>
-            </ListItemButton>
+            <Grid key={i.id} item sx={{padding: 0, margin: 0}}>
+              <SearchBoxButton
+                size="small"
+                onClick={() => handleClick(sectionName.toLowerCase(), i.id)}
+              >
+                {i.name}
+              </SearchBoxButton>
+            </Grid>
           ))
           : null
         }
-      </List>
-    </>
-  )
-  return (
-    <>
-      {
-        sectionName
-        ? (
-          <>
-            <Typography sx={{
-              marginLeft: '.3rem',
-              textAlign: 'left'
-            }}>
-              {sectionName}
-            </Typography>
-            <Grid 
-              container
-              direction={'row'}
-              sx={{
-                padding: '0.3rem',
-                maxWidth: '328px'
-              }}
-            >
-              {
-                items
-                ? items.map(i => (
-                  <Grid key={i.id} item sx={{padding: 0, margin: 0}}>
-                    <SearchBoxButton
-                      size="small"
-                      onClick={() => handleClick(sectionName.toLowerCase(), i.id)}
-                    >
-                      {i.name}
-                    </SearchBoxButton>
-                  </Grid>
-                ))
-                : null
-              }
-            </Grid>
-          </>
-        )
-        : gameItems
-      }
+      </Grid>
     </>
   );
 };
