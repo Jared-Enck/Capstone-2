@@ -10,7 +10,7 @@ export default class GameNightApi {
     console.debug("API Server Call:", endpoint, data, method);
 
     const url = `${BASE_URL}/${endpoint}`;
-    
+
     const headers = { Authorization: `${GameNightApi.token}` };
     const params = (method === "get")
       ? data
@@ -55,9 +55,34 @@ export default class GameNightApi {
     return res;
   };
 
-  /** Get results for specific mechanic, category, or game */
-  static async getRefinedSearch({path, id}) {
+  /** Get results for specific mechanic or category */
+  static async getRefinedSearch({ path, id }) {
     let res = await this.request(`api/search?${path}=${id}`);
+    return res;
+  };
+
+  /** Cache mechanics and categories */
+  static async getCommonCache() {
+    let res = await this.request('api/cache');
+    return res;
+  };
+
+  /** Checks game cache for game id */
+  static async checkGameCache(gameID) {
+    const res = await this.request('api/cache/games', { gameID });
+    return res;
+  };
+
+  /** Cache game complete obj */
+  static async cacheGame(game) {
+    await this.request('api/cache/games', game, 'post');
+  }
+
+  /** Get game images, videos, mechanic names, and category names for specific game id */
+  static async getGameMedia(gameID, mechanicIDs, categoryIDs) {
+    const data = { gameID, mechanicIDs, categoryIDs };
+    const res = await this.request(`api/game_media`, data);
+
     return res;
   };
 };

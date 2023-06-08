@@ -3,7 +3,7 @@ import { CircularProgress, Box } from '@mui/material';
 
 export default function CircularLoading() {
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+    <Box sx={{ justifyContent: 'center' }}>
       <CircularProgress />
     </Box>
   );
