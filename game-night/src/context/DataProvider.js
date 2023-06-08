@@ -1,27 +1,74 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import DataContext from "./DataContext";
 import GameNightApi from "../gameNightApi";
 
-export default function DataProvider({children}) {
+export default function DataProvider({ children }) {
   const [refinedSearch, setRefinedSearch] = useState('');
   const [refinedResults, setRefinedResults] = useState('');
+  const [gameID, setGameID] = useState('');
+  const [game, setGame] = useState('');
   const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
+
+  const getCommonCache = useCallback(async () => {
+    const { date } = await GameNightApi.getCommonCache();
+  },[]);
+
+  useEffect(() => {
+    getCommonCache();
+  },[getCommonCache]);
 
   const getRefinedResults = useCallback(async () => {
     if (refinedSearch) {
       setOpen(false);
       const res = await GameNightApi.getRefinedSearch(refinedSearch);
       setRefinedResults(res);
-      navigate('/search/results');
     }
-  },[refinedSearch]);
+  }, [refinedSearch]);
 
   useEffect(() => {
     getRefinedResults();
-  },[refinedSearch, getRefinedResults]);
-  
+  }, [refinedSearch, getRefinedResults]);
+
+  const checkGameCache = useCallback(async () => {
+    setOpen(false);
+    const found =  await GameNightApi.checkGameCache(gameID);
+    if (!found) {
+      await getGameMedia();
+    } else {
+      setGame(found);
+    }
+  },[gameID]);
+
+  const getGameMedia = useCallback(async () => {
+    if (gameID) {
+      const mechanicIDs = game.mechanics.map(m => m.id);
+      const categoryIDs = game.categories.map(m => m.id);
+      const {
+        mechanicsRes,
+        categoriesRes,
+        detail_images,
+        videos
+      } = await GameNightApi.getGameMedia(gameID, mechanicIDs, categoryIDs);
+      game.mechanics = mechanicsRes;
+      game.categories = categoriesRes;
+      const completeGame = {
+        ...game,
+        detail_images,
+        videos
+      }
+      setGame(completeGame);
+      await GameNightApi.cacheGame(completeGame);
+    }
+  }, [gameID]);
+
+  useEffect(() => {
+    if (gameID) {
+      checkGameCache();
+      setGameID('');
+      setGame('');
+    }
+  }, [gameID, checkGameCache])
+
   return (
     <DataContext.Provider
       value={
@@ -30,11 +77,14 @@ export default function DataProvider({children}) {
           setRefinedResults,
           setRefinedSearch,
           open,
-          setOpen
+          setOpen,
+          game,
+          setGame,
+          setGameID
         }
       }
     >
-      { children }
+      {children}
     </DataContext.Provider>
   );
 };
