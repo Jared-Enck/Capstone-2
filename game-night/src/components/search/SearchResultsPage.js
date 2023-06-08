@@ -1,7 +1,8 @@
 import React, { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import DataContext from "../../context/DataContext";
-import { 
-  Box, 
+import {
+  Box,
   Grid,
   Card,
   CardActionArea,
@@ -19,11 +20,18 @@ import {
 } from "@mui/icons-material";
 
 export default function SearchResultsPage() {
-  const { refinedResults } = useContext(DataContext);
+  const { refinedResults, setGameID, setGame } = useContext(DataContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log(refinedResults)
-  },[])
+  }, [])
+
+  const handleCardClick = (gameID, game) => {
+    setGameID(gameID);
+    setGame(game);
+    navigate(`/games/${gameID}`)
+  };
 
   return (
     <>
@@ -38,13 +46,18 @@ export default function SearchResultsPage() {
         >
           {
             refinedResults
-            ? (
-              refinedResults.map(r =>
+              ? (
+                refinedResults.map(r =>
                 (
                   <Grid item alignitems="flex-start" key={r.id}>
                     <Card sx={{ width: 345, height: 420 }}>
-                      <CardActionArea>
+                      <CardActionArea
+                        onClick={() => handleCardClick(r.id, r)}
+                      >
                         <CardMedia
+                          sx={{
+                            objectFit: "fill"
+                          }}
                           component={"img"}
                           height={230}
                           image={r.images.large}
@@ -71,7 +84,7 @@ export default function SearchResultsPage() {
                           </Grid>
                         </CardContent>
                       </CardActionArea>
-                      <CardActions sx={{paddingBottom: "0"}}>
+                      <CardActions sx={{ paddingBottom: "0" }}>
                         <IconButton aria-label="add to collection">
                           <Favorite />
                         </IconButton>
@@ -79,9 +92,9 @@ export default function SearchResultsPage() {
                     </Card>
                   </Grid>
                 )
+                )
               )
-            )
-            : null
+              : null
           }
         </Grid>
       </Box>
