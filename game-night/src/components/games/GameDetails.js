@@ -4,7 +4,8 @@ import CircularLoading from "../common/CircularLoading";
 import {
   Container,
   Box,
-  Typography
+  Typography,
+  Grid
 } from "@mui/material"
 
 const MediaContainerComp = lazy(
@@ -23,7 +24,7 @@ export default function GameDetails() {
 
   return (
     <Container maxWidth={"xl"}>
-      <Typography variant={"h3"}>
+      <Typography variant={"h4"} gutterBottom>
         {game.name}
       </Typography>
       <Box sx={{
@@ -32,9 +33,9 @@ export default function GameDetails() {
         <Typography variant={"h6"}>
           Description
         </Typography>
-        <p>
+        <Typography>
           {game.description_preview}
-        </p>
+        </Typography>
       </Box>
       {
         images.length
@@ -49,7 +50,7 @@ export default function GameDetails() {
         videos.length
         ? (
           <Suspense fallback={<CircularLoading />}>
-            <MediaContainerComp header="Videos" items={videos} isVideos={true} />
+            <MediaContainerComp header="Videos" items={videos} isVideo={true} />
           </Suspense>
         )
         : null
