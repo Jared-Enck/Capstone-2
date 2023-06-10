@@ -14,7 +14,7 @@ import {
   ErrorSpan,
   FormOutlinedInput,
   FormBackGround
-} from "../styled";
+} from "./LoginForm";
 import useFields from "../../hooks/useFields";
 
 const genError = (err, idx) => {

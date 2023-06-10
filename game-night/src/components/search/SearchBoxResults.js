@@ -6,8 +6,8 @@ import {
   Stack,
   Divider
 } from "@mui/material";
+import styled from "@emotion/styled";
 import DataContext from "../../context/DataContext";
-import theme from "../../theme";
 
 const SearchBoxSectionComp = lazy(
   () => import("./SearchBoxSection")
@@ -17,10 +17,20 @@ const GamesListComp = lazy(
   () => import("./GamesList")
 );
 
+const StyledBox = styled(Box)(({ theme }) => ({
+  marginTop: 1,
+  width: 328,
+  backgroundColor: theme.palette.primary.light,
+  borderRadius: ".3rem",
+  position: "absolute",
+  zIndex: 1
+}));
+
 export default function SearchBoxResults({
   results,
   setSearchTerm,
-  setSearchResults
+  setSearchResults,
+  theme
 }) {
   const navigate = useNavigate();
   const mechanics = results.foundMechanics || [];
@@ -51,14 +61,7 @@ export default function SearchBoxResults({
   };
 
   return (
-    <Box sx={{
-      marginTop: 1,
-      width: 328,
-      backgroundColor: theme.palette.primary.light,
-      borderRadius: ".3rem",
-      position: "absolute",
-      zIndex: 1
-    }}>
+    <StyledBox>
       <Stack>
         <Suspense fallback={<CircularLoading />}>
           {
@@ -100,6 +103,6 @@ export default function SearchBoxResults({
           }
         </Suspense>
       </Stack>
-    </Box>
+    </StyledBox>
   );
 };

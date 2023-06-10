@@ -7,16 +7,46 @@ import {
   InputAdornment,
   IconButton,
   Stack,
+  OutlinedInput,
+  Box,
+  Button,
+  alpha,
+  Typography
 } from "@mui/material";
+import styled from "@emotion/styled";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { 
-  PrimaryButton, 
-  ErrorSpan,
-  FormBox,
-  FormOutlinedInput,
-  FormBackGround
-} from "../styled";
 import useFields from "../../hooks/useFields";
+
+export const FormBackGround = styled('div')(({ theme }) => ({
+  backgroundColor: alpha(theme.palette.primary.light, .5),
+  padding: '2rem'
+}));
+
+export const FormBox = styled(Box)(() => ({
+  maxWidth: '400px',
+  margin: 'auto'
+}));
+
+export const FormOutlinedInput = styled(OutlinedInput)(({ theme }) => ({
+  backgroundColor: alpha(theme.palette.common.white, 0.45),
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.common.white, 0.60)
+  }
+}));
+
+export const PrimaryButton = styled(Button)(({ theme }) => ({
+  borderRadius: '9999px',
+  backgroundColor: theme.palette.primary.main,
+  color: theme.palette.primary.contrastText,
+  '&:hover': {
+    backgroundColor: theme.palette.primary.dark
+  }
+}));
+
+export const ErrorSpan = styled('span')(({ theme }) => ({
+  color: theme.palette.error.main,
+  textAlign: "center"
+}));
 
 const genError = (err, idx) => {
   return (
@@ -112,12 +142,12 @@ export default function LoginForm() {
                 ? formErrors.map((e,idx) => genError(e,idx))
                 : null
             }
-            <span>
+            <Typography textAlign={"center"}>
               Don't have an account? Sign up {' '}
               <Link to={"/signup"}>
                 here.
               </Link>
-            </span>
+            </Typography>
               <PrimaryButton
                 type="submit"
                 size="medium"

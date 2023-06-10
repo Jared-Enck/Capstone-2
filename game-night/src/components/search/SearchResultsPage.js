@@ -38,11 +38,10 @@ export default function SearchResultsPage() {
       <h1>
         Search Results
       </h1>
-      <Box>
+      <Box justifyContent={"center"}>
         <Grid
           container
           spacing={3}
-          justifyContent={"center"}
         >
           {
             refinedResults
@@ -50,7 +49,7 @@ export default function SearchResultsPage() {
                 refinedResults.map(r =>
                 (
                   <Grid item alignitems="flex-start" key={r.id}>
-                    <Card sx={{ width: 345, height: 420 }}>
+                    <Card sx={{ width: 345, height: 420, backgroundColor: "primary.main" }}>
                       <CardActionArea
                         onClick={() => handleCardClick(r.id, r)}
                       >
@@ -63,8 +62,13 @@ export default function SearchResultsPage() {
                           image={r.images.large}
                           alt={r.name}
                         />
-                        <CardContent>
-                          <Typography gutterBottom variant="h5" component="div">
+                        <CardContent sx={{color: "primary.contrastText"}}>
+                          <Typography 
+                            textAlign={"center"}
+                            gutterBottom 
+                            variant="h5" 
+                            component="div"
+                          >
                             {r.name}
                           </Typography>
                           <Grid
@@ -86,7 +90,7 @@ export default function SearchResultsPage() {
                       </CardActionArea>
                       <CardActions sx={{ paddingBottom: "0" }}>
                         <IconButton aria-label="add to collection">
-                          <Favorite />
+                          <Favorite sx={{color: "primary.contrastText"}} />
                         </IconButton>
                       </CardActions>
                     </Card>

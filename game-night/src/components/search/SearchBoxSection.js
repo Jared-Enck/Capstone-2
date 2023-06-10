@@ -1,9 +1,21 @@
 import React from "react";
 import {
   Typography,
-  Grid
-} from "@mui/material"
-import { SearchBoxButton } from "../styled";
+  Grid,
+  Button
+} from "@mui/material";
+import styled from "@emotion/styled";
+
+const SearchBoxButton = styled(Button)(({ theme }) => ({
+  borderRadius: '9999px',
+  backgroundColor: theme.palette.primary.main,
+  color: theme.palette.primary.contrastText,
+  '&:hover': {
+    backgroundColor: theme.palette.primary.dark
+  },
+  height: '1rem',
+  fontSize: '.7rem'
+}))
 
 export default function SearchBoxSection({
   sectionName = null, 

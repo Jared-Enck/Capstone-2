@@ -9,12 +9,17 @@ import UserContext from "./UserContext";
 import GameNightApi from "../gameNightApi";
 import useLocalStorage from '../hooks/useLocalStorage';
 import jwt_decode from "jwt-decode";
+import { light } from "@mui/material/styles/createPalette";
 
 export const TOKEN_STORAGE_ID = "game-night-token";
 
-export default function UserProvider({children}) {
+export default function UserProvider({children, setLight}) {
   const [currentUser, setCurrentUser] = useState('');
   const [token, setToken] = useLocalStorage(TOKEN_STORAGE_ID);
+
+  const handleThemeToggle = () => {
+    setLight(light => !light);
+  };
 
   const navigate = useNavigate();
 
@@ -74,7 +79,8 @@ export default function UserProvider({children}) {
           currentUser,
           registerUser,
           loginUser,
-          logout
+          logout,
+          handleThemeToggle
         }
       }
     >
