@@ -1,69 +1,71 @@
 import React from "react";
 import {
+  Container,
   Grid,
   Typography,
-  CardMedia,
-  Card,
-  CardActionArea,
-  CardHeader
 } from "@mui/material";
+import MediaCard from "./MediaCard";
 
-export default function MediaContainer({ header, items, isVideos = null }) {
+export default function MediaContainer({ header, items, isVideo = null }) {
   const handleClick = (url) => {
     window.open(url, '_blank');
   };
 
+  const ImageCardComponent = (item) => (
+    <MediaCard
+      item={item}
+      size={"medium"}
+      height={200}
+      width={200}
+      handleClick={handleClick}
+    />
+  );
+
+  const VideoCardComponent = (item) => (
+    <MediaCard
+      item={item}
+      height={200}
+      width={300}
+      handleClick={handleClick}
+      isVideo
+    />
+  );
+
   return (
-    <>
-      <Typography 
-        sx={{
-          textAlign: "left",
-          marginBottom: "1rem"
-        }}
+    <Container maxWidth={"lg"} sx={{ justifyContent: "center" }}>
+      <Typography
         variant="h5"
+        gutterBottom
       >
         {header}
       </Typography>
       <Grid
+        sx={{
+          alignItems: "center",
+          height: 220,
+          overflow: "auto",
+          marginTop: ".3rem"
+        }}
         container
         direction={"row"}
-        alignItems={"center"}
         spacing={2}
-        height={220}
-        overflow={"auto"}
       >
         {
           items
             ? (
               items.map(i => (
-                <Grid key={i.id} item>
-                  <Card
-                    sx={{
-                      height: 200,
-                      width: 200
-                    }}
-                  >
-                    <CardActionArea
-                      onClick={() => handleClick(i.url)}
-                    >
-                      <CardMedia
-                        sx={{
-                          height: 200,
-                          width: 200,
-                          objectFit: "fill"
-                        }}
-                        component="img"
-                        image={i.medium || i.image_url}
-                        alt={i.name}
-                      />
-                    </CardActionArea>
-                  </Card>
+                <Grid key={i.id} item justifyContent={"center"}>
+                  {
+                    isVideo
+                      ? VideoCardComponent(i)
+                      : ImageCardComponent(i)
+                  }
                 </Grid>
               ))
             )
             : null
         }
       </Grid>
-    </>
+    </Container>
   )
 };
