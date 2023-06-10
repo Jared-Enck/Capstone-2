@@ -2,25 +2,34 @@ import '@fontsource/roboto/400.css'
 import { createTheme } from '@mui/material/styles';
 import { blue, grey, red, common } from '@mui/material/colors';
 
-// Create a theme instance.
-const theme = createTheme({
+export const themeLight = createTheme({
   palette: {
+    background: {
+      default: grey[200]
+    },
     primary: {
       main: blue[500],
-      light: blue[300],
-      dark: blue[700],
+      light: blue[200],
       contrastText: common.white
-    },
-    secondary: {
-      main: grey[300],
-      light: grey[100],
-      dark: grey[500],
-      contrastText: common.black
     },
     error: {
       main: red.A400,
     }
-  },
+  }
 });
 
-export default theme;
+export const themeDark = createTheme({
+  palette: {
+    background: {
+      default: grey[800]
+    },
+    primary: {
+      main: grey[900],
+      light: grey[600],
+      contrastText: common.white
+    },
+    error: {
+      main: red.A400,
+    }
+  }
+});
