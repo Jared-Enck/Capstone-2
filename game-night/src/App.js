@@ -10,14 +10,16 @@ import { CssBaseline } from "@mui/material";
 // import Footer from "./components/Footer";
 
 export default function App() {
-  const [light, setLight] = useState(true);
+  const [light, setLight] = useState(false);
   return (
     <UserProvider setLight={setLight}>
       <ThemeProvider theme={light ? themeLight : themeDark}>
         <CssBaseline />
         <DataProvider>
           <Navbar />
-          <AllRoutes />
+          <main>
+            <AllRoutes />
+          </main>
         </DataProvider>
       {/* <Footer /> */}
       </ThemeProvider>
