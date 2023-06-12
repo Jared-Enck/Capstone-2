@@ -10,8 +10,7 @@ import {
   CardMedia,
   CardActions,
   IconButton,
-  Typography,
-  Avatar
+  Typography
 } from "@mui/material";
 import {
   Favorite,
@@ -76,6 +75,9 @@ export default function SearchResultsPage() {
                             direction={"row"}
                             justifyContent={"center"}
                             spacing={3}
+                            sx={{
+                              color: "primary.light"
+                            }}
                           >
                             <Grid item alignItems="flex-start">
                               <Person />
