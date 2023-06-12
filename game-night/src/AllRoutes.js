@@ -18,7 +18,7 @@ const SearchResultsPageComponent = lazy(
   () => import("./components/search/SearchResultsPage")
 );
 const GameDetailsComponent = lazy(
-  () => import("./components/games/GameDetails")
+  () => import("./components/games/GameDetailsPage")
 );
 
 export default function AllRoutes() {
