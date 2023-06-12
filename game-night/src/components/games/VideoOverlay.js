@@ -10,7 +10,7 @@ import YouTubeIcon from '@mui/icons-material/YouTube';
 
 const StyledBox = styled(Box)(({ theme }) => ({
   position: "absolute",
-  backgroundColor: alpha(theme.palette.common.black, .4),
+  backgroundColor: alpha(theme.palette.common.black, .6),
   width: "100%",
   height: "100%",
   textAlign: "center",

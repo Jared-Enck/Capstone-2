@@ -7,10 +7,10 @@ import {
 import VideoOverlay from "./VideoOverlay";
 
 export default function MediaCard({
-  item, 
-  size, 
-  width, 
-  height, 
+  item,
+  size,
+  width,
+  height,
   handleClick,
   isVideo
 }) {
@@ -27,7 +27,7 @@ export default function MediaCard({
       >
         {
           isVideo
-            ? <VideoOverlay title={ item.title } />
+            ? <VideoOverlay title={item.title} />
             : null
         }
         <CardMedia
