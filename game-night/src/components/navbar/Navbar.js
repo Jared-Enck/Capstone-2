@@ -1,6 +1,7 @@
 import React, {useContext} from "react";
 import { Link } from "react-router-dom";
 import { 
+  Box,
   Grid,
   Typography,
   Container
@@ -19,9 +20,9 @@ const StyledGrid = styled(Grid)(() => ({
   fontSize: '1.2rem',
 }));
 
-const StyledContainer = styled(Container)(({ theme }) => ({
+const StyledBox = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
-  height: '4rem'
+  width: '100%'
 }));
 
 const Brand = styled(Typography)(({ theme }) => ({
@@ -34,32 +35,39 @@ export default function Navbar() {
   const {currentUser} = useContext(UserContext)
 
   return (
-    <StyledContainer maxWidth="xl">
-      <StyledGrid container>
-        <Link to="/">
-          <Brand>
-            Game Night
-          </Brand>
-        </Link>
+    <StyledBox>
+      <Container 
+        sx={{
+          height: '4rem'
+        }}
+        maxWidth="xl"
+      >
+        <StyledGrid container>
+          <Link to="/">
+            <Brand>
+              Game Night
+            </Brand>
+          </Link>
 
-        <SearchBar />
+          <SearchBar />
 
-        <Grid item>
-          <Grid 
-            container
-            direction="row"
-            alignItems="center"
-            justifyContent="flex-end"
-            height="100%"
-          >
-            {
-              currentUser
-                ? <LoggedInLinks />
-                : <AnonUserLinks />
-            }
+          <Grid item>
+            <Grid 
+              container
+              direction="row"
+              alignItems="center"
+              justifyContent="flex-end"
+              height="100%"
+            >
+              {
+                currentUser
+                  ? <LoggedInLinks />
+                  : <AnonUserLinks />
+              }
+            </Grid>
           </Grid>
-        </Grid>
-      </StyledGrid>
-    </StyledContainer>
+        </StyledGrid>
+      </Container>
+    </StyledBox>
   );
 };
