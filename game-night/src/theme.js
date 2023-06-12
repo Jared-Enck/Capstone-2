@@ -1,6 +1,6 @@
 import '@fontsource/roboto/400.css'
 import { createTheme } from '@mui/material/styles';
-import { blue, grey, red, common } from '@mui/material/colors';
+import { blue, grey, red } from '@mui/material/colors';
 
 export const themeLight = createTheme({
   palette: {
@@ -8,13 +8,16 @@ export const themeLight = createTheme({
       default: grey[200]
     },
     primary: {
-      main: blue[500],
+      main: grey[50],
       light: blue[200],
-      contrastText: common.white
+      contrastText: blue[50]
     },
     error: {
       main: red.A400,
     }
+  },
+  shape: {
+    borderRadius: 4
   }
 });
 
@@ -25,11 +28,14 @@ export const themeDark = createTheme({
     },
     primary: {
       main: grey[900],
-      light: grey[600],
-      contrastText: common.white
+      light: grey[500],
+      contrastText: blue[50]
     },
     error: {
       main: red.A400,
     }
+  },
+  shape: {
+    borderRadius: 6
   }
 });
