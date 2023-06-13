@@ -4,7 +4,8 @@ import {
   FormControl,
   Stack,
   InputAdornment,
-  IconButton
+  IconButton,
+  InputLabel
 } from "@mui/material";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
@@ -62,6 +63,11 @@ export default function SignUpForm() {
       >
         <Stack spacing={2}>
           <FormControl>
+            <InputLabel 
+                htmlFor="username"
+              >
+              Username
+            </InputLabel>
             <FormOutlinedInput
               type="text"
               label="Username"
@@ -73,6 +79,11 @@ export default function SignUpForm() {
           </FormControl>
 
           <FormControl>
+            <InputLabel 
+                htmlFor="password"
+              >
+              Password
+            </InputLabel>
             <FormOutlinedInput
               type={showPassword ? 'text' : 'password'}
               endAdornment={
@@ -95,6 +106,11 @@ export default function SignUpForm() {
           </FormControl>
 
           <FormControl>
+            <InputLabel 
+                htmlFor="email"
+              >
+              Email
+            </InputLabel>
             <FormOutlinedInput
               type="text"
               label="Email"
