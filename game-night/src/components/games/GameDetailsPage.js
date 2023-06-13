@@ -4,21 +4,13 @@ import CircularLoading from "../common/CircularLoading";
 import GameDescription from "./GameDescription";
 import GameDetails from "./GameDetails";
 import {
-  Container,
-  Box,
   Stack,
 } from "@mui/material";
-import styled from "@emotion/styled";
+import ContentContainer from "../common/ContentContainer";
 
 const MediaContainerComp = lazy(
   () => import("./MediaContainer")
 );
-
-const ContentBox = styled(Box)(({ theme }) => ({
-  margin: 0,
-  backgroundColor: theme.palette.primary.main,
-  borderRadius: theme.shape.borderRadius
-}));
 
 export default function GameDetailsPage() {
   const { game } = useContext(DataContext);
@@ -33,37 +25,35 @@ export default function GameDetailsPage() {
   return (
     <Suspense fallback={<CircularLoading />}>
       <Stack spacing={".3rem"}>
-        <ContentBox>
+        <ContentContainer>
           <GameDescription game={game} />
-        </ContentBox>
-        <ContentBox>
+        </ContentContainer>
+        <ContentContainer>
           <GameDetails game={game} />
-        </ContentBox>
+        </ContentContainer>
         {
           images.length || videos.length
           ? (
-            <ContentBox>
-              <Container maxWidth={"lg"}>
-                {
-                  images.length
-                    ? (
-                      <Suspense fallback={<CircularLoading />}>
-                        <MediaContainerComp header="Images" items={images} />
-                      </Suspense>
-                    )
-                    : null
-                }
-                {
-                  videos.length
-                    ? (
-                      <Suspense fallback={<CircularLoading />}>
-                        <MediaContainerComp header="Videos" items={videos} isVideo={true} />
-                      </Suspense>
-                    )
-                    : null
-                }
-              </Container>
-            </ContentBox>
+            <ContentContainer>
+              {
+                images.length
+                  ? (
+                    <Suspense fallback={<CircularLoading />}>
+                      <MediaContainerComp header="Images" items={images} />
+                    </Suspense>
+                  )
+                  : null
+              }
+              {
+                videos.length
+                  ? (
+                    <Suspense fallback={<CircularLoading />}>
+                      <MediaContainerComp header="Videos" items={videos} isVideo={true} />
+                    </Suspense>
+                  )
+                  : null
+              }
+            </ContentContainer>
           )
           : null
         }
