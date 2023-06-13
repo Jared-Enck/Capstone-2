@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import UserContext from '../../context/UserContext';
 import {
-  InputLabel,
   FormControl,
   Stack,
   InputAdornment,
@@ -12,9 +11,9 @@ import {
   FormBox,
   PrimaryButton, 
   ErrorSpan,
-  FormOutlinedInput,
-  FormBackGround
+  FormOutlinedInput
 } from "./LoginForm";
+import ContentContainer from "../common/ContentContainer";
 import useFields from "../../hooks/useFields";
 
 const genError = (err, idx) => {
@@ -55,7 +54,7 @@ export default function SignUpForm() {
   };
 
   return (
-    <FormBackGround>
+    <ContentContainer>
       <FormBox 
         component="form"
         onSubmit={handleSubmit}
@@ -63,11 +62,6 @@ export default function SignUpForm() {
       >
         <Stack spacing={2}>
           <FormControl>
-            <InputLabel 
-              htmlFor="username"
-            >
-              Username
-            </InputLabel>
             <FormOutlinedInput
               type="text"
               label="Username"
@@ -79,11 +73,6 @@ export default function SignUpForm() {
           </FormControl>
 
           <FormControl>
-            <InputLabel 
-              htmlFor="password"
-            >
-              Password
-            </InputLabel>
             <FormOutlinedInput
               type={showPassword ? 'text' : 'password'}
               endAdornment={
@@ -106,11 +95,6 @@ export default function SignUpForm() {
           </FormControl>
 
           <FormControl>
-            <InputLabel 
-              htmlFor="email"
-            >
-              Email
-            </InputLabel>
             <FormOutlinedInput
               type="text"
               label="Email"
@@ -136,6 +120,6 @@ export default function SignUpForm() {
           </FormControl>
         </Stack>
       </FormBox>
-    </FormBackGround>
+    </ContentContainer>
   );
 };
