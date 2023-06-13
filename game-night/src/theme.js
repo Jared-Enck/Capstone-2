@@ -5,30 +5,32 @@ import { blue, grey, red } from '@mui/material/colors';
 export const themeLight = createTheme({
   palette: {
     background: {
-      default: grey[200]
+      default: grey[300]
     },
     primary: {
-      main: grey[50],
+      main: grey[100],
       light: blue[200],
-      contrastText: blue[50]
+      text: grey[800],
+      contrastText: blue[500]
     },
     error: {
       main: red.A400,
     }
   },
   shape: {
-    borderRadius: 4
+    borderRadius: 6
   }
 });
 
 export const themeDark = createTheme({
   palette: {
     background: {
-      default: grey[800]
+      default: grey[900]
     },
     primary: {
-      main: grey[900],
-      light: grey[500],
+      main: grey[800],
+      light: grey[400],
+      text: grey[200],
       contrastText: blue[50]
     },
     error: {
