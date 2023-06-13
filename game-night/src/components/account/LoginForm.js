@@ -7,20 +7,16 @@ import {
   InputAdornment,
   IconButton,
   Stack,
-  OutlinedInput,
   Box,
   Button,
   alpha,
-  Typography
+  Typography,
+  OutlinedInput
 } from "@mui/material";
 import styled from "@emotion/styled";
+import ContentContainer from "../common/ContentContainer";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import useFields from "../../hooks/useFields";
-
-export const FormBackGround = styled('div')(({ theme }) => ({
-  backgroundColor: alpha(theme.palette.primary.light, .5),
-  padding: '2rem'
-}));
 
 export const FormBox = styled(Box)(() => ({
   maxWidth: '400px',
@@ -28,18 +24,23 @@ export const FormBox = styled(Box)(() => ({
 }));
 
 export const FormOutlinedInput = styled(OutlinedInput)(({ theme }) => ({
-  backgroundColor: alpha(theme.palette.common.white, 0.45),
+  backgroundColor: alpha(theme.palette.primary.light, 0.45),
+  borderRadius: theme.shape.borderRadius,
   '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.60)
+    backgroundColor: alpha(theme.palette.primary.light, .7),
+  },
+  '& .MuiInputBase-outlined': {
+    '&:focus': {
+      borderColor: theme.palette.primary.contrastText
+    }
   }
 }));
 
 export const PrimaryButton = styled(Button)(({ theme }) => ({
   borderRadius: '9999px',
-  backgroundColor: theme.palette.primary.main,
-  color: theme.palette.primary.contrastText,
+  backgroundColor: alpha(theme.palette.primary.contrastText, .7),
   '&:hover': {
-    backgroundColor: theme.palette.primary.dark
+    backgroundColor: theme.palette.primary.contrastText
   }
 }));
 
@@ -59,17 +60,17 @@ const genError = (err, idx) => {
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const initialState = {
-    username: '', 
+    username: '',
     password: ''
   };
   const [
-    formData, 
+    formData,
     handleChange,
     formErrors,
     setFormErrors
   ] = useFields(initialState);
-  
-  const {loginUser} = useContext(UserContext);
+
+  const { loginUser } = useContext(UserContext);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -86,8 +87,8 @@ export default function LoginForm() {
   }
 
   return (
-    <FormBackGround>
-      <FormBox 
+    <ContentContainer>
+      <FormBox
         component="form"
         onSubmit={handleSubmit}
         autoComplete="off"
@@ -136,28 +137,33 @@ export default function LoginForm() {
             />
           </FormControl>
           <FormControl>
-          <Stack spacing={2}>
-            {
-              formErrors.length
-                ? formErrors.map((e,idx) => genError(e,idx))
-                : null
-            }
-            <Typography textAlign={"center"}>
-              Don't have an account? Sign up {' '}
-              <Link to={"/signup"}>
-                here.
-              </Link>
-            </Typography>
+            <Stack spacing={2}>
+              {
+                formErrors.length
+                  ? formErrors.map((e, idx) => genError(e, idx))
+                  : null
+              }
+              <Typography
+                sx={{
+                  textAlign: "center",
+                  color: "primary.text"
+                }}
+              >
+                Don't have an account? Sign up {' '}
+                <Link to={"/signup"}>
+                  here.
+                </Link>
+              </Typography>
               <PrimaryButton
                 type="submit"
                 size="medium"
               >
                 Login
               </PrimaryButton>
-          </Stack>
+            </Stack>
           </FormControl>
         </Stack>
       </FormBox>
-    </FormBackGround>
+    </ContentContainer>
   );
 };
