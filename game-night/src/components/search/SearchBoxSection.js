@@ -8,10 +8,11 @@ import styled from "@emotion/styled";
 
 const SearchBoxButton = styled(Button)(({ theme }) => ({
   borderRadius: '9999px',
-  backgroundColor: theme.palette.primary.main,
-  color: theme.palette.primary.contrastText,
+  backgroundColor: theme.palette.primary.contrastText,
+  color: theme.palette.primary.main,
   '&:hover': {
-    backgroundColor: theme.palette.primary.dark
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText
   },
   height: '1rem',
   fontSize: '.7rem'

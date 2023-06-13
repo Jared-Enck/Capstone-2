@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import {
   Favorite,
+  FavoriteBorder,
   Person,
   AccessTime
 } from "@mui/icons-material";
@@ -76,7 +77,7 @@ export default function SearchResultsPage() {
                             justifyContent={"center"}
                             spacing={3}
                             sx={{
-                              color: "primary.light"
+                              color: "primary.text"
                             }}
                           >
                             <Grid item alignItems="flex-start">
@@ -92,7 +93,7 @@ export default function SearchResultsPage() {
                       </CardActionArea>
                       <CardActions sx={{ paddingBottom: "0" }}>
                         <IconButton aria-label="add to collection">
-                          <Favorite sx={{color: "primary.contrastText"}} />
+                          <FavoriteBorder sx={{color: "primary.contrastText"}} />
                         </IconButton>
                       </CardActions>
                     </Card>

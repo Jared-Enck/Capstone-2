@@ -23,7 +23,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.primary.light,
   borderRadius: ".3rem",
   position: "absolute",
-  zIndex: 1
+  zIndex: 2
 }));
 
 export default function SearchBoxResults({

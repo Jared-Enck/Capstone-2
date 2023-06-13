@@ -5,7 +5,6 @@ import {
   Divider,
   Grid,
   Button,
-  Container,
   Stack
 } from "@mui/material";
 import {
@@ -23,7 +22,7 @@ export default function GameDescription({ game }) {
   }
   
   return (
-    <Container maxWidth={"lg"}>
+    <>
       <Typography
         variant={"h4"}
         sx={{
@@ -35,7 +34,7 @@ export default function GameDescription({ game }) {
       </Typography>
       <Grid
         sx={{
-          color: "primary.light",
+          color: "primary.text",
           padding: ".3rem"
         }}
         container
@@ -70,7 +69,7 @@ export default function GameDescription({ game }) {
               collapsedSize={75}
             >
               <Typography sx={{
-                color: "primary.light",
+                color: "primary.text",
               }}>
                 {game.description_preview}
               </Typography>
@@ -96,6 +95,6 @@ export default function GameDescription({ game }) {
           </Stack>
         </Grid>
       </Grid>
-    </Container>
+    </>
   )
 };

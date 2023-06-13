@@ -10,10 +10,12 @@ import {
   List,
   ListItem
 } from "@mui/material";
+import DetailListItem from "./DetailListItem";
 
 export default function GameDetails({ game }) {
+
   return (
-    <Container maxWidth={"lg"} >
+    <>
       <Typography
         variant={"h5"}
         sx={{
@@ -25,12 +27,8 @@ export default function GameDetails({ game }) {
       </Typography>
       <Divider />
       <List>
-        <ListItem>
-          <Typography>
-            
-          </Typography>
-        </ListItem>
+        
       </List>
-    </Container>
+    </>
   );
 };

@@ -96,7 +96,7 @@ export default function SearchBar() {
         searchResults
         ? (
           <Collapse in={open}>
-            <SearchBoxResults 
+            <SearchBoxResults
               results={searchResults}
               setSearchTerm={setSearchTerm}
               setSearchResults={setSearchResults}
