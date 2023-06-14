@@ -27,28 +27,33 @@ const StyledRow = styled(TableRow)(({ theme }) => ({
 }));
 
 export default function GameDetails({ game }) {
-  const MechanicsComps = 
-    game.mechanics.map((m, idx) => (
-    <DetailListItem
-      key={idx}
-      name={m.name}
-      lastItem={game.mechanics.length - 1 === idx}
-    />
-    ));
-  const CategoriesComps = 
-    game.categories.map((c, idx) => (
-    <DetailListItem
-      key={idx}
-      name={c.name}
-      lastItem={game.categories.length - 1 === idx}
-    />
-    ));
-  const rows = [
-    createData('Year Published', game.year_published),
-    createData('Publisher', game.primary_publisher.name),
-    createData('Mechanics', <Grid container spacing={2} direction={"row"}>{MechanicsComps}</Grid>),
-    createData('Categories', <Grid container spacing={2} direction={"row"}>{CategoriesComps}</Grid>)
-  ];
+  let MechanicsComps;
+  let CategoriesComps;
+  let rows;
+  if (game) {
+    MechanicsComps = 
+      game.mechanics.map((m, idx) => (
+      <DetailListItem
+        key={idx}
+        name={m.name}
+        lastItem={game.mechanics.length - 1 === idx}
+      />
+      ));
+    CategoriesComps = 
+      game.categories.map((c, idx) => (
+      <DetailListItem
+        key={idx}
+        name={c.name}
+        lastItem={game.categories.length - 1 === idx}
+      />
+      ));
+    rows = [
+      createData('Year Published', game.year_published),
+      createData('Publisher', game.primary_publisher.name),
+      createData('Mechanics', <Grid container spacing={2} direction={"row"}>{MechanicsComps}</Grid>),
+      createData('Categories', <Grid container spacing={2} direction={"row"}>{CategoriesComps}</Grid>)
+    ];
+  }
   return (
     <ContentContainer>
       <Typography
@@ -64,7 +69,8 @@ export default function GameDetails({ game }) {
       <Table>
         <TableBody>
           {
-            rows.map((row, idx) => (
+            rows
+            ? rows.map((row, idx) => (
               <StyledRow key={idx}>
                 <TableCell
                   component="th"
@@ -72,20 +78,23 @@ export default function GameDetails({ game }) {
                   sx={{
                     width: "40ch",
                     color: "primary.text",
-                    fontWeight: "bold"
+                    fontWeight: "bold",
+                    fontSize: "1.1rem"
                   }}
                 >
                   {row.name}
                 </TableCell>
                 <TableCell
                   sx={{
-                    color: "primary.text"
+                    color: "primary.text",
+                    fontSize: "1.1rem"
                   }}
                 >
                   {row.data}
                 </TableCell>
               </StyledRow>
             ))
+            : null
           }
         </TableBody>
       </Table>
