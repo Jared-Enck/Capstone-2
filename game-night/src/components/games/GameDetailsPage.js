@@ -1,15 +1,18 @@
-import React, { useState, useContext, useEffect, Suspense, lazy } from "react";
+import React, { useContext, useEffect, Suspense, lazy } from "react";
 import DataContext from "../../context/DataContext";
 import CircularLoading from "../common/CircularLoading";
-import GameDescription from "./GameDescription";
-import GameDetails from "./GameDetails";
 import {
   Stack,
 } from "@mui/material";
-import ContentContainer from "../common/ContentContainer";
 
 const MediaContainerComp = lazy(
   () => import("./MediaContainer")
+);
+const GameDescriptionComp = lazy(
+  () => import("./GameDescription")
+);
+const GameDetailsComp = lazy(
+  () => import("./GameDetails")
 );
 
 export default function GameDetailsPage() {
@@ -23,41 +26,25 @@ export default function GameDetailsPage() {
   const videos = game.videos || [];
 
   return (
-    <Suspense fallback={<CircularLoading />}>
-      <Stack spacing={".3rem"}>
-        <ContentContainer>
-          <GameDescription game={game} />
-        </ContentContainer>
-        <ContentContainer>
-          <GameDetails game={game} />
-        </ContentContainer>
+    <Stack spacing={".3rem"}>
+      <Suspense fallback={<CircularLoading />}>
+        <GameDescriptionComp game={game} />
         {
-          images.length || videos.length
+          images.length
           ? (
-            <ContentContainer>
-              {
-                images.length
-                  ? (
-                    <Suspense fallback={<CircularLoading />}>
-                      <MediaContainerComp header="Images" items={images} />
-                    </Suspense>
-                  )
-                  : null
-              }
-              {
-                videos.length
-                  ? (
-                    <Suspense fallback={<CircularLoading />}>
-                      <MediaContainerComp header="Videos" items={videos} isVideo={true} />
-                    </Suspense>
-                  )
-                  : null
-              }
-            </ContentContainer>
+            <MediaContainerComp header="Images" items={images} />
           )
           : null
         }
-      </Stack>
-    </Suspense>
+        {
+          videos.length
+          ? (
+            <MediaContainerComp header="Videos" items={videos} isVideo={true} />
+          )
+          : null
+        }
+        <GameDetailsComp game={game} />
+      </Suspense>
+    </Stack>
   );
 };
