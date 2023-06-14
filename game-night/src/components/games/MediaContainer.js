@@ -5,6 +5,7 @@ import {
   Typography,
   Divider
 } from "@mui/material";
+import ContentContainer from "../common/ContentContainer";
 import MediaCard from "./MediaCard";
 
 export default function MediaContainer({ header, items, isVideo = null }) {
@@ -33,12 +34,7 @@ export default function MediaContainer({ header, items, isVideo = null }) {
   );
 
   return (
-    <Box
-      sx={{
-        justifyContent: "center",
-        padding: ".3rem"
-      }}
-    >
+    <ContentContainer>
       <Typography
         sx={{
           color: "primary.contrastText"
@@ -80,6 +76,6 @@ export default function MediaContainer({ header, items, isVideo = null }) {
             : null
         }
       </Grid>
-    </Box>
+    </ContentContainer>
   )
 };
