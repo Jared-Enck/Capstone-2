@@ -1,27 +1,23 @@
 import React from "react";
 import {
-  ListItem,
-  Typography
+  Typography,
+  Grid
 } from "@mui/material";
 
-export default function DetailListItem({items}) {
+export default function DetailListItem({name, lastItem}) {
   return (
-    <ListItem alignItems="flex-start">
+    <Grid item>
       <Typography
         sx={{
-          fontWeight: "bold",
-          color: "primary.light"
+          color: "primary.text"
         }}
       >
-        Year Published
+        {
+          lastItem
+          ? name
+          : name + ","
+        }
       </Typography>
-      <Typography
-        sx={{
-          color: "primary.light"
-        }}
-      >
-        {game.year_published}
-      </Typography>
-    </ListItem>
+    </Grid>
   );
 };
