@@ -8,11 +8,11 @@ import {
   Stack
 } from "@mui/material";
 import {
-  Person,
-  AccessTime,
   ExpandMore,
   ExpandLess
 } from "@mui/icons-material";
+import ContentContainer from "../common/ContentContainer";
+import PlayersAndDuration from "../common/PlayersAndDuration";
 
 export default function GameDescription({ game }) {
   const [open, setOpen] = useState(false);
@@ -22,12 +22,11 @@ export default function GameDescription({ game }) {
   }
   
   return (
-    <>
+    <ContentContainer>
       <Typography
         variant={"h4"}
         sx={{
-          color: "primary.contrastText",
-          paddingTop: "1rem"
+          color: "primary.contrastText"
         }}
       >
         {game.name}
@@ -44,14 +43,12 @@ export default function GameDescription({ game }) {
         <Grid item>
           {game.year_published}
         </Grid>
-        <Grid item alignItems="flex-start">
-          <Person />
-          {game.min_players + " - " + game.max_players}
-        </Grid>
-        <Grid item alignItems="flex-start">
-          <AccessTime />
-          {game.min_playtime + " - " + game.max_playtime}
-        </Grid>
+        <PlayersAndDuration
+          min_players={game.min_players}
+          max_players={game.max_players}
+          min_playtime={game.min_playtime}
+          max_playtime={game.max_playtime}
+        />
       </Grid>
       <Divider />
       <Grid container direction={"row"} padding={"1.2rem"}>
@@ -95,6 +92,6 @@ export default function GameDescription({ game }) {
           </Stack>
         </Grid>
       </Grid>
-    </>
+    </ContentContainer>
   )
 };
