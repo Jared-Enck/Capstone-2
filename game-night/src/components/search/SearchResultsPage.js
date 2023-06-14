@@ -12,6 +12,7 @@ import {
   IconButton,
   Typography
 } from "@mui/material";
+import PlayersAndDuration from "../common/PlayersAndDuration";
 import {
   Favorite,
   FavoriteBorder,
@@ -80,14 +81,12 @@ export default function SearchResultsPage() {
                               color: "primary.text"
                             }}
                           >
-                            <Grid item alignItems="flex-start">
-                              <Person />
-                              {r.min_players + " - " + r.max_players}
-                            </Grid>
-                            <Grid item alignItems="flex-start">
-                              <AccessTime />
-                              {r.min_playtime + " - " + r.max_playtime}
-                            </Grid>
+                            <PlayersAndDuration
+                              min_players={r.min_players}
+                              max_players={r.max_players}
+                              min_playtime={r.min_playtime}
+                              max_playtime={r.max_playtime}
+                            />
                           </Grid>
                         </CardContent>
                       </CardActionArea>
