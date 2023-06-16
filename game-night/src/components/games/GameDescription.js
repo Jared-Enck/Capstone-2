@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import UserContext from "../../context/UserContext";
 import {
+  Box,
   Typography,
   Collapse,
   Divider,
@@ -9,28 +12,86 @@ import {
 } from "@mui/material";
 import {
   ExpandMore,
-  ExpandLess
+  ExpandLess,
+  Add,
+  Check
 } from "@mui/icons-material";
 import ContentContainer from "../common/ContentContainer";
 import PlayersAndDuration from "../common/PlayersAndDuration";
+import styled from "@emotion/styled";
+
+const AddButton = styled(Button)(({ theme }) => ({
+  display: "flex",
+  color: theme.palette.primary.contrastText,
+  '&:hover': {
+    backgroundColor: theme.palette.primary.contrastText,
+    color: theme.palette.primary.main,
+    fontWeight: "bold"
+  }
+}));
+
+const AddedText = styled(Typography)(({ theme }) => ({
+  color: theme.palette.success.main
+}));
 
 export default function GameDescription({ game }) {
   const [open, setOpen] = useState(false);
+  const { setGameToAdd, currentUser, userGames } = useContext(UserContext);
+  const navigate = useNavigate();
+  const inCollection = userGames.has(game.id);
 
-  const handleClick = () => {
+  const handleDescBtnClick = () => {
     setOpen(!open)
-  }
-  
+  };
+  const handleAddBtnClick = () => {
+    if (!currentUser) {
+      navigate('/login');
+    };
+    if (!inCollection) {
+      console.log("added")
+      setGameToAdd({ id: game.id, name: game.name });
+      userGames.add(game.id);
+    };
+  };
+
+  const AddButtonComp = () => (
+    <AddButton
+      size="medium"
+      variant="text"
+      onClick={handleAddBtnClick}
+    >
+      <Add fontSize="small" />
+      Add to collection
+    </AddButton>
+  );
+
+  const AddedBadgeComp = () => (
+    <Box alignItems={"flex-start"}>
+      <AddedText margin={1}>
+        In Collection
+      </AddedText>
+      <Check />
+    </Box>
+  );
+
   return (
     <ContentContainer>
-      <Typography
-        variant={"h4"}
-        sx={{
-          color: "primary.contrastText"
-        }}
-      >
-        {game.name}
-      </Typography>
+      <Box display={"flex"}>
+        <Typography
+          variant={"h4"}
+          sx={{
+            color: "primary.contrastText",
+            flex: 1
+          }}
+        >
+          {game.name}
+        </Typography>
+        {
+          inCollection
+          ? AddedBadgeComp()
+          : AddButtonComp()
+        }
+      </Box>
       <Grid
         sx={{
           color: "primary.text",
@@ -60,36 +121,51 @@ export default function GameDescription({ game }) {
           />
         </Grid>
         <Grid item xs={7}>
-          <Stack>
-            <Collapse
-              in={open}
-              collapsedSize={75}
-            >
-              <Typography sx={{
-                color: "primary.text",
-              }}>
-                {game.description_preview}
-              </Typography>
-            </Collapse>
-            <Button
-              sx={{
-                height: "1.5rem",
-                color: "primary.contrastText",
-                "&:hover": {
-                  backgroundColor: "primary.contrastText",
-                  color: "primary.main"
-                }
-              }}
-              variant="text"
-              onClick={handleClick}
-            >
-              {
-                open
-                  ? <ExpandLess fontSize="large" />
-                  : <ExpandMore fontSize="large" />
-              }
-            </Button>
-          </Stack>
+          {
+            game.description_preview
+              ?
+              game.description_preview.length <= 900
+                ? (
+                  <Typography sx={{
+                    color: "primary.text",
+                  }}>
+                    {game.description_preview}
+                  </Typography>
+                )
+                : (
+                  <Stack>
+                    <Collapse
+                      in={open}
+                      collapsedSize={265}
+                    >
+                      <Typography sx={{
+                        color: "primary.text",
+                      }}>
+                        {game.description_preview}
+                      </Typography>
+                    </Collapse>
+                    <Button
+                      sx={{
+                        height: "1.5rem",
+                        color: "primary.contrastText",
+                        "&:hover": {
+                          backgroundColor: "primary.contrastText",
+                          color: "primary.main"
+                        }
+                      }}
+                      variant="text"
+                      onClick={handleDescBtnClick}
+                    >
+                      {
+                        open
+                          ? <ExpandLess fontSize="large" />
+                          : <ExpandMore fontSize="large" />
+                      }
+                    </Button>
+                  </Stack>
+                )
+              : null
+          }
         </Grid>
       </Grid>
     </ContentContainer>
