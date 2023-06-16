@@ -1,10 +1,22 @@
-import React, { useContext } from "react";
+import React, { useCallback, useContext, useEffect } from "react";
 import UserContext from "../../context/UserContext";
 import { Container, Grid, Typography } from "@mui/material";
+import GameNightApi from "../../gameNightApi";
 
 export default function Collection() {
-  const {currentUser} = useContext(UserContext);
+  const {currentUser, userGames, setUserGames} = useContext(UserContext);
+  const games = Array.from(userGames) || [];
 
+  // const getGames = useCallback(async () => {
+  //   const res = await GameNightApi.getGames(currentUser.username);
+  //   console.log(res)
+  //   setUserGames(res);
+  // });
+
+  // useEffect(() => {
+  //   getGames();
+  // },[getGames]);
+  
   const noGamesMsg = (
     <Typography variant="h5">
       No games yet? Try searching for games and then adding them to your collection.
@@ -18,8 +30,8 @@ export default function Collection() {
         justifyContent="center"
       >
         {
-          currentUser.games
-           ? currentUser.games.map(g => {
+          games.length
+           ? games.map(g => {
             <Grid key={g.id} item>
               <span>
                 {g.id}
