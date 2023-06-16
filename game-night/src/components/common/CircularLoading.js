@@ -4,7 +4,7 @@ import { CircularProgress, Box } from '@mui/material';
 export default function CircularLoading() {
   return (
     <Box sx={{ justifyContent: 'center' }}>
-      <CircularProgress />
+      <CircularProgress sx={{ color: "primary.contrastText" }} />
     </Box>
   );
 }

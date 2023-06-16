@@ -15,8 +15,13 @@ const ContentBox = styled(Box)(({ theme }) => ({
 export default function ContentContainer({ children }) {
   return (
     <ContentBox>
-      <Container maxWidth={"lg"}>
-        { children }
+      <Container
+        maxWidth={"lg"}
+        sx={{
+          justifyContent: "center"
+        }}
+      >
+        {children}
       </Container>
     </ContentBox>
   );
