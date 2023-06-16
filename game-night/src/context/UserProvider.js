@@ -9,17 +9,37 @@ import UserContext from "./UserContext";
 import GameNightApi from "../gameNightApi";
 import useLocalStorage from '../hooks/useLocalStorage';
 import jwt_decode from "jwt-decode";
-import { light } from "@mui/material/styles/createPalette";
 
 export const TOKEN_STORAGE_ID = "game-night-token";
 
-export default function UserProvider({children, setLight}) {
+export default function UserProvider({children, isDark, setDarkMode}) {
   const [currentUser, setCurrentUser] = useState('');
   const [token, setToken] = useLocalStorage(TOKEN_STORAGE_ID);
+  const [gameToAdd, setGameToAdd] = useState('');
+  const [userGames, setUserGames] = useState(new Set());
 
   const handleThemeToggle = () => {
-    setLight(light => !light);
+    setDarkMode(`${!isDark}`);
   };
+
+  const addGame = useCallback(async () => {
+    if (gameToAdd) {
+      try{
+        const username = currentUser.username;
+        await GameNightApi.addGame(gameToAdd, username);
+        // const { games } = await GameNightApi.getGames(username);
+        // setUserGames(games);
+      } catch (err) {
+        console.error('unable to add game', err)
+      }
+    }
+  },[gameToAdd]);
+
+  useEffect(() => {
+    addGame();
+    setGameToAdd('');
+    console.log(userGames)
+  },[gameToAdd, addGame]);
 
   const navigate = useNavigate();
 
@@ -46,9 +66,10 @@ export default function UserProvider({children, setLight}) {
   };
 
   const logout = () => {
-    setCurrentUser('')
-    setToken('')
-    navigate('/')
+    setCurrentUser('');
+    setUserGames('');
+    setToken('');
+    navigate('/');
   }
 
   const getCurrentUser = useCallback(async () => {
@@ -57,7 +78,9 @@ export default function UserProvider({children, setLight}) {
         const { username } = jwt_decode(token);
         GameNightApi.token = token;
         const { user } = await GameNightApi.getCurrentUser(username);
+        const { games } = await GameNightApi.getGames(username);
         setCurrentUser(user);
+        setUserGames(games);
         navigate('/');
       } catch (err) {
         console.log(err);
@@ -80,7 +103,11 @@ export default function UserProvider({children, setLight}) {
           registerUser,
           loginUser,
           logout,
-          handleThemeToggle
+          handleThemeToggle,
+          isDark,
+          setGameToAdd,
+          userGames,
+          setUserGames
         }
       }
     >
