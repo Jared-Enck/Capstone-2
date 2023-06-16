@@ -18,10 +18,9 @@ afterAll(commonAfterAll);
 describe("getGames", () => {
   it("works", async () => {
     const games = await GameCollection.getGames('u1');
-
-    expect(games.size).toEqual(2);
-    expect(games.has("e44jncYuUp")).toBe(true);
-    expect(games.has("nSZTnbgacm")).toBe(true);
+    
+    expect(games.length).toEqual(2);
+    expect(games).toEqual([ 'e44jncYuUp', 'nSZTnbgacm' ]);
   });
 });
 
@@ -38,7 +37,7 @@ describe("addGame", () => {
   it("works", async () => {
     const res = await GameCollection.addGame(addGameObj);
 
-    const games = await GameCollection.getGames('u1');
+    const games = new Set(await GameCollection.getGames('u1'));
 
     expect(games.has("78ZDzlpvdb")).toBe(true);
     expect(res).toEqual({
@@ -59,13 +58,13 @@ describe("removeGame", () => {
   }
 
   it("works", async () => {
-    const games = await GameCollection.getGames('u1');
+    const games = new Set(await GameCollection.getGames('u1'));
 
     expect(games.has("nSZTnbgacm")).toBe(true);
 
     const res = await GameCollection.removeGame(removeGameObj);
 
-    const updatedGames = await GameCollection.getGames('u1');
+    const updatedGames = new Set(await GameCollection.getGames('u1'));
 
     expect(updatedGames.has("nSZTnbgacm")).toBe(false);
     expect(res).toEqual({

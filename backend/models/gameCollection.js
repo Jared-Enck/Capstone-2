@@ -13,7 +13,7 @@ class GameCollection {
       FROM game_collections
       WHERE username = $1`
       ,[username]);
-    return new Set(results.rows.map(g => g.gameID));
+    return results.rows.map(g => g.gameID);
   }
 
   /** Add games to a user's collection with username and game object
