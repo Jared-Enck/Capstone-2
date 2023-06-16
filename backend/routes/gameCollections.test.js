@@ -23,6 +23,7 @@ describe("GET /gameCollections/:username", () => {
     const resp = await request(app)
       .get("/gameCollections/u1")
       .set("authorization", u1Token);
+    expect(resp.statusCode).toEqual(200);
     expect(resp.body).toEqual(expect.any(Object));
   });
 
