@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import './App.css';
 import { ThemeProvider } from "@mui/material/styles";
 import { themeLight, themeDark } from "./theme";
@@ -7,13 +7,15 @@ import DataProvider from "./context/DataProvider";
 import Navbar from "./components/navbar/Navbar";
 import AllRoutes from "./AllRoutes";
 import { CssBaseline } from "@mui/material";
+import useLocalStorage from "./hooks/useLocalStorage";
 // import Footer from "./components/Footer";
 
 export default function App() {
-  const [light, setLight] = useState(false);
+  const [darkMode, setDarkMode] = useLocalStorage("dark-mode-preferred");
+  const isDark = darkMode === "true" ? true : false;
   return (
-    <UserProvider setLight={setLight}>
-      <ThemeProvider theme={light ? themeLight : themeDark}>
+    <UserProvider isDark={isDark} setDarkMode={setDarkMode}>
+      <ThemeProvider theme={ isDark ? themeDark : themeLight}>
         <CssBaseline />
         <DataProvider>
           <Navbar />
