@@ -94,9 +94,7 @@ describe("get", () => {
     expect(user).toEqual({
       username: "u1",
       email: "u1@email.com",
-      imageURL: user.imageURL,
-      games: expect.any(Set),
-      groups: expect.any(Set)
+      imageURL: user.imageURL
     });
   });
 
@@ -106,9 +104,7 @@ describe("get", () => {
     expect(user).toEqual({
       username: "u3",
       email: "u3@email.com",
-      imageURL: user.imageURL,
-      games: null,
-      groups: null
+      imageURL: user.imageURL
     });
   });
 
