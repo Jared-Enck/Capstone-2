@@ -85,4 +85,16 @@ export default class GameNightApi {
 
     return res;
   };
+
+  /** Get games in a user's collection */
+  static async getGames(username) {
+    const res = await this.request(`gameCollections/${username}`);
+    return res;
+  };
+
+  /** Add game to currentUser collection */
+  static async addGame(game, username) {
+    const res = await this.request(`gameCollections/${username}`, game, 'post');
+    return res;
+  };
 };
