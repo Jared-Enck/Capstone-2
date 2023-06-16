@@ -17,12 +17,14 @@ export default function UserAccountMenu() {
   const [anchorEl, setAnchorEl] = useState(null);
   const {logout} = useContext(UserContext)
   const open = Boolean(anchorEl);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   const handleLogout = () => {
     logout();
   };
@@ -77,17 +79,26 @@ export default function UserAccountMenu() {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleClose}>
+        <MenuItem
+          onClick={handleClose}
+          aria-label="profile"
+        >
           <Avatar /> Profile
         </MenuItem>
         <Divider />
-        <MenuItem onClick={handleClose}>
+        <MenuItem 
+          onClick={handleClose}
+          aria-label="open settings drawer"
+        >
           <ListItemIcon>
             <Settings fontSize="small" />
           </ListItemIcon>
           Settings
         </MenuItem>
-        <MenuItem onClick={handleLogout}>
+        <MenuItem
+          onClick={handleLogout}
+          aria-label="logout"
+        >
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
