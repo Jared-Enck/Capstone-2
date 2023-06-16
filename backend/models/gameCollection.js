@@ -9,12 +9,11 @@ class GameCollection {
   static async getGames(username) {
     const results = await db.query(`
       SELECT 
-        game_id,
+        game_id AS "gameID"
       FROM game_collections
       WHERE username = $1`
       ,[username]);
-    console.log('results',results)
-    return new Set(results.rows[0]);
+    return new Set(results.rows.map(g => g.gameID));
   }
 
   /** Add games to a user's collection with username and game object
