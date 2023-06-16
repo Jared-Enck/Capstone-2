@@ -17,6 +17,29 @@ beforeEach(commonBeforeEach);
 afterEach(commonAfterEach);
 afterAll(commonAfterAll);
 
+/************************************** GET /gameCollections/:username */
+describe("GET /gameCollections/:username", () => {
+  it("works for owner", async () => {
+    const resp = await request(app)
+      .get("/gameCollections/u1")
+      .set("authorization", u1Token);
+    expect(resp.body).toEqual(expect.any(Object));
+  });
+
+  it("throws unauth for not owner", async function () {
+    const resp = await request(app)
+      .get("/gameCollections/u1")
+      .set("authorization", u2Token);
+    expect(resp.statusCode).toEqual(401);
+  });
+
+  it("throws unauth with anon user", async () => {
+    const resp = await request(app)
+      .get("/gameCollections/u1")
+    expect(resp.statusCode).toEqual(401);
+  });
+});
+
 /************************************** POST /gameCollections/:username */
 
 describe("POST /gameCollections/:username", () => {
