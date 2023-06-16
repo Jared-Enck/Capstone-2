@@ -8,6 +8,22 @@ const GameCollection = require("../models/gameCollection");
 
 const router = express.Router();
 
+/** GET /gameCollections/:username => { games }
+ *
+ * Returns { games: [gameID, ...] }
+ * 
+ * Authorization required: login, owner user
+ **/
+
+router.get("/:username", ensureLoggedIn, ensureOwner, async function (req, res, next) {
+  try {
+    const games = await GameCollection.getGames(req.params.username);
+    return res.json({ games });
+  } catch (err) {
+    return next(err);
+  }
+});
+
 /** POST /gameCollections/:username  { username, game } => { msg }
  * 
  * where addGameObj = {
@@ -23,7 +39,7 @@ router.post("/:username", ensureLoggedIn, ensureOwner, async function (req, res,
     const username = req.params.username;
     const game = req.body;
     const resp = await GameCollection.addGame({ username, game });
-    return res.json( resp );
+    return res.status(201).json( resp );
   } catch (err) {
     return next(err);
   }

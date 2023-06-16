@@ -16,7 +16,7 @@ const router = express.Router();
 
 /** GET /[username] => { user }
  *
- * Returns { username, email, games, groups, imageURL }
+ * Returns { username, email, imageURL }
  *  games = [gameID, ...]
  *  groups = [groupID, ...]
  * Authorization required: login, owner user

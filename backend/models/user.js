@@ -96,9 +96,7 @@ class User {
 
   /** Given a username, return data about user.
    *
-   * Returns { username, email, games, groups }
-   *   where games is Set { gameID, ... }
-   *   and groups is Set { groupID, ... }
+   * Returns { username, email, imageUrl }
    *
    * Throws NotFoundError if user not found.
    **/
@@ -106,44 +104,21 @@ class User {
   static async get(reqUsername) {
     const userRes = await db.query(
       `SELECT 
-        u.username,
-        u.email,
-        u.image_url AS "imageURL",
-        gc.game_id AS "gameID",
-        ug.group_id AS "groupID"
-      FROM users u
-        LEFT JOIN game_collections gc
-          ON gc.username = u.username
-        LEFT JOIN users_groups ug
-          ON ug.username = u.username
-      WHERE u.username = $1`,
+        username,
+        email,
+        image_url AS "imageURL"
+      FROM users
+      WHERE username = $1`,
       [reqUsername],
     );
 
     if (!userRes.rows[0]) throw new NotFoundError(`No user: ${reqUsername}`);
 
-    const {username,email,imageURL} = userRes.rows[0];
+    const user = userRes.rows[0];
 
-    const games = 
-      (userRes.rows[0].gameID) 
-        ? new Set(userRes.rows.map(r => r.gameID))
-        : null;
-
-    const groups = 
-      (userRes.rows[0].groupID) 
-        ? new Set(userRes.rows.map(r => r.groupID))
-        : null;
-    
-    return {
-      user: {
-        username,
-        email,
-        imageURL,
-        games,
-        groups
-      }
-    };
+    return { user };
   }
+
   /** Get all groups for a user. */
   static async getGroups(username) {
     const results = await db.query(`

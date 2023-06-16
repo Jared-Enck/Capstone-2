@@ -4,6 +4,19 @@ const db = require("../db");
 /** Related functions for collections. */
 
 class GameCollection {
+
+  /** Get all games in collection for a user. */
+  static async getGames(username) {
+    const results = await db.query(`
+      SELECT 
+        game_id,
+      FROM game_collections
+      WHERE username = $1`
+      ,[username]);
+    console.log('results',results)
+    return new Set(results.rows[0]);
+  }
+
   /** Add games to a user's collection with username and game object
    * 
    * {username: 'u1', game: {id: 'e44jncYuUp', name: 'Dune: Imperium'}}
