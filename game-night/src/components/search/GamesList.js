@@ -39,7 +39,8 @@ export default function GamesList({ items, handleGameClick }) {
                 alignSelf: "center",
                 paddingRight: ".5rem",
                 margin: "0",
-                marginLeft: "-.3rem"
+                marginLeft: "-.3rem",
+                color: "primary.text"
               }}>
                 {i.name}
               </ListItemText>
