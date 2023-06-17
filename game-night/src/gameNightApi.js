@@ -86,7 +86,7 @@ export default class GameNightApi {
     return res;
   };
 
-  /** Get games in a user's collection */
+  /** Get game ids in a user's collection */
   static async getGames(username) {
     const res = await this.request(`gameCollections/${username}`);
     return res;
@@ -95,6 +95,12 @@ export default class GameNightApi {
   /** Add game to currentUser collection */
   static async addGame(game, username) {
     const res = await this.request(`gameCollections/${username}`, game, 'post');
+    return res;
+  };
+
+  /** Get game data for game ids in currentUser's collection */
+  static async getCollection(gameIDs) {
+    const res = await this.request(`api/collection`, gameIDs)
     return res;
   };
 };
