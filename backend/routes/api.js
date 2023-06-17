@@ -97,6 +97,28 @@ router.get("/search", async function (req, res, next) {
   }
 });
 
+/** GET /api/search: => { 
+ *  ids: [gameID,...]
+ * }
+ * 
+ * Takes array of game ids,
+ * sends request to api for games that match
+ *
+ * Returns json for found items
+ *
+ * Authorization required: login, owner user
+ */
+
+router.get("/collection", async function (req, res, next) {
+  try {
+    const query = req.query
+    const results = await ThirdPartyApi.getCollection(query);
+    return res.json(results);
+  } catch (err) {
+    return next(err);
+  }
+});
+
 /** Get /api/game_media 
  * 
  * {gameID: '78ZDzlpvdb', mechanicIDs: [id,...], categoryIDs: [id,...]}

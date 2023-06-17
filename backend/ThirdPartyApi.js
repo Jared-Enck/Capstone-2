@@ -111,6 +111,11 @@ class ThirdPartyApi {
     if (!found) gamesCache.set(game.id, game, [14400]);
   };
 
+  static async getCollection(gameIDs) {
+    const res = await this.request('/search', gameIDs);
+    return res.games;
+  };
+
   static async getGameMedia({gameID, mechanicIDs, categoryIDs}) {
     const data = {game_id: gameID}
     const setMechanics = new Set(mechanicIDs);
