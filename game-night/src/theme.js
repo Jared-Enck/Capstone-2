@@ -14,7 +14,7 @@ export const themeLight = createTheme({
       contrastText: blue[500]
     },
     success: {
-      main: green[400]
+      main: green[300]
     },
     error: {
       main: red.A400,
