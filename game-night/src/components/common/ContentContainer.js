@@ -9,7 +9,6 @@ const StyledContainer = styled(Container)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
   borderRadius: theme.shape.borderRadius,
   padding: "1.5rem",
-  justifyContent: "center",
   alignSelf: "center"
 }));
 
