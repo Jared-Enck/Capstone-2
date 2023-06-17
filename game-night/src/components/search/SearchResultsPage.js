@@ -3,22 +3,13 @@ import { useNavigate } from "react-router-dom";
 import DataContext from "../../context/DataContext";
 import {
   Box,
+  Stack,
   Grid,
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
-  CardActions,
-  IconButton,
-  Typography
+  Typography,
+  Divider
 } from "@mui/material";
-import PlayersAndDuration from "../common/PlayersAndDuration";
-import {
-  Favorite,
-  FavoriteBorder,
-  Person,
-  AccessTime
-} from "@mui/icons-material";
+import ContentContainer from "../common/ContentContainer";
+import GameCard from "../games/GameCard";
 
 export default function SearchResultsPage() {
   const { refinedResults, setGameID, setGame } = useContext(DataContext);
@@ -35,75 +26,35 @@ export default function SearchResultsPage() {
   };
 
   return (
-    <>
-      <h1>
-        Search Results
-      </h1>
-      <Box justifyContent={"center"}>
-        <Grid
-          container
-          spacing={3}
-        >
-          {
-            refinedResults
-              ? (
-                refinedResults.map(r =>
-                (
-                  <Grid item alignitems="flex-start" key={r.id}>
-                    <Card sx={{ width: 345, height: 420, backgroundColor: "primary.main" }}>
-                      <CardActionArea
-                        onClick={() => handleCardClick(r.id, r)}
-                      >
-                        <CardMedia
-                          sx={{
-                            objectFit: "fill"
-                          }}
-                          component={"img"}
-                          height={230}
-                          image={r.images.large}
-                          alt={r.name}
-                        />
-                        <CardContent sx={{color: "primary.contrastText"}}>
-                          <Typography 
-                            textAlign={"center"}
-                            gutterBottom 
-                            variant="h5" 
-                            component="div"
-                          >
-                            {r.name}
-                          </Typography>
-                          <Grid
-                            container
-                            direction={"row"}
-                            justifyContent={"center"}
-                            spacing={3}
-                            sx={{
-                              color: "primary.text"
-                            }}
-                          >
-                            <PlayersAndDuration
-                              min_players={r.min_players}
-                              max_players={r.max_players}
-                              min_playtime={r.min_playtime}
-                              max_playtime={r.max_playtime}
-                            />
-                          </Grid>
-                        </CardContent>
-                      </CardActionArea>
-                      <CardActions sx={{ paddingBottom: "0" }}>
-                        <IconButton aria-label="add to collection">
-                          <FavoriteBorder sx={{color: "primary.contrastText"}} />
-                        </IconButton>
-                      </CardActions>
-                    </Card>
-                  </Grid>
+    <Stack>
+      <ContentContainer>
+        <Typography sx={{color: "primary.contrastText"}} variant="h5">
+          Search Results
+        </Typography>
+        <Divider sx={{ marginBottom: "1.5rem"}} />
+        <Box sx={{width: "100%", justifyContent: "center"}}>
+          <Grid
+            container
+            spacing={3}
+            paddingLeft={"2rem"}
+            direction={"row"}
+          >
+            {
+              refinedResults
+                ? (
+                  refinedResults.map(r =>
+                  (
+                    <Grid item alignitems="flex-start" key={r.id}>
+                      <GameCard game={r} handleCardClick={handleCardClick} />
+                    </Grid>
+                  )
+                  )
                 )
-                )
-              )
-              : null
-          }
-        </Grid>
-      </Box>
-    </>
+                : null
+            }
+          </Grid>
+        </Box>
+      </ContentContainer>
+    </Stack>
   );
 };
