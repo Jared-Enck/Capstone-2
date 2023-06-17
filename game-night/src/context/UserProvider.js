@@ -27,8 +27,8 @@ export default function UserProvider({children, isDark, setDarkMode}) {
       try{
         const username = currentUser.username;
         await GameNightApi.addGame(gameToAdd, username);
-        // const { games } = await GameNightApi.getGames(username);
-        // setUserGames(games);
+        const { games } = await GameNightApi.getGames(username);
+        setUserGames(new Set(games));
       } catch (err) {
         console.error('unable to add game', err)
       }
@@ -38,7 +38,6 @@ export default function UserProvider({children, isDark, setDarkMode}) {
   useEffect(() => {
     addGame();
     setGameToAdd('');
-    console.log(userGames)
   },[gameToAdd, addGame]);
 
   const navigate = useNavigate();
@@ -80,7 +79,7 @@ export default function UserProvider({children, isDark, setDarkMode}) {
         const { user } = await GameNightApi.getCurrentUser(username);
         const { games } = await GameNightApi.getGames(username);
         setCurrentUser(user);
-        setUserGames(games);
+        setUserGames(new Set(games));
         navigate('/');
       } catch (err) {
         console.log(err);
