@@ -97,7 +97,7 @@ export default function GameDescription({ game }) {
       </Box>
       <Grid
         sx={{
-          color: "primary.text",
+          color: "primary.muted",
           padding: ".3rem"
         }}
         container
