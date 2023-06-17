@@ -30,8 +30,9 @@ const AddButton = styled(Button)(({ theme }) => ({
   }
 }));
 
-const AddedText = styled(Typography)(({ theme }) => ({
-  color: theme.palette.success.main
+const AddedBadgeBox = styled(Box)(({ theme }) => ({
+  color: theme.palette.success.main,
+  display: "flex"
 }));
 
 export default function GameDescription({ game }) {
@@ -66,12 +67,14 @@ export default function GameDescription({ game }) {
   );
 
   const AddedBadgeComp = () => (
-    <Box alignItems={"flex-start"}>
-      <AddedText margin={1}>
+    <AddedBadgeBox>
+      <Typography sx={{textShadow: 1}} margin={1}>
         In Collection
-      </AddedText>
-      <Check />
-    </Box>
+      </Typography>
+      <Typography paddingTop={".3rem"} >
+        <Check />
+      </Typography>
+    </AddedBadgeBox>
   );
 
   return (
