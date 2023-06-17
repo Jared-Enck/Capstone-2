@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import DataContext from "../../context/DataContext";
 import {
   Box,
@@ -12,18 +11,11 @@ import ContentContainer from "../common/ContentContainer";
 import GameCard from "../games/GameCard";
 
 export default function SearchResultsPage() {
-  const { refinedResults, setGameID, setGame } = useContext(DataContext);
-  const navigate = useNavigate();
+  const { refinedResults } = useContext(DataContext);
 
   useEffect(() => {
     console.log(refinedResults)
-  }, [])
-
-  const handleCardClick = (gameID, game) => {
-    setGameID(gameID);
-    setGame(game);
-    navigate(`/games/${gameID}`)
-  };
+  }, [])  
 
   return (
     <Stack>
@@ -45,7 +37,7 @@ export default function SearchResultsPage() {
                   refinedResults.map(r =>
                   (
                     <Grid item alignitems="flex-start" key={r.id}>
-                      <GameCard game={r} handleCardClick={handleCardClick} />
+                      <GameCard game={r} />
                     </Grid>
                   )
                   )

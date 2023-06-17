@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Card,
   CardActionArea,
@@ -15,10 +16,19 @@ import {
   FavoriteBorder,
 } from "@mui/icons-material";
 import UserContext from "../../context/UserContext";
+import DataContext from "../../context/DataContext";
 
-export default function GameCard({ game, handleCardClick, collectionPage }) {
-  const { userGames } = useContext(UserContext);
+export default function GameCard({ game, collectionPage }) {
+  const { userGames, } = useContext(UserContext);
+  const { setGameID, setGame } = useContext(DataContext);
   const inCollection = userGames.has(game.id);
+  const navigate = useNavigate();
+
+  const handleCardClick = (gameID, game) => {
+    setGameID(gameID);
+    setGame(game);
+    navigate(`/games/${gameID}`)
+  };
 
   return (
     <Card
