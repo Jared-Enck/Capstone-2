@@ -8,9 +8,10 @@ export const themeLight = createTheme({
       default: grey[300]
     },
     primary: {
-      main: grey[100],
-      light: blue[200],
+      main: grey[200],
+      light: grey[100],
       text: grey[800],
+      muted: grey[500],
       contrastText: blue[500]
     },
     success: {
@@ -32,8 +33,9 @@ export const themeDark = createTheme({
     },
     primary: {
       main: grey[800],
-      light: grey[400],
+      light: grey[700],
       text: grey[200],
+      muted: grey[500],
       contrastText: blue[50]
     },
     success: {
