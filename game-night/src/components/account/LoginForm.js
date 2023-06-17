@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Form, Link } from "react-router-dom";
 import UserContext from '../../context/UserContext';
 import {
   InputLabel,
@@ -26,6 +26,7 @@ export const FormBox = styled(Box)(() => ({
 export const FormOutlinedInput = styled(OutlinedInput)(({ theme }) => ({
   backgroundColor: alpha(theme.palette.primary.light, 0.45),
   borderRadius: theme.shape.borderRadius,
+  color: theme.palette.primary.text,
   '&:hover': {
     backgroundColor: alpha(theme.palette.primary.light, .7),
   },
@@ -34,6 +35,10 @@ export const FormOutlinedInput = styled(OutlinedInput)(({ theme }) => ({
       borderColor: theme.palette.primary.contrastText
     }
   }
+}));
+
+export const FormInputLabel = styled(InputLabel)(({ theme }) => ({
+  color: theme.palette.primary.muted
 }));
 
 export const PrimaryButton = styled(Button)(({ theme }) => ({
@@ -87,83 +92,85 @@ export default function LoginForm() {
   }
 
   return (
-    <ContentContainer>
-      <FormBox
-        component="form"
-        onSubmit={handleSubmit}
-        autoComplete="off"
-      >
-        <Stack spacing={2}>
-          <FormControl>
-            <InputLabel 
-              htmlFor="username"
-            >
-              Username
-            </InputLabel>
-            <FormOutlinedInput
-              type="text"
-              label="Username"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              autoFocus
-            />
-          </FormControl>
+    <Stack>
+      <ContentContainer>
+        <FormBox
+          component="form"
+          onSubmit={handleSubmit}
+          autoComplete="off"
+        >
+          <Stack spacing={2}>
+            <FormControl>
+              <FormInputLabel 
+                htmlFor="username"
+              >
+                Username
+              </FormInputLabel>
+              <FormOutlinedInput
+                type="text"
+                label="Username"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                autoFocus
+              />
+            </FormControl>
 
-          <FormControl>
-            <InputLabel 
-              htmlFor="password"
-            >
-              Password
-            </InputLabel>
-            <FormOutlinedInput
-              type={showPassword ? 'text' : 'password'}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              label="Password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-            />
-          </FormControl>
-          <FormControl>
-            <Stack spacing={2}>
-              {
-                formErrors.length
-                  ? formErrors.map((e, idx) => genError(e, idx))
-                  : null
-              }
-              <Typography
-                sx={{
-                  textAlign: "center",
-                  color: "primary.text"
-                }}
+            <FormControl>
+              <FormInputLabel 
+                htmlFor="password"
               >
-                Don't have an account? Sign up {' '}
-                <Link to={"/signup"}>
-                  here.
-                </Link>
-              </Typography>
-              <PrimaryButton
-                type="submit"
-                size="medium"
-              >
-                Login
-              </PrimaryButton>
-            </Stack>
-          </FormControl>
-        </Stack>
-      </FormBox>
-    </ContentContainer>
+                Password
+              </FormInputLabel>
+              <FormOutlinedInput
+                type={showPassword ? 'text' : 'password'}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="Password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+              />
+            </FormControl>
+            <FormControl>
+              <Stack spacing={2}>
+                {
+                  formErrors.length
+                    ? formErrors.map((e, idx) => genError(e, idx))
+                    : null
+                }
+                <Typography
+                  sx={{
+                    textAlign: "center",
+                    color: "primary.text"
+                  }}
+                >
+                  Don't have an account? Sign up {' '}
+                  <Link to={"/signup"}>
+                    here.
+                  </Link>
+                </Typography>
+                <PrimaryButton
+                  type="submit"
+                  size="medium"
+                >
+                  Login
+                </PrimaryButton>
+              </Stack>
+            </FormControl>
+          </Stack>
+        </FormBox>
+      </ContentContainer>
+    </Stack>
   );
 };
