@@ -17,6 +17,8 @@ export default function UserProvider({children, isDark, setDarkMode}) {
   const [token, setToken] = useLocalStorage(TOKEN_STORAGE_ID);
   const [gameToAdd, setGameToAdd] = useState('');
   const [userGames, setUserGames] = useState(new Set());
+  const [games, setGames] = useState('');
+  const navigate = useNavigate();
 
   const handleThemeToggle = () => {
     setDarkMode(`${!isDark}`);
@@ -40,7 +42,14 @@ export default function UserProvider({children, isDark, setDarkMode}) {
     setGameToAdd('');
   },[gameToAdd, addGame]);
 
-  const navigate = useNavigate();
+  const getCollection = useCallback(async () => {
+    if (userGames.size) {
+      // Api needs extra commas at beginnin and end of string
+      const gameIdsStr = `,${Array.from(userGames).join(',')},`;
+      const res = await GameNightApi.getCollection({ids: gameIdsStr});
+      setGames(res.games);
+    }
+  },[userGames]);
 
   async function registerUser(registerData) {
     try {
@@ -106,7 +115,9 @@ export default function UserProvider({children, isDark, setDarkMode}) {
           isDark,
           setGameToAdd,
           userGames,
-          setUserGames
+          setUserGames,
+          getCollection,
+          games
         }
       }
     >
