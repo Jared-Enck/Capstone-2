@@ -1,25 +1,20 @@
-import React, { useCallback, useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import UserContext from "../../context/UserContext";
 import {
   Grid,
   Typography,
-  Stack
+  Stack,
+  Divider
 } from "@mui/material";
 import ContentContainer from "../common/ContentContainer";
-import GameNightApi from "../../gameNightApi";
+import GameCard from "../games/GameCard";
 
 export default function Collection() {
-  const {currentUser, userGames} = useContext(UserContext);
-  const games = Array.from(userGames);
-  // const getGames = useCallback(async () => {
-  //   const res = await GameNightApi.getGames(currentUser.username);
-  //   console.log(res)
-  //   setUserGames(res);
-  // },[getGames]);
+  const { games, getCollection, userGames } = useContext(UserContext);
 
-  // useEffect(() => {
-  //   getGames();
-  // },[getGames]);
+  useEffect(() => {
+    getCollection();
+  },[userGames]);
   
   const noGamesMsg = (
     <Typography sx={{color: "primary.text"}} variant="h5">
@@ -30,18 +25,21 @@ export default function Collection() {
   return (
     <Stack>
       <ContentContainer>
+        <Typography sx={{color: "primary.contrastText"}} variant="h5">
+          My Games
+        </Typography>
+        <Divider sx={{ marginBottom: "1.5rem"}} />
         <Grid 
           container
           direction={"row"}
-          spacing={2}
+          spacing={3}
+          paddingLeft={"2rem"}
         >
           {
-            games.length
+            games
             ? games.map(g => (
-                <Grid key={g} item>
-                  <Typography sx={{color: "primary.text"}}>
-                    {g}
-                  </Typography>
+                <Grid key={g.id} item>
+                  <GameCard game={g} collectionPage />
                 </Grid>
             ))
             : noGamesMsg
