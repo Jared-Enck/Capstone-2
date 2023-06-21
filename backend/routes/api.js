@@ -111,7 +111,7 @@ router.get("/search", async function (req, res, next) {
 
 router.get("/collection", async function (req, res, next) {
   try {
-    const query = req.query
+    const query = req.query;
     const results = await ThirdPartyApi.getCollection(query);
     return res.json(results);
   } catch (err) {
