@@ -1,11 +1,7 @@
 import React from "react";
 import {
-  Box,
-  Grid,
-  Typography,
-  Divider
+  Grid
 } from "@mui/material";
-import ContentContainer from "../common/ContentContainer";
 import MediaCard from "./MediaCard";
 
 export default function MediaContainer({ header, items, isVideo = null }) {
@@ -34,17 +30,7 @@ export default function MediaContainer({ header, items, isVideo = null }) {
   );
 
   return (
-    <ContentContainer>
-      <Typography
-        sx={{
-          color: "primary.contrastText"
-        }}
-        variant="h5"
-        gutterBottom
-      >
-        {header}
-      </Typography>
-      <Divider />
+    <>
       <Grid
         sx={{
           alignItems: "center",
@@ -76,6 +62,6 @@ export default function MediaContainer({ header, items, isVideo = null }) {
             : null
         }
       </Grid>
-    </ContentContainer>
+    </>
   )
 };

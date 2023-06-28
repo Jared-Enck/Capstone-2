@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, Suspense, lazy } from "react";
+import React, { useContext, lazy } from "react";
 import DataContext from "../../context/DataContext";
-import CircularLoading from "../common/CircularLoading";
+import ContentContainer from "../common/ContentContainer";
 import {
   Stack,
 } from "@mui/material";
@@ -18,33 +18,35 @@ const GameDetailsComp = lazy(
 export default function GameDetailsPage() {
   const { game } = useContext(DataContext);
 
-  useEffect(() => {
-    console.log(game)
-  }, [])
-
   const images = game.detail_images || [];
   const videos = game.videos || [];
 
   return (
     <Stack spacing={".3rem"}>
-      <Suspense fallback={<CircularLoading />}>
+      <ContentContainer>
         <GameDescriptionComp game={game} />
-        {
-          images.length
+      </ContentContainer>
+      {
+        images.length
           ? (
-            <MediaContainerComp header="Images" items={images} />
+            <ContentContainer header="Images" divider>
+              <MediaContainerComp items={images} />
+            </ContentContainer>
           )
           : null
-        }
-        {
-          videos.length
+      }
+      {
+        videos.length
           ? (
-            <MediaContainerComp header="Videos" items={videos} isVideo={true} />
+            <ContentContainer header="Videos" divider>
+              <MediaContainerComp items={videos} isVideo={true} />
+            </ContentContainer>
           )
           : null
-        }
+      }
+      <ContentContainer header="Details" divider>
         <GameDetailsComp game={game} />
-      </Suspense>
+      </ContentContainer>
     </Stack>
   );
 };

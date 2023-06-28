@@ -1,6 +1,5 @@
-import React, { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import UserContext from "../../context/UserContext";
+import React, { useState, useContext } from "react";
+import DataContext from "../../context/DataContext";
 import {
   Box,
   Typography,
@@ -16,7 +15,6 @@ import {
   Add,
   Check
 } from "@mui/icons-material";
-import ContentContainer from "../common/ContentContainer";
 import PlayersAndDuration from "../common/PlayersAndDuration";
 import styled from "@emotion/styled";
 
@@ -37,21 +35,16 @@ const AddedBadgeBox = styled(Box)(({ theme }) => ({
 
 export default function GameDescription({ game }) {
   const [open, setOpen] = useState(false);
-  const { setGameToAdd, currentUser, userGames } = useContext(UserContext);
-  const navigate = useNavigate();
-  const inCollection = userGames.has(game.id);
+  const { addGame, userGameIDs } = useContext(DataContext);
+  const inCollection = userGameIDs.has(game.id);
 
   const handleDescBtnClick = () => {
     setOpen(!open)
   };
+  
   const handleAddBtnClick = () => {
-    if (!currentUser) {
-      navigate('/login');
-    };
     if (!inCollection) {
-      console.log("added")
-      setGameToAdd({ id: game.id, name: game.name });
-      userGames.add(game.id);
+      addGame(game);
     };
   };
 
@@ -78,7 +71,7 @@ export default function GameDescription({ game }) {
   );
 
   return (
-    <ContentContainer>
+    <>
       <Box display={"flex"}>
         <Typography
           variant={"h4"}
@@ -121,6 +114,7 @@ export default function GameDescription({ game }) {
             width={300}
             height={300}
             src={game.image_url}
+            alt={game.name}
           />
         </Grid>
         <Grid item xs={7}>
@@ -171,6 +165,6 @@ export default function GameDescription({ game }) {
           }
         </Grid>
       </Grid>
-    </ContentContainer>
+    </>
   )
 };

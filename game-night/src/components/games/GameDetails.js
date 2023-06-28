@@ -1,14 +1,11 @@
 import React from "react";
 import {
-  Typography,
-  Divider,
   Table,
   TableBody,
   TableCell,
   TableRow,
   Grid
 } from "@mui/material";
-import ContentContainer from "../common/ContentContainer";
 import DetailListItem from "./DetailListItem";
 import styled from "@emotion/styled";
 
@@ -55,17 +52,7 @@ export default function GameDetails({ game }) {
     ];
   }
   return (
-    <ContentContainer>
-      <Typography
-        variant={"h5"}
-        sx={{
-          color: "primary.contrastText"
-        }}
-        gutterBottom
-      >
-        Details
-      </Typography>
-      <Divider sx={{marginBottom: ".7rem"}} />
+    <>
       <Table>
         <TableBody>
           {
@@ -98,6 +85,6 @@ export default function GameDetails({ game }) {
           }
         </TableBody>
       </Table>
-    </ContentContainer>
+    </>
   );
 };
