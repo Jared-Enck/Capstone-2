@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { setFormErrors } from "../components/account/LoginForm"
+
 /**Controls form fields */
 
 export default function useFields(initialState) {

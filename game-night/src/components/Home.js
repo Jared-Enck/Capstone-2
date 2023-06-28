@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Switch
 } from "@mui/material"
@@ -10,12 +10,8 @@ const StyledSwitch = styled(Switch)(({ theme }) => ({
 }));
 
 export default function Home() {
-  const { currentUser, isDark, handleThemeToggle } = useContext(UserContext);
+  const { isDark, handleThemeToggle } = useContext(UserContext);
   const [checked, setChecked] = useState(isDark);
-
-  useEffect(() => {
-    console.log(currentUser)
-  }, [])
 
   const handleChange = () => {
     handleThemeToggle();
