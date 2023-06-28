@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import useDebounce from "../../hooks/useDebounce";
 import GameNightApi from "../../gameNightApi";
 import DataContext from "../../context/DataContext";
@@ -7,7 +7,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import {
   InputBase,
   Collapse,
-  alpha
+  alpha,
+  ClickAwayListener
 } from "@mui/material";
 import styled from "@emotion/styled";
 
@@ -61,8 +62,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function SearchBar() {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState({});
-  const {open, setOpen} = useContext(DataContext);
-  
+  const { open, setOpen } = useContext(DataContext);
+
   const debouncedRequest = useDebounce(async () => {
     if (searchTerm && searchTerm.length > 2) {
       setOpen(true);
@@ -70,6 +71,16 @@ export default function SearchBar() {
       setSearchResults(results);
     }
   });
+
+  const clearSearch = () => {
+    setSearchTerm('');
+    setSearchResults('');
+  };
+
+  const handleClickAway = () => {
+    setOpen(false);
+    clearSearch();
+  };
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -94,16 +105,19 @@ export default function SearchBar() {
       />
       {
         searchResults
-        ? (
-          <Collapse in={open}>
-            <SearchBoxResults
-              results={searchResults}
-              setSearchTerm={setSearchTerm}
-              setSearchResults={setSearchResults}
-            />      
-          </Collapse>
-        )
-        : null
+          ? (
+            <ClickAwayListener onClickAway={handleClickAway}>
+              <Collapse in={open}>
+                <SearchBoxResults
+                  results={searchResults}
+                  setSearchTerm={setSearchTerm}
+                  setSearchResults={setSearchResults}
+                  clearSearch={clearSearch}
+                />
+              </Collapse>
+            </ClickAwayListener>
+          )
+          : null
       }
     </Search>
   )
