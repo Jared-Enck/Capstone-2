@@ -1,5 +1,4 @@
-import React, { useContext, Suspense, lazy } from "react";
-import CircularLoading from "../common/CircularLoading";
+import React, { useContext, lazy } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
@@ -18,8 +17,8 @@ const GamesListComp = lazy(
 );
 
 const StyledBox = styled(Box)(({ theme }) => ({
-  marginTop: 1,
-  width: 328,
+  marginTop: '.3rem',
+  width: '100%',
   backgroundColor: theme.palette.primary.light,
   borderRadius: ".3rem",
   position: "absolute",
@@ -28,9 +27,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
 
 export default function SearchBoxResults({
   results,
-  setSearchTerm,
-  setSearchResults,
-  theme
+  clearSearch
 }) {
   const navigate = useNavigate();
   const mechanics = results.foundMechanics || [];
@@ -41,11 +38,6 @@ export default function SearchBoxResults({
     setGameID,
     setGame
   } = useContext(DataContext);
-
-  const clearSearch = () => {
-    setSearchTerm('');
-    setSearchResults('');
-  };
 
   const handleClick = (path, id) => {
     setRefinedSearch({ path, id });
@@ -61,11 +53,10 @@ export default function SearchBoxResults({
   };
 
   return (
-    <StyledBox>
+    <StyledBox sx={{boxShadow: 2}}>
       <Stack>
-        <Suspense fallback={<CircularLoading />}>
-          {
-            mechanics.length
+        {
+          mechanics.length
             ? (
               <SearchBoxSectionComp
                 sectionName={"Mechanics"}
@@ -74,9 +65,9 @@ export default function SearchBoxResults({
               />
             )
             : null
-          }
-          {
-            categories.length
+        }
+        {
+          categories.length
             ? (
               <SearchBoxSectionComp
                 sectionName={"Categories"}
@@ -85,14 +76,14 @@ export default function SearchBoxResults({
               />
             )
             : null
-          }
-          {
-            mechanics.length || categories.length
+        }
+        {
+          mechanics.length || categories.length
             ? <Divider />
             : null
-          }
-          {
-            games.length
+        }
+        {
+          games.length
             ? (
               <GamesListComp
                 items={games}
@@ -100,8 +91,7 @@ export default function SearchBoxResults({
               />
             )
             : null
-          }
-        </Suspense>
+        }
       </Stack>
     </StyledBox>
   );

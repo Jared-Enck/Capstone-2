@@ -1,10 +1,11 @@
-import React from "react";
+import React, { Suspense } from "react";
 import {
   Typography,
   Grid,
   Button
 } from "@mui/material";
 import styled from "@emotion/styled";
+import CircularLoading from "../common/CircularLoading";
 
 const SearchBoxButton = styled(Button)(({ theme }) => ({
   borderRadius: '9999px',
@@ -19,19 +20,20 @@ const SearchBoxButton = styled(Button)(({ theme }) => ({
 }))
 
 export default function SearchBoxSection({
-  sectionName = null, 
-  items, 
+  sectionName = null,
+  items,
   handleClick
 }) {
   return (
     <>
       <Typography sx={{
         marginLeft: '.3rem',
-        textAlign: 'left'
+        textAlign: 'left',
+        color: 'primary.contrastText'
       }}>
         {sectionName}
       </Typography>
-      <Grid 
+      <Grid
         container
         direction={'row'}
         sx={{
@@ -39,20 +41,22 @@ export default function SearchBoxSection({
           maxWidth: '328px'
         }}
       >
-        {
-          items
-          ? items.map(i => (
-            <Grid key={i.id} item sx={{padding: 0, margin: 0}}>
-              <SearchBoxButton
-                size="small"
-                onClick={() => handleClick(sectionName.toLowerCase(), i.id)}
-              >
-                {i.name}
-              </SearchBoxButton>
-            </Grid>
-          ))
-          : null
-        }
+        <Suspense fallback={<CircularLoading size={"1.5rem"} />}>
+          {
+            items
+              ? items.map(i => (
+                <Grid key={i.id} item sx={{ padding: 0, margin: 0 }}>
+                  <SearchBoxButton
+                    size="small"
+                    onClick={() => handleClick(sectionName.toLowerCase(), i.id)}
+                  >
+                    {i.name}
+                  </SearchBoxButton>
+                </Grid>
+              ))
+              : null
+          }
+        </Suspense>
       </Grid>
     </>
   );
