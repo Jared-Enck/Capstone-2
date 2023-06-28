@@ -12,7 +12,7 @@ export const themeLight = createTheme({
       light: grey[100],
       text: grey[800],
       muted: grey[500],
-      contrastText: blue[500]
+      contrastText: blue[800]
     },
     success: {
       main: green[300]
