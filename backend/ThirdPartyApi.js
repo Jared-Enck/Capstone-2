@@ -1,7 +1,6 @@
 const axios = require("axios");
 const { CLIENT_ID, API_BASE_URL } = require("./config");
 const moment = require('moment');
-const fields = require('./helpers/gameObjFields');
 const NodeCache = require("node-cache");
 const myCache = new NodeCache();
 const gamesCache = new NodeCache();
@@ -89,8 +88,7 @@ class ThirdPartyApi {
   static async getSearchResults(term) {
     const results = this.checkCommon(term);
     const data = {
-      name: term,
-      fields
+      name: term
     }
     const { games } = await this.request('/search', data);
     results.foundGames = games.splice(0,10);
@@ -98,11 +96,7 @@ class ThirdPartyApi {
   };
 
   static async getRefinedResults(query) {
-    const data = {
-      ...query,
-      fields
-    }
-    const { games } = await this.request('/search', data);
+    const { games } = await this.request('/search', query);
     return games;
   };
 
