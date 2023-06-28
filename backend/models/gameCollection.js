@@ -12,50 +12,40 @@ class GameCollection {
         game_id AS "gameID"
       FROM game_collections
       WHERE username = $1`
-      ,[username]);
+      , [username]);
     return results.rows.map(g => g.gameID);
   }
 
   /** Add games to a user's collection with username and game object
    * 
-   * {username: 'u1', game: {id: 'e44jncYuUp', name: 'Dune: Imperium'}}
-   * 
-   * Returns { msg: `${game.name} has been added to your collection.` }
+   * {username: 'u1', id: 'e44jncYuUp'}
    * 
    **/
 
-  static async addGame({username, game}) {
-    const querySql = 
+  static async addGame({ username, id }) {
+    const querySql =
       `INSERT INTO game_collections
           (username, game_id)
         VALUES
           ($1,$2)`;
 
-    await db.query(querySql,[username, game.id]);
-
-    return {
-      msg: `${game.name} has been added to your collection.`
-    };
+    await db.query(querySql, [username, id]);
   };
 
   /** Remove games from a user's collection with username and game object
    * 
-   * {username: 'u1', game: {id: 'e44jncYuUp', name: 'Dune: Imperium'}}
-   * 
-   * Returns { msg: `${game.name} has been removed from your collection.` }
+   * {username: 'u1', id: 'e44jncYuUp'}
    * 
    **/
 
-  static async removeGame({username, game}) {
-    const querySql = 
+  static async removeGame({ username, id }) {
+    const querySql =
       `DELETE FROM game_collections
         WHERE username = $1 AND game_id = $2`;
 
-    await db.query(querySql,[username, game.id]);
-
-    return {
-      msg: `${game.name} has been removed from your collection.`
-    };
+    const results = await db.query(querySql, [username, id]);
+    
+    return results.rows.length > 0 ? 'deleted' : -1;
   };
 
 };

@@ -10,7 +10,7 @@ const router = express.Router();
 
 /** GET /gameCollections/:username => { games }
  *
- * Returns { games: [gameID, ...] }
+ * Returns { games: ['gameID', ...] }
  * 
  * Authorization required: login, owner user
  **/
@@ -24,11 +24,10 @@ router.get("/:username", ensureLoggedIn, ensureOwner, async function (req, res, 
   }
 });
 
-/** POST /gameCollections/:username  { username, game } => { msg }
+/** POST /gameCollections/:username  { id } => { msg }
  * 
- * where addGameObj = {
- *  username: 'u1', 
- *  game: {id: 'e44jncYuUp', name: 'Dune: Imperium'}
+ * {
+ *  id: 'e44jncYuUp'
  * }
  *  
  * Authorization required: login, owner
@@ -37,19 +36,18 @@ router.get("/:username", ensureLoggedIn, ensureOwner, async function (req, res, 
 router.post("/:username", ensureLoggedIn, ensureOwner, async function (req, res, next) {
   try {
     const username = req.params.username;
-    const game = req.body;
-    const resp = await GameCollection.addGame({ username, game });
-    return res.status(201).json( resp );
+    const { id } = req.body;
+    await GameCollection.addGame({ username, id });
+    return res.status(201).json('added');
   } catch (err) {
     return next(err);
   }
 });
 
-/** DELETE /gameCollections/:username  { username, game } => { msg }
+/** DELETE /gameCollections/:username  { id } => { msg }
  * 
- * where addGameObj = {
- *  username: 'u1', 
- *  game: {id: 'e44jncYuUp', name: 'Dune: Imperium'}
+ * {
+ *  id: 'e44jncYuUp'
  * }
  *  
  * Authorization required: login, owner
@@ -58,9 +56,10 @@ router.post("/:username", ensureLoggedIn, ensureOwner, async function (req, res,
 router.delete("/:username", ensureLoggedIn, ensureOwner, async function (req, res, next) {
   try {
     const username = req.params.username;
-    const game = req.body;
-    const resp = await GameCollection.removeGame({ username, game });
-    return res.json( resp );
+    const { id } = req.body;
+    const result = await GameCollection.removeGame({ username, id });
+    const statusCode = result === -1 ? 204 : 200;
+    return res.status(statusCode).json('deleted');
   } catch (err) {
     return next(err);
   }
