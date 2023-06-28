@@ -14,21 +14,60 @@ import PlayersAndDuration from "../common/PlayersAndDuration";
 import {
   Favorite,
   FavoriteBorder,
+  Delete
 } from "@mui/icons-material";
-import UserContext from "../../context/UserContext";
 import DataContext from "../../context/DataContext";
 
 export default function GameCard({ game, collectionPage }) {
-  const { userGames, } = useContext(UserContext);
-  const { setGameID, setGame } = useContext(DataContext);
-  const inCollection = userGames.has(game.id);
+  const {
+    setGameID,
+    setGame,
+    userGameIDs,
+    addGame,
+    removeGame
+  } = useContext(DataContext);
+  const inCollection = userGameIDs.has(game.id);
   const navigate = useNavigate();
 
-  const handleCardClick = (gameID, game) => {
-    setGameID(gameID);
+  const handleCardClick = () => {
+    setGameID(game.id);
     setGame(game);
-    navigate(`/games/${gameID}`)
+    navigate(`/games/${game.id}`);
   };
+
+  const handleQuickAddClick = () => {
+    if (!inCollection) {
+      addGame(game);
+    };
+  };
+
+  const handleTrashClick = () => {
+    removeGame(game);
+  };
+
+  const quickAddBtn = (
+    <IconButton
+      aria-label="add to collection"
+      sx={{ color: "primary.contrastText", marginLeft: "auto" }}
+      onClick={handleQuickAddClick}
+    >
+      {
+        inCollection
+          ? <Favorite />
+          : <FavoriteBorder />
+      }
+    </IconButton>
+  );
+
+  const trashBtn = (
+    <IconButton
+      aria-label="remove from collection"
+      sx={{ color: "primary.contrastText", marginLeft: "auto" }}
+      onClick={handleTrashClick}
+    >
+      <Delete />
+    </IconButton>
+  );
 
   return (
     <Card
@@ -38,7 +77,7 @@ export default function GameCard({ game, collectionPage }) {
       }}
     >
       <CardActionArea
-        onClick={() => handleCardClick(game.id, game)}
+        onClick={handleCardClick}
       >
         <CardMedia
           sx={{
@@ -77,24 +116,13 @@ export default function GameCard({ game, collectionPage }) {
           </Grid>
         </CardContent>
       </CardActionArea>
-      {
-        !collectionPage
-          ? (
-            <CardActions>
-              <IconButton
-                aria-label="add to collection"
-                sx={{ color: "primary.contrastText" }}
-              >
-                {
-                  inCollection
-                    ? <Favorite />
-                    : <FavoriteBorder />
-                }
-              </IconButton>
-            </CardActions>
-          )
-          : null
-      }
+      <CardActions disableSpacing>
+        {
+          !collectionPage
+            ? quickAddBtn
+            : trashBtn
+        }
+      </CardActions>
     </Card>
   );
 };
