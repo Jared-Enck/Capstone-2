@@ -1,48 +1,57 @@
-import React, { useContext, useEffect } from "react";
-import UserContext from "../../context/UserContext";
+import React, {
+  useContext,
+  useEffect
+} from "react";
+import DataContext from "../../context/DataContext";
 import {
   Grid,
   Typography,
-  Stack,
-  Divider
+  Stack
 } from "@mui/material";
 import ContentContainer from "../common/ContentContainer";
 import GameCard from "../games/GameCard";
 
 export default function Collection() {
-  const { games, getCollection, userGames } = useContext(UserContext);
+  const { userGameIDs, collection, getCollection } = useContext(DataContext);
+  const inSync = userGameIDs.size === collection.length;
 
   useEffect(() => {
-    getCollection();
-  },[userGames]);
-  
+    try {
+      if (!inSync) {
+        getCollection();
+      };
+    } catch (err) {
+      console.error('Error: ', err)
+    };
+  }, [getCollection, inSync]);
+
   const noGamesMsg = (
-    <Typography sx={{color: "primary.text"}} variant="h5">
+    <Typography sx={{ color: "primary.text" }} variant="h5">
       No games yet? Try searching for games and then adding them to your collection.
     </Typography>
   )
 
   return (
     <Stack>
-      <ContentContainer>
-        <Typography sx={{color: "primary.contrastText"}} variant="h5">
-          My Games
-        </Typography>
-        <Divider sx={{ marginBottom: "1.5rem"}} />
-        <Grid 
+      <ContentContainer header={"My Games"} divider>
+        <Grid
           container
           direction={"row"}
           spacing={3}
-          paddingLeft={"2rem"}
+          padding={"1.5rem"}
         >
           {
-            games
-            ? games.map(g => (
+            inSync
+            ? (
+              collection.length
+              ? collection.map(g => (
                 <Grid key={g.id} item>
                   <GameCard game={g} collectionPage />
                 </Grid>
-            ))
-            : noGamesMsg
+              ))
+              : noGamesMsg
+            )
+            : null
           }
         </Grid>
       </ContentContainer>
