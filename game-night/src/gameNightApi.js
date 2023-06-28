@@ -93,8 +93,14 @@ export default class GameNightApi {
   };
 
   /** Add game to currentUser collection */
-  static async addGame(game, username) {
-    const res = await this.request(`gameCollections/${username}`, game, 'post');
+  static async addGame({ id, username }) {
+    const res = await this.request(`gameCollections/${username}`, { id }, 'post');
+    return res;
+  };
+
+  /** Remove game from currentUser collection */
+  static async removeGame({ id, username }) {
+    const res = await this.request(`gameCollections/${username}`, { id }, 'delete');
     return res;
   };
 
