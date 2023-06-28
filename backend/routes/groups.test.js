@@ -21,7 +21,7 @@ afterAll(commonAfterAll);
 
 describe("POST /groups", () => {
   const newGroup = {
-    users: ['u1','u2'],
+    users: ['u1', 'u2'],
     name: "newGroup"
   }
   it("works", async () => {
@@ -91,7 +91,7 @@ describe("POST /groups/:groupID", () => {
     const resp = await request(app)
       .post("/groups/1")
       .send({
-        groupUsers: ['u1','u2'],
+        groupUsers: ['u1', 'u2'],
         addUsers: ['u3']
       })
       .set("authorization", u1Token);
@@ -105,7 +105,7 @@ describe("POST /groups/:groupID", () => {
     const resp = await request(app)
       .post("/groups/1")
       .send({
-        groupUsers: ['u1','u2'],
+        groupUsers: ['u1', 'u2'],
         addUsers: [3]
       })
       .set("authorization", u1Token);
@@ -116,7 +116,7 @@ describe("POST /groups/:groupID", () => {
     const resp = await request(app)
       .post("/groups/1")
       .send({
-        groupUsers: ['u1','u2'],
+        groupUsers: ['u1', 'u2'],
         addUsers: ['u3']
       });
     expect(resp.statusCode).toEqual(401);
@@ -141,7 +141,7 @@ describe("PATCH /groups/:groupID/edit", () => {
     const resp = await request(app)
       .patch("/groups/1/edit")
       .send({
-        groupUsers: ['u1','u2'],
+        groupUsers: ['u1', 'u2'],
         name: 'newGroupName'
       })
       .set("authorization", u2Token);
@@ -156,7 +156,7 @@ describe("PATCH /groups/:groupID/edit", () => {
     const resp = await request(app)
       .patch("/groups/1/edit")
       .send({
-        groupUsers: ['u1','u2'],
+        groupUsers: ['u1', 'u2'],
         name: 'newGroupName'
       });
     expect(resp.statusCode).toEqual(401);
@@ -207,7 +207,7 @@ describe("PATCH /groups/:groupID/leave", function () {
   it("works", async function () {
     const resp = await request(app)
       .patch(`/groups/1/leave`)
-      .send({ username: 'u2'})
+      .send({ username: 'u2' })
       .set("authorization", u2Token);
     expect(resp.body).toEqual({ msg: `u2 left the group.` });
   });
@@ -215,7 +215,7 @@ describe("PATCH /groups/:groupID/leave", function () {
   it("throws unauth for anon user", async function () {
     const resp = await request(app)
       .patch(`/groups/1/leave`)
-      .send({ username: 'u2'})
+      .send({ username: 'u2' })
     expect(resp.statusCode).toEqual(401);
   });
 });

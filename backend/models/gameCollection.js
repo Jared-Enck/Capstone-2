@@ -44,7 +44,7 @@ class GameCollection {
         WHERE username = $1 AND game_id = $2`;
 
     const results = await db.query(querySql, [username, id]);
-    
+
     return results.rows.length > 0 ? 'deleted' : -1;
   };
 

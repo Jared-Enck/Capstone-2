@@ -18,9 +18,9 @@ afterAll(commonAfterAll);
 describe("getGames", () => {
   it("works", async () => {
     const games = await GameCollection.getGames('u1');
-    
+
     expect(games.length).toEqual(2);
-    expect(games).toEqual([ 'e44jncYuUp', 'nSZTnbgacm' ]);
+    expect(games).toEqual(['e44jncYuUp', 'nSZTnbgacm']);
   });
 });
 

@@ -1,7 +1,7 @@
 "use strict";
 
 const db = require("../db.js");
-const { 
+const {
   BadRequestError,
   NotFoundError
 } = require("../expressError.js")
@@ -20,7 +20,7 @@ afterAll(commonAfterAll);
 
 /************************************** create */
 describe("create", () => {
-  const userArr = ['u1','u2','u3'];
+  const userArr = ['u1', 'u2', 'u3'];
   it("works", async () => {
     const newGroup = {
       users: [userArr[0]],
@@ -34,7 +34,7 @@ describe("create", () => {
       group: {
         id: expect.any(Number),
         name: "New",
-        adminUsername: 'u1', 
+        adminUsername: 'u1',
         imageURL: expect.any(String)
       },
       msg: expect.any(String)
@@ -54,14 +54,14 @@ describe("create", () => {
       group: {
         id: expect.any(Number),
         name: "New2",
-        adminUsername: 'u2', 
+        adminUsername: 'u2',
         imageURL: expect.any(String)
       },
       msg: expect.any(String)
     });
 
     let groupUsers = await Group.getUsers(res.group.id)
-    
+
     expect(groupUsers).toEqual([
       {
         username: 'u1'
@@ -216,7 +216,8 @@ describe("delete", () => {
 
 /************************************** leave */
 describe("leave", () => {
-  it("works", async () => {1
+  it("works", async () => {
+    1
     let users = await Group.getUsers(1);
 
     expect(users).toEqual([
@@ -228,7 +229,7 @@ describe("leave", () => {
       }
     ]);
 
-    await Group.leave(1,'u2');
+    await Group.leave(1, 'u2');
 
     let updatedUsers = await Group.getUsers(1);
 
@@ -238,10 +239,10 @@ describe("leave", () => {
       }
     ]);
   });
-  
+
   it("throws not found if no such group", async () => {
     try {
-      await Group.leave(0,'u2');
+      await Group.leave(0, 'u2');
       fail();
     } catch (err) {
       expect(err instanceof NotFoundError).toBeTruthy();

@@ -1,25 +1,25 @@
 import { useState } from "react";
-import {setFormErrors} from "../components/account/LoginForm"
+import { setFormErrors } from "../components/account/LoginForm"
 /**Controls form fields */
 
-export default function useFields(initialState) {  
+export default function useFields(initialState) {
   const [formData, setFormData] = useState(initialState);
   const [formErrors, setFormErrors] = useState([]);
 
   const handleChange = (e) => {
-    const {name,value} = e.target;
+    const { name, value } = e.target;
     setFormData(fData => ({
       ...fData,
       [name]: value
     }));
-    
+
     if (formErrors.length) {
       setFormErrors([]);
     }
   };
 
   return [
-    formData, 
+    formData,
     handleChange,
     formErrors,
     setFormErrors

@@ -22,20 +22,20 @@ export default function PlayersAndDuration({
   const getPlayers = useCallback(() => {
     return (
       min_players === max_players
-      ? min_players 
-      : (min_players + " - " + max_players)
+        ? min_players
+        : (min_players + " - " + max_players)
     );
   });
   const players = useMemo(() => getPlayers());
   const getDuration = useCallback(() => {
-    return(
+    return (
       min_playtime === max_playtime
-      ? min_playtime
-      : (min_playtime + " - " + max_playtime)
+        ? min_playtime
+        : (min_playtime + " - " + max_playtime)
     );
   });
   const duration = useMemo(() => getDuration());
-  return(
+  return (
     <>
       <Grid item>
         <StyledTypography>
@@ -45,7 +45,7 @@ export default function PlayersAndDuration({
       </Grid>
       <Grid item>
         <StyledTypography>
-          <AccessTime sx={{marginRight: ".3rem", transform: "scale(.85)"}}/>
+          <AccessTime sx={{ marginRight: ".3rem", transform: "scale(.85)" }} />
           {duration}
         </StyledTypography>
       </Grid>

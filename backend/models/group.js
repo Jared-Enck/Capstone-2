@@ -50,14 +50,14 @@ class Group {
         name, 
         admin_username AS "adminUsername", 
         image_url AS "imageURL"`,
-      [ name, adminUsername ],
+      [name, adminUsername],
     );
     const group = groupRes.rows[0];
     const isNewGroup = true;
 
     const { msg } = await Group.addUsers(
-      group.id, 
-      users, 
+      group.id,
+      users,
       isNewGroup
     );
 
@@ -81,8 +81,8 @@ class Group {
           ON ug.username = u.username
       WHERE ug.group_id = $1`,
       [groupID]
-    ); 
-    
+    );
+
     const users = usersRes.rows;
     if (!users.length) throw new NotFoundError(`No group: ${groupID}`);
 
@@ -96,23 +96,23 @@ class Group {
    **/
 
   static async addUsers(groupID, users, isNewGroup = false) {
-    const {sqlVals} = addUsersSql(users.length);
+    const { sqlVals } = addUsersSql(users.length);
     if (!isNewGroup) {
       const groupExists = await db.query(`
         SELECT id 
         FROM groups
         WHERE id = $1
-      `,[groupID])
+      `, [groupID])
 
       if (!groupExists.rows[0]) throw new NotFoundError(`No group: ${groupID}`);
     }
-    const querySql = 
+    const querySql =
       `INSERT INTO users_groups
           (group_id, username)
         VALUES
           ${sqlVals.join(',')}`;
 
-    await db.query(querySql,[...users, groupID]);
+    await db.query(querySql, [...users, groupID]);
 
     return {
       msg: `${users.join(', ')} were added to the group.`
@@ -191,13 +191,13 @@ class Group {
    * Returns { id, name }
    */
 
-  static async leave(groupID,username) {
+  static async leave(groupID, username) {
     const result = await db.query(`
       DELETE FROM users_groups
       WHERE group_id = $1 AND username = $2
       RETURNING group_id AS "groupID"`
-      ,[groupID,username]);
-    
+      , [groupID, username]);
+
     const group = result.rows[0];
 
     if (!group) throw new NotFoundError(`No group: ${groupID}`);

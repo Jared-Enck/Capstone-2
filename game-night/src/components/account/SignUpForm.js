@@ -9,7 +9,7 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
   FormBox,
-  PrimaryButton, 
+  PrimaryButton,
   ErrorSpan,
   FormOutlinedInput,
   FormInputLabel
@@ -28,17 +28,17 @@ const genError = (err, idx) => {
 export default function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
   const initialState = {
-    username: '', 
+    username: '',
     password: '',
     email: '',
   };
   const [
-    formData, 
+    formData,
     handleChange,
     formErrors,
     setFormErrors
   ] = useFields(initialState);
-  const {registerUser} = useContext(UserContext);
+  const { registerUser } = useContext(UserContext);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -57,16 +57,16 @@ export default function SignUpForm() {
   return (
     <Stack>
       <ContentContainer>
-        <FormBox 
+        <FormBox
           component="form"
           onSubmit={handleSubmit}
           autoComplete="off"
         >
           <Stack spacing={2}>
             <FormControl>
-              <FormInputLabel 
-                  htmlFor="username"
-                >
+              <FormInputLabel
+                htmlFor="username"
+              >
                 Username
               </FormInputLabel>
               <FormOutlinedInput
@@ -80,9 +80,9 @@ export default function SignUpForm() {
             </FormControl>
 
             <FormControl>
-              <FormInputLabel 
-                  htmlFor="password"
-                >
+              <FormInputLabel
+                htmlFor="password"
+              >
                 Password
               </FormInputLabel>
               <FormOutlinedInput
@@ -107,9 +107,9 @@ export default function SignUpForm() {
             </FormControl>
 
             <FormControl>
-              <FormInputLabel 
-                  htmlFor="email"
-                >
+              <FormInputLabel
+                htmlFor="email"
+              >
                 Email
               </FormInputLabel>
               <FormOutlinedInput
@@ -124,7 +124,7 @@ export default function SignUpForm() {
             <FormControl>
               {
                 formErrors
-                  ? formErrors.map((e,idx) => genError(e,idx))
+                  ? formErrors.map((e, idx) => genError(e, idx))
                   : null
               }
 

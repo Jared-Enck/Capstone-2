@@ -15,7 +15,7 @@ export default function App() {
   const isDark = darkMode === "true" ? true : false;
   return (
     <UserProvider isDark={isDark} setDarkMode={setDarkMode}>
-      <ThemeProvider theme={ isDark ? themeDark : themeLight}>
+      <ThemeProvider theme={isDark ? themeDark : themeLight}>
         <CssBaseline />
         <DataProvider>
           <Navbar />
@@ -23,7 +23,7 @@ export default function App() {
             <AllRoutes />
           </main>
         </DataProvider>
-      {/* <Footer /> */}
+        {/* <Footer /> */}
       </ThemeProvider>
     </UserProvider>
   );

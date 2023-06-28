@@ -4,9 +4,9 @@
 
 const jsonschema = require("jsonschema");
 const express = require("express");
-const { 
+const {
   ensureLoggedIn,
-  ensureOwner 
+  ensureOwner
 } = require("../middleware/auth");
 const { BadRequestError } = require("../expressError");
 const User = require("../models/user");

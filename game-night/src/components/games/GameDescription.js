@@ -41,7 +41,7 @@ export default function GameDescription({ game }) {
   const handleDescBtnClick = () => {
     setOpen(!open)
   };
-  
+
   const handleAddBtnClick = () => {
     if (!inCollection) {
       addGame(game);
@@ -61,7 +61,7 @@ export default function GameDescription({ game }) {
 
   const AddedBadgeComp = () => (
     <AddedBadgeBox>
-      <Typography sx={{textShadow: 1}} margin={1}>
+      <Typography sx={{ textShadow: 1 }} margin={1}>
         In Collection
       </Typography>
       <Typography paddingTop={".3rem"} >
@@ -84,8 +84,8 @@ export default function GameDescription({ game }) {
         </Typography>
         {
           inCollection
-          ? AddedBadgeComp()
-          : AddButtonComp()
+            ? AddedBadgeComp()
+            : AddButtonComp()
         }
       </Box>
       <Grid

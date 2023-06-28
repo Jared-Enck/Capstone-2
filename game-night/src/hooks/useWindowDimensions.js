@@ -21,5 +21,5 @@ export default function useWindowDimensions() {
     };
   });
 
-  return {windowSize};
+  return { windowSize };
 }

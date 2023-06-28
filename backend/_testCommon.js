@@ -36,7 +36,7 @@ async function commonBeforeAll() {
       ('u1', 'nSZTnbgacm'),
       ('u2', '78ZDzlpvdb')
   `);
-  
+
   await db.query(`
     INSERT INTO groups
       (id,name,admin_username)
@@ -69,8 +69,8 @@ async function commonAfterAll() {
   await db.end();
 }
 
-const u1Token = createToken({username: 'u1'});
-const u2Token = createToken({username: 'u2'});
+const u1Token = createToken({ username: 'u1' });
+const u2Token = createToken({ username: 'u2' });
 
 module.exports = {
   commonBeforeAll,

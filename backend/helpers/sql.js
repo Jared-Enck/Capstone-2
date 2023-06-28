@@ -10,7 +10,7 @@ function sqlForPartialUpdate(dataToUpdate, jsToSql) {
 
   // {imageURL: 'urlStr'} => ['"image_url"=$1']
   const cols = keys.map((colName, idx) =>
-      `"${jsToSql[colName] || colName}"=$${idx + 1}`,
+    `"${jsToSql[colName] || colName}"=$${idx + 1}`,
   );
 
   return {

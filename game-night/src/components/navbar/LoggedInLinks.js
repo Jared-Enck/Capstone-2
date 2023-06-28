@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import styled from "@emotion/styled";
 import UserAccountMenu from "../account/UserAccountMenu";
 
-export const StyledNavLink = styled(NavLink)(({theme}) => ({
+export const StyledNavLink = styled(NavLink)(({ theme }) => ({
   color: theme.palette.primary.muted,
   marginRight: '2rem',
   '&:hover': {

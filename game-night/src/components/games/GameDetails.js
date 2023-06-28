@@ -28,21 +28,21 @@ export default function GameDetails({ game }) {
   let CategoriesComps;
   let rows;
   if (game) {
-    MechanicsComps = 
+    MechanicsComps =
       game.mechanics.map((m, idx) => (
-      <DetailListItem
-        key={idx}
-        name={m.name}
-        lastItem={game.mechanics.length - 1 === idx}
-      />
+        <DetailListItem
+          key={idx}
+          name={m.name}
+          lastItem={game.mechanics.length - 1 === idx}
+        />
       ));
-    CategoriesComps = 
+    CategoriesComps =
       game.categories.map((c, idx) => (
-      <DetailListItem
-        key={idx}
-        name={c.name}
-        lastItem={game.categories.length - 1 === idx}
-      />
+        <DetailListItem
+          key={idx}
+          name={c.name}
+          lastItem={game.categories.length - 1 === idx}
+        />
       ));
     rows = [
       createData('Year Published', game.year_published),
@@ -57,31 +57,31 @@ export default function GameDetails({ game }) {
         <TableBody>
           {
             rows
-            ? rows.map((row, idx) => (
-              <StyledRow key={idx}>
-                <TableCell
-                  component="th"
-                  scope="row"
-                  sx={{
-                    width: "40ch",
-                    color: "primary.text",
-                    fontWeight: "bold",
-                    fontSize: "1.1rem"
-                  }}
-                >
-                  {row.name}
-                </TableCell>
-                <TableCell
-                  sx={{
-                    color: "primary.text",
-                    fontSize: "1.1rem"
-                  }}
-                >
-                  {row.data}
-                </TableCell>
-              </StyledRow>
-            ))
-            : null
+              ? rows.map((row, idx) => (
+                <StyledRow key={idx}>
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    sx={{
+                      width: "40ch",
+                      color: "primary.text",
+                      fontWeight: "bold",
+                      fontSize: "1.1rem"
+                    }}
+                  >
+                    {row.name}
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      color: "primary.text",
+                      fontSize: "1.1rem"
+                    }}
+                  >
+                    {row.data}
+                  </TableCell>
+                </StyledRow>
+              ))
+              : null
           }
         </TableBody>
       </Table>

@@ -101,7 +101,7 @@ export default function LoginForm() {
         >
           <Stack spacing={2}>
             <FormControl>
-              <FormInputLabel 
+              <FormInputLabel
                 htmlFor="username"
               >
                 Username
@@ -117,7 +117,7 @@ export default function LoginForm() {
             </FormControl>
 
             <FormControl>
-              <FormInputLabel 
+              <FormInputLabel
                 htmlFor="password"
               >
                 Password

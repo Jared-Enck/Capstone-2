@@ -4,7 +4,7 @@ import {
   Grid
 } from "@mui/material";
 
-export default function DetailListItem({name, lastItem}) {
+export default function DetailListItem({ name, lastItem }) {
   return (
     <Grid item>
       <Typography
@@ -14,8 +14,8 @@ export default function DetailListItem({name, lastItem}) {
       >
         {
           lastItem
-          ? name
-          : name + ","
+            ? name
+            : name + ","
         }
       </Typography>
     </Grid>

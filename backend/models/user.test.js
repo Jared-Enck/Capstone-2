@@ -98,7 +98,7 @@ describe("get", () => {
     });
   });
 
-  it("works if no games or groups for user", async () => {  
+  it("works if no games or groups for user", async () => {
     let { user } = await User.get('u3');
 
     expect(user).toEqual({
@@ -143,7 +143,7 @@ describe("update", () => {
       email: "u1@email.com",
       imageURL: res.imageURL
     });
-    const found = await db.query("SELECT * FROM users WHERE username = $1",['u1']);
+    const found = await db.query("SELECT * FROM users WHERE username = $1", ['u1']);
     expect(found.rows.length).toEqual(1);
     expect(found.rows[0].password.startsWith("$2b$")).toEqual(true);
   });
@@ -176,7 +176,7 @@ describe("remove", () => {
   it("works", async () => {
     await User.remove('u1');
     const res = await db.query(
-        `SELECT * FROM users WHERE username = 'u1'`);
+      `SELECT * FROM users WHERE username = 'u1'`);
     expect(res.rows.length).toEqual(0);
   });
 

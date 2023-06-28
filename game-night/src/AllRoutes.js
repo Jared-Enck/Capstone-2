@@ -23,16 +23,16 @@ const GameDetailsComponent = lazy(
 
 export default function AllRoutes() {
   return (
-    <Suspense fallback={<CircularLoading />}>
+    <Suspense fallback={<CircularLoading size={"2rem"} />}>
       <Routes>
         <Route path='*' />
         <Route path='/' element={<HomeComponent />} />
         <Route path='/login' element={<LoginComponent />} />
         <Route path='/signup' element={<SignUpComponent />} />
         <Route path='/collection' element={<CollectionComponent />} />
-        <Route 
-          path='/search/results' 
-          element={<SearchResultsPageComponent />} 
+        <Route
+          path='/search/results'
+          element={<SearchResultsPageComponent />}
         />
         <Route
           path='/games/:id'

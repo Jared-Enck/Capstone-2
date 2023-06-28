@@ -5,7 +5,7 @@ function addUsersSql(usersLength) {
   for (let i = 0; i < usersLength; i++) {
     sqlVals.push(`(${groupIDVarIdx}, $${i + 1})`);
   }
-  
+
   return { sqlVals };
 }
 

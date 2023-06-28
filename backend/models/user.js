@@ -41,7 +41,7 @@ class User {
         return user;
       }
     }
-    
+
     throw new UnauthorizedError("Invalid username/password");
   }
 
@@ -161,7 +161,7 @@ class User {
         WHERE username = $1`,
         [data.username],
       );
-  
+
       if (duplicateCheck.rows[0]) {
         throw new BadRequestError(`Invalid username: ${username}`);
       }

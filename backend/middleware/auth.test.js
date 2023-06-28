@@ -114,7 +114,7 @@ describe("ensureOwner", () => {
 describe("ensureGroupAdmin", () => {
   it("works for group admin user", () => {
     expect.assertions(1);
-    const req = { 
+    const req = {
       params: { groupID: 1 },
       body: { adminUsername: 'u1' }
     };
@@ -127,7 +127,7 @@ describe("ensureGroupAdmin", () => {
 
   it("throws unauth if not group admin user", () => {
     expect.assertions(1);
-    const req = { 
+    const req = {
       params: { groupID: 1 },
       body: { adminUsername: 'u1' }
     };
@@ -142,9 +142,9 @@ describe("ensureGroupAdmin", () => {
 describe("ensureGroupUser", () => {
   it("works for group user", () => {
     expect.assertions(1);
-    const req = { 
+    const req = {
       params: { groupID: 1 },
-      body: { groupUsers: ['u1','u2'] }
+      body: { groupUsers: ['u1', 'u2'] }
     };
     const res = { locals: { user: { username: 'u1' } } };
     const next = function (err) {
@@ -155,9 +155,9 @@ describe("ensureGroupUser", () => {
 
   it("throws unauth if not group user", () => {
     expect.assertions(1);
-    const req = { 
+    const req = {
       params: { groupID: 1 },
-      body: { groupUsers: ['u1','u2'] }
+      body: { groupUsers: ['u1', 'u2'] }
     };
     const res = { locals: { user: { username: 'u3' } } };
     const next = function (err) {

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { 
+import {
   IconButton,
   Menu,
   MenuItem,
@@ -7,7 +7,7 @@ import {
   Divider,
   ListItemIcon
 } from "@mui/material";
-import { 
+import {
   Settings,
   Logout
 } from '@mui/icons-material';
@@ -15,7 +15,7 @@ import UserContext from "../../context/UserContext";
 
 export default function UserAccountMenu() {
   const [anchorEl, setAnchorEl] = useState(null);
-  const {logout} = useContext(UserContext)
+  const { logout } = useContext(UserContext)
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
@@ -61,7 +61,7 @@ export default function UserAccountMenu() {
               height: 32,
               ml: -0.5,
               mr: 1,
-              bgcolor:'primary.main'
+              bgcolor: 'primary.main'
             },
             '&:before': {
               display: 'block',
@@ -86,7 +86,7 @@ export default function UserAccountMenu() {
           <Avatar /> Profile
         </MenuItem>
         <Divider />
-        <MenuItem 
+        <MenuItem
           onClick={handleClose}
           aria-label="open settings drawer"
         >

@@ -9,18 +9,18 @@ import {
   ListItemText
 } from "@mui/material";
 
-export default function SettingsDrawer({open=null}) {
+export default function SettingsDrawer({ open = null }) {
   const [openDrawer, setOpenDrawer] = useState(false);
 
   const toggleDrawer = (bool) => (event) => {
     setOpenDrawer(bool);
   };
 
-  useEffect(()=> {
+  useEffect(() => {
     if (open) {
       toggleDrawer(true);
     }
-  },[open])
+  }, [open])
 
   const list = () => (
     <Box

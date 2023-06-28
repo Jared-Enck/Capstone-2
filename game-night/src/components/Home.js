@@ -15,8 +15,8 @@ export default function Home() {
 
   useEffect(() => {
     console.log(currentUser)
-  },[])
-  
+  }, [])
+
   const handleChange = () => {
     handleThemeToggle();
     setChecked(!checked);

@@ -48,7 +48,7 @@ function ensureLoggedIn(req, res, next) {
 function ensureOwner(req, res, next) {
   try {
     const currUser = res.locals.user;
-    const reqUser= req.params.username;
+    const reqUser = req.params.username;
     const isOwner = reqUser === currUser.username
 
     if (!isOwner) throw new UnauthorizedError();

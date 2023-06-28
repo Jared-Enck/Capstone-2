@@ -68,11 +68,11 @@ describe("PATCH /users/:username", () => {
 
   test("works: set new password", async function () {
     const resp = await request(app)
-        .patch(`/users/u1`)
-        .send({
-          password: "new-password",
-        })
-        .set("authorization", u1Token);
+      .patch(`/users/u1`)
+      .send({
+        password: "new-password",
+      })
+      .set("authorization", u1Token);
     expect(resp.body).toEqual({
       user: {
         username: "u1",

@@ -4,7 +4,7 @@
 
 const jsonschema = require("jsonschema");
 const express = require("express");
-const { 
+const {
   ensureLoggedIn,
   ensureGroupAdmin,
   ensureGroupUser,
@@ -36,7 +36,7 @@ router.post("/", ensureLoggedIn, async function (req, res, next) {
       throw new BadRequestError(errs);
     }
     const result = await Group.create({ ...req.body });
-    return res.status(201).json( result );
+    return res.status(201).json(result);
   } catch (err) {
     return next(err);
   }
@@ -61,7 +61,7 @@ router.post("/:groupID", ensureLoggedIn, ensureGroupUser, async function (req, r
     const groupID = Number(req.params.groupID);
     const { addUsers } = req.body
     const resp = await Group.addUsers(groupID, addUsers);
-    return res.status(201).json( resp );
+    return res.status(201).json(resp);
   } catch (err) {
     return next(err);
   }
@@ -89,7 +89,7 @@ router.patch("/:groupID/edit", ensureLoggedIn, ensureGroupUser, async function (
     const groupID = Number(req.params.groupID)
 
     const group = await Group.update(groupID, req.body);
-    return res.json( group );
+    return res.json(group);
   } catch (err) {
     return next(err);
   }
@@ -119,8 +119,8 @@ router.patch("/:groupID/leave", ensureLoggedIn, async function (req, res, next) 
   try {
     const groupID = Number(req.params.groupID);
     const username = req.body.username
-    await Group.leave(groupID,username);
-    return res.json({ msg: `${username} left the group.`})
+    await Group.leave(groupID, username);
+    return res.json({ msg: `${username} left the group.` })
   } catch (err) {
     return next(err)
   }

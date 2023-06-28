@@ -1,6 +1,6 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { 
+import {
   Box,
   Grid,
   Typography,
@@ -32,11 +32,11 @@ const Brand = styled(Typography)(({ theme }) => ({
 }));
 
 export default function Navbar() {
-  const {currentUser} = useContext(UserContext)
+  const { currentUser } = useContext(UserContext)
 
   return (
     <StyledBox>
-      <Container 
+      <Container
         sx={{
           height: '4rem'
         }}
@@ -52,7 +52,7 @@ export default function Navbar() {
           <SearchBar />
 
           <Grid item>
-            <Grid 
+            <Grid
               container
               direction="row"
               alignItems="center"

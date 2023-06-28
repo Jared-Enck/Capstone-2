@@ -72,7 +72,7 @@ class ThirdPartyApi {
       } = myCache.mget(['mechanics', 'categories']);
       const results = {};
       const regexp = new RegExp(term, 'i');
-  
+
       results.foundMechanics = mechanics.filter(m => regexp.test(m.name));
       results.foundCategories = categories.filter(c => regexp.test(c.name));
 
@@ -91,7 +91,7 @@ class ThirdPartyApi {
       name: term
     }
     const { games } = await this.request('/search', data);
-    results.foundGames = games.splice(0,10);
+    results.foundGames = games.splice(0, 10);
     return results;
   };
 
@@ -110,8 +110,8 @@ class ThirdPartyApi {
     return res;
   };
 
-  static async getGameMedia({gameID, mechanicIDs, categoryIDs}) {
-    const data = {game_id: gameID}
+  static async getGameMedia({ gameID, mechanicIDs, categoryIDs }) {
+    const data = { game_id: gameID }
     const setMechanics = new Set(mechanicIDs);
     const setCategories = new Set(categoryIDs);
     const { mechanics, categories } = myCache.mget(['mechanics', 'categories']);

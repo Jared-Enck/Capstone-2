@@ -53,7 +53,7 @@ export default function SearchBoxResults({
   };
 
   return (
-    <StyledBox sx={{boxShadow: 2}}>
+    <StyledBox sx={{ boxShadow: 2 }}>
       <Stack>
         {
           mechanics.length

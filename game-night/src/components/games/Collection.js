@@ -42,16 +42,16 @@ export default function Collection() {
         >
           {
             inSync
-            ? (
-              collection.length
-              ? collection.map(g => (
-                <Grid key={g.id} item>
-                  <GameCard game={g} collectionPage />
-                </Grid>
-              ))
-              : noGamesMsg
-            )
-            : null
+              ? (
+                collection.length
+                  ? collection.map(g => (
+                    <Grid key={g.id} item>
+                      <GameCard game={g} collectionPage />
+                    </Grid>
+                  ))
+                  : noGamesMsg
+              )
+              : null
           }
         </Grid>
       </ContentContainer>
