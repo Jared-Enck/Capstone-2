@@ -1,10 +1,21 @@
-import * as React from 'react';
+import React from 'react';
 import { CircularProgress, Box } from '@mui/material';
 
-export default function CircularLoading() {
+export default function CircularLoading({size}) {
   return (
-    <Box sx={{ justifyContent: 'center' }}>
-      <CircularProgress sx={{ color: "primary.contrastText" }} />
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        padding: "1rem"
+      }}
+    >
+      <CircularProgress
+        size={size}
+        sx={{
+          color: "primary.contrastText"
+        }}
+      />
     </Box>
   );
 }
