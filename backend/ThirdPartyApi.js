@@ -90,14 +90,14 @@ class ThirdPartyApi {
     const data = {
       name: term
     }
-    const { games } = await this.request('/search', data);
-    results.foundGames = games.splice(0, 10);
-    return results;
+    const { games, count } = await this.request('/search', data);
+    results.foundGames = games;
+    return { results, count };
   };
 
   static async getRefinedResults(query) {
-    const { games } = await this.request('/search', query);
-    return games;
+    const results = await this.request('/search', query);
+    return results;
   };
 
   static cacheGame(game) {
