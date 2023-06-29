@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useCallback, useContext, useState, useEffect } from "react";
 import DataContext from "../../context/DataContext";
 import {
   Box,
@@ -7,9 +7,31 @@ import {
 } from "@mui/material";
 import ContentContainer from "../common/ContentContainer";
 import GameCard from "../games/GameCard";
+import ResultsPagination from "../common/ResultsPagination";
 
 export default function SearchResultsPage() {
   const { refinedResults } = useContext(DataContext);
+  const { games, count } = refinedResults;
+  const [page, setPage] = useState(1);
+  const [pageCount, setPageCount] = useState(10);
+
+  const getPageCount = useCallback(() => {
+    setPageCount(() => {
+      if (count) {
+        let pageCount = count / 30;
+        console.log(pageCount)
+        return pageCount % 1 === 0 ? pageCount : Math.floor(pageCount) + 1;
+      }
+    });
+  }, [count]);
+
+  useEffect(() => {
+    getPageCount();
+  }, [getPageCount]);
+
+  const handleChange = (evt, value) => {
+    setPage(value)
+  }
 
   return (
     <Stack>
@@ -24,7 +46,7 @@ export default function SearchResultsPage() {
             {
               refinedResults
                 ? (
-                  refinedResults.map(r =>
+                  games.map(r =>
                   (
                     <Grid item alignitems="flex-start" key={r.id}>
                       <GameCard game={r} />
@@ -36,6 +58,11 @@ export default function SearchResultsPage() {
             }
           </Grid>
         </Box>
+        <ResultsPagination
+          page={page}
+          handleChange={handleChange}
+          pageCount={pageCount}
+        />
       </ContentContainer>
     </Stack>
   );
