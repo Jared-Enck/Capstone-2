@@ -5,6 +5,7 @@ import UserContext from "./UserContext";
 
 export default function DataProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
+  const [searchResults, setSearchResults] = useState('');
   const [refinedSearch, setRefinedSearch] = useState('');
   const [refinedResults, setRefinedResults] = useState('');
   const [gameID, setGameID] = useState('');
@@ -162,8 +163,9 @@ export default function DataProvider({ children }) {
     <DataContext.Provider
       value={
         {
+          searchResults,
+          setSearchResults,
           refinedResults,
-          setRefinedResults,
           setRefinedSearch,
           open,
           setOpen,
