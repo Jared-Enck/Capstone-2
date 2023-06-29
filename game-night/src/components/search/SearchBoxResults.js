@@ -25,14 +25,12 @@ const StyledBox = styled(Box)(({ theme }) => ({
   zIndex: 2
 }));
 
-export default function SearchBoxResults({
-  results,
-  clearSearch
-}) {
+export default function SearchBoxResults({ results, clearSearch }) {
   const navigate = useNavigate();
-  const mechanics = results.foundMechanics || [];
-  const categories = results.foundCategories || [];
-  const games = results.foundGames || [];
+  const mechanics = results.foundMechanics;
+  const categories = results.foundCategories;
+  const games = results.foundGames;
+  
   const {
     setRefinedSearch,
     setGameID,

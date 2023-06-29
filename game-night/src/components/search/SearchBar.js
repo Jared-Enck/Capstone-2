@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
+import DataContext from "../../context/DataContext";
 import useDebounce from "../../hooks/useDebounce";
 import GameNightApi from "../../gameNightApi";
-import DataContext from "../../context/DataContext";
 import SearchBoxResults from "./SearchBoxResults";
 import SearchIcon from '@mui/icons-material/Search';
 import {
@@ -47,10 +47,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     width: '100%',
     border: '2px solid rgba(0,0,0,0)',
     [theme.breakpoints.up('sm')]: {
-      width: '12ch',
-      '&:focus': {
-        width: '30ch',
-      },
+      width: '30ch'
     },
     '&:focus': {
       border: `2px solid ${theme.palette.primary.contrastText}`,
@@ -60,15 +57,19 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function SearchBar() {
+  const {
+    open,
+    setOpen,
+    searchResults,
+    setSearchResults
+  } = useContext(DataContext);
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState({});
-  const { open, setOpen } = useContext(DataContext);
 
   const debouncedRequest = useDebounce(async () => {
     if (searchTerm && searchTerm.length > 2) {
       setOpen(true);
-      const results = await GameNightApi.getSearchResults(searchTerm);
-      setSearchResults(results);
+      const res = await GameNightApi.getSearchResults(searchTerm);
+      setSearchResults(res);
     }
   });
 
@@ -109,9 +110,7 @@ export default function SearchBar() {
             <ClickAwayListener onClickAway={handleClickAway}>
               <Collapse in={open}>
                 <SearchBoxResults
-                  results={searchResults}
-                  setSearchTerm={setSearchTerm}
-                  setSearchResults={setSearchResults}
+                  results={searchResults.results}
                   clearSearch={clearSearch}
                 />
               </Collapse>
