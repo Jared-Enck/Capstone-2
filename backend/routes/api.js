@@ -84,13 +84,7 @@ router.post("/cache/games", function (req, res, next) {
 router.get("/search", async function (req, res, next) {
   try {
     const query = req.query
-    const term = query.term;
-    let results;
-    if (term) {
-      results = await ThirdPartyApi.getSearchResults(term.toLowerCase());
-    } else {
-      results = await ThirdPartyApi.getRefinedResults(query);
-    }
+    const results = await ThirdPartyApi.getSearchResults(query);
     return res.json(results);
   } catch (err) {
     return next(err);
