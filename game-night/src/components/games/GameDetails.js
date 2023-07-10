@@ -9,7 +9,7 @@ import {
 import DetailListItem from "./DetailListItem";
 import styled from "@emotion/styled";
 
-const createData = (name, data) => {
+const createData = (name, data = "N/A") => {
   return { name, data }
 };
 
@@ -28,25 +28,35 @@ export default function GameDetails({ game }) {
   let CategoriesComps;
   let rows;
   if (game) {
-    MechanicsComps =
-      game.mechanics.map((m, idx) => (
-        <DetailListItem
-          key={idx}
-          name={m.name}
-          lastItem={game.mechanics.length - 1 === idx}
-        />
-      ));
-    CategoriesComps =
-      game.categories.map((c, idx) => (
-        <DetailListItem
-          key={idx}
-          name={c.name}
-          lastItem={game.categories.length - 1 === idx}
-        />
-      ));
+    if (game.mechanics.length) {
+      MechanicsComps =
+        game.mechanics.map((m, idx) => (
+          <DetailListItem
+            key={idx}
+            name={m.name}
+            lastItem={game.mechanics.length - 1 === idx}
+          />
+        ));
+    } else {
+      MechanicsComps = <DetailListItem name={"N/A"} lastItem={true} />
+    }
+    if (game.categories.length) {
+      CategoriesComps =
+        game.categories.map((c, idx) => (
+          <DetailListItem
+            key={idx}
+            name={c.name}
+            lastItem={game.categories.length - 1 === idx}
+          />
+        ));
+    } else {
+      CategoriesComps = <DetailListItem name={"N/A"} lastItem={true} />
+    }
+    const year = game.year_published ? game.year_published : "N/A";
+    const publisher = game.primary_publisher ? game.primary_publisher.name : "N/A";
     rows = [
-      createData('Year Published', game.year_published),
-      createData('Publisher', game.primary_publisher.name),
+      createData('Year Published', year),
+      createData('Publisher', publisher),
       createData('Mechanics', <Grid container spacing={2} direction={"row"}>{MechanicsComps}</Grid>),
       createData('Categories', <Grid container spacing={2} direction={"row"}>{CategoriesComps}</Grid>)
     ];

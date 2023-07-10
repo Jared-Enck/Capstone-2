@@ -1,4 +1,5 @@
-import React, { useContext, lazy } from "react";
+import React, { useEffect, useContext, lazy } from "react";
+import { useParams } from "react-router-dom";
 import DataContext from "../../context/DataContext";
 import ContentContainer from "../common/ContentContainer";
 import {
@@ -16,7 +17,12 @@ const GameDetailsComp = lazy(
 );
 
 export default function GameDetailsPage() {
-  const { game } = useContext(DataContext);
+  const { game, checkGameCache } = useContext(DataContext);
+  const gameID = useParams().id;
+
+  useEffect(() => {
+    checkGameCache(gameID);
+  }, [gameID]);
 
   const images = game.detail_images || [];
   const videos = game.videos || [];

@@ -20,7 +20,6 @@ import DataContext from "../../context/DataContext";
 
 export default function GameCard({ game, collectionPage }) {
   const {
-    setGameID,
     setGame,
     userGameIDs,
     addGame,
@@ -30,7 +29,6 @@ export default function GameCard({ game, collectionPage }) {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    setGameID(game.id);
     setGame(game);
     navigate(`/games/${game.id}`);
   };
@@ -85,7 +83,7 @@ export default function GameCard({ game, collectionPage }) {
           }}
           component={"img"}
           height={230}
-          image={game.images.large}
+          image={game.images.large || game.image_url}
           alt={game.name}
         />
         <CardContent sx={{ color: "primary.contrastText" }}>
