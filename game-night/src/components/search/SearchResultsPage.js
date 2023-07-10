@@ -59,10 +59,6 @@ export default function SearchResultsPage() {
           spacing={3}
           padding={"1.5rem"}
           direction={"row"}
-          sx={{
-            marginTop: ".5rem",
-            justifyContent: "center"
-          }}
         >
           {
             errors
