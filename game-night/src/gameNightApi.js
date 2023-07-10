@@ -27,7 +27,6 @@ export default class GameNightApi {
   // Individual API routes to db
 
   /**Registers new user */
-
   static async register(data) {
     // { username, password, email }
     let res = await this.request('auth/register', data, 'post');
@@ -35,29 +34,24 @@ export default class GameNightApi {
   };
 
   /** Logs user in if username and password are correct */
-
   static async login(data) {
     let res = await this.request('auth/token', data, 'post');
     return res.token;
   };
 
   /** Gets user info */
-
   static async getCurrentUser(username) {
     let res = await this.request(`users/${username}`);
     return res.user;
   };
 
   /** Get search results */
-
-  static async getSearchResults(term) {
-    let res = await this.request(`api/search?term=${term}`);
-    return res;
-  };
-
-  /** Get results for specific mechanic or category */
-  static async getRefinedSearch({ path, id }) {
-    let res = await this.request(`api/search?${path}=${id}`);
+  static async getSearchResults(params, skipAmount) {
+    const data =
+      skipAmount
+        ? { ...params, skip: skipAmount }
+        : params
+    let res = await this.request('api/search', data);
     return res;
   };
 
