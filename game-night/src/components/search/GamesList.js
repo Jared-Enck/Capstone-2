@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import CircularLoading from "../common/CircularLoading";
 
-export default function GamesList({ items, handleGameClick }) {
+export default function GamesList({ games, handleGameClick }) {
   const gamesListItem = (item, idx) => (
     <ListItemButton
       alignitems={"flex-start"}
@@ -44,12 +44,12 @@ export default function GamesList({ items, handleGameClick }) {
 
   return (
     <List
-      sx={{ width: "100%" }}
+      sx={{ width: "100%", paddingBottom: "0" }}
     >
       <Suspense fallback={<CircularLoading size={"1.5rem"} />}>
         {
-          items.length
-            ? items.map((i, idx) => {
+          games.length
+            ? games.map((i, idx) => {
               if (idx < 10) return gamesListItem(i, idx);
             })
             : null

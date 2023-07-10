@@ -25,29 +25,30 @@ const StyledBox = styled(Box)(({ theme }) => ({
   zIndex: 2
 }));
 
-export default function SearchBoxResults({ results, clearSearch }) {
+export default function SearchBoxResults({ results, clearBoxResults }) {
   const navigate = useNavigate();
-  const mechanics = results.foundMechanics;
-  const categories = results.foundCategories;
-  const games = results.foundGames;
-  
+  const mechanics = results.foundMechanics || [];
+  const categories = results.foundCategories || [];
+  const games = results.foundGames || [];
+
   const {
-    setRefinedSearch,
-    setGameID,
-    setGame
+    setGame,
+    setOpen,
+    setBoxResults,
+    getSearchResults
   } = useContext(DataContext);
 
-  const handleClick = (path, id) => {
-    setRefinedSearch({ path, id });
+  const handleBtnClick = (path, item) => {
+    setOpen(false);
+    setBoxResults({});
+    getSearchResults({ path, item });
     navigate('/search/results');
-    clearSearch();
   };
 
   const handleGameClick = (idx, gameID) => {
-    setGameID(gameID);
     setGame(games[idx]);
     navigate(`/games/${gameID}`);
-    clearSearch();
+    clearBoxResults();
   };
 
   return (
@@ -59,7 +60,7 @@ export default function SearchBoxResults({ results, clearSearch }) {
               <SearchBoxSectionComp
                 sectionName={"Mechanics"}
                 items={mechanics}
-                handleClick={handleClick}
+                handleClick={handleBtnClick}
               />
             )
             : null
@@ -70,7 +71,7 @@ export default function SearchBoxResults({ results, clearSearch }) {
               <SearchBoxSectionComp
                 sectionName={"Categories"}
                 items={categories}
-                handleClick={handleClick}
+                handleClick={handleBtnClick}
               />
             )
             : null
@@ -84,7 +85,7 @@ export default function SearchBoxResults({ results, clearSearch }) {
           games.length
             ? (
               <GamesListComp
-                items={games}
+                games={games}
                 handleGameClick={handleGameClick}
               />
             )

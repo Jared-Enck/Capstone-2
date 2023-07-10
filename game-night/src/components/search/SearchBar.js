@@ -1,7 +1,5 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import DataContext from "../../context/DataContext";
-import useDebounce from "../../hooks/useDebounce";
-import GameNightApi from "../../gameNightApi";
 import SearchBoxResults from "./SearchBoxResults";
 import SearchIcon from '@mui/icons-material/Search';
 import {
@@ -38,7 +36,7 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
+  color: theme.palette.primary.main,
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
@@ -47,7 +45,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     width: '100%',
     border: '2px solid rgba(0,0,0,0)',
     [theme.breakpoints.up('sm')]: {
-      width: '30ch'
+      width: '50ch'
     },
     '&:focus': {
       border: `2px solid ${theme.palette.primary.contrastText}`,
@@ -60,27 +58,21 @@ export default function SearchBar() {
   const {
     open,
     setOpen,
-    searchResults,
-    setSearchResults
+    searchTerm,
+    boxResults,
+    setBoxResults,
+    debouncedRequest,
+    setSearchTerm
   } = useContext(DataContext);
-  const [searchTerm, setSearchTerm] = useState('');
 
-  const debouncedRequest = useDebounce(async () => {
-    if (searchTerm && searchTerm.length > 2) {
-      setOpen(true);
-      const res = await GameNightApi.getSearchResults(searchTerm);
-      setSearchResults(res);
-    }
-  });
-
-  const clearSearch = () => {
+  const clearBoxResults = () => {
     setSearchTerm('');
-    setSearchResults('');
+    setBoxResults({});
   };
 
   const handleClickAway = () => {
     setOpen(false);
-    clearSearch();
+    clearBoxResults();
   };
 
   const handleChange = (e) => {
@@ -105,13 +97,13 @@ export default function SearchBar() {
         autoComplete="off"
       />
       {
-        searchResults
+        Object.keys(boxResults).length
           ? (
             <ClickAwayListener onClickAway={handleClickAway}>
               <Collapse in={open}>
                 <SearchBoxResults
-                  results={searchResults.results}
-                  clearSearch={clearSearch}
+                  results={boxResults}
+                  clearBoxResults={clearBoxResults}
                 />
               </Collapse>
             </ClickAwayListener>

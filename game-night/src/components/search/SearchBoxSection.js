@@ -9,18 +9,20 @@ import CircularLoading from "../common/CircularLoading";
 
 const SearchBoxButton = styled(Button)(({ theme }) => ({
   borderRadius: '9999px',
-  backgroundColor: theme.palette.primary.contrastText,
-  color: theme.palette.primary.main,
+  backgroundColor: theme.palette.primary.main,
+  color: theme.palette.primary.text,
+  height: '1.5rem',
+  fontSize: '.7rem',
+  padding: '.5rem',
   '&:hover': {
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.primary.contrastText
-  },
-  height: '1rem',
-  fontSize: '.7rem'
+    backgroundColor: theme.palette.primary.contrastText,
+    color: theme.palette.primary.main,
+    fontWeight: 'bold'
+  }
 }))
 
 export default function SearchBoxSection({
-  sectionName = null,
+  sectionName,
   items,
   handleClick
 }) {
@@ -37,18 +39,17 @@ export default function SearchBoxSection({
         container
         direction={'row'}
         sx={{
-          padding: '0.3rem',
-          maxWidth: '328px'
+          padding: '0.3rem'
         }}
       >
         <Suspense fallback={<CircularLoading size={"1.5rem"} />}>
           {
             items
               ? items.map(i => (
-                <Grid key={i.id} item sx={{ padding: 0, margin: 0 }}>
+                <Grid key={i.id} item sx={{ marginRight: ".5rem" }}>
                   <SearchBoxButton
                     size="small"
-                    onClick={() => handleClick(sectionName.toLowerCase(), i.id)}
+                    onClick={() => handleClick(sectionName.toLowerCase(), i)}
                   >
                     {i.name}
                   </SearchBoxButton>

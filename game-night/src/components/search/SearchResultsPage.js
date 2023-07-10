@@ -1,63 +1,79 @@
 import React, { useCallback, useContext, useState, useEffect } from "react";
 import DataContext from "../../context/DataContext";
 import {
-  Box,
   Stack,
   Grid
 } from "@mui/material";
 import ContentContainer from "../common/ContentContainer";
 import GameCard from "../games/GameCard";
+import ErrorMessage from "../common/ErrorMessage";
 import ResultsPagination from "../common/ResultsPagination";
 
 export default function SearchResultsPage() {
-  const { refinedResults } = useContext(DataContext);
-  const { games, count } = refinedResults;
+  const {
+    resultsHeader,
+    searchCount,
+    nextResults,
+    getNextResults,
+    errors
+  } = useContext(DataContext);
+
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(10);
 
   const getPageCount = useCallback(() => {
-    setPageCount(() => {
-      if (count) {
-        let pageCount = count / 30;
-        console.log(pageCount)
-        return pageCount % 1 === 0 ? pageCount : Math.floor(pageCount) + 1;
-      }
-    });
-  }, [count]);
+    if (searchCount) {
+      setPageCount(() => {
+        const initialPages = searchCount / 30;
+        return initialPages % 1 === 0 ? initialPages : Math.ceil(initialPages);
+      });
+    }
+  }, [searchCount]);
 
   useEffect(() => {
+    setPage(1);
     getPageCount();
   }, [getPageCount]);
 
-  const handleChange = (evt, value) => {
-    setPage(value)
-  }
+  const handleChange = async (evt, value) => {
+    setPage(value);
+    if (!nextResults[value]) {
+      const skipAmount = (value - 1) * 30;
+      await getNextResults(value, skipAmount);
+    }
+  };
+
+  const gridItemComp = (game) => (
+    <Grid item key={game.id}>
+      <GameCard game={game} />
+    </Grid>
+  );
+
+  const header = `Results for "${resultsHeader.name}"`
 
   return (
     <Stack>
-      <ContentContainer header={"Search Results"} divider>
-        <Box sx={{ justifyContent: "center" }}>
-          <Grid
-            container
-            spacing={3}
-            padding={"1.5rem"}
-            direction={"row"}
-          >
-            {
-              refinedResults
-                ? (
-                  games.map(r =>
-                  (
-                    <Grid item alignitems="flex-start" key={r.id}>
-                      <GameCard game={r} />
-                    </Grid>
-                  )
-                  )
-                )
-                : null
-            }
-          </Grid>
-        </Box>
+      <ContentContainer header={header} divider>
+        <Grid
+          container
+          spacing={3}
+          padding={"1.5rem"}
+          direction={"row"}
+          sx={{
+            marginTop: ".5rem",
+            justifyContent: "center"
+          }}
+        >
+          {
+            errors
+              ? <ErrorMessage />
+              : (
+                nextResults[page]
+                  ? nextResults[page].map(g => gridItemComp(g))
+                  : null
+              )
+          }
+        </Grid>
         <ResultsPagination
           page={page}
           handleChange={handleChange}
