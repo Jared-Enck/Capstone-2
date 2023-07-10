@@ -2,7 +2,7 @@ const axios = require("axios");
 const { CLIENT_ID, API_BASE_URL } = require("./config");
 const moment = require('moment');
 const NodeCache = require("node-cache");
-const myCache = new NodeCache();
+const commonCache = new NodeCache();
 const gamesCache = new NodeCache();
 const moreThanADay = require('./helpers/moreThanADay');
 
@@ -21,9 +21,7 @@ class ThirdPartyApi {
     try {
       return (await axios({ url, method, data, params })).data;
     } catch (err) {
-      console.error("API Error:", err.response);
-      let message = err.response.data.error.message;
-      throw Array.isArray(message) ? message : [message];
+      console.error("API Error:", err.request.cause);
     };
   };
 
@@ -31,24 +29,23 @@ class ThirdPartyApi {
 
   // Get common data
   static async cacheCommon() {
-    if (!myCache.has('mechanics') || !myCache.has('categories')) {
+    if (!commonCache.has('mechanics') || !commonCache.has('categories')) {
       const results = await Promise.allSettled([
         this.request('game/mechanics'),
         this.request('game/categories'),
       ]);
-
       const failed = results.filter(r => r.status === 'rejected');
 
       if (failed.length) console.error({ errors: failed });
 
-      const success = myCache.mset([
+      const success = commonCache.mset([
         { key: 'mechanics', val: results[0].value.mechanics, ttl: 86400 },
         { key: 'categories', val: results[1].value.categories, ttl: 86400 }
       ]);
       const msg = success
         ? { success: 'Successfully cached data.' }
         : { failure: 'Failed to cache data.' };
-
+      console.debug('Message: ', msg)
       return msg;
     };
   };
@@ -69,7 +66,7 @@ class ThirdPartyApi {
       const {
         mechanics,
         categories
-      } = myCache.mget(['mechanics', 'categories']);
+      } = commonCache.mget(['mechanics', 'categories']);
       const results = {};
       const regexp = new RegExp(term, 'i');
 
@@ -85,19 +82,21 @@ class ThirdPartyApi {
     return found;
   };
 
-  static async getSearchResults(term) {
-    const results = this.checkCommon(term);
-    const data = {
-      name: term
+  static async getSearchResults(query, skipAmount) {
+    let results = {};
+    if (query.name) {
+      results = this.checkCommon(query.name);
     }
-    const { games, count } = await this.request('/search', data);
+    const [key, val] = Object.entries(query)[0];
+    const params =
+      skipAmount
+        ? `${key}=${val}&skip=${skipAmount}`
+        : `${key}=${val}`;
+    console.log('params: ', params)
+    const response = await this.request('/search', { ...query, limit: '30' });
+    const { games, count } = response;
     results.foundGames = games;
     return { results, count };
-  };
-
-  static async getRefinedResults(query) {
-    const results = await this.request('/search', query);
-    return results;
   };
 
   static cacheGame(game) {
@@ -114,7 +113,7 @@ class ThirdPartyApi {
     const data = { game_id: gameID }
     const setMechanics = new Set(mechanicIDs);
     const setCategories = new Set(categoryIDs);
-    const { mechanics, categories } = myCache.mget(['mechanics', 'categories']);
+    const { mechanics, categories } = commonCache.mget(['mechanics', 'categories']);
 
     const mechanicsRes = mechanics.filter(m => {
       if (setMechanics.has(m.id)) return m.name
