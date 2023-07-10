@@ -21,7 +21,7 @@ class ThirdPartyApi {
     try {
       return (await axios({ url, method, data, params })).data;
     } catch (err) {
-      console.error("API Error:", err.request.cause);
+      console.error("API Error:", err.message);
     };
   };
 
@@ -29,25 +29,24 @@ class ThirdPartyApi {
 
   // Get common data
   static async cacheCommon() {
-    if (!commonCache.has('mechanics') || !commonCache.has('categories')) {
-      const results = await Promise.allSettled([
-        this.request('game/mechanics'),
-        this.request('game/categories'),
-      ]);
-      const failed = results.filter(r => r.status === 'rejected');
+    commonCache.flushAll();
+    const results = await Promise.allSettled([
+      this.request('game/mechanics'),
+      this.request('game/categories'),
+    ]);
+    const failed = results.filter(r => r.status === 'rejected');
 
-      if (failed.length) console.error({ errors: failed });
+    if (failed.length) console.error({ errors: failed });
 
-      const success = commonCache.mset([
-        { key: 'mechanics', val: results[0].value.mechanics, ttl: 86400 },
-        { key: 'categories', val: results[1].value.categories, ttl: 86400 }
-      ]);
-      const msg = success
-        ? { success: 'Successfully cached data.' }
-        : { failure: 'Failed to cache data.' };
-      console.debug('Message: ', msg)
-      return msg;
-    };
+    const success = commonCache.mset([
+      { key: 'mechanics', val: results[0].value.mechanics, ttl: 86400 },
+      { key: 'categories', val: results[1].value.categories, ttl: 86400 }
+    ]);
+    const msg = success
+      ? { success: 'Successfully cached data.' }
+      : { failure: 'Failed to cache data.' };
+    console.debug(msg)
+    return msg;
   };
 
   static async getCommonCache() {
