@@ -1,14 +1,19 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import DataContext from "./DataContext";
+import useDebounce from "../hooks/useDebounce";
 import GameNightApi from "../gameNightApi";
 import UserContext from "./UserContext";
 
 export default function DataProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
+  const [errors, setErrors] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [boxResults, setBoxResults] = useState({});
+  const [searchParam, setSearchParam] = useState({});
   const [searchResults, setSearchResults] = useState('');
-  const [refinedSearch, setRefinedSearch] = useState('');
-  const [refinedResults, setRefinedResults] = useState('');
-  const [gameID, setGameID] = useState('');
+  const [searchCount, setSearchCount] = useState('');
+  const [resultsHeader, setResultsHeader] = useState('');
+  const [nextResults, setNextResults] = useState({});
   const [game, setGame] = useState('');
   const [collection, setCollection] = useState([]);
   const [userGameIDs, setUserGameIDs] = useState(new Set());
@@ -28,74 +33,94 @@ export default function DataProvider({ children }) {
     getCommonCache();
   }, [getCommonCache]);
 
-  const getRefinedResults = useCallback(async () => {
+  const debouncedRequest = useDebounce(async () => {
     try {
-      if (refinedSearch) {
-        setOpen(false);
-        setIsLoading(true);
-        const res = await GameNightApi.getRefinedSearch(refinedSearch);
-        setRefinedResults(res);
-        setIsLoading(false);
+      if (searchTerm && searchTerm.length > 2) {
+        setOpen(true);
+        setErrors(false);
+        const res = await GameNightApi.getSearchResults({ name: searchTerm });
+        setBoxResults(res.results);
       }
+    } catch (err) {
+      console.error('Error:', err)
+    };
+    setIsLoading(false);
+  });
+
+  async function getSearchResults(searchObj) {
+    try {
+      const { path, item } = searchObj;
+      setSearchParam({ [path]: item.id });
+      setResultsHeader(item);
+      setSearchTerm('');
+      setErrors(false);
+      setNextResults({});
+      setIsLoading(true);
+      const res = await GameNightApi.getSearchResults({ [path]: item.id });
+      console.log(res)
+      setSearchResults(res.results.foundGames);
+      setSearchCount(res.count);
+      setNextResults({ 1: res.results.foundGames });
     } catch (err) {
       console.error('Error: ', err)
     }
-  }, [refinedSearch]);
+    setIsLoading(false);
+  };
 
-  useEffect(() => {
-    getRefinedResults();
-  }, [refinedSearch, getRefinedResults]);
-
-  const getGameMedia = useCallback(async () => {
+  async function getNextResults(page, skipAmount) {
     try {
-      if (gameID) {
-        setIsLoading(true);
-        const mechanicIDs = game.mechanics.map(m => m.id);
-        const categoryIDs = game.categories.map(m => m.id);
-        const {
-          mechanicsRes,
-          categoriesRes,
-          detail_images,
-          videos
-        } = await GameNightApi.getGameMedia(gameID, mechanicIDs, categoryIDs);
-        game.mechanics = mechanicsRes;
-        game.categories = categoriesRes;
-        const completeGame = {
-          ...game,
-          detail_images,
-          videos
-        }
-        setGame(completeGame);
-        await GameNightApi.cacheGame(completeGame);
+      setIsLoading(true);
+      setErrors(false);
+      const res = await GameNightApi.getSearchResults(searchParam, skipAmount);
+      const games = res.results.foundGames;
+      console.log('next: ', { ...nextResults, [page]: games })
+      setNextResults({ ...nextResults, [page]: games });
+    } catch (err) {
+      console.error('Error: ', err)
+      setErrors(true);
+    };
+    setIsLoading(false);
+  };
+
+  const getGameMedia = useCallback(async (gameID) => {
+    try {
+      const mechanicIDs = game.mechanics.map(m => m.id);
+      const categoryIDs = game.categories.map(m => m.id);
+      const {
+        mechanicsRes,
+        categoriesRes,
+        detail_images,
+        videos
+      } = await GameNightApi.getGameMedia(gameID, mechanicIDs, categoryIDs);
+      game.mechanics = mechanicsRes;
+      game.categories = categoriesRes;
+      const completeGame = {
+        ...game,
+        detail_images,
+        videos
       }
+      setGame(completeGame);
+      GameNightApi.cacheGame(completeGame);
     } catch (err) {
       console.error('Error: ', err)
     }
-  }, [gameID, game]);
+  }, [game]);
 
-  const checkGameCache = useCallback(async () => {
+  const checkGameCache = useCallback(async (gameID) => {
     try {
-      setOpen(false);
+      setIsLoading(true);
       const found = await GameNightApi.checkGameCache(gameID);
       if (!found) {
-        await getGameMedia();
+        await getGameMedia(gameID);
       } else {
         setGame(found);
       }
+      setOpen(false);
     } catch (err) {
       console.error('Error: ', err)
     }
-  }, [gameID, getGameMedia]);
-
-  useEffect(() => {
-    if (gameID) {
-      setIsLoading(true);
-      checkGameCache();
-      setGameID('');
-      setGame('');
-    }
     setIsLoading(false);
-  }, [gameID, checkGameCache]);
+  }, [getGameMedia]);
 
   const getCollection = useCallback(async () => {
     try {
@@ -104,10 +129,10 @@ export default function DataProvider({ children }) {
       const gameIdsStr = `,${Array.from(userGameIDs).join(',')},`;
       const res = await GameNightApi.getCollection({ ids: gameIdsStr });
       setCollection(res.games);
-      setIsLoading(false);
     } catch (err) {
       console.error('Error: ', err)
     }
+    setIsLoading(false);
   }, [userGameIDs]);
 
   async function addGame(game) {
@@ -163,15 +188,25 @@ export default function DataProvider({ children }) {
     <DataContext.Provider
       value={
         {
+          searchTerm,
+          setSearchTerm,
           searchResults,
           setSearchResults,
-          refinedResults,
-          setRefinedSearch,
+          searchCount,
+          boxResults,
+          setBoxResults,
+          resultsHeader,
+          setResultsHeader,
+          getSearchResults,
+          debouncedRequest,
+          nextResults,
+          getNextResults,
+          errors,
           open,
           setOpen,
           game,
+          checkGameCache,
           setGame,
-          setGameID,
           collection,
           getCollection,
           addGame,
