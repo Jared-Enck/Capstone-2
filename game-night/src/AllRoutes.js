@@ -2,6 +2,9 @@ import React, { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import CircularLoading from './components/common/CircularLoading';
 
+const NotFoundComponent = lazy(
+  () => import("./NotFound")
+);
 const HomeComponent = lazy(
   () => import("./components/Home")
 );
@@ -25,7 +28,7 @@ export default function AllRoutes() {
   return (
     <Suspense fallback={<CircularLoading size={"2rem"} />}>
       <Routes>
-        <Route path='*' />
+        <Route path='*' element={<NotFoundComponent />} />
         <Route path='/' element={<HomeComponent />} />
         <Route path='/login' element={<LoginComponent />} />
         <Route path='/signup' element={<SignUpComponent />} />
