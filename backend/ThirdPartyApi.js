@@ -82,15 +82,15 @@ class ThirdPartyApi {
     return found;
   };
 
-  static async getSearchResults(query, skipAmount) {
+  static async getSearchResults(query) {
     let results = {};
     if (query.name) {
       results = this.checkCommon(query.name);
     }
     const [key, val] = Object.entries(query)[0];
     const params =
-      skipAmount
-        ? `${key}=${val}&skip=${skipAmount}`
+      query.skip
+        ? `${key}=${val}&skip=${query.skip}`
         : `${key}=${val}`;
     console.log('params: ', params)
     const response = await this.request('/search', { ...query, limit: '30' });
