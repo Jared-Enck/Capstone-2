@@ -3,7 +3,6 @@ import {
   Pagination
 } from "@mui/material";
 import styled from "@emotion/styled";
-import { Translate } from "@mui/icons-material";
 
 const StyledPagination = styled(Pagination)(({ theme }) => ({
   display: "flex",
@@ -29,9 +28,6 @@ export default function ResultsPagination({ page, handleChange, pageCount = 10 }
       onChange={handleChange}
       shape="rounded"
       size="large"
-      sx={{
-        justifyContent: "center"
-      }}
     />
   );
 };
