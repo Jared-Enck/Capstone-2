@@ -5,11 +5,11 @@ import { green, blue, grey, red } from '@mui/material/colors';
 export const themeLight = createTheme({
   palette: {
     background: {
-      default: grey[300]
+      default: grey[400]
     },
     primary: {
-      main: grey[200],
-      light: grey[100],
+      main: grey[300],
+      light: grey[200],
       text: grey[800],
       muted: grey[500],
       contrastText: blue[800]
