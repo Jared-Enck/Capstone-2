@@ -18,12 +18,12 @@ export default function DataProvider({ children }) {
   const [collection, setCollection] = useState([]);
   const [userGameIDs, setUserGameIDs] = useState(new Set());
   const [open, setOpen] = useState(false);
-  const { currentUser } = useContext(UserContext);
-  const username = currentUser.username || '';
+  const { currentUser, navigate } = useContext(UserContext);
 
   const getCommonCache = useCallback(async () => {
     try {
       await GameNightApi.getCommonCache();
+      setIsLoading(false);
     } catch (err) {
       console.error('Error: ', err)
     }
@@ -137,14 +137,16 @@ export default function DataProvider({ children }) {
 
   async function addGame(game) {
     try {
-      if (username) {
+      if (currentUser) {
         const { id } = game;
-        await GameNightApi.addGame({ id, username });
+        await GameNightApi.addGame({ id, username: currentUser });
 
         setCollection(prev => [...prev, game]);
         setUserGameIDs(prev => new Set(prev).add(id));
         console.log(`${game.name} has been added to your collection.`)
-      };
+      } else {
+        navigate('/login');
+      }
     } catch (err) {
       console.error('Error: ', err)
     }
@@ -153,8 +155,8 @@ export default function DataProvider({ children }) {
   async function removeGame(game) {
     try {
       const { id } = game;
-      if (username) {
-        await GameNightApi.removeGame({ id, username });
+      if (currentUser) {
+        await GameNightApi.removeGame({ id, username: currentUser });
 
         setCollection(prev => prev.filter(g => g.id !== id));
         setUserGameIDs(prev => {
@@ -172,7 +174,7 @@ export default function DataProvider({ children }) {
   const getGameIDs = useCallback(async () => {
     if (currentUser) {
       try {
-        const results = await GameNightApi.getGames(currentUser.username);
+        const results = await GameNightApi.getGames(currentUser);
         setUserGameIDs(new Set(results.games));
       } catch (err) {
         console.error('Error: ', err);
@@ -183,6 +185,11 @@ export default function DataProvider({ children }) {
   useEffect(() => {
     getGameIDs();
   }, [currentUser, getGameIDs])
+
+  const clearUserGameData = () => {
+    setUserGameIDs(new Set());
+    setCollection([]);
+  };
 
   return (
     <DataContext.Provider
@@ -212,6 +219,7 @@ export default function DataProvider({ children }) {
           addGame,
           removeGame,
           userGameIDs,
+          clearUserGameData,
           setUserGameIDs,
           isLoading,
           setIsLoading
