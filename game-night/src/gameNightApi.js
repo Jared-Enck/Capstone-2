@@ -42,7 +42,7 @@ export default class GameNightApi {
   /** Gets user info */
   static async getCurrentUser(username) {
     let res = await this.request(`users/${username}`);
-    return res.user;
+    return res;
   };
 
   /** Get search results */
