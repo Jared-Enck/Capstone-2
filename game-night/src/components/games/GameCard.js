@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   Card,
   CardActionArea,
@@ -17,16 +16,17 @@ import {
   Delete
 } from "@mui/icons-material";
 import DataContext from "../../context/DataContext";
+import UserContext from "../../context/UserContext";
 
-export default function GameCard({ game, collectionPage }) {
+export default function GameCard({ game, ProfilePage }) {
   const {
     setGame,
     userGameIDs,
     addGame,
     removeGame
   } = useContext(DataContext);
+  const { navigate } = useContext(UserContext);
   const inCollection = userGameIDs.has(game.id);
-  const navigate = useNavigate();
 
   const handleCardClick = () => {
     setGame(game);
@@ -116,7 +116,7 @@ export default function GameCard({ game, collectionPage }) {
       </CardActionArea>
       <CardActions disableSpacing>
         {
-          !collectionPage
+          !ProfilePage
             ? quickAddBtn
             : trashBtn
         }
