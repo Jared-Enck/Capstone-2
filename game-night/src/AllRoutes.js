@@ -14,8 +14,8 @@ const LoginComponent = lazy(
 const SignUpComponent = lazy(
   () => import("./components/account/SignUpForm")
 );
-const CollectionComponent = lazy(
-  () => import("./components/games/Collection")
+const ProfileComponent = lazy(
+  () => import("./components/account/Profile")
 );
 const SearchResultsPageComponent = lazy(
   () => import("./components/search/SearchResultsPage")
@@ -32,7 +32,7 @@ export default function AllRoutes() {
         <Route path='/' element={<HomeComponent />} />
         <Route path='/login' element={<LoginComponent />} />
         <Route path='/signup' element={<SignUpComponent />} />
-        <Route path='/collection' element={<CollectionComponent />} />
+        <Route path='/profile/:username' element={<ProfileComponent />} />
         <Route
           path='/search/results'
           element={<SearchResultsPageComponent />}

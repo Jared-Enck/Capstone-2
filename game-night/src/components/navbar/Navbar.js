@@ -1,14 +1,13 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import {
   Box,
   Grid,
   Typography,
   Container
 } from "@mui/material";
-import UserContext from "../../context/UserContext"
-import LoggedInLinks from "./LoggedInLinks";
-import AnonUserLinks from "./AnonUserLinks";
+import UserContext from "../../context/UserContext";
+import UserAccountMenu from "../account/UserAccountMenu";
 import SearchBar from "../search/SearchBar";
 import styled from "@emotion/styled";
 
@@ -31,8 +30,27 @@ const Brand = styled(Typography)(({ theme }) => ({
   color: theme.palette.primary.contrastText
 }));
 
+const StyledNavLink = styled(NavLink)(({ theme }) => ({
+  color: theme.palette.primary.muted,
+  marginRight: '2rem',
+  '&:hover': {
+    color: theme.palette.primary.contrastText
+  }
+}));
+
 export default function Navbar() {
   const { currentUser } = useContext(UserContext)
+
+  const AnonUserLinks = () => (
+    <>
+      <StyledNavLink to="/login">
+        Login
+      </StyledNavLink>
+      <StyledNavLink to="/signup">
+        Sign Up
+      </StyledNavLink>
+    </>
+  );
 
   return (
     <StyledBox>
@@ -61,7 +79,7 @@ export default function Navbar() {
             >
               {
                 currentUser
-                  ? <LoggedInLinks />
+                  ? <UserAccountMenu />
                   : <AnonUserLinks />
               }
             </Grid>
