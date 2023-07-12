@@ -9,15 +9,15 @@ import CircularLoading from "../common/CircularLoading";
 
 const SearchBoxButton = styled(Button)(({ theme }) => ({
   borderRadius: '9999px',
-  backgroundColor: theme.palette.primary.main,
   color: theme.palette.primary.text,
+  backgroundColor: theme.palette.primary.main,
   height: '1.5rem',
   fontSize: '.7rem',
   padding: '.5rem',
   '&:hover': {
     backgroundColor: theme.palette.primary.contrastText,
     color: theme.palette.primary.main,
-    fontWeight: 'bold'
+    borderColor: theme.palette.primary.contrastText,
   }
 }))
 

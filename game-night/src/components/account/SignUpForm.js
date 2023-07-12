@@ -38,7 +38,7 @@ export default function SignUpForm() {
     formErrors,
     setFormErrors
   ] = useFields(initialState);
-  const { registerUser } = useContext(UserContext);
+  const { registerUser, navigate } = useContext(UserContext);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -49,8 +49,10 @@ export default function SignUpForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const result = await registerUser(formData);
-    if (!result.success) {
-      setFormErrors(result.err);
+    if (result.msg === 'success') {
+      navigate('/');
+    } else {
+      setFormErrors(result.msg);
     };
   };
 

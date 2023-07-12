@@ -75,8 +75,7 @@ export default function LoginForm() {
     setFormErrors
   ] = useFields(initialState);
 
-  const { loginUser } = useContext(UserContext);
-
+  const { loginUser, navigate } = useContext(UserContext);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (event) => {
@@ -86,8 +85,10 @@ export default function LoginForm() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const result = await loginUser(formData)
-    if (!result.success) {
-      setFormErrors(result.err)
+    if (result.msg === 'success') {
+      navigate('/');
+    } else {
+      setFormErrors(result.msg)
     }
   }
 

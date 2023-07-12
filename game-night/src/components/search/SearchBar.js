@@ -13,9 +13,9 @@ import styled from "@emotion/styled";
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.45),
+  backgroundColor: alpha(theme.palette.primary.light, 0.60),
   '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.60),
+    backgroundColor: alpha(theme.palette.primary.light, 0.80)
   },
   marginLeft: 0,
   width: '100%',
@@ -36,7 +36,7 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: theme.palette.primary.main,
+  color: theme.palette.primary.text,
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
@@ -47,7 +47,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     [theme.breakpoints.up('sm')]: {
       width: '50ch'
     },
-    '&:focus': {
+    '&:hover, &:focus': {
       border: `2px solid ${theme.palette.primary.contrastText}`,
       borderRadius: theme.shape.borderRadius,
     }

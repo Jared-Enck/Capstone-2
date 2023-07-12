@@ -4,7 +4,8 @@ import {
   ListItemAvatar,
   ListItemText,
   ListItemButton,
-  Avatar
+  Avatar,
+  alpha
 } from "@mui/material";
 import CircularLoading from "../common/CircularLoading";
 
@@ -30,13 +31,16 @@ export default function GamesList({ games, handleGameClick }) {
           src={item.images["thumb"]}
         />
       </ListItemAvatar>
-      <ListItemText sx={{
-        alignSelf: "center",
-        paddingRight: ".5rem",
-        margin: "0",
-        marginLeft: "-.3rem",
-        color: "primary.text"
-      }}>
+      <ListItemText
+        color="primary.text"
+        sx={{
+          alignSelf: "center",
+          paddingRight: ".5rem",
+          margin: "0",
+          marginLeft: "-.3rem",
+          color: "primary.text"
+        }}
+      >
         {item.name}
       </ListItemText>
     </ListItemButton>

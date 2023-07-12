@@ -20,7 +20,8 @@ const StyledBox = styled(Box)(({ theme }) => ({
   marginTop: '.3rem',
   width: '100%',
   backgroundColor: theme.palette.primary.light,
-  borderRadius: ".3rem",
+  borderRadius: theme.shape.borderRadius,
+  border: "1px solid black",
   position: "absolute",
   zIndex: 2
 }));
