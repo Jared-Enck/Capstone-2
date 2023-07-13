@@ -32,10 +32,13 @@ export default function AllRoutes() {
         <Route path='/' element={<HomeComponent />} />
         <Route path='/login' element={<LoginComponent />} />
         <Route path='/signup' element={<SignUpComponent />} />
-        <Route path='/profile/:username' element={<ProfileComponent />} />
         <Route
-          path='/search/results'
-          element={<SearchResultsPageComponent />}
+          path='/profile/:username'
+          element={<ProfileComponent itemsOnPage={12} />}
+        />
+        <Route
+          path='search/:path/:id'
+          element={<SearchResultsPageComponent itemsOnPage={30} />}
         />
         <Route
           path='/games/:id'

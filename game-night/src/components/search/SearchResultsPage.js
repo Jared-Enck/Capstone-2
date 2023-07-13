@@ -1,4 +1,5 @@
-import React, { useCallback, useContext, useState, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import DataContext from "../../context/DataContext";
 import {
   Stack,
@@ -8,40 +9,35 @@ import ContentContainer from "../common/ContentContainer";
 import GameCard from "../games/GameCard";
 import ErrorMessage from "../common/ErrorMessage";
 import ResultsPagination from "../common/ResultsPagination";
+import usePagination from "../../hooks/usePagination";
 
-export default function SearchResultsPage() {
+export default function SearchResultsPage({ itemsOnPage }) {
+  const { path, id } = useParams();
   const {
+    searchResults,
+    getSearchResults,
     resultsHeader,
-    searchCount,
-    nextResults,
-    getNextResults,
     errors
   } = useContext(DataContext);
+  const { pages, count } = searchResults;
 
-  const [page, setPage] = useState(1);
-  const [pageCount, setPageCount] = useState(10);
-
-  const getPageCount = useCallback(() => {
-    if (searchCount) {
-      setPageCount(() => {
-        const initialPages = searchCount / 30;
-        return initialPages % 1 === 0 ? initialPages : Math.ceil(initialPages);
-      });
-    }
-  }, [searchCount]);
+  const [
+    page,
+    pageCount,
+    handleChange,
+  ] = usePagination(count, itemsOnPage);
 
   useEffect(() => {
-    setPage(1);
-    getPageCount();
-  }, [getPageCount]);
-
-  const handleChange = async (evt, value) => {
-    setPage(value);
-    if (!nextResults[value]) {
-      const skipAmount = (value - 1) * 30;
-      await getNextResults(value, skipAmount);
-    }
-  };
+    const searchObj = { [path]: id };
+    if (!Object.keys(pages).length) {
+      getSearchResults(searchObj);
+    } else {
+      if (!pages[page]) {
+        const skipAmount = (page - 1) * itemsOnPage;
+        getSearchResults(searchObj, page, skipAmount);
+      };
+    };
+  }, [getSearchResults, page, itemsOnPage, pages, id, path]);
 
   const gridItemComp = (game) => (
     <Grid item key={game.id}>
@@ -49,7 +45,7 @@ export default function SearchResultsPage() {
     </Grid>
   );
 
-  const header = `Results for "${resultsHeader.name}"`
+  const header = `Results for "${resultsHeader}"`
 
   return (
     <Stack>
@@ -64,17 +60,27 @@ export default function SearchResultsPage() {
             errors
               ? <ErrorMessage />
               : (
-                nextResults[page]
-                  ? nextResults[page].map(g => gridItemComp(g))
+                pages
+                  ? (
+                    pages[page]
+                      ? pages[page].map(g => gridItemComp(g))
+                      : null
+                  )
                   : null
               )
           }
         </Grid>
-        <ResultsPagination
-          page={page}
-          handleChange={handleChange}
-          pageCount={pageCount}
-        />
+        {
+          pageCount > 1
+            ? (
+              <ResultsPagination
+                page={page}
+                handleChange={handleChange}
+                pageCount={pageCount}
+              />
+            )
+            : null
+        }
       </ContentContainer>
     </Stack>
   );

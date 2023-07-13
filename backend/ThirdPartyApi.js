@@ -87,12 +87,12 @@ class ThirdPartyApi {
       results = this.checkCommon(query.name);
     }
     const [key, val] = Object.entries(query)[0];
-    const params =
+
+    const queryStr =
       query.skip
         ? `${key}=${val}&skip=${query.skip}`
         : `${key}=${val}`;
-    console.log('params: ', params)
-    const response = await this.request('/search', { ...query, limit: '30' });
+    const response = await this.request(`/search?${queryStr}&limit=30`);
     const { games, count } = response;
     results.foundGames = games;
     return { results, count };

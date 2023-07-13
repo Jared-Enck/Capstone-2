@@ -9,11 +9,8 @@ export default function DataProvider({ children }) {
   const [errors, setErrors] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [boxResults, setBoxResults] = useState({});
-  const [searchParam, setSearchParam] = useState({});
-  const [searchResults, setSearchResults] = useState('');
-  const [searchCount, setSearchCount] = useState('');
+  const [searchResults, setSearchResults] = useState({ pages: {} });
   const [resultsHeader, setResultsHeader] = useState('');
-  const [nextResults, setNextResults] = useState({});
   const [game, setGame] = useState('');
   const [collection, setCollection] = useState([]);
   const [userGameIDs, setUserGameIDs] = useState(new Set());
@@ -40,47 +37,31 @@ export default function DataProvider({ children }) {
         setErrors(false);
         const res = await GameNightApi.getSearchResults({ name: searchTerm });
         setBoxResults(res.results);
-      }
+      };
     } catch (err) {
       console.error('Error:', err)
     };
-    setIsLoading(false);
   });
 
-  async function getSearchResults(searchObj) {
+  const getSearchResults = useCallback(async (searchObj, page = 1, skipAmount) => {
     try {
-      const { path, item } = searchObj;
-      setSearchParam({ [path]: item.id });
-      setResultsHeader(item);
       setSearchTerm('');
       setErrors(false);
-      setNextResults({});
       setIsLoading(true);
-      const res = await GameNightApi.getSearchResults({ [path]: item.id });
-      console.log(res)
-      setSearchResults(res.results.foundGames);
-      setSearchCount(res.count);
-      setNextResults({ 1: res.results.foundGames });
+      let res;
+      if (skipAmount) {
+        res = await GameNightApi.getSearchResults(searchObj, skipAmount);
+      } else {
+        res = await GameNightApi.getSearchResults(searchObj);
+      };
+      const pages = { ...searchResults.pages, [page]: res.results.foundGames };
+      const results = { pages, count: res.count };
+      setSearchResults(results);
     } catch (err) {
       console.error('Error: ', err)
-    }
-    setIsLoading(false);
-  };
-
-  async function getNextResults(page, skipAmount) {
-    try {
-      setIsLoading(true);
-      setErrors(false);
-      const res = await GameNightApi.getSearchResults(searchParam, skipAmount);
-      const games = res.results.foundGames;
-      console.log('next: ', { ...nextResults, [page]: games })
-      setNextResults({ ...nextResults, [page]: games });
-    } catch (err) {
-      console.error('Error: ', err)
-      setErrors(true);
     };
     setIsLoading(false);
-  };
+  }, [searchResults.pages]);
 
   const getGameMedia = useCallback(async (gameID) => {
     try {
@@ -199,15 +180,12 @@ export default function DataProvider({ children }) {
           setSearchTerm,
           searchResults,
           setSearchResults,
-          searchCount,
           boxResults,
           setBoxResults,
           resultsHeader,
           setResultsHeader,
           getSearchResults,
           debouncedRequest,
-          nextResults,
-          getNextResults,
           errors,
           open,
           setOpen,

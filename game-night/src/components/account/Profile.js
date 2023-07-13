@@ -18,17 +18,18 @@ export default function Profile() {
   const { username } = useParams();
   const { getCurrentUser, navigate, currentUser, userData } = useContext(UserContext);
   const { collection, userGameIDs, getCollection } = useContext(DataContext);
-  const inSync = userGameIDs.size === collection.length;
+  const size = collection.length
+  const inSync = userGameIDs.size === size;
 
   const getCollectionValue = useCallback((total = 0, count = 0) => {
-    if (count === collection.length) return total;
+    if (count === size) return total;
     total += collection[count].msrp;
     return getCollectionValue(total, count + 1);
-  }, [collection]);
+  }, [collection, size]);
 
   const collectionValue = useMemo(() => {
     return getCollectionValue();
-  }, [collection, getCollectionValue]);
+  }, [getCollectionValue]);
 
   const handleClick = () => {
     console.log('edit user:', username);
@@ -41,7 +42,7 @@ export default function Profile() {
   useEffect(() => {
     if (!userData) getCurrentUser(username);
     checkCollection();
-  }, [username, checkCollection]);
+  }, [username, checkCollection, getCurrentUser, userData]);
 
   if (!currentUser) return navigate('/login');
 
@@ -86,12 +87,17 @@ export default function Profile() {
                   Collection
                 </Typography>
                 <Typography color={"primary.text"}>
-                  Total Games: {collection.length}
+                  Total Games: {size}
                 </Typography>
                 <Typography color={"primary.text"}>
                   Estimated Value: {`$${collectionValue.toLocaleString('en-Us')}`}
                 </Typography>
-                <Collection inSync={inSync} collection={collection} />
+                <Collection
+                  inSync={inSync}
+                  collection={collection}
+                  itemsOnPage={12}
+                  count={size}
+                />
               </>
             )
             : null

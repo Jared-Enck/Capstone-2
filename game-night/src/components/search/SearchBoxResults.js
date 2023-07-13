@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import {
   Box,
   Stack,
-  Divider
+  Divider,
+  Typography
 } from "@mui/material";
 import styled from "@emotion/styled";
 import DataContext from "../../context/DataContext";
@@ -34,22 +35,36 @@ export default function SearchBoxResults({ results, clearBoxResults }) {
 
   const {
     setGame,
-    setOpen,
-    setBoxResults,
-    getSearchResults
+    setResultsHeader,
+    setSearchResults
   } = useContext(DataContext);
 
   const handleBtnClick = (path, item) => {
-    setOpen(false);
-    setBoxResults({});
-    getSearchResults({ path, item });
-    navigate('/search/results');
+    clearBoxResults();
+    setResultsHeader(item.name);
+    setSearchResults({ pages: {} });
+    navigate(`search/${path}/${item.id}`);
   };
 
   const handleGameClick = (idx, gameID) => {
     setGame(games[idx]);
     navigate(`/games/${gameID}`);
     clearBoxResults();
+  };
+
+  const NoGamesFound = () => {
+    return (
+      <Typography
+        variant="h6"
+        sx={{
+          fontStyle: "italic",
+          color: "primary.text",
+          paddingLeft: "2rem"
+        }}
+      >
+        No results found.
+      </Typography>
+    )
   };
 
   return (
@@ -90,7 +105,7 @@ export default function SearchBoxResults({ results, clearBoxResults }) {
                 handleGameClick={handleGameClick}
               />
             )
-            : null
+            : <NoGamesFound />
         }
       </Stack>
     </StyledBox>

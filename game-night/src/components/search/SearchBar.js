@@ -66,19 +66,19 @@ export default function SearchBar() {
   } = useContext(DataContext);
 
   const clearBoxResults = () => {
+    setOpen(false);
     setSearchTerm('');
     setBoxResults({});
   };
 
   const handleClickAway = () => {
-    setOpen(false);
     clearBoxResults();
   };
 
   const handleChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
-
+    setBoxResults({});
     debouncedRequest();
   };
 
