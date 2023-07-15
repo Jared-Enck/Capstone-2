@@ -16,33 +16,28 @@ export default function Collection({ inSync, collection, itemsOnPage, count }) {
 
   const [pages, setPages] = useState({});
 
-  const setPageContent = useCallback((range) => {
-    const selected = collection.splice(range[0], range[1]);
-    console.log(selected)
-    setPages({ ...pages, [page]: selected });
-  }, [setPages, page, pages, collection]);
+  const setPageContent = useCallback((page, skip = false) => {
+    const range = [0, itemsOnPage];
+    let selected;
+    if (skip) {
+      console.log('skipping')
+      const skipAmount = (page - 1) * itemsOnPage;
+      const newRange = range.map(n => n + skipAmount);;
+      selected = collection.splice(newRange[0], newRange[1]);
+    } else {
+      selected = collection.splice(range[0], range[1]);
+    }
+    setPages(prev => ({ ...prev, [page]: selected }));
+  }, [setPages, collection]);
 
   useEffect(() => {
-    const range = [0, itemsOnPage];
-    if (!Object.keys(pages).length) {
-      setPageContent(range);
-    } else {
-      if (!pages[page]) {
-        const skipAmount = (page - 1) * itemsOnPage;
-        const newRange = range.map(n => n + skipAmount);
-        setPageContent(newRange);
-      };
+    if (!pages[1]) {
+      setPageContent(page);
+    } else if (!pages[page]) {
+      setPageContent(page, true)
     }
-    // if (count / itemsOnPage < pageCount) {
-    //   const lastPage = Math.max(Object.keys(pages));
-    //   setPages(prev => {
-    //     const next = {...prev};
-    //     delete next[lastPage];
-    //     return next;
-    //   })
-    // }
     console.log(pages)
-  }, [setPageContent, page, itemsOnPage, pages, collection.length]);
+  }, [setPageContent, page, itemsOnPage]);
 
   const noGamesMsg = (
     <Typography sx={{ color: "primary.text" }} variant="h5">
@@ -61,8 +56,8 @@ export default function Collection({ inSync, collection, itemsOnPage, count }) {
         {
           inSync
             ? (
-              page[page]
-                ? 
+              pages[page]
+                ?
                 pages[page].map(g => (
                   <Grid key={g.id} item>
                     <GameCard game={g} ProfilePage />
