@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Container, Typography, Divider } from "@mui/material";
 import styled from "@emotion/styled";
-import DataContext from "../../context/DataContext";
+import UserContext from "../../context/UserContext";
 import CircularLoading from "../common/CircularLoading";
 
 const StyledContainer = styled(Container)(({ theme }) => ({
@@ -13,7 +13,7 @@ const StyledContainer = styled(Container)(({ theme }) => ({
 }));
 
 export default function ContentContainer({ header = null, divider, children }) {
-  const { isLoading } = useContext(DataContext);
+  const { isLoading } = useContext(UserContext);
   return (
     <StyledContainer
       maxWidth={"lg"}
