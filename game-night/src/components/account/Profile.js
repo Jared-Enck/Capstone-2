@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo } from "react";
+import React, { useContext, useEffect, lazy, Suspense } from "react";
 import { useParams } from "react-router-dom";
 import UserContext from "../../context/UserContext";
 import DataContext from "../../context/DataContext";
@@ -7,42 +7,43 @@ import {
   Typography,
   Grid,
   Avatar,
-  Button,
-  Divider
+  Button
 } from "@mui/material";
 import { Edit } from '@mui/icons-material';
 import ContentContainer from "../common/ContentContainer";
-import Collection from "../games/Collection";
+import CircularLoading from "../common/CircularLoading";
+
+const CollectionComp = lazy(
+  () => import("../games/Collection")
+);
 
 export default function Profile() {
   const { username } = useParams();
-  const { getCurrentUser, navigate, currentUser, userData } = useContext(UserContext);
-  const { collection, userGameIDs, getCollection } = useContext(DataContext);
-  const size = collection.length
-  const inSync = userGameIDs.size === size;
+  const {
+    navigate,
+    userData,
+    currentUser,
+    setUsername
+  } = useContext(UserContext);
 
-  const getCollectionValue = useCallback((total = 0, count = 0) => {
-    if (count === size) return total;
-    total += collection[count].msrp;
-    return getCollectionValue(total, count + 1);
-  }, [collection, size]);
-
-  const collectionValue = useMemo(() => {
-    return getCollectionValue();
-  }, [getCollectionValue]);
+  const {
+    userGameIDs,
+    collection
+  } = useContext(DataContext);
 
   const handleClick = () => {
     console.log('edit user:', username);
   };
 
-  const checkCollection = useCallback(() => {
-    if (!inSync) getCollection();
-  }, [inSync, getCollection])
-
   useEffect(() => {
-    if (!userData) getCurrentUser(username);
-    checkCollection();
-  }, [username, checkCollection, getCurrentUser, userData]);
+    setUsername(username);
+  }, [username, setUsername]);
+
+  const noGamesMsg = (
+    <Typography sx={{ color: "primary.text", paddingLeft: 2 }} variant="h5">
+      There are no games in your collection.
+    </Typography>
+  );
 
   if (!currentUser) return navigate('/login');
 
@@ -82,25 +83,26 @@ export default function Profile() {
                     </Button>
                   </Grid>
                 </Grid>
-                <Divider />
-                <Typography variant="h5" color={"primary.contrastText"}>
-                  Collection
-                </Typography>
-                <Typography color={"primary.text"}>
-                  Total Games: {size}
-                </Typography>
-                <Typography color={"primary.text"}>
-                  Estimated Value: {`$${collectionValue.toLocaleString('en-Us')}`}
-                </Typography>
-                <Collection
-                  inSync={inSync}
-                  collection={collection}
-                  itemsOnPage={12}
-                  count={size}
-                />
               </>
             )
             : null
+        }
+        {
+          userGameIDs.size
+            ? (
+              collection
+                ? (
+                  <Suspense fallback={<CircularLoading size={"2rem"} />}>
+                    <CollectionComp
+                      gameIDs={userGameIDs}
+                      collection={collection}
+                      itemsOnPage={12}
+                    />
+                  </Suspense>
+                )
+                : null
+            )
+            : noGamesMsg
         }
       </ContentContainer>
     </Stack>
