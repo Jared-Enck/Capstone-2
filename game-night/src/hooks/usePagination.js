@@ -13,7 +13,6 @@ export default function usePagination(count, itemsOnPage) {
           : Math.ceil(initialPages)
       ));
     };
-    setPage(1);
   }, [count, itemsOnPage]);
 
   const handleChange = (evt, value) => {
@@ -22,6 +21,7 @@ export default function usePagination(count, itemsOnPage) {
 
   return [
     page,
+    setPage,
     pageCount,
     handleChange
   ];
