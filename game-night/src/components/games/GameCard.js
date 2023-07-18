@@ -18,7 +18,7 @@ import {
 import DataContext from "../../context/DataContext";
 import UserContext from "../../context/UserContext";
 
-export default function GameCard({ game, ProfilePage }) {
+export default function GameCard({ game, onProfilePage }) {
   const {
     setGame,
     userGameIDs,
@@ -116,7 +116,7 @@ export default function GameCard({ game, ProfilePage }) {
       </CardActionArea>
       <CardActions disableSpacing>
         {
-          !ProfilePage
+          !onProfilePage
             ? quickAddBtn
             : trashBtn
         }
