@@ -11,7 +11,9 @@ import jwt_decode from "jwt-decode";
 export const TOKEN_STORAGE_ID = "game-night-token";
 
 export default function UserProvider({ children, isDark, setDarkMode }) {
+  const [isLoading, setIsLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState('');
+  const [username, setUsername] = useState('');
   const [userData, setUserData] = useState('');
   const [token, setToken] = useLocalStorage(TOKEN_STORAGE_ID);
   const navigate = useNavigate();
@@ -46,16 +48,22 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
     GameNightApi.token = '';
     setCurrentUser('');
     setToken('');
+    setUserData('');
   }
 
-  async function getCurrentUser(username) {
-    try {
-      const user = await GameNightApi.getCurrentUser(username);
-      setUserData(user);
-    } catch (err) {
-      console.error('Error: ', err);
+  useEffect(() => {
+    async function getCurrentUser(username) {
+      try {
+        setIsLoading(true);
+        const user = await GameNightApi.getCurrentUser(username);
+        setUserData(user);
+      } catch (err) {
+        console.error('Error: ', err);
+      };
+      setIsLoading(false);
     };
-  };
+    if (username) getCurrentUser(username);
+  }, [username])
 
   useEffect(() => {
     if (token) {
@@ -63,17 +71,20 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
       const { username } = jwt_decode(token);
       setCurrentUser(username);
     }
+    setIsLoading(false);
   }, [token]);
 
   return (
     <UserContext.Provider
       value={
         {
+          isLoading,
+          setIsLoading,
           currentUser,
+          setUsername,
           userData,
           registerUser,
           loginUser,
-          getCurrentUser,
           logout,
           handleThemeToggle,
           isDark,

@@ -5,17 +5,21 @@ import GameNightApi from "../gameNightApi";
 import UserContext from "./UserContext";
 
 export default function DataProvider({ children }) {
-  const [isLoading, setIsLoading] = useState(true);
   const [errors, setErrors] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [boxResults, setBoxResults] = useState({});
   const [searchResults, setSearchResults] = useState({ pages: {} });
   const [resultsHeader, setResultsHeader] = useState('');
   const [game, setGame] = useState('');
-  const [collection, setCollection] = useState([]);
+  const [collection, setCollection] = useState('');
   const [userGameIDs, setUserGameIDs] = useState(new Set());
   const [open, setOpen] = useState(false);
-  const { currentUser, navigate } = useContext(UserContext);
+  const {
+    currentUser,
+    navigate,
+    userData,
+    setIsLoading
+  } = useContext(UserContext);
 
   const getCommonCache = useCallback(async () => {
     try {
@@ -24,7 +28,7 @@ export default function DataProvider({ children }) {
     } catch (err) {
       console.error('Error: ', err)
     }
-  }, []);
+  }, [setIsLoading]);
 
   useEffect(() => {
     getCommonCache();
@@ -61,7 +65,7 @@ export default function DataProvider({ children }) {
       console.error('Error: ', err)
     };
     setIsLoading(false);
-  }, [searchResults.pages]);
+  }, [searchResults.pages, setIsLoading]);
 
   const getGameMedia = useCallback(async (gameID) => {
     try {
@@ -101,20 +105,21 @@ export default function DataProvider({ children }) {
       console.error('Error: ', err)
     }
     setIsLoading(false);
-  }, [getGameMedia]);
+  }, [getGameMedia, setIsLoading]);
 
-  const getCollection = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      // Api needs extra commas at beginning and end of string
-      const gameIdsStr = `,${Array.from(userGameIDs).join(',')},`;
-      const res = await GameNightApi.getCollection({ ids: gameIdsStr });
-      setCollection(res.games);
-    } catch (err) {
-      console.error('Error: ', err)
-    }
-    setIsLoading(false);
-  }, [userGameIDs]);
+  useEffect(() => {
+    const getCollection = async () => {
+      try {
+        // Api needs extra commas at beginning and end of string
+        const gameIdsStr = `,${Array.from(userGameIDs).join(',')},`;
+        const res = await GameNightApi.getCollection({ ids: gameIdsStr });
+        setCollection(res.games);
+      } catch (err) {
+        console.error('Error: ', err);
+      };
+    };
+    if (userData && !collection) getCollection();
+  }, [userData, collection, userGameIDs]);
 
   async function addGame(game) {
     try {
@@ -124,6 +129,7 @@ export default function DataProvider({ children }) {
 
         setCollection(prev => [...prev, game]);
         setUserGameIDs(prev => new Set(prev).add(id));
+        
         console.log(`${game.name} has been added to your collection.`)
       } else {
         navigate('/login');
@@ -193,14 +199,11 @@ export default function DataProvider({ children }) {
           checkGameCache,
           setGame,
           collection,
-          getCollection,
           addGame,
           removeGame,
           userGameIDs,
           clearUserGameData,
           setUserGameIDs,
-          isLoading,
-          setIsLoading
         }
       }
     >
