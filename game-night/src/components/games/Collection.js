@@ -1,84 +1,141 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, {
+  useState,
+  useCallback,
+  useEffect,
+  lazy
+} from "react";
 import {
   Grid,
-  Typography,
+  Divider
 } from "@mui/material";
 import GameCard from "./GameCard";
 import ResultsPagination from "../common/ResultsPagination";
 import usePagination from "../../hooks/usePagination";
 
-export default function Collection({ inSync, collection, itemsOnPage, count }) {
-  const [
-    page,
-    pageCount,
-    handleChange,
-  ] = usePagination(count, itemsOnPage);
+const CollectionStatsComp = lazy(
+  () => import("./CollectionStats")
+);
 
-  const [pages, setPages] = useState({});
+const gamesChanged = (a, b) => {
+  let result = false;
+  if (a.length !== b.length) return false;
+  for (let i = 0; i < b.length; i++) {
 
-  const setPageContent = useCallback((page, skip = false) => {
-    const range = [0, itemsOnPage];
-    let selected;
-    if (skip) {
-      console.log('skipping')
-      const skipAmount = (page - 1) * itemsOnPage;
-      const newRange = range.map(n => n + skipAmount);;
-      selected = collection.splice(newRange[0], newRange[1]);
+    if (a[i] !== b[i]) {
+      return false;
     } else {
-      selected = collection.splice(range[0], range[1]);
+      result = true;
     }
-    setPages(prev => ({ ...prev, [page]: selected }));
-  }, [setPages, collection]);
+  }
+  return result;
+}
+
+export default function Collection({ gameIDs, collection, itemsOnPage }) {
+  const [collectionValue, setCollectionValue] = useState(0);
+  const [pages, setPages] = useState('');
+
+  const getCollectionValue = useCallback(() => {
+    let total = 0;
+    collection.map(g => total += g.msrp);
+    setCollectionValue(total);
+  }, [collection]);
 
   useEffect(() => {
-    if (!pages[1]) {
-      setPageContent(page);
-    } else if (!pages[page]) {
-      setPageContent(page, true)
-    }
-    console.log(pages)
-  }, [setPageContent, page, itemsOnPage]);
+    getCollectionValue();
+  }, [getCollectionValue, gameIDs.size]);
 
-  const noGamesMsg = (
-    <Typography sx={{ color: "primary.text" }} variant="h5">
-      No games yet? Try searching for games and then adding them to your collection.
-    </Typography>
-  )
+  const [
+    page,
+    setPage,
+    pageCount,
+    handleChange,
+  ] = usePagination(gameIDs.size, itemsOnPage);
+
+  const checkForUpdate = useCallback((selected) => {
+    console.log('checking for update')
+
+    const sameGames = gamesChanged(pages[page], selected);
+    if (!sameGames) {
+      setPages(prev => {
+        const next = { ...prev };
+        next[page] = selected;
+        return next;
+      })
+      if(!pages[page].length) setPage(page - 1);
+    }
+  }, [page, pages]);
+
+  const setPageContent = useCallback(() => {
+    const range = [0, itemsOnPage];
+    const skipAmount = (page - 1) * itemsOnPage;
+    const games = [...collection];
+    let selected;
+
+    if (!pages) {
+      selected = games.splice(range[0], range[1]);
+      console.log('selected:', selected)
+      setPages({ [page]: selected });
+    } else {
+      const skipRange = range.map(n => n + skipAmount);
+      selected = games.splice(skipRange[0], skipRange[1]);
+      if (!pages[page]) {
+        console.log('collection:', games)
+        console.log('selected:', selected)
+        setPages({ ...pages, [page]: selected });
+      } else {
+        checkForUpdate(selected);
+      }
+    }
+  }, [setPages, pages, page, itemsOnPage, collection]);
+
+
+  useEffect(() => {
+    setPageContent();
+    console.log('pages: ', pages)
+  }, [setPageContent, page]);
 
   return (
-    <>
-      <Grid
-        container
-        direction={"row"}
-        spacing={3}
-        padding={"1.5rem"}
-      >
-        {
-          inSync
-            ? (
-              pages[page]
-                ?
-                pages[page].map(g => (
-                  <Grid key={g.id} item>
-                    <GameCard game={g} ProfilePage />
-                  </Grid>
-                ))
-                : noGamesMsg
-            )
-            : null
-        }
+    <Grid
+      container
+      direction={"row"}
+      spacing={3}
+      padding={"1.5rem 1.5rem 0rem 1.5rem"}
+    >
+      <Grid item xs={12}>
+        <Divider />
+        <CollectionStatsComp
+          gameIDs={gameIDs}
+          value={collectionValue}
+        />
       </Grid>
       {
-        pageCount > 1
+        pages
           ? (
-            <ResultsPagination
-              page={page}
-              handleChange={handleChange}
-              pageCount={pageCount}
-            />
+            pages[page]
+              ? (
+                pages[page].map(g => (
+                  <Grid key={g.id} item>
+                    <GameCard game={g} onProfilePage />
+                  </Grid>
+                ))
+              )
+              : null
           )
           : null
       }
-    </>
+      {
+        pageCount > 1
+          ? (
+            <Grid item xs={12}>
+              <ResultsPagination
+                page={page}
+                handleChange={handleChange}
+                pageCount={pageCount}
+              />
+            </Grid>
+          )
+          : null
+      }
+    </Grid>
   );
 };
