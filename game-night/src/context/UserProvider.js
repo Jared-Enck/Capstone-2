@@ -1,4 +1,5 @@
 import React, {
+  useCallback,
   useEffect,
   useState
 } from "react";
@@ -13,7 +14,6 @@ export const TOKEN_STORAGE_ID = "game-night-token";
 export default function UserProvider({ children, isDark, setDarkMode }) {
   const [isLoading, setIsLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState('');
-  const [username, setUsername] = useState('');
   const [userData, setUserData] = useState('');
   const [token, setToken] = useLocalStorage(TOKEN_STORAGE_ID);
   const navigate = useNavigate();
@@ -51,19 +51,16 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
     setUserData('');
   }
 
-  useEffect(() => {
-    async function getCurrentUser(username) {
-      try {
-        setIsLoading(true);
-        const user = await GameNightApi.getCurrentUser(username);
-        setUserData(user);
-      } catch (err) {
-        console.error('Error: ', err);
-      };
-      setIsLoading(false);
+  const getCurrentUser = useCallback(async (username) => {
+    try {
+      setIsLoading(true);
+      const user = await GameNightApi.getCurrentUser(username);
+      setUserData(user);
+    } catch (err) {
+      console.error('Error: ', err);
     };
-    if (username) getCurrentUser(username);
-  }, [username])
+    setIsLoading(false);
+  }, [setIsLoading, setUserData]);
 
   useEffect(() => {
     if (token) {
@@ -81,7 +78,7 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
           isLoading,
           setIsLoading,
           currentUser,
-          setUsername,
+          getCurrentUser,
           userData,
           registerUser,
           loginUser,
