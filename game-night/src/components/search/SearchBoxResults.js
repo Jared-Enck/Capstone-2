@@ -101,7 +101,7 @@ export default function SearchBoxResults({ results, clearBoxResults }) {
           games.length
             ? (
               <GamesListComp
-                games={games}
+                games={games.slice(0,10)}
                 handleGameClick={handleGameClick}
               />
             )

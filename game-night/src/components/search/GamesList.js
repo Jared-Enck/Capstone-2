@@ -4,8 +4,7 @@ import {
   ListItemAvatar,
   ListItemText,
   ListItemButton,
-  Avatar,
-  alpha
+  Avatar
 } from "@mui/material";
 import CircularLoading from "../common/CircularLoading";
 
@@ -53,9 +52,7 @@ export default function GamesList({ games, handleGameClick }) {
       <Suspense fallback={<CircularLoading size={"1.5rem"} />}>
         {
           games.length
-            ? games.map((i, idx) => {
-              if (idx < 10) return gamesListItem(i, idx);
-            })
+            ? games.map((i, idx) => gamesListItem(i, idx))
             : null
         }
       </Suspense>

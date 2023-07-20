@@ -22,7 +22,8 @@ export default function GameDetailsPage() {
 
   useEffect(() => {
     checkGameCache(gameID);
-  }, [gameID]);
+    // eslint-disable-next-line
+  }, []);
 
   const images = game.detail_images || [];
   const videos = game.videos || [];
