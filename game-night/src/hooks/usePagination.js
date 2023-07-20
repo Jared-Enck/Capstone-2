@@ -21,8 +21,8 @@ export default function usePagination(count, itemsOnPage) {
 
   return [
     page,
-    setPage,
     pageCount,
-    handleChange
+    handleChange,
+    setPage
   ];
 };
