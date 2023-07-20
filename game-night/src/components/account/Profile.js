@@ -1,4 +1,9 @@
-import React, { useContext, useEffect, lazy, Suspense } from "react";
+import React, {
+  useContext,
+  useEffect,
+  lazy,
+  Suspense
+} from "react";
 import { useParams } from "react-router-dom";
 import UserContext from "../../context/UserContext";
 import DataContext from "../../context/DataContext";
@@ -23,12 +28,15 @@ export default function Profile() {
     navigate,
     userData,
     currentUser,
-    setUsername
+    getCurrentUser,
   } = useContext(UserContext);
 
   const {
     userGameIDs,
-    collection
+    collection,
+    getCollection,
+    getCollectionValue,
+    colValue
   } = useContext(DataContext);
 
   const handleClick = () => {
@@ -36,8 +44,22 @@ export default function Profile() {
   };
 
   useEffect(() => {
-    setUsername(username);
-  }, [username, setUsername]);
+    if (!userData) {
+      getCurrentUser(username);
+    } 
+  }, [userData ,username, getCurrentUser]);
+
+  useEffect(() => {
+    if (!collection.length && userGameIDs.size) {
+      // API requires additional comma at start and end of string
+      const IdString = `,${[...userGameIDs].join(',')},`;
+      getCollection(IdString);
+    }
+  }, [userGameIDs, getCollection, collection.length]);
+  
+  useEffect(() => {
+    getCollectionValue();
+  }, [getCollectionValue]);
 
   const noGamesMsg = (
     <Typography sx={{ color: "primary.text", paddingLeft: 2 }} variant="h5">
@@ -55,7 +77,7 @@ export default function Profile() {
         {
           userData
             ? (
-              <>
+              <Suspense fallback={<CircularLoading size={"2rem"} />}>
                 <Grid
                   container
                   spacing={2}
@@ -83,18 +105,19 @@ export default function Profile() {
                     </Button>
                   </Grid>
                 </Grid>
-              </>
+              </Suspense>
             )
             : null
         }
         {
           userGameIDs.size
             ? (
-              collection
+              collection.length
                 ? (
                   <Suspense fallback={<CircularLoading size={"2rem"} />}>
                     <CollectionComp
-                      gameIDs={userGameIDs}
+                      size={userGameIDs.size}
+                      value={colValue}
                       collection={collection}
                       itemsOnPage={12}
                     />
