@@ -100,7 +100,7 @@ export default class GameNightApi {
 
   /** Get game data for game ids in currentUser's collection */
   static async getCollection(gameIDs) {
-    const res = await this.request(`api/collection`, gameIDs)
+    const res = await this.request(`api/collection`, { ids: gameIDs, limit: 100 })
     return res;
   };
 };

@@ -11,13 +11,13 @@ export default function DataProvider({ children }) {
   const [searchResults, setSearchResults] = useState({ pages: {} });
   const [resultsHeader, setResultsHeader] = useState('');
   const [game, setGame] = useState('');
-  const [collection, setCollection] = useState('');
+  const [collection, setCollection] = useState([]);
+  const [colValue, setColValue] = useState(0);
   const [userGameIDs, setUserGameIDs] = useState(new Set());
   const [open, setOpen] = useState(false);
   const {
     currentUser,
     navigate,
-    userData,
     setIsLoading
   } = useContext(UserContext);
 
@@ -47,7 +47,7 @@ export default function DataProvider({ children }) {
     };
   });
 
-  const getSearchResults = useCallback(async (searchObj, page = 1, skipAmount) => {
+  async function getSearchResults(searchObj, page = 1, skipAmount) {
     try {
       setSearchTerm('');
       setErrors(false);
@@ -65,7 +65,7 @@ export default function DataProvider({ children }) {
       console.error('Error: ', err)
     };
     setIsLoading(false);
-  }, [searchResults.pages, setIsLoading]);
+  };
 
   const getGameMedia = useCallback(async (gameID) => {
     try {
@@ -107,19 +107,23 @@ export default function DataProvider({ children }) {
     setIsLoading(false);
   }, [getGameMedia, setIsLoading]);
 
-  useEffect(() => {
-    const getCollection = async () => {
-      try {
-        // Api needs extra commas at beginning and end of string
-        const gameIdsStr = `,${Array.from(userGameIDs).join(',')},`;
-        const res = await GameNightApi.getCollection({ ids: gameIdsStr });
-        setCollection(res.games);
-      } catch (err) {
-        console.error('Error: ', err);
-      };
+  const getCollectionValue = useCallback(() => {
+    if (!colValue) {
+      let total = 0;
+      collection.map(g => total += g.msrp)
+      setColValue(total);
+    }
+  }, [colValue, setColValue, collection]);
+
+  const getCollection = useCallback(async (gameIDs) => {
+    try {
+      const res = await GameNightApi.getCollection(gameIDs);
+      // setCollection(prev => ({...prev, [page]: res.games}));
+      setCollection([...res.games]);
+    } catch (err) {
+      console.error('Error: ', err);
     };
-    if (userData && !collection) getCollection();
-  }, [userData, collection, userGameIDs]);
+  }, []);
 
   async function addGame(game) {
     try {
@@ -127,9 +131,9 @@ export default function DataProvider({ children }) {
         const { id } = game;
         await GameNightApi.addGame({ id, username: currentUser });
 
-        setCollection(prev => [...prev, game]);
+        setCollection([...collection, game]);
         setUserGameIDs(prev => new Set(prev).add(id));
-        
+        setColValue(prev => prev += game.msrp);
         console.log(`${game.name} has been added to your collection.`)
       } else {
         navigate('/login');
@@ -151,6 +155,7 @@ export default function DataProvider({ children }) {
           next.delete(id);
           return next;
         });
+        setColValue(prev => prev -= game.msrp);
         console.log(`${game.name} has been removed from your collection.`)
       };
     } catch (err) {
@@ -173,11 +178,6 @@ export default function DataProvider({ children }) {
     getGameIDs();
   }, [currentUser, getGameIDs])
 
-  const clearUserGameData = () => {
-    setUserGameIDs(new Set());
-    setCollection([]);
-  };
-
   return (
     <DataContext.Provider
       value={
@@ -199,10 +199,12 @@ export default function DataProvider({ children }) {
           checkGameCache,
           setGame,
           collection,
+          getCollection,
+          getCollectionValue,
+          colValue,
           addGame,
           removeGame,
           userGameIDs,
-          clearUserGameData,
           setUserGameIDs,
         }
       }
