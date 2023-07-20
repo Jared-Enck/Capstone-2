@@ -7,7 +7,7 @@ import {
   Container
 } from "@mui/material";
 import UserContext from "../../context/UserContext";
-import UserAccountMenu from "../account/UserAccountMenu";
+import UserAccountMenu from "./UserAccountMenu";
 import SearchBar from "../search/SearchBar";
 import styled from "@emotion/styled";
 
