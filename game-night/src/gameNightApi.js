@@ -45,6 +45,12 @@ export default class GameNightApi {
     return res;
   };
 
+  /** Update user info */
+  static async updateUser(formData, username) {
+    let res = await this.request(`users/${username}`, formData, 'patch');
+    return res;
+  };
+
   /** Get search results */
   static async getSearchResults(params, skipAmount) {
     const data =

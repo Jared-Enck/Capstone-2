@@ -44,6 +44,19 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
     };
   };
 
+  async function updateUser(formData, username) {
+    try {
+      const result = await GameNightApi.updateUser(formData, username);
+      console.log('update result:', result)
+      setToken(result.token);
+      setUserData('');
+      return { msg: 'success' };
+    } catch (err) {
+      console.log(err);
+      return { msg: err };
+    };
+  };
+
   const logout = () => {
     GameNightApi.token = '';
     setCurrentUser('');
@@ -82,6 +95,7 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
           userData,
           registerUser,
           loginUser,
+          updateUser,
           logout,
           handleThemeToggle,
           isDark,
