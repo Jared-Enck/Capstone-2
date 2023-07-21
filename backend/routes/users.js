@@ -8,6 +8,7 @@ const {
   ensureLoggedIn,
   ensureOwner
 } = require("../middleware/auth");
+const { createToken } = require("../helpers/tokens");
 const { BadRequestError } = require("../expressError");
 const User = require("../models/user");
 const userUpdateSchema = require("../schemas/userUpdate.json");
@@ -50,7 +51,8 @@ router.patch("/:username", ensureLoggedIn, ensureOwner, async function (req, res
       throw new BadRequestError(errs);
     }
     const user = await User.update(req.params.username, req.body);
-    return res.status(200).json({ user });
+    const token = createToken(user);
+    return res.status(200).json({ token });
   } catch (err) {
     return next(err);
   }

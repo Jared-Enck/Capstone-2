@@ -16,7 +16,7 @@ const { BCRYPT_WORK_FACTOR } = require("../config.js");
 class User {
   /** authenticate user with username, password.
    *
-   * Returns { username, email }
+   * Returns { username }
    *
    * Throws UnauthorizedError is user not found or wrong password.
    **/
@@ -47,7 +47,7 @@ class User {
 
   /** Register user with data.
    *
-   * Returns { username, email }
+   * Returns { username }
    *
    * Throws BadRequestError on duplicates.
    **/
@@ -182,8 +182,6 @@ class User {
     const user = result.rows[0];
 
     if (!user) throw new NotFoundError(`No user: ${username}`);
-
-    delete user.password;
     return user;
   }
 
