@@ -1,6 +1,7 @@
 import React, {
   useContext,
   useEffect,
+  useState,
   lazy,
   Suspense
 } from "react";
@@ -17,6 +18,10 @@ import {
 import { Edit } from '@mui/icons-material';
 import ContentContainer from "../common/ContentContainer";
 import CircularLoading from "../common/CircularLoading";
+
+const EditProfileModal = lazy(
+  () => import("./EditProfile")
+);
 
 const CollectionComp = lazy(
   () => import("../games/Collection")
@@ -39,15 +44,18 @@ export default function Profile() {
     colValue
   } = useContext(DataContext);
 
-  const handleClick = () => {
+  const [open, setOpen] = useState(false);
+
+  const handleEditClick = () => {
     console.log('edit user:', username);
+    setOpen(true);
   };
 
   useEffect(() => {
     if (!userData) {
       getCurrentUser(username);
-    } 
-  }, [userData ,username, getCurrentUser]);
+    }
+  }, [userData, username, getCurrentUser]);
 
   useEffect(() => {
     if (!collection.length && userGameIDs.size) {
@@ -56,7 +64,7 @@ export default function Profile() {
       getCollection(IdString);
     }
   }, [userGameIDs, getCollection, collection.length]);
-  
+
   useEffect(() => {
     getCollectionValue();
   }, [getCollectionValue]);
@@ -74,6 +82,11 @@ export default function Profile() {
   return (
     <Stack>
       <ContentContainer>
+        <EditProfileModal
+          open={open}
+          setOpen={setOpen}
+          userData={userData}
+        />
         {
           userData
             ? (
@@ -83,7 +96,6 @@ export default function Profile() {
                   spacing={2}
                   direction={"row"}
                   alignItems={"flex-end"}
-                  marginBottom={".3rem"}
                 >
                   <Grid item>
                     <Avatar src={userData.imageURL} sx={{ width: 120, height: 120 }} />
@@ -94,12 +106,12 @@ export default function Profile() {
                     </Typography>
                   </Grid>
                   <Grid item marginLeft={"auto"}>
-                    <Button size="small" onClick={handleClick}>
+                    <Button size="small" onClick={handleEditClick}>
                       <Edit
                         fontSize="medium"
                         sx={{
                           color: "primary.contrastText",
-                          marginLeft: "auto"
+                          marginLeft: 1
                         }}
                       />
                     </Button>
