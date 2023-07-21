@@ -3,6 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import {
   Box,
   Grid,
+  AppBar,
   Typography,
   Container
 } from "@mui/material";
@@ -54,38 +55,40 @@ export default function Navbar() {
 
   return (
     <StyledBox>
-      <Container
-        sx={{
-          height: '4rem'
-        }}
-        maxWidth="xl"
-      >
-        <StyledGrid container>
-          <Link to="/">
-            <Brand>
-              Game Night
-            </Brand>
-          </Link>
+      <AppBar position="static">
+        <Container
+          sx={{
+            height: '4rem'
+          }}
+          maxWidth="xl"
+        >
+          <StyledGrid container>
+            <Link to="/">
+              <Brand>
+                Game Night
+              </Brand>
+            </Link>
 
-          <SearchBar />
+            <SearchBar />
 
-          <Grid item>
-            <Grid
-              container
-              direction="row"
-              alignItems="center"
-              justifyContent="flex-end"
-              height="100%"
-            >
-              {
-                currentUser
-                  ? <UserAccountMenu />
-                  : <AnonUserLinks />
-              }
+            <Grid item>
+              <Grid
+                container
+                direction="row"
+                alignItems="center"
+                justifyContent="flex-end"
+                height="100%"
+              >
+                {
+                  currentUser
+                    ? <UserAccountMenu />
+                    : <AnonUserLinks />
+                }
+              </Grid>
             </Grid>
-          </Grid>
-        </StyledGrid>
-      </Container>
+          </StyledGrid>
+        </Container>
+      </AppBar>
     </StyledBox>
   );
 };
