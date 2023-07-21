@@ -25,11 +25,13 @@ export default function SearchResultsPage({ itemsOnPage }) {
     page,
     pageCount,
     handleChange,
+    setPage
   ] = usePagination(count, itemsOnPage);
 
   useEffect(() => {
     const searchObj = { [path]: id };
     if (!Object.keys(pages).length) {
+      setPage(1);
       getSearchResults(searchObj);
     } else {
       if (!pages[page]) {
@@ -37,7 +39,7 @@ export default function SearchResultsPage({ itemsOnPage }) {
         getSearchResults(searchObj, page, skipAmount);
       };
     };
-  }, [getSearchResults, page, itemsOnPage, pages, id, path]);
+  }, [getSearchResults, page, setPage, itemsOnPage, pages, id, path]);
 
   const gridItemComp = (game) => (
     <Grid item key={game.id}>
