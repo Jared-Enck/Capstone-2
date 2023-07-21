@@ -17,7 +17,6 @@ const CollectionStatsComp = lazy(
 
 export default function Collection({
   size,
-  value,
   collection,
   itemsOnPage
 }) {
@@ -60,7 +59,6 @@ export default function Collection({
         <Divider />
         <CollectionStatsComp
           size={size}
-          value={value}
         />
       </Grid>
       {
