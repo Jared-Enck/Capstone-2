@@ -44,12 +44,20 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
     };
   };
 
+  const saveToken = useCallback(() => {
+    GameNightApi.token = token;
+    const { username } = jwt_decode(token);
+    setCurrentUser(username);
+  }, [token, setCurrentUser]);
+
   async function updateUser(formData, username) {
     try {
       const result = await GameNightApi.updateUser(formData, username);
-      console.log('update result:', result)
-      setToken(result.token);
-      setUserData('');
+      if (result.token) {
+        setToken(result.token);
+        saveToken();
+      }
+      setUserData({ ...result.user });
       return { msg: 'success' };
     } catch (err) {
       console.log(err);
@@ -61,7 +69,6 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
     GameNightApi.token = '';
     setCurrentUser('');
     setToken('');
-    setUserData('');
   }
 
   const getCurrentUser = useCallback(async (username) => {
@@ -77,12 +84,10 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
 
   useEffect(() => {
     if (token) {
-      GameNightApi.token = token;
-      const { username } = jwt_decode(token);
-      setCurrentUser(username);
+      saveToken();
     }
     setIsLoading(false);
-  }, [token]);
+  }, [token, saveToken]);
 
   return (
     <UserContext.Provider

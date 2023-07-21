@@ -34,26 +34,50 @@ const genError = (err, idx) => {
   )
 }
 
-export default function EditProfile({ open, setOpen, userData }) {
-  const { updateUser, navigate } = useContext(UserContext);
+export default function EditProfile({ open, setOpen, username }) {
+  const { updateUser, navigate, userData } = useContext(UserContext);
+
   const [
     formData,
     handleChange,
     formErrors,
-    setFormErrors
+    setFormErrors,
+    setFormData
   ] = useFields(userData);
 
   const handleClose = () => {
     setFormErrors([]);
+    setFormData(formData);
     setOpen(false)
+  };
+
+  const getChanges = (formData, userData) => {
+    const formEntries = Object.entries(formData);
+    const initialEntries = Object.entries(userData);
+    const updateData = {};
+
+    const entries = formEntries
+      .filter(([key, val], idx) => val !== initialEntries[idx][1]);
+
+    if (!entries.length) return -1;
+
+    entries.map(entry => updateData[entry[0]] = entry[1]);
+
+    return updateData;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    delete formData.imageURL;
-    const result = await updateUser(formData, userData.username);
+    const updateData = getChanges(formData, userData);
+
+    if (updateData === -1) return handleClose();
+
+    const result = await updateUser(updateData, username);
+
     if (result.msg === 'success') {
-      navigate(`/profile/${formData.username}`);
+      if (updateData.username) {
+        navigate(`/profile/${updateData.username}`);
+      }
       handleClose();
     } else {
       setFormErrors(result.msg)
@@ -82,7 +106,7 @@ export default function EditProfile({ open, setOpen, userData }) {
           autoComplete="off"
           sx={{ width: "100%" }}
         >
-          <Stack spacing={2}>
+          <Stack spacing={3}>
             <Typography variant="h5" color={"primary.text"}>
               Edit Profile
             </Typography>
@@ -105,6 +129,17 @@ export default function EditProfile({ open, setOpen, userData }) {
                 type="text"
                 name={"email"}
                 value={formData.email}
+                onChange={handleChange}
+              />
+            </FormControl>
+            <FormControl key={"imageURL"} sx={{ width: "100%" }}>
+              <FormInputLabel htmlFor={"imageURL"}>
+                ImageURL
+              </FormInputLabel>
+              <FormOutlinedInput
+                type="text"
+                name={"imageURL"}
+                value={formData.imageURL}
                 onChange={handleChange}
               />
             </FormControl>

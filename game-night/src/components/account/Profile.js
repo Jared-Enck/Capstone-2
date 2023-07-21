@@ -31,23 +31,20 @@ export default function Profile() {
   const { username } = useParams();
   const {
     navigate,
-    userData,
     currentUser,
     getCurrentUser,
+    userData
   } = useContext(UserContext);
 
   const {
     userGameIDs,
     collection,
-    getCollection,
-    getCollectionValue,
-    colValue
+    getCollection
   } = useContext(DataContext);
 
   const [open, setOpen] = useState(false);
 
   const handleEditClick = () => {
-    console.log('edit user:', username);
     setOpen(true);
   };
 
@@ -65,10 +62,6 @@ export default function Profile() {
     }
   }, [userGameIDs, getCollection, collection.length]);
 
-  useEffect(() => {
-    getCollectionValue();
-  }, [getCollectionValue]);
-
   const noGamesMsg = (
     <Typography sx={{ color: "primary.text", paddingLeft: 2 }} variant="h5">
       There are no games in your collection.
@@ -82,15 +75,15 @@ export default function Profile() {
   return (
     <Stack>
       <ContentContainer>
-        <EditProfileModal
-          open={open}
-          setOpen={setOpen}
-          userData={userData}
-        />
         {
           userData
             ? (
               <Suspense fallback={<CircularLoading size={"2rem"} />}>
+                <EditProfileModal
+                  open={open}
+                  setOpen={setOpen}
+                  username={username}
+                />
                 <Grid
                   container
                   spacing={2}
@@ -129,7 +122,6 @@ export default function Profile() {
                   <Suspense fallback={<CircularLoading size={"2rem"} />}>
                     <CollectionComp
                       size={userGameIDs.size}
-                      value={colValue}
                       collection={collection}
                       itemsOnPage={12}
                     />

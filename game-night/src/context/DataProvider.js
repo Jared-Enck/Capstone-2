@@ -1,4 +1,9 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useState
+} from "react";
 import DataContext from "./DataContext";
 import useDebounce from "../hooks/useDebounce";
 import GameNightApi from "../gameNightApi";
@@ -47,7 +52,7 @@ export default function DataProvider({ children }) {
     };
   });
 
-  async function getSearchResults(searchObj, page = 1, skipAmount) {
+  const getSearchResults = useCallback(async (searchObj, page = 1, skipAmount) => {
     try {
       setSearchTerm('');
       setErrors(false);
@@ -65,7 +70,7 @@ export default function DataProvider({ children }) {
       console.error('Error: ', err)
     };
     setIsLoading(false);
-  };
+  }, [searchResults.pages, setIsLoading]);
 
   const getGameMedia = useCallback(async (gameID) => {
     try {
@@ -108,17 +113,14 @@ export default function DataProvider({ children }) {
   }, [getGameMedia, setIsLoading]);
 
   const getCollectionValue = useCallback(() => {
-    if (!colValue) {
-      let total = 0;
-      collection.map(g => total += g.msrp)
-      setColValue(total);
-    }
-  }, [colValue, setColValue, collection]);
+    let total = 0;
+    collection.map(g => total += g.msrp)
+    setColValue(total);
+  }, [setColValue, collection]);
 
   const getCollection = useCallback(async (gameIDs) => {
     try {
       const res = await GameNightApi.getCollection(gameIDs);
-      // setCollection(prev => ({...prev, [page]: res.games}));
       setCollection([...res.games]);
     } catch (err) {
       console.error('Error: ', err);
@@ -134,6 +136,7 @@ export default function DataProvider({ children }) {
         setCollection([...collection, game]);
         setUserGameIDs(prev => new Set(prev).add(id));
         setColValue(prev => prev += game.msrp);
+
         console.log(`${game.name} has been added to your collection.`)
       } else {
         navigate('/login');
