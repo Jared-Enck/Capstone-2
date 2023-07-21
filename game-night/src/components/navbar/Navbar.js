@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import {
-  Box,
   Grid,
   AppBar,
   Typography,
@@ -18,11 +17,6 @@ const StyledGrid = styled(Grid)(() => ({
   alignItems: 'center',
   height: '100%',
   fontSize: '1.2rem',
-}));
-
-const StyledBox = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.main,
-  width: '100%'
 }));
 
 const Brand = styled(Typography)(({ theme }) => ({
@@ -54,41 +48,39 @@ export default function Navbar() {
   );
 
   return (
-    <StyledBox>
-      <AppBar position="static">
-        <Container
-          sx={{
-            height: '4rem'
-          }}
-          maxWidth="xl"
-        >
-          <StyledGrid container>
-            <Link to="/">
-              <Brand>
-                Game Night
-              </Brand>
-            </Link>
+    <AppBar position="fixed">
+      <Container
+        sx={{
+          height: '4rem'
+        }}
+        maxWidth="xl"
+      >
+        <StyledGrid container>
+          <Link to="/">
+            <Brand>
+              Game Night
+            </Brand>
+          </Link>
 
-            <SearchBar />
+          <SearchBar />
 
-            <Grid item>
-              <Grid
-                container
-                direction="row"
-                alignItems="center"
-                justifyContent="flex-end"
-                height="100%"
-              >
-                {
-                  currentUser
-                    ? <UserAccountMenu />
-                    : <AnonUserLinks />
-                }
-              </Grid>
+          <Grid item>
+            <Grid
+              container
+              direction="row"
+              alignItems="center"
+              justifyContent="flex-end"
+              height="100%"
+            >
+              {
+                currentUser
+                  ? <UserAccountMenu />
+                  : <AnonUserLinks />
+              }
             </Grid>
-          </StyledGrid>
-        </Container>
-      </AppBar>
-    </StyledBox>
+          </Grid>
+        </StyledGrid>
+      </Container>
+    </AppBar>
   );
 };
