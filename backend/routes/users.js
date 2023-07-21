@@ -51,8 +51,14 @@ router.patch("/:username", ensureLoggedIn, ensureOwner, async function (req, res
       throw new BadRequestError(errs);
     }
     const user = await User.update(req.params.username, req.body);
-    const token = createToken(user);
-    return res.status(200).json({ token });
+    let response;
+    if (req.body.username) {
+      const token = createToken(user);
+      response = { token, user }
+    } else {
+      response = { user }
+    }
+    return res.status(200).json(response);
   } catch (err) {
     return next(err);
   }

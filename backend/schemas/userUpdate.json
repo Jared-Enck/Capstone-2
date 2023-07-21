@@ -18,6 +18,10 @@
       "minLength": 6,
       "maxLength": 60,
       "format": "email"
+    },
+    "imageURL": {
+      "type": "string",
+      "format": "http"
     }
   },
   "additionalProperties": false,
