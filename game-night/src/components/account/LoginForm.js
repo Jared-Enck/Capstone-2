@@ -43,7 +43,8 @@ export const FormInputLabel = styled(InputLabel)(({ theme }) => ({
 
 export const PrimaryButton = styled(Button)(({ theme }) => ({
   borderRadius: '9999px',
-  backgroundColor: alpha(theme.palette.primary.contrastText, .7),
+  backgroundColor: alpha(theme.palette.primary.contrastText, .8),
+  color: theme.palette.primary.main,
   '&:hover': {
     backgroundColor: theme.palette.primary.contrastText
   }
@@ -163,6 +164,7 @@ export default function LoginForm() {
                 </Typography>
                 <PrimaryButton
                   type="submit"
+                  variant="contained"
                   size="medium"
                 >
                   Login
