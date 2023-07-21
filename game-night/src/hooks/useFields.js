@@ -22,6 +22,7 @@ export default function useFields(initialState) {
     formData,
     handleChange,
     formErrors,
-    setFormErrors
+    setFormErrors,
+    setFormData
   ];
 };
