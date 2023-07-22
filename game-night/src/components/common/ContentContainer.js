@@ -1,9 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Container, Typography, Divider } from "@mui/material";
 import styled from "@emotion/styled";
-import UserContext from "../../context/UserContext";
-import CircularLoading from "../common/CircularLoading";
-
 const StyledContainer = styled(Container)(({ theme }) => ({
   margin: 0,
   backgroundColor: theme.palette.primary.main,
@@ -13,7 +10,6 @@ const StyledContainer = styled(Container)(({ theme }) => ({
 }));
 
 export default function ContentContainer({ header = null, divider, children }) {
-  const { isLoading } = useContext(UserContext);
   return (
     <StyledContainer
       maxWidth={"lg"}
@@ -38,11 +34,7 @@ export default function ContentContainer({ header = null, divider, children }) {
           ? <Divider />
           : null
       }
-      {
-        isLoading
-          ? <CircularLoading size={"2rem"} />
-          : children
-      }
+      {children}
     </StyledContainer>
   );
 };

@@ -15,7 +15,7 @@ export default function CollectionStats({ size }) {
   }, [colValue, getCollectionValue]);
 
   return (
-    <Stack spacing={1} sx={{ padding: 2 }}>
+    <Stack spacing={1}>
       <Typography variant="h5" color={"primary.contrastText"}>
         Collection
       </Typography>

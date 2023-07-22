@@ -5,8 +5,7 @@ import React, {
   useCallback
 } from "react";
 import {
-  Grid,
-  Divider
+  Grid
 } from "@mui/material";
 import GameCard from "./GameCard";
 import ResultsPagination from "../common/ResultsPagination";
@@ -44,6 +43,10 @@ export default function Collection({
   }, [page, getPageContent]);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [page]);
+
+  useEffect(() => {
     if (!pageContent.length && page !== 1) setPage(page - 1);
     // eslint-disable-next-line
   }, [pageContent.length, setPage]);
@@ -56,7 +59,6 @@ export default function Collection({
       padding={"1.5rem 1.5rem 0rem 1.5rem"}
     >
       <Grid item xs={12}>
-        <Divider />
         <CollectionStatsComp
           size={size}
         />
