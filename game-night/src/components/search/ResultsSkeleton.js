@@ -1,0 +1,25 @@
+import React from "react";
+import {
+  Grid
+} from "@mui/material";
+import BaseSkeleton from "../common/BaseSkeleton";
+
+export default function ResultsSkeleton({itemsOnPage}) {
+  let skelItems = [];
+
+  for (let i = 0; i < itemsOnPage; i++) {
+    skelItems.push(
+      <Grid item>
+        <BaseSkeleton width={345} height={383} />
+      </Grid>
+    );
+  };
+
+  return (
+    <>
+      {
+        skelItems.map(i => i)
+      }
+    </>
+  );
+};

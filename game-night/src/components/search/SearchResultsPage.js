@@ -10,6 +10,7 @@ import GameCard from "../games/GameCard";
 import ErrorMessage from "../common/ErrorMessage";
 import ResultsPagination from "../common/ResultsPagination";
 import usePagination from "../../hooks/usePagination";
+import ResultsSkeleton from "./ResultsSkeleton";
 
 export default function SearchResultsPage({ itemsOnPage }) {
   const { path, id } = useParams();
@@ -39,6 +40,7 @@ export default function SearchResultsPage({ itemsOnPage }) {
         getSearchResults(searchObj, page, skipAmount);
       };
     };
+    window.scrollTo(0, 0);
   }, [getSearchResults, page, setPage, itemsOnPage, pages, id, path]);
 
   const gridItemComp = (game) => (
@@ -59,16 +61,12 @@ export default function SearchResultsPage({ itemsOnPage }) {
           direction={"row"}
         >
           {
-            errors
+            errors.length
               ? <ErrorMessage />
               : (
-                pages
-                  ? (
-                    pages[page]
-                      ? pages[page].map(g => gridItemComp(g))
-                      : null
-                  )
-                  : null
+                pages[page]
+                  ? pages[page].map(g => gridItemComp(g))
+                  : <ResultsSkeleton itemsOnPage={itemsOnPage} />
               )
           }
         </Grid>
