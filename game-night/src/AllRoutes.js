@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import CircularLoading from './components/common/CircularLoading';
 
 const NotFoundComponent = lazy(
-  () => import("./NotFound")
+  () => import("./components/NotFound")
 );
 const HomeComponent = lazy(
   () => import("./components/Home")

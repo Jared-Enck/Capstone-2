@@ -1,6 +1,6 @@
 import React from "react";
 import { Typography, Stack } from "@mui/material";
-import ContentContainer from "./components/common/ContentContainer";
+import ContentContainer from "./common/ContentContainer";
 
 export default function NotFound() {
   return (
