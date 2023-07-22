@@ -2,8 +2,7 @@ import React, {
   useContext,
   useEffect,
   useState,
-  lazy,
-  Suspense
+  lazy
 } from "react";
 import { useParams } from "react-router-dom";
 import UserContext from "../../context/UserContext";
@@ -13,11 +12,13 @@ import {
   Typography,
   Grid,
   Avatar,
-  Button
+  Button,
+  Divider
 } from "@mui/material";
 import { Edit } from '@mui/icons-material';
 import ContentContainer from "../common/ContentContainer";
-import CircularLoading from "../common/CircularLoading";
+import ProfileSkeleton from "./ProfileSkeleton";
+import CollectionSkeleton from "../games/CollectionSkeleton";
 
 const EditProfileModal = lazy(
   () => import("./EditProfile")
@@ -27,7 +28,7 @@ const CollectionComp = lazy(
   () => import("../games/Collection")
 );
 
-export default function Profile() {
+export default function Profile({ itemsOnPage }) {
   const { username } = useParams();
   const {
     navigate,
@@ -75,21 +76,21 @@ export default function Profile() {
   return (
     <Stack>
       <ContentContainer>
-        {
-          userData
-            ? (
-              <Suspense fallback={<CircularLoading size={"2rem"} />}>
-                <EditProfileModal
-                  open={open}
-                  setOpen={setOpen}
-                  username={username}
-                />
-                <Grid
-                  container
-                  spacing={2}
-                  direction={"row"}
-                  alignItems={"flex-end"}
-                >
+        <Grid
+          container
+          spacing={2}
+          direction={"row"}
+          alignItems={"flex-end"}
+        >
+          {
+            userData
+              ? (
+                <>
+                  <EditProfileModal
+                    open={open}
+                    setOpen={setOpen}
+                    username={username}
+                  />
                   <Grid item>
                     <Avatar src={userData.imageURL} sx={{ width: 120, height: 120 }} />
                   </Grid>
@@ -104,32 +105,33 @@ export default function Profile() {
                         fontSize="medium"
                         sx={{
                           color: "primary.contrastText",
-                          marginLeft: 1
+                          marginLeft: 2
                         }}
                       />
                     </Button>
                   </Grid>
-                </Grid>
-              </Suspense>
-            )
-            : null
-        }
+                </>
+              )
+              : <ProfileSkeleton />
+          }
+          <Grid item xs={12}>
+            <Divider />
+          </Grid>
+        </Grid>
         {
-          userGameIDs.size
+          collection.length
             ? (
-              collection.length
+              userGameIDs.size
                 ? (
-                  <Suspense fallback={<CircularLoading size={"2rem"} />}>
-                    <CollectionComp
-                      size={userGameIDs.size}
-                      collection={collection}
-                      itemsOnPage={12}
-                    />
-                  </Suspense>
+                  <CollectionComp
+                    size={userGameIDs.size}
+                    collection={collection}
+                    itemsOnPage={itemsOnPage}
+                  />
                 )
-                : null
+                : noGamesMsg
             )
-            : noGamesMsg
+            : <CollectionSkeleton itemsOnPage={itemsOnPage} />
         }
       </ContentContainer>
     </Stack>
