@@ -17,6 +17,7 @@ import {
 } from "@mui/icons-material";
 import PlayersAndDuration from "../common/PlayersAndDuration";
 import styled from "@emotion/styled";
+import ContentContainer from "../common/ContentContainer";
 
 const AddButton = styled(Button)(({ theme }) => ({
   display: "flex",
@@ -71,7 +72,7 @@ export default function GameDescription({ game }) {
   );
 
   return (
-    <>
+    <ContentContainer>
       <Box display={"flex"}>
         <Typography
           variant={"h4"}
@@ -165,6 +166,6 @@ export default function GameDescription({ game }) {
           }
         </Grid>
       </Grid>
-    </>
+    </ContentContainer>
   )
 };

@@ -10,12 +10,12 @@ export default function CollectionSkeleton({ itemsOnPage }) {
 
   for (let i = 0; i < itemsOnPage; i++) {
     skelItems.push(
-      <Grid item>
+      <Grid item key={i}>
         <BaseSkeleton width={345} height={383} />
       </Grid>
     );
   };
-  
+
   return (
     <Grid
       container
@@ -26,8 +26,8 @@ export default function CollectionSkeleton({ itemsOnPage }) {
       <Grid item xs={12}>
         <Stack spacing={2} width={300}>
           <BaseSkeleton />
-          <BaseSkeleton height="1.5rem"/>
-          <BaseSkeleton height="1.5rem"/>
+          <BaseSkeleton height="1.5rem" />
+          <BaseSkeleton height="1.5rem" />
         </Stack>
       </Grid>
       <Grid item>

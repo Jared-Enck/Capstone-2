@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import DetailListItem from "./DetailListItem";
 import styled from "@emotion/styled";
+import ContentContainer from "../common/ContentContainer";
 
 const createData = (name, data = "N/A") => {
   return { name, data }
@@ -62,7 +63,7 @@ export default function GameDetails({ game }) {
     ];
   }
   return (
-    <>
+    <ContentContainer header="Details" divider>
       <Table>
         <TableBody>
           {
@@ -95,6 +96,6 @@ export default function GameDetails({ game }) {
           }
         </TableBody>
       </Table>
-    </>
+    </ContentContainer>
   );
 };

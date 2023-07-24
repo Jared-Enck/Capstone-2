@@ -1,59 +1,65 @@
-import React, { useEffect, useContext, lazy } from "react";
+import React, { useEffect, useContext, lazy, useState } from "react";
 import { useParams } from "react-router-dom";
 import DataContext from "../../context/DataContext";
-import ContentContainer from "../common/ContentContainer";
 import {
-  Stack,
+  Stack
 } from "@mui/material";
+import GameDescSkeleton from "./GameDescSkeleton";
+import GameDetails from "./GameDetails";
+import MediaSkeleton from "./MediaSkeleton";
 
 const MediaContainerComp = lazy(
   () => import("./MediaContainer")
 );
+
 const GameDescriptionComp = lazy(
   () => import("./GameDescription")
-);
-const GameDetailsComp = lazy(
-  () => import("./GameDetails")
 );
 
 export default function GameDetailsPage() {
   const { game, checkGameCache } = useContext(DataContext);
   const gameID = useParams().id;
+  const [images, setImages] = useState('');
+  const [videos, setVideos] = useState('');
 
   useEffect(() => {
-    checkGameCache(gameID);
+    if (!game.videos) {
+      setImages('');
+      setVideos('');
+      checkGameCache(gameID);
+      console.log('game:', game)
+    }
+    if (game.detail_images) setImages(game.detail_images);
+    if (game.videos) setVideos(game.videos);
     // eslint-disable-next-line
-  }, []);
-
-  const images = game.detail_images || [];
-  const videos = game.videos || [];
+  }, [game]);
 
   return (
     <Stack spacing={".3rem"}>
-      <ContentContainer>
-        <GameDescriptionComp game={game} />
-      </ContentContainer>
       {
-        images.length
-          ? (
-            <ContentContainer header="Images" divider>
-              <MediaContainerComp items={images} />
-            </ContentContainer>
-          )
-          : null
+        game.videos
+          ? <GameDescriptionComp game={game} />
+          : <GameDescSkeleton />
       }
       {
-        videos.length
+        images
           ? (
-            <ContentContainer header="Videos" divider>
-              <MediaContainerComp items={videos} isVideo={true} />
-            </ContentContainer>
+            images.length
+              ? <MediaContainerComp items={images} />
+              : null
           )
-          : null
+          : <MediaSkeleton />
       }
-      <ContentContainer header="Details" divider>
-        <GameDetailsComp game={game} />
-      </ContentContainer>
+      {
+        videos
+          ? (
+            videos.length
+              ? <MediaContainerComp items={videos} isVideo />
+              : null
+          )
+          : <MediaSkeleton isVideo />
+      }
+      <GameDetails game={game} />
     </Stack>
   );
 };

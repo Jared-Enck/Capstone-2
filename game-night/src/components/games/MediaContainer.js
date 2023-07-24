@@ -3,11 +3,14 @@ import {
   Grid
 } from "@mui/material";
 import MediaCard from "./MediaCard";
+import ContentContainer from "../common/ContentContainer";
 
-export default function MediaContainer({ header, items, isVideo = null }) {
+export default function MediaContainer({ items, isVideo }) {
   const handleClick = (url) => {
     window.open(url, '_blank');
   };
+
+  const header = isVideo ? "Videos" : "Images";
 
   const ImageCardComponent = (item) => (
     <MediaCard
@@ -30,7 +33,7 @@ export default function MediaContainer({ header, items, isVideo = null }) {
   );
 
   return (
-    <>
+    <ContentContainer header={header}>
       <Grid
         sx={{
           alignItems: "center",
@@ -62,6 +65,6 @@ export default function MediaContainer({ header, items, isVideo = null }) {
             : null
         }
       </Grid>
-    </>
+    </ContentContainer>
   )
 };

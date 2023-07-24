@@ -43,7 +43,7 @@ export default function Collection({
   }, [page, getPageContent]);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }, [page]);
 
   useEffect(() => {
