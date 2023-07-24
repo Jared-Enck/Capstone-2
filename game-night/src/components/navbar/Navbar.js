@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import UserContext from "../../context/UserContext";
 import UserAccountMenu from "./UserAccountMenu";
-import SearchBar from "../search/SearchBar";
+import SearchBar from "./SearchBar";
 import styled from "@emotion/styled";
 
 const StyledGrid = styled(Grid)(() => ({

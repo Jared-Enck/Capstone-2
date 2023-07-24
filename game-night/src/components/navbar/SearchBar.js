@@ -60,7 +60,7 @@ export default function SearchBar() {
     setOpen,
     searchTerm,
     boxResults,
-    setBoxResults,
+    setBoxResults, 
     debouncedRequest,
     setSearchTerm
   } = useContext(DataContext);
