@@ -11,6 +11,7 @@ import ErrorMessage from "../common/ErrorMessage";
 import ResultsPagination from "../common/ResultsPagination";
 import usePagination from "../../hooks/usePagination";
 import ResultsSkeleton from "./ResultsSkeleton";
+import BaseSkeleton from "../common/BaseSkeleton";
 
 export default function SearchResultsPage({ itemsOnPage }) {
   const { path, id } = useParams();
@@ -18,6 +19,7 @@ export default function SearchResultsPage({ itemsOnPage }) {
     searchResults,
     getSearchResults,
     resultsHeader,
+    getSearchHeader,
     errors
   } = useContext(DataContext);
   const { pages, count } = searchResults;
@@ -30,6 +32,10 @@ export default function SearchResultsPage({ itemsOnPage }) {
   ] = usePagination(count, itemsOnPage);
 
   useEffect(() => {
+    if (!resultsHeader) getSearchHeader(id);
+  }, [resultsHeader, getSearchHeader, id])
+
+  useEffect(() => {
     const searchObj = { [path]: id };
     if (!Object.keys(pages).length) {
       setPage(1);
@@ -40,7 +46,7 @@ export default function SearchResultsPage({ itemsOnPage }) {
         getSearchResults(searchObj, page, skipAmount);
       };
     };
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }, [getSearchResults, page, setPage, itemsOnPage, pages, id, path]);
 
   const gridItemComp = (game) => (
@@ -53,7 +59,14 @@ export default function SearchResultsPage({ itemsOnPage }) {
 
   return (
     <Stack>
-      <ContentContainer header={header} divider>
+      <ContentContainer
+        header={
+          resultsHeader
+            ? header
+            : <BaseSkeleton width={"30ch"} height="2.5rem" />
+        }
+        divider
+      >
         <Grid
           container
           spacing={3}

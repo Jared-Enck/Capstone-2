@@ -9,7 +9,7 @@ export default function ResultsSkeleton({itemsOnPage}) {
 
   for (let i = 0; i < itemsOnPage; i++) {
     skelItems.push(
-      <Grid item>
+      <Grid item key={i}>
         <BaseSkeleton width={345} height={383} />
       </Grid>
     );
