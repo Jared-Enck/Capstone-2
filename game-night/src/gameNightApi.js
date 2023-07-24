@@ -67,6 +67,12 @@ export default class GameNightApi {
     return res;
   };
 
+  /** Get mechanic or category by id */
+  static async getHeaderById(id) {
+    let res = await this.request(`api/cache/${id}`);
+    return res;
+  };
+
   /** Checks game cache for game id */
   static async checkGameCache(gameID) {
     const res = await this.request('api/cache/games', { gameID });
