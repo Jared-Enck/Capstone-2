@@ -10,6 +10,7 @@ import GameNightApi from "../gameNightApi";
 import UserContext from "./UserContext";
 
 export default function DataProvider({ children }) {
+  const [isLoading, setIsLoading] = useState(true);
   const [errors, setErrors] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [boxResults, setBoxResults] = useState({});
@@ -22,8 +23,7 @@ export default function DataProvider({ children }) {
   const [open, setOpen] = useState(false);
   const {
     currentUser,
-    navigate,
-    setIsLoading
+    navigate
   } = useContext(UserContext);
 
   const getCommonCache = useCallback(async () => {
@@ -51,6 +51,15 @@ export default function DataProvider({ children }) {
       console.error('Error:', err)
     };
   });
+
+  async function getSearchHeader(id) {
+    try {
+      const res = await GameNightApi.getHeaderById(id);
+      setResultsHeader(res);
+    } catch (err) {
+      console.error('Error:', err)
+    };
+  };
 
   const getSearchResults = useCallback(async (searchObj, page = 1, skipAmount) => {
     try {
@@ -106,10 +115,10 @@ export default function DataProvider({ children }) {
         setGame(found);
       }
       setOpen(false);
+      setIsLoading(false);
     } catch (err) {
       console.error('Error: ', err)
     }
-    setIsLoading(false);
   }, [getGameMedia, setIsLoading]);
 
   const getCollectionValue = useCallback(() => {
@@ -185,6 +194,8 @@ export default function DataProvider({ children }) {
     <DataContext.Provider
       value={
         {
+          isLoading,
+          setIsLoading,
           searchTerm,
           setSearchTerm,
           searchResults,
@@ -192,6 +203,7 @@ export default function DataProvider({ children }) {
           boxResults,
           setBoxResults,
           resultsHeader,
+          getSearchHeader,
           setResultsHeader,
           getSearchResults,
           debouncedRequest,
