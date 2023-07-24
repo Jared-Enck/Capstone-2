@@ -12,7 +12,6 @@ import jwt_decode from "jwt-decode";
 export const TOKEN_STORAGE_ID = "game-night-token";
 
 export default function UserProvider({ children, isDark, setDarkMode }) {
-  const [isLoading, setIsLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState('');
   const [userData, setUserData] = useState('');
   const [token, setToken] = useLocalStorage(TOKEN_STORAGE_ID);
@@ -73,28 +72,23 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
 
   const getCurrentUser = useCallback(async (username) => {
     try {
-      setIsLoading(true);
       const user = await GameNightApi.getCurrentUser(username);
       setUserData(user);
     } catch (err) {
       console.error('Error: ', err);
     };
-    setIsLoading(false);
-  }, [setIsLoading, setUserData]);
+  }, [setUserData]);
 
   useEffect(() => {
     if (token) {
       saveToken();
     }
-    setIsLoading(false);
   }, [token, saveToken]);
 
   return (
     <UserContext.Provider
       value={
         {
-          isLoading,
-          setIsLoading,
           currentUser,
           getCurrentUser,
           userData,
