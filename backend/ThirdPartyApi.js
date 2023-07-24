@@ -60,21 +60,41 @@ class ThirdPartyApi {
     return APICachedDate;
   };
 
-  static checkCommon(term) {
-    if (term) {
-      const {
-        mechanics,
-        categories
-      } = commonCache.mget(['mechanics', 'categories']);
-      const results = {};
-      const regexp = new RegExp(term, 'i');
+  static checkCommonByName(name) {
+    const {
+      mechanics,
+      categories
+    } = commonCache.mget(['mechanics', 'categories']);
 
-      results.foundMechanics = mechanics.filter(m => regexp.test(m.name));
-      results.foundCategories = categories.filter(c => regexp.test(c.name));
+    const results = {};
+    const regexp = new RegExp(name, 'i');
 
-      return results;
-    };
+    results.foundMechanics = mechanics.filter(m => regexp.test(m.name));
+    results.foundCategories = categories.filter(c => regexp.test(c.name));
+
+    return results;
   };
+
+  static checkCommonByID(id) {
+    const {
+      mechanics,
+      categories
+    } = commonCache.mget(['mechanics', 'categories']);
+
+    let found;
+
+    const foundMechanic = mechanics.filter(m => m.id === id);
+
+    if (foundMechanic.length) {
+      found = foundMechanic[0];
+    } else {
+      const foundCategory = categories.filter(c => c.id === id);
+      if (!foundCategory.length) return -1;
+      found = foundCategory[0];
+    }
+
+    return found.name;
+  }
 
   static checkGames(gameID) {
     const found = gamesCache.get(gameID);
@@ -84,7 +104,7 @@ class ThirdPartyApi {
   static async getSearchResults(query) {
     let results = {};
     if (query.name) {
-      results = this.checkCommon(query.name);
+      results = this.checkCommonByName(query.name);
     }
     const [key, val] = Object.entries(query)[0];
 

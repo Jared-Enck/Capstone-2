@@ -44,6 +44,25 @@ router.get("/cache/games", function (req, res, next) {
   }
 });
 
+/** GET /api/cache/:id => "Deck Building"
+ * 
+ * Gets mechanic or category name from cache
+ * 
+ * Returns name or -1 if not found.
+ *
+ * Authorization required: none
+ */
+
+router.get("/cache/:id", function (req, res, next) {
+  try {
+    const { id } = req.params;
+    const result = ThirdPartyApi.checkCommonByID(id);
+    return res.json(result);
+  } catch (err) {
+    return next(err);
+  }
+});
+
 /** POST /api/cache/games => { date }
  * 
  * Checks cache if game already in cache
