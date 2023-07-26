@@ -33,7 +33,7 @@ export default function MediaContainer({ items, isVideo }) {
   );
 
   return (
-    <ContentContainer header={header}>
+    <ContentContainer header={header} divider>
       <Grid
         sx={{
           alignItems: "center",
