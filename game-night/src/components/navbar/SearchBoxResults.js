@@ -1,4 +1,4 @@
-import React, { useContext, lazy, Suspense } from "react";
+import React, { useContext, lazy } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import styled from "@emotion/styled";
 import DataContext from "../../context/DataContext";
+import UserContext from "../../context/UserContext";
 import CircularLoading from "../common/CircularLoading";
 
 const SearchBoxSectionComp = lazy(
@@ -37,9 +38,10 @@ export default function SearchBoxResults({ results, clearBoxResults }) {
   const {
     setGame,
     setResultsHeader,
-    setSearchResults,
-    isLoading
+    setSearchResults
   } = useContext(DataContext);
+
+  const { isLoading } = useContext(UserContext);
 
   const handleBtnClick = (path, item) => {
     clearBoxResults();
@@ -99,18 +101,20 @@ export default function SearchBoxResults({ results, clearBoxResults }) {
             ? <Divider />
             : null
         }
-        <Suspense fallback={<CircularLoading />}>
-          {
-            games.length
-              ? (
-                <GamesListComp
-                  games={games.slice(0, 10)}
-                  handleGameClick={handleGameClick}
-                />
-              )
-              : <NoGamesFound />
-          }
-        </Suspense>
+        {
+          isLoading
+            ? <CircularLoading />
+            : (
+              games.length
+                ? (
+                  <GamesListComp
+                    games={games.slice(0, 10)}
+                    handleGameClick={handleGameClick}
+                  />
+                )
+                : <NoGamesFound />
+            )
+        }
       </Stack>
     </StyledBox>
   );

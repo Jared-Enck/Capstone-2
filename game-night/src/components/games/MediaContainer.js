@@ -46,23 +46,19 @@ export default function MediaContainer({ items, isVideo }) {
         spacing={2}
       >
         {
-          items
-            ? (
-              items.map(i => (
-                <Grid
-                  key={i.id}
-                  item
-                  justifyContent={"center"}
-                >
-                  {
-                    isVideo
-                      ? VideoCardComponent(i)
-                      : ImageCardComponent(i)
-                  }
-                </Grid>
-              ))
-            )
-            : null
+          items.map(i => (
+            <Grid
+              key={i.id}
+              item
+              justifyContent={"center"}
+            >
+              {
+                isVideo
+                  ? VideoCardComponent(i)
+                  : ImageCardComponent(i)
+              }
+            </Grid>
+          ))
         }
       </Grid>
     </ContentContainer>

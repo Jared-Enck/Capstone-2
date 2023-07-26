@@ -12,6 +12,7 @@ import jwt_decode from "jwt-decode";
 export const TOKEN_STORAGE_ID = "game-night-token";
 
 export default function UserProvider({ children, isDark, setDarkMode }) {
+  const [isLoading, setIsLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState('');
   const [userData, setUserData] = useState('');
   const [token, setToken] = useLocalStorage(TOKEN_STORAGE_ID);
@@ -89,6 +90,8 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
     <UserContext.Provider
       value={
         {
+          isLoading,
+          setIsLoading,
           currentUser,
           getCurrentUser,
           userData,

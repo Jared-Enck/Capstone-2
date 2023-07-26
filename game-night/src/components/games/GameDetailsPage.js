@@ -1,20 +1,14 @@
-import React, { useEffect, useContext, lazy, useState } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import DataContext from "../../context/DataContext";
 import {
   Stack
 } from "@mui/material";
+import GameDescription from "./GameDescription";
 import GameDescSkeleton from "./GameDescSkeleton";
-import GameDetails from "./GameDetails";
+import MediaContainer from "./MediaContainer";
 import MediaSkeleton from "./MediaSkeleton";
-
-const MediaContainerComp = lazy(
-  () => import("./MediaContainer")
-);
-
-const GameDescriptionComp = lazy(
-  () => import("./GameDescription")
-);
+import GameDetails from "./GameDetails";
 
 export default function GameDetailsPage() {
   const { game, checkGameCache } = useContext(DataContext);
@@ -27,7 +21,6 @@ export default function GameDetailsPage() {
       setImages('');
       setVideos('');
       checkGameCache(gameID);
-      console.log('game:', game)
     }
     if (game.detail_images) setImages(game.detail_images);
     if (game.videos) setVideos(game.videos);
@@ -38,14 +31,14 @@ export default function GameDetailsPage() {
     <Stack spacing={".3rem"}>
       {
         game.videos
-          ? <GameDescriptionComp game={game} />
+          ? <GameDescription game={game} />
           : <GameDescSkeleton />
       }
       {
         images
           ? (
             images.length
-              ? <MediaContainerComp items={images} />
+              ? <MediaContainer items={images} />
               : null
           )
           : <MediaSkeleton />
@@ -54,7 +47,7 @@ export default function GameDetailsPage() {
         videos
           ? (
             videos.length
-              ? <MediaContainerComp items={videos} isVideo />
+              ? <MediaContainer items={videos} isVideo />
               : null
           )
           : <MediaSkeleton isVideo />

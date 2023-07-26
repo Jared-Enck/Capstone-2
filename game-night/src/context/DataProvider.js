@@ -10,7 +10,6 @@ import GameNightApi from "../gameNightApi";
 import UserContext from "./UserContext";
 
 export default function DataProvider({ children }) {
-  const [isLoading, setIsLoading] = useState(true);
   const [errors, setErrors] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [boxResults, setBoxResults] = useState({});
@@ -23,17 +22,17 @@ export default function DataProvider({ children }) {
   const [open, setOpen] = useState(false);
   const {
     currentUser,
-    navigate
+    navigate,
+    setIsLoading
   } = useContext(UserContext);
 
   const getCommonCache = useCallback(async () => {
     try {
       await GameNightApi.getCommonCache();
-      setIsLoading(false);
     } catch (err) {
       console.error('Error: ', err)
     }
-  }, [setIsLoading]);
+  }, []);
 
   useEffect(() => {
     getCommonCache();
@@ -42,6 +41,7 @@ export default function DataProvider({ children }) {
   const debouncedRequest = useDebounce(async () => {
     try {
       if (searchTerm && searchTerm.length > 2) {
+        setIsLoading(true);
         setOpen(true);
         setErrors(false);
         const res = await GameNightApi.getSearchResults({ name: searchTerm });
@@ -50,6 +50,7 @@ export default function DataProvider({ children }) {
     } catch (err) {
       console.error('Error:', err)
     };
+    setIsLoading(false);
   });
 
   async function getSearchHeader(id) {
@@ -65,7 +66,6 @@ export default function DataProvider({ children }) {
     try {
       setSearchTerm('');
       setErrors(false);
-      setIsLoading(true);
       let res;
       if (skipAmount) {
         res = await GameNightApi.getSearchResults(searchObj, skipAmount);
@@ -78,8 +78,7 @@ export default function DataProvider({ children }) {
     } catch (err) {
       console.error('Error: ', err)
     };
-    setIsLoading(false);
-  }, [searchResults.pages, setIsLoading]);
+  }, [searchResults.pages]);
 
   const getGameMedia = useCallback(async (gameID) => {
     try {
@@ -107,7 +106,6 @@ export default function DataProvider({ children }) {
 
   const checkGameCache = useCallback(async (gameID) => {
     try {
-      setIsLoading(true);
       const found = await GameNightApi.checkGameCache(gameID);
       if (!found) {
         await getGameMedia(gameID);
@@ -115,11 +113,10 @@ export default function DataProvider({ children }) {
         setGame(found);
       }
       setOpen(false);
-      setIsLoading(false);
     } catch (err) {
       console.error('Error: ', err)
     }
-  }, [getGameMedia, setIsLoading]);
+  }, [getGameMedia]);
 
   const getCollectionValue = useCallback(() => {
     let total = 0;
@@ -194,8 +191,6 @@ export default function DataProvider({ children }) {
     <DataContext.Provider
       value={
         {
-          isLoading,
-          setIsLoading,
           searchTerm,
           setSearchTerm,
           searchResults,
