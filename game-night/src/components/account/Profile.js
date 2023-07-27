@@ -50,10 +50,8 @@ export default function Profile({ itemsOnPage }) {
   };
 
   useEffect(() => {
-    if (!userData) {
-      getCurrentUser(username);
-    }
-  }, [userData, username, getCurrentUser]);
+    if (!userData) getCurrentUser(username);
+  }, [currentUser, getCurrentUser]);
 
   useEffect(() => {
     if (!collection.length && userGameIDs.size) {

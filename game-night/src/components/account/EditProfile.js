@@ -47,7 +47,7 @@ export default function EditProfile({ open, setOpen, username }) {
 
   const handleClose = () => {
     setFormErrors([]);
-    setFormData(formData);
+    setFormData(userData);
     setOpen(false)
   };
 
@@ -74,13 +74,10 @@ export default function EditProfile({ open, setOpen, username }) {
 
     const result = await updateUser(updateData, username);
 
-    if (result.msg === 'success') {
-      if (updateData.username) {
-        navigate(`/profile/${updateData.username}`);
-      }
-      handleClose();
+    if (result) {
+      setFormErrors(result.msg);
     } else {
-      setFormErrors(result.msg)
+      handleClose();
     }
   };
 

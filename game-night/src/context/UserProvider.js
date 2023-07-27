@@ -52,13 +52,15 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
 
   async function updateUser(formData, username) {
     try {
+
       const result = await GameNightApi.updateUser(formData, username);
+      const user = result.user;
       if (result.token) {
         setToken(result.token);
         saveToken();
+        navigate(`/profile/${user.username}`);
       }
-      setUserData({ ...result.user });
-      return { msg: 'success' };
+      setUserData({ ...user });
     } catch (err) {
       console.log(err);
       return { msg: err };
