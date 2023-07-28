@@ -8,13 +8,11 @@ import {
   Grid,
   Button,
   Stack,
-  alpha,
 } from '@mui/material';
 import { ExpandMore, ExpandLess, Add, Check } from '@mui/icons-material';
 import PlayersAndDuration from '../common/PlayersAndDuration';
 import styled from '@emotion/styled';
 import ContentContainer from '../common/ContentContainer';
-import { common } from '@mui/material/colors';
 
 const AddButton = styled(Button)(({ theme }) => ({
   display: 'flex',
@@ -59,12 +57,7 @@ export default function GameDescription({ game }) {
 
   const AddedBadgeComp = () => (
     <AddedBadgeBox>
-      <Typography
-        sx={{ textShadow: `1px 1px ${alpha(common.black, 0.7)}` }}
-        margin={1}
-      >
-        In Collection
-      </Typography>
+      <Typography margin={1}>In Collection</Typography>
       <Typography padding={'.3rem'}>
         <Check />
       </Typography>

@@ -34,6 +34,7 @@ export default function Profile({ itemsOnPage }) {
 
   useEffect(() => {
     if (!userData) getCurrentUser(username);
+    // eslint-disable-next-line
   }, [currentUser, getCurrentUser]);
 
   useEffect(() => {

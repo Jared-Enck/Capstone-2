@@ -31,7 +31,7 @@ const genError = (err, idx) => {
 };
 
 export default function EditProfile({ open, setOpen, username }) {
-  const { updateUser, navigate, userData } = useContext(UserContext);
+  const { updateUser, userData } = useContext(UserContext);
 
   const [formData, handleChange, formErrors, setFormErrors, setFormData] =
     useFields(userData);
