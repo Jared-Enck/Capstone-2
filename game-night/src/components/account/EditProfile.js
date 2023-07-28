@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
   Box,
   Modal,
@@ -38,7 +38,6 @@ export default function EditProfile({ open, setOpen, username }) {
 
   const handleClose = () => {
     setFormErrors([]);
-    setFormData(userData);
     setOpen(false);
   };
 
@@ -72,6 +71,10 @@ export default function EditProfile({ open, setOpen, username }) {
       handleClose();
     }
   };
+
+  useEffect(() => {
+    setFormData(userData);
+  }, [userData, setFormData]);
 
   return (
     <Modal
