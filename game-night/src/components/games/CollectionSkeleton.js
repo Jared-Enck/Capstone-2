@@ -17,26 +17,26 @@ export default function CollectionSkeleton({ itemsOnPage }) {
   };
 
   return (
-    <Grid
-      container
-      direction={"row"}
-      spacing={3}
-      padding={"1.5rem 1.5rem 0rem 1.5rem"}
-    >
-      <Grid item xs={12}>
-        <Stack spacing={2} width={300}>
-          <BaseSkeleton />
-          <BaseSkeleton height="1.5rem" />
-          <BaseSkeleton height="1.5rem" />
-        </Stack>
+    <Stack spacing={2}>
+      <Stack 
+        spacing={1} 
+        width={300} 
+        padding={"1.5rem 1.5rem 0rem 2rem"}
+      >
+        <BaseSkeleton />
+        <BaseSkeleton height="1.5rem" />
+        <BaseSkeleton height="1.5rem" />
+      </Stack>
+      <Grid
+        container
+        direction={"row"}
+        spacing={3}
+        paddingLeft={".5rem"}
+      >
+        {
+          skelItems.map(i => i)
+        }
       </Grid>
-      <Grid item>
-        <Grid container direction={"row"} spacing={2}>
-          {
-            skelItems.map(i => i)
-          }
-        </Grid>
-      </Grid>
-    </Grid>
+    </Stack>
   );
 };

@@ -5,7 +5,8 @@ import React, {
   useCallback
 } from "react";
 import {
-  Grid
+  Grid,
+  Stack
 } from "@mui/material";
 import GameCard from "./GameCard";
 import ResultsPagination from "../common/ResultsPagination";
@@ -40,11 +41,8 @@ export default function Collection({
 
   useEffect(() => {
     getPageContent()
-  }, [page, getPageContent]);
-
-  useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
-  }, [page]);
+  }, [page, getPageContent]);
 
   useEffect(() => {
     if (!pageContent.length && page !== 1) setPage(page - 1);
@@ -52,41 +50,41 @@ export default function Collection({
   }, [pageContent.length, setPage]);
 
   return (
-    <Grid
-      container
-      direction={"row"}
-      spacing={3}
-      padding={"1.5rem 1.5rem 0rem 1.5rem"}
-    >
-      <Grid item xs={12}>
-        <CollectionStatsComp
-          size={size}
-        />
-      </Grid>
-      {
-        pageContent.length
-          ? (
-            pageContent.map(g => (
-              <Grid key={g.id} item>
-                <GameCard game={g} onProfilePage />
+    <Stack spacing={2}>
+      <CollectionStatsComp
+        size={size}
+      />
+      <Grid
+        container
+        direction={"row"}
+        spacing={3}
+        paddingLeft={".5rem"}
+      >
+        {
+          pageContent.length
+            ? (
+              pageContent.map(g => (
+                <Grid key={g.id} item>
+                  <GameCard game={g} onProfilePage />
+                </Grid>
+              ))
+            )
+            : null
+        }
+        {
+          pageCount > 1
+            ? (
+              <Grid item xs={12}>
+                <ResultsPagination
+                  page={page}
+                  handleChange={handleChange}
+                  pageCount={pageCount}
+                />
               </Grid>
-            ))
-          )
-          : null
-      }
-      {
-        pageCount > 1
-          ? (
-            <Grid item xs={12}>
-              <ResultsPagination
-                page={page}
-                handleChange={handleChange}
-                pageCount={pageCount}
-              />
-            </Grid>
-          )
-          : null
-      }
-    </Grid>
+            )
+            : null
+        }
+      </Grid>
+    </Stack>
   );
 };

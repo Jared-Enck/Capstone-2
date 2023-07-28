@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {lazy} from 'react';
 import { Routes, Route } from 'react-router-dom';
 import NotFound from './components/NotFound';
 import Home from './components/Home';
@@ -17,7 +17,7 @@ export default function AllRoutes() {
       <Route path='/signup' element={<SignUpForm />} />
       <Route
         path='/profile/:username'
-        element={<Profile itemsOnPage={12} />}
+        element={<Profile itemsOnPage={9} />}
       />
       <Route
         path='search/:path/:id'

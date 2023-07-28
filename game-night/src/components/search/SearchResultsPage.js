@@ -72,6 +72,7 @@ export default function SearchResultsPage({ itemsOnPage }) {
           spacing={3}
           padding={"1.5rem"}
           direction={"row"}
+          justifyContent={"center"}
         >
           {
             errors.length
