@@ -33,16 +33,17 @@ export default function Profile({ itemsOnPage }) {
   };
 
   useEffect(() => {
-    if (!userData) getCurrentUser(username);
+    if (!userData && currentUser) getCurrentUser(username);
     // eslint-disable-next-line
   }, [currentUser, getCurrentUser]);
 
   useEffect(() => {
-    if (!collection.length && userGameIDs.size) {
+    if (!collection.length && userGameIDs.size && currentUser) {
       // API requires additional comma at start and end of string
       const IdString = `,${[...userGameIDs].join(',')},`;
       getCollection(IdString);
     }
+    // eslint-disable-next-line
   }, [userGameIDs, getCollection, collection.length]);
 
   const noGamesMsg = (
@@ -55,8 +56,6 @@ export default function Profile({ itemsOnPage }) {
   );
 
   if (!currentUser) return navigate('/login');
-
-  if (username !== currentUser) return navigate('/');
 
   return (
     <Stack>

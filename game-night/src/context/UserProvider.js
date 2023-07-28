@@ -62,11 +62,12 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
     }
   }
 
-  const logout = () => {
+  const logout = useCallback(() => {
     GameNightApi.token = '';
     setCurrentUser('');
     setToken('');
-  };
+    navigate('/login');
+  }, [setToken, navigate]);
 
   const getCurrentUser = useCallback(
     async (username) => {
@@ -75,9 +76,12 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
         setUserData(user);
       } catch (err) {
         console.error('Error: ', err);
+        if (err[0] === 'Unauthorized') {
+          logout();
+        }
       }
     },
-    [setUserData]
+    [setUserData, logout]
   );
 
   useEffect(() => {

@@ -183,8 +183,9 @@ export default function DataProvider({ children }) {
   }, [currentUser]);
 
   useEffect(() => {
-    getGameIDs();
-  }, [currentUser, getGameIDs]);
+    if (!userGameIDs.size) getGameIDs();
+    // eslint-disable-next-line
+  }, [getGameIDs]);
 
   return (
     <DataContext.Provider
