@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext } from 'react';
 import {
   Card,
   CardActionArea,
@@ -7,24 +7,15 @@ import {
   CardActions,
   Typography,
   Grid,
-  IconButton
-} from "@mui/material";
-import PlayersAndDuration from "../common/PlayersAndDuration";
-import {
-  Favorite,
-  FavoriteBorder,
-  Delete
-} from "@mui/icons-material";
-import DataContext from "../../context/DataContext";
-import UserContext from "../../context/UserContext";
+  IconButton,
+} from '@mui/material';
+import PlayersAndDuration from '../common/PlayersAndDuration';
+import { Favorite, FavoriteBorder, Delete } from '@mui/icons-material';
+import DataContext from '../../context/DataContext';
+import UserContext from '../../context/UserContext';
 
 export default function GameCard({ game, onProfilePage }) {
-  const {
-    setGame,
-    userGameIDs,
-    addGame,
-    removeGame
-  } = useContext(DataContext);
+  const { setGame, userGameIDs, addGame, removeGame } = useContext(DataContext);
   const { navigate } = useContext(UserContext);
   const inCollection = userGameIDs.has(game.id);
 
@@ -36,7 +27,7 @@ export default function GameCard({ game, onProfilePage }) {
   const handleQuickAddClick = () => {
     if (!inCollection) {
       addGame(game);
-    };
+    }
   };
 
   const handleTrashClick = () => {
@@ -45,22 +36,18 @@ export default function GameCard({ game, onProfilePage }) {
 
   const quickAddBtn = (
     <IconButton
-      aria-label="add to collection"
-      sx={{ color: "primary.contrastText", marginLeft: "auto" }}
+      aria-label='add to collection'
+      sx={{ color: 'primary.contrastText', marginLeft: 'auto' }}
       onClick={handleQuickAddClick}
     >
-      {
-        inCollection
-          ? <Favorite />
-          : <FavoriteBorder />
-      }
+      {inCollection ? <Favorite /> : <FavoriteBorder />}
     </IconButton>
   );
 
   const trashBtn = (
     <IconButton
-      aria-label="remove from collection"
-      sx={{ color: "primary.contrastText", marginLeft: "auto" }}
+      aria-label='remove from collection'
+      sx={{ color: 'primary.contrastText', marginLeft: 'auto' }}
       onClick={handleTrashClick}
     >
       <Delete />
@@ -71,38 +58,36 @@ export default function GameCard({ game, onProfilePage }) {
     <Card
       sx={{
         width: 345,
-        backgroundColor: "primary.light"
+        backgroundColor: 'primary.light',
       }}
     >
-      <CardActionArea
-        onClick={handleCardClick}
-      >
+      <CardActionArea onClick={handleCardClick}>
         <CardMedia
           sx={{
-            objectFit: "fill"
+            objectFit: 'fill',
           }}
-          component={"img"}
+          component={'img'}
           height={230}
           image={game.images.large || game.image_url}
           alt={game.name}
         />
-        <CardContent sx={{ color: "primary.contrastText" }}>
+        <CardContent sx={{ color: 'primary.contrastText' }}>
           <Typography
-            textAlign={"center"}
+            textAlign={'center'}
             gutterBottom
-            variant="h5"
-            component="div"
+            variant='h5'
+            component='div'
             noWrap
           >
             {game.name}
           </Typography>
           <Grid
             container
-            direction={"row"}
-            justifyContent={"center"}
+            direction={'row'}
+            justifyContent={'center'}
             spacing={3}
             sx={{
-              color: "primary.text"
+              color: 'primary.text',
             }}
           >
             <PlayersAndDuration
@@ -115,12 +100,8 @@ export default function GameCard({ game, onProfilePage }) {
         </CardContent>
       </CardActionArea>
       <CardActions disableSpacing>
-        {
-          !onProfilePage
-            ? quickAddBtn
-            : trashBtn
-        }
+        {!onProfilePage ? quickAddBtn : trashBtn}
       </CardActions>
     </Card>
   );
-};
+}

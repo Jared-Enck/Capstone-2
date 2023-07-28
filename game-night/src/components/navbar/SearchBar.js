@@ -1,24 +1,17 @@
-import React, { useContext, lazy } from "react";
-import DataContext from "../../context/DataContext";
+import React, { useContext, lazy } from 'react';
+import DataContext from '../../context/DataContext';
 import SearchIcon from '@mui/icons-material/Search';
-import {
-  InputBase,
-  Collapse,
-  alpha,
-  ClickAwayListener
-} from "@mui/material";
-import styled from "@emotion/styled";
+import { InputBase, Collapse, alpha, ClickAwayListener } from '@mui/material';
+import styled from '@emotion/styled';
 
-const SearchBoxResultsComp = lazy(
-  () => import("./SearchBoxResults")
-);
+const SearchBoxResultsComp = lazy(() => import('./SearchBoxResults'));
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.primary.light, 0.60),
+  backgroundColor: alpha(theme.palette.primary.light, 0.6),
   '&:hover': {
-    backgroundColor: alpha(theme.palette.primary.light, 0.80)
+    backgroundColor: alpha(theme.palette.primary.light, 0.8),
   },
   marginLeft: 0,
   width: '100%',
@@ -48,12 +41,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     width: '100%',
     border: '2px solid rgba(0,0,0,0)',
     [theme.breakpoints.up('sm')]: {
-      width: '50ch'
+      width: '50ch',
     },
     '&:hover, &:focus': {
       border: `2px solid ${theme.palette.primary.contrastText}`,
       borderRadius: theme.shape.borderRadius,
-    }
+    },
   },
 }));
 
@@ -65,7 +58,7 @@ export default function SearchBar() {
     boxResults,
     setBoxResults,
     debouncedRequest,
-    setSearchTerm
+    setSearchTerm,
   } = useContext(DataContext);
 
   const clearBoxResults = () => {
@@ -91,28 +84,24 @@ export default function SearchBar() {
         <SearchIcon />
       </SearchIconWrapper>
       <StyledInputBase
-        id="search"
-        name="search"
-        placeholder="Search…"
+        id='search'
+        name='search'
+        placeholder='Search…'
         inputProps={{ 'aria-label': 'search' }}
         onChange={handleChange}
         value={searchTerm}
-        autoComplete="off"
+        autoComplete='off'
       />
-      {
-        Object.keys(boxResults).length
-          ? (
-            <ClickAwayListener onClickAway={handleClickAway}>
-              <Collapse in={open}>
-                <SearchBoxResultsComp
-                  results={boxResults}
-                  clearBoxResults={clearBoxResults}
-                />
-              </Collapse>
-            </ClickAwayListener>
-          )
-          : null
-      }
+      {Object.keys(boxResults).length ? (
+        <ClickAwayListener onClickAway={handleClickAway}>
+          <Collapse in={open}>
+            <SearchBoxResultsComp
+              results={boxResults}
+              clearBoxResults={clearBoxResults}
+            />
+          </Collapse>
+        </ClickAwayListener>
+      ) : null}
     </Search>
-  )
+  );
 }

@@ -1,5 +1,5 @@
 function addUsersSql(usersLength) {
-  const groupIDVarIdx = "$" + (usersLength + 1);
+  const groupIDVarIdx = '$' + (usersLength + 1);
   const sqlVals = [];
 
   for (let i = 0; i < usersLength; i++) {

@@ -1,5 +1,5 @@
-import { useEffect, useRef, useMemo } from "react";
-import { debounce } from "@mui/material";
+import { useEffect, useRef, useMemo } from 'react';
+import { debounce } from '@mui/material';
 
 export default function useDebounce(callback) {
   const ref = useRef();
@@ -17,4 +17,4 @@ export default function useDebounce(callback) {
   }, []);
 
   return debouncedCallback;
-};
+}

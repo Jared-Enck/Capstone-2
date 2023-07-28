@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 /**Controls form fields */
 
@@ -8,9 +8,9 @@ export default function useFields(initialState) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(fData => ({
+    setFormData((fData) => ({
       ...fData,
-      [name]: value
+      [name]: value,
     }));
 
     if (formErrors.length) {
@@ -18,11 +18,5 @@ export default function useFields(initialState) {
     }
   };
 
-  return [
-    formData,
-    handleChange,
-    formErrors,
-    setFormErrors,
-    setFormData
-  ];
-};
+  return [formData, handleChange, formErrors, setFormErrors, setFormData];
+}

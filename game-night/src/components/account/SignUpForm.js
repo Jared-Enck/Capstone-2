@@ -1,29 +1,20 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext } from 'react';
 import UserContext from '../../context/UserContext';
-import {
-  FormControl,
-  Stack,
-  InputAdornment,
-  IconButton
-} from "@mui/material";
+import { FormControl, Stack, InputAdornment, IconButton } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
   FormBox,
   PrimaryButton,
   ErrorSpan,
   FormOutlinedInput,
-  FormInputLabel
-} from "./LoginForm";
-import ContentContainer from "../common/ContentContainer";
-import useFields from "../../hooks/useFields";
+  FormInputLabel,
+} from './LoginForm';
+import ContentContainer from '../common/ContentContainer';
+import useFields from '../../hooks/useFields';
 
 const genError = (err, idx) => {
-  return (
-    <ErrorSpan key={idx}>
-      {err}
-    </ErrorSpan>
-  )
-}
+  return <ErrorSpan key={idx}>{err}</ErrorSpan>;
+};
 
 export default function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -32,12 +23,8 @@ export default function SignUpForm() {
     password: '',
     email: '',
   };
-  const [
-    formData,
-    handleChange,
-    formErrors,
-    setFormErrors
-  ] = useFields(initialState);
+  const [formData, handleChange, formErrors, setFormErrors] =
+    useFields(initialState);
   const { registerUser, navigate } = useContext(UserContext);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -53,28 +40,24 @@ export default function SignUpForm() {
       navigate('/');
     } else {
       setFormErrors(result.msg);
-    };
+    }
   };
 
   return (
     <Stack>
       <ContentContainer>
         <FormBox
-          component="form"
+          component='form'
           onSubmit={handleSubmit}
-          autoComplete="off"
+          autoComplete='off'
         >
           <Stack spacing={2}>
             <FormControl>
-              <FormInputLabel
-                htmlFor="username"
-              >
-                Username
-              </FormInputLabel>
+              <FormInputLabel htmlFor='username'>Username</FormInputLabel>
               <FormOutlinedInput
-                type="text"
-                label="Username"
-                name="username"
+                type='text'
+                label='Username'
+                name='username'
                 value={formData.username}
                 onChange={handleChange}
                 autoFocus
@@ -82,57 +65,45 @@ export default function SignUpForm() {
             </FormControl>
 
             <FormControl>
-              <FormInputLabel
-                htmlFor="password"
-              >
-                Password
-              </FormInputLabel>
+              <FormInputLabel htmlFor='password'>Password</FormInputLabel>
               <FormOutlinedInput
                 type={showPassword ? 'text' : 'password'}
                 endAdornment={
-                  <InputAdornment position="end">
+                  <InputAdornment position='end'>
                     <IconButton
-                      aria-label="toggle password visibility"
+                      aria-label='toggle password visibility'
                       onClick={handleClickShowPassword}
                       onMouseDown={handleMouseDownPassword}
-                      edge="end"
+                      edge='end'
                     >
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
                 }
-                label="Password"
-                name="password"
+                label='Password'
+                name='password'
                 value={formData.password}
                 onChange={handleChange}
               />
             </FormControl>
 
             <FormControl>
-              <FormInputLabel
-                htmlFor="email"
-              >
-                Email
-              </FormInputLabel>
+              <FormInputLabel htmlFor='email'>Email</FormInputLabel>
               <FormOutlinedInput
-                type="text"
-                label="Email"
-                name="email"
+                type='text'
+                label='Email'
+                name='email'
                 value={formData.email}
                 onChange={handleChange}
               />
             </FormControl>
 
             <FormControl>
-              {
-                formErrors
-                  ? formErrors.map((e, idx) => genError(e, idx))
-                  : null
-              }
+              {formErrors ? formErrors.map((e, idx) => genError(e, idx)) : null}
 
               <PrimaryButton
-                type="submit"
-                size="medium"
+                type='submit'
+                size='medium'
               >
                 Sign Up
               </PrimaryButton>
@@ -142,4 +113,4 @@ export default function SignUpForm() {
       </ContentContainer>
     </Stack>
   );
-};
+}

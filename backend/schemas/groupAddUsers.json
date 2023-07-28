@@ -16,7 +16,5 @@
       }
     }
   },
-  "required": [
-    "addUsers"
-  ]
+  "required": ["addUsers"]
 }

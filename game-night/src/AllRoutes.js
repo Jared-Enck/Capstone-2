@@ -1,4 +1,4 @@
-import React, {lazy} from 'react';
+import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import NotFound from './components/NotFound';
 import Home from './components/Home';

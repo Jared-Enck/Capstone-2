@@ -1,22 +1,22 @@
-"use strict";
+'use strict';
 
 /** Routes for third party api. */
 
-const express = require("express");
+const express = require('express');
 const router = new express.Router();
-const ThirdPartyApi = require("../ThirdPartyApi");
+const ThirdPartyApi = require('../ThirdPartyApi');
 
 /** GET /api/cache => { date }
- * 
+ *
  * Checks ApiCacheDate
  * and requests data if no date or date past 24 hrs.
- * 
+ *
  * Returns json date when cache last updated.
  *
  * Authorization required: none
  */
 
-router.get("/cache", async function (req, res, next) {
+router.get('/cache', async function (req, res, next) {
   try {
     const date = await ThirdPartyApi.getCommonCache();
     return res.json({ date });
@@ -26,15 +26,15 @@ router.get("/cache", async function (req, res, next) {
 });
 
 /** GET /api/cache/games => { game }
- * 
+ *
  * Gets game if in cache
- * 
+ *
  * Returns json game obj or undefined.
  *
  * Authorization required: none
  */
 
-router.get("/cache/games", function (req, res, next) {
+router.get('/cache/games', function (req, res, next) {
   try {
     const { gameID } = req.query;
     const result = ThirdPartyApi.checkGames(gameID);
@@ -45,15 +45,15 @@ router.get("/cache/games", function (req, res, next) {
 });
 
 /** GET /api/cache/:id => "Deck Building"
- * 
+ *
  * Gets mechanic or category name from cache
- * 
+ *
  * Returns name or -1 if not found.
  *
  * Authorization required: none
  */
 
-router.get("/cache/:id", function (req, res, next) {
+router.get('/cache/:id', function (req, res, next) {
   try {
     const { id } = req.params;
     const result = ThirdPartyApi.checkCommonByID(id);
@@ -64,16 +64,16 @@ router.get("/cache/:id", function (req, res, next) {
 });
 
 /** POST /api/cache/games => { date }
- * 
+ *
  * Checks cache if game already in cache
  * if not, cache game
- * 
+ *
  * Returns json date when cache last updated.
  *
  * Authorization required: none
  */
 
-router.post("/cache/games", function (req, res, next) {
+router.post('/cache/games', function (req, res, next) {
   try {
     const game = req.body;
     ThirdPartyApi.cacheGame(game);
@@ -100,9 +100,9 @@ router.post("/cache/games", function (req, res, next) {
  * Authorization required: none
  */
 
-router.get("/search", async function (req, res, next) {
+router.get('/search', async function (req, res, next) {
   try {
-    const query = req.query
+    const query = req.query;
     const results = await ThirdPartyApi.getSearchResults(query);
     return res.json(results);
   } catch (err) {
@@ -110,10 +110,10 @@ router.get("/search", async function (req, res, next) {
   }
 });
 
-/** GET /api/search: => { 
+/** GET /api/search: => {
  *  ids: [gameID,...]
  * }
- * 
+ *
  * Takes array of game ids,
  * sends request to api for games that match
  *
@@ -122,7 +122,7 @@ router.get("/search", async function (req, res, next) {
  * Authorization required: login, owner user
  */
 
-router.get("/collection", async function (req, res, next) {
+router.get('/collection', async function (req, res, next) {
   try {
     const query = req.query;
     const results = await ThirdPartyApi.getCollection(query);
@@ -151,7 +151,7 @@ router.get("/collection", async function (req, res, next) {
  * Authorization required: none
 */
 
-router.get("/game_media", async function (req, res, next) {
+router.get('/game_media', async function (req, res, next) {
   try {
     const results = await ThirdPartyApi.getGameMedia(req.query);
     return res.json(results);

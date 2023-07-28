@@ -1,10 +1,6 @@
-import React from "react";
-import {
-  CardMedia,
-  Card,
-  CardActionArea,
-} from "@mui/material";
-import VideoOverlay from "./VideoOverlay";
+import React from 'react';
+import { CardMedia, Card, CardActionArea } from '@mui/material';
+import VideoOverlay from './VideoOverlay';
 
 export default function MediaCard({
   item,
@@ -12,35 +8,29 @@ export default function MediaCard({
   width,
   height,
   handleClick,
-  isVideo
+  isVideo,
 }) {
   return (
     <Card
       sx={{
         height: height,
         width: width,
-        boxShadow: 0
+        boxShadow: 0,
       }}
     >
-      <CardActionArea
-        onClick={() => handleClick(item.url)}
-      >
-        {
-          isVideo
-            ? <VideoOverlay title={item.title} />
-            : null
-        }
+      <CardActionArea onClick={() => handleClick(item.url)}>
+        {isVideo ? <VideoOverlay title={item.title} /> : null}
         <CardMedia
           sx={{
             height: height,
             width: width,
-            objectFit: "fill"
+            objectFit: 'fill',
           }}
-          component="img"
+          component='img'
           image={item[size] || item.image_url}
           alt={item.name || item.title}
         />
       </CardActionArea>
     </Card>
-  )
-};
+  );
+}

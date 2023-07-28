@@ -1,12 +1,10 @@
-import React, { useContext, useState } from "react";
-import {
-  Switch
-} from "@mui/material"
-import styled from "@emotion/styled";
-import UserContext from "../context/UserContext";
+import React, { useContext, useState } from 'react';
+import { Switch } from '@mui/material';
+import styled from '@emotion/styled';
+import UserContext from '../context/UserContext';
 
 const StyledSwitch = styled(Switch)(({ theme }) => ({
-  color: theme.palette.primary.contrastText
+  color: theme.palette.primary.contrastText,
 }));
 
 export default function Home() {
@@ -20,13 +18,11 @@ export default function Home() {
 
   return (
     <>
-      <h1>
-        Homepage
-      </h1>
+      <h1>Homepage</h1>
       <StyledSwitch
         checked={checked}
         onChange={handleChange}
       />
     </>
   );
-};
+}

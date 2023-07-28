@@ -1,15 +1,11 @@
-import React, {
-  useCallback,
-  useEffect,
-  useState
-} from "react";
-import { useNavigate } from "react-router-dom"
-import UserContext from "./UserContext";
-import GameNightApi from "../gameNightApi";
+import React, { useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import UserContext from './UserContext';
+import GameNightApi from '../gameNightApi';
 import useLocalStorage from '../hooks/useLocalStorage';
-import jwt_decode from "jwt-decode";
+import jwt_decode from 'jwt-decode';
 
-export const TOKEN_STORAGE_ID = "game-night-token";
+export const TOKEN_STORAGE_ID = 'game-night-token';
 
 export default function UserProvider({ children, isDark, setDarkMode }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -30,8 +26,8 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
     } catch (err) {
       console.error('register failed', err);
       return { msg: err };
-    };
-  };
+    }
+  }
 
   async function loginUser(loginData) {
     try {
@@ -41,8 +37,8 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
     } catch (err) {
       console.log(err);
       return { msg: err };
-    };
-  };
+    }
+  }
 
   const saveToken = useCallback(() => {
     GameNightApi.token = token;
@@ -52,7 +48,6 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
 
   async function updateUser(formData, username) {
     try {
-
       const result = await GameNightApi.updateUser(formData, username);
       const user = result.user;
       if (result.token) {
@@ -64,23 +59,26 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
     } catch (err) {
       console.log(err);
       return { msg: err };
-    };
-  };
+    }
+  }
 
   const logout = () => {
     GameNightApi.token = '';
     setCurrentUser('');
     setToken('');
-  }
+  };
 
-  const getCurrentUser = useCallback(async (username) => {
-    try {
-      const user = await GameNightApi.getCurrentUser(username);
-      setUserData(user);
-    } catch (err) {
-      console.error('Error: ', err);
-    };
-  }, [setUserData]);
+  const getCurrentUser = useCallback(
+    async (username) => {
+      try {
+        const user = await GameNightApi.getCurrentUser(username);
+        setUserData(user);
+      } catch (err) {
+        console.error('Error: ', err);
+      }
+    },
+    [setUserData]
+  );
 
   useEffect(() => {
     if (token) {
@@ -90,24 +88,22 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
 
   return (
     <UserContext.Provider
-      value={
-        {
-          isLoading,
-          setIsLoading,
-          currentUser,
-          getCurrentUser,
-          userData,
-          registerUser,
-          loginUser,
-          updateUser,
-          logout,
-          handleThemeToggle,
-          isDark,
-          navigate
-        }
-      }
+      value={{
+        isLoading,
+        setIsLoading,
+        currentUser,
+        getCurrentUser,
+        userData,
+        registerUser,
+        loginUser,
+        updateUser,
+        logout,
+        handleThemeToggle,
+        isDark,
+        navigate,
+      }}
     >
       {children}
     </UserContext.Provider>
   );
-};
+}

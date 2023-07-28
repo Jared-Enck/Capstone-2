@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 import {
   Box,
   Drawer,
@@ -6,8 +6,8 @@ import {
   ListItem,
   ListItemButton,
   ListItemIcon,
-  ListItemText
-} from "@mui/material";
+  ListItemText,
+} from '@mui/material';
 
 export default function SettingsDrawer({ open = null }) {
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -20,18 +20,21 @@ export default function SettingsDrawer({ open = null }) {
     if (open) {
       toggleDrawer(true);
     }
-  }, [open])
+  }, [open]);
 
   const list = () => (
     <Box
-      sx={{ width: 250, backgroundColor: "primary.light" }}
-      role="presentation"
+      sx={{ width: 250, backgroundColor: 'primary.light' }}
+      role='presentation'
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
     >
       <List>
         {['Dark Mode'].map((text, index) => (
-          <ListItem key={text} disablePadding>
+          <ListItem
+            key={text}
+            disablePadding
+          >
             <ListItemText primary={text} />
           </ListItem>
         ))}
@@ -42,7 +45,7 @@ export default function SettingsDrawer({ open = null }) {
   return (
     <div>
       <Drawer
-        anchor={"right"}
+        anchor={'right'}
         open={openDrawer}
         onClose={toggleDrawer(false)}
       >
@@ -50,4 +53,4 @@ export default function SettingsDrawer({ open = null }) {
       </Drawer>
     </div>
   );
-};
+}

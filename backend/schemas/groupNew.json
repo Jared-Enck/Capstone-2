@@ -16,8 +16,5 @@
     }
   },
   "additionalProperties": false,
-  "required": [
-    "users",
-    "name"
-  ]
+  "required": ["users", "name"]
 }

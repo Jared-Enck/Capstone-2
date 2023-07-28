@@ -1,5 +1,5 @@
-import React, { useState, useContext } from "react";
-import DataContext from "../../context/DataContext";
+import React, { useState, useContext } from 'react';
+import DataContext from '../../context/DataContext';
 import {
   Box,
   Typography,
@@ -7,31 +7,28 @@ import {
   Divider,
   Grid,
   Button,
-  Stack
-} from "@mui/material";
-import {
-  ExpandMore,
-  ExpandLess,
-  Add,
-  Check
-} from "@mui/icons-material";
-import PlayersAndDuration from "../common/PlayersAndDuration";
-import styled from "@emotion/styled";
-import ContentContainer from "../common/ContentContainer";
+  Stack,
+  alpha,
+} from '@mui/material';
+import { ExpandMore, ExpandLess, Add, Check } from '@mui/icons-material';
+import PlayersAndDuration from '../common/PlayersAndDuration';
+import styled from '@emotion/styled';
+import ContentContainer from '../common/ContentContainer';
+import { common } from '@mui/material/colors';
 
 const AddButton = styled(Button)(({ theme }) => ({
-  display: "flex",
+  display: 'flex',
   color: theme.palette.primary.contrastText,
   '&:hover': {
     backgroundColor: theme.palette.primary.contrastText,
     color: theme.palette.primary.main,
-    fontWeight: "bold"
-  }
+    fontWeight: 'bold',
+  },
 }));
 
 const AddedBadgeBox = styled(Box)(({ theme }) => ({
   color: theme.palette.success.main,
-  display: "flex"
+  display: 'flex',
 }));
 
 export default function GameDescription({ game }) {
@@ -40,32 +37,35 @@ export default function GameDescription({ game }) {
   const inCollection = userGameIDs.has(game.id);
 
   const handleDescBtnClick = () => {
-    setOpen(!open)
+    setOpen(!open);
   };
 
   const handleAddBtnClick = () => {
     if (!inCollection) {
       addGame(game);
-    };
+    }
   };
 
   const AddButtonComp = () => (
     <AddButton
-      size="medium"
-      variant="text"
+      size='medium'
+      variant='text'
       onClick={handleAddBtnClick}
     >
-      <Add fontSize="small" />
+      <Add fontSize='small' />
       Add to collection
     </AddButton>
   );
 
   const AddedBadgeComp = () => (
     <AddedBadgeBox>
-      <Typography sx={{ textShadow: 1 }} margin={1}>
+      <Typography
+        sx={{ textShadow: `1px 1px ${alpha(common.black, 0.7)}` }}
+        margin={1}
+      >
         In Collection
       </Typography>
-      <Typography paddingTop={".3rem"} >
+      <Typography padding={'.3rem'}>
         <Check />
       </Typography>
     </AddedBadgeBox>
@@ -73,34 +73,28 @@ export default function GameDescription({ game }) {
 
   return (
     <ContentContainer>
-      <Box display={"flex"}>
+      <Box display={'flex'}>
         <Typography
-          variant={"h4"}
+          variant={'h4'}
           sx={{
-            color: "primary.contrastText",
-            flex: 1
+            color: 'primary.contrastText',
+            flex: 1,
           }}
         >
           {game.name}
         </Typography>
-        {
-          inCollection
-            ? AddedBadgeComp()
-            : AddButtonComp()
-        }
+        {inCollection ? AddedBadgeComp() : AddButtonComp()}
       </Box>
       <Grid
         sx={{
-          color: "primary.muted",
-          padding: ".3rem"
+          color: 'primary.muted',
+          padding: '.3rem',
         }}
         container
-        direction={"row"}
+        direction={'row'}
         spacing={3}
       >
-        <Grid item>
-          {game.year_published}
-        </Grid>
+        <Grid item>{game.year_published}</Grid>
         <PlayersAndDuration
           min_players={game.min_players}
           max_players={game.max_players}
@@ -109,8 +103,15 @@ export default function GameDescription({ game }) {
         />
       </Grid>
       <Divider />
-      <Grid container direction={"row"} padding={"1.2rem"}>
-        <Grid item xs={4}>
+      <Grid
+        container
+        direction={'row'}
+        padding={'1.2rem'}
+      >
+        <Grid
+          item
+          xs={4}
+        >
           <img
             width={300}
             height={300}
@@ -118,54 +119,56 @@ export default function GameDescription({ game }) {
             alt={game.name}
           />
         </Grid>
-        <Grid item xs={7}>
-          {
-            game.description_preview
-              ?
-              game.description_preview.length <= 900
-                ? (
-                  <Typography sx={{
-                    color: "primary.text",
-                  }}>
+        <Grid
+          item
+          xs={7}
+        >
+          {game.description_preview ? (
+            game.description_preview.length <= 900 ? (
+              <Typography
+                sx={{
+                  color: 'primary.text',
+                }}
+              >
+                {game.description_preview}
+              </Typography>
+            ) : (
+              <Stack>
+                <Collapse
+                  in={open}
+                  collapsedSize={265}
+                >
+                  <Typography
+                    sx={{
+                      color: 'primary.text',
+                    }}
+                  >
                     {game.description_preview}
                   </Typography>
-                )
-                : (
-                  <Stack>
-                    <Collapse
-                      in={open}
-                      collapsedSize={265}
-                    >
-                      <Typography sx={{
-                        color: "primary.text",
-                      }}>
-                        {game.description_preview}
-                      </Typography>
-                    </Collapse>
-                    <Button
-                      sx={{
-                        height: "1.5rem",
-                        color: "primary.contrastText",
-                        "&:hover": {
-                          backgroundColor: "primary.contrastText",
-                          color: "primary.main"
-                        }
-                      }}
-                      variant="text"
-                      onClick={handleDescBtnClick}
-                    >
-                      {
-                        open
-                          ? <ExpandLess fontSize="large" />
-                          : <ExpandMore fontSize="large" />
-                      }
-                    </Button>
-                  </Stack>
-                )
-              : null
-          }
+                </Collapse>
+                <Button
+                  sx={{
+                    height: '1.5rem',
+                    color: 'primary.contrastText',
+                    '&:hover': {
+                      backgroundColor: 'primary.contrastText',
+                      color: 'primary.main',
+                    },
+                  }}
+                  variant='text'
+                  onClick={handleDescBtnClick}
+                >
+                  {open ? (
+                    <ExpandLess fontSize='large' />
+                  ) : (
+                    <ExpandMore fontSize='large' />
+                  )}
+                </Button>
+              </Stack>
+            )
+          ) : null}
         </Grid>
       </Grid>
     </ContentContainer>
-  )
-};
+  );
+}

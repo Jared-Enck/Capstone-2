@@ -1,17 +1,18 @@
-"use strict";
-const bcrypt = require("bcrypt");
+'use strict';
+const bcrypt = require('bcrypt');
 
-const db = require("./db.js");
-const { BCRYPT_WORK_FACTOR } = require("./config.js");
-const { createToken } = require("./helpers/tokens.js");
+const db = require('./db.js');
+const { BCRYPT_WORK_FACTOR } = require('./config.js');
+const { createToken } = require('./helpers/tokens.js');
 
 async function commonBeforeAll() {
-  await db.query("DELETE FROM users");
-  await db.query("DELETE FROM game_collections");
-  await db.query("DELETE FROM groups");
-  await db.query("DELETE FROM users_groups");
+  await db.query('DELETE FROM users');
+  await db.query('DELETE FROM game_collections');
+  await db.query('DELETE FROM groups');
+  await db.query('DELETE FROM users_groups');
 
-  await db.query(`
+  await db.query(
+    `
     INSERT INTO users(
       username,
       password,
@@ -22,9 +23,9 @@ async function commonBeforeAll() {
            ('u3', $3, 'u3@email.com')
     RETURNING username`,
     [
-      await bcrypt.hash("password1", BCRYPT_WORK_FACTOR),
-      await bcrypt.hash("password2", BCRYPT_WORK_FACTOR),
-      await bcrypt.hash("password3", BCRYPT_WORK_FACTOR)
+      await bcrypt.hash('password1', BCRYPT_WORK_FACTOR),
+      await bcrypt.hash('password2', BCRYPT_WORK_FACTOR),
+      await bcrypt.hash('password3', BCRYPT_WORK_FACTOR),
     ]
   );
 
@@ -58,11 +59,11 @@ async function commonBeforeAll() {
 }
 
 async function commonBeforeEach() {
-  await db.query("BEGIN");
+  await db.query('BEGIN');
 }
 
 async function commonAfterEach() {
-  await db.query("ROLLBACK");
+  await db.query('ROLLBACK');
 }
 
 async function commonAfterAll() {
@@ -78,5 +79,5 @@ module.exports = {
   commonAfterEach,
   commonAfterAll,
   u1Token,
-  u2Token
+  u2Token,
 };

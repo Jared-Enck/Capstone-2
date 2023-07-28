@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 export default function usePagination(count, itemsOnPage) {
   const [page, setPage] = useState(1);
@@ -7,22 +7,15 @@ export default function usePagination(count, itemsOnPage) {
   useEffect(() => {
     if (count) {
       const initialPages = count / itemsOnPage;
-      setPageCount((
-        initialPages % 1 === 0
-          ? initialPages
-          : Math.ceil(initialPages)
-      ));
-    };
+      setPageCount(
+        initialPages % 1 === 0 ? initialPages : Math.ceil(initialPages)
+      );
+    }
   }, [count, itemsOnPage]);
 
   const handleChange = (evt, value) => {
     setPage(value);
   };
 
-  return [
-    page,
-    pageCount,
-    handleChange,
-    setPage
-  ];
-};
+  return [page, pageCount, handleChange, setPage];
+}

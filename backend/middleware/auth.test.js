@@ -1,32 +1,31 @@
-"use strict";
+'use strict';
 
-const jwt = require("jsonwebtoken");
-const { UnauthorizedError } = require("../expressError");
+const jwt = require('jsonwebtoken');
+const { UnauthorizedError } = require('../expressError');
 const {
   authenticateJWT,
   ensureLoggedIn,
   ensureOwner,
   ensureGroupAdmin,
-  ensureGroupUser
-} = require("./auth");
+  ensureGroupUser,
+} = require('./auth');
 
 const {
   commonBeforeEach,
   commonAfterEach,
-  commonAfterAll
-} = require("../_testCommon");
+  commonAfterAll,
+} = require('../_testCommon');
 
 beforeEach(commonBeforeEach);
 afterEach(commonAfterEach);
 afterAll(commonAfterAll);
 
-const { SECRET_KEY } = require("../config");
-const testJwt = jwt.sign({ username: "test" }, SECRET_KEY);
-const badJwt = jwt.sign({ username: "test" }, "wrong");
+const { SECRET_KEY } = require('../config');
+const testJwt = jwt.sign({ username: 'test' }, SECRET_KEY);
+const badJwt = jwt.sign({ username: 'test' }, 'wrong');
 
-
-describe("authenticateJWT", () => {
-  it("works: via header", () => {
+describe('authenticateJWT', () => {
+  it('works: via header', () => {
     expect.assertions(2);
 
     const req = { headers: { authorization: testJwt } };
@@ -38,12 +37,12 @@ describe("authenticateJWT", () => {
     expect(res.locals).toEqual({
       user: {
         iat: expect.any(Number),
-        username: "test"
+        username: 'test',
       },
     });
   });
 
-  it("works: no header", () => {
+  it('works: no header', () => {
     expect.assertions(2);
     const req = {};
     const res = { locals: {} };
@@ -54,7 +53,7 @@ describe("authenticateJWT", () => {
     expect(res.locals).toEqual({});
   });
 
-  it("works: invalid token", () => {
+  it('works: invalid token', () => {
     expect.assertions(2);
     const req = { headers: { authorization: badJwt } };
     const res = { locals: {} };
@@ -66,19 +65,18 @@ describe("authenticateJWT", () => {
   });
 });
 
-
-describe("ensureLoggedIn", () => {
-  it("works", () => {
+describe('ensureLoggedIn', () => {
+  it('works', () => {
     expect.assertions(1);
     const req = {};
-    const res = { locals: { user: { username: "test" } } };
+    const res = { locals: { user: { username: 'test' } } };
     const next = function (err) {
       expect(err).toBeFalsy();
     };
     ensureLoggedIn(req, res, next);
   });
 
-  it("throws unauth if no login", () => {
+  it('throws unauth if no login', () => {
     expect.assertions(1);
     const req = {};
     const res = { locals: {} };
@@ -89,8 +87,8 @@ describe("ensureLoggedIn", () => {
   });
 });
 
-describe("ensureOwner", () => {
-  it("works for owner", () => {
+describe('ensureOwner', () => {
+  it('works for owner', () => {
     expect.assertions(1);
     const req = { params: { username: 'u1' } };
     const res = { locals: { user: { username: 'u1' } } };
@@ -100,7 +98,7 @@ describe("ensureOwner", () => {
     ensureOwner(req, res, next);
   });
 
-  it("throws unauth if not owner", () => {
+  it('throws unauth if not owner', () => {
     expect.assertions(1);
     const req = { params: { username: 'u1' } };
     const res = { locals: { user: { username: 'u2' } } };
@@ -111,12 +109,12 @@ describe("ensureOwner", () => {
   });
 });
 
-describe("ensureGroupAdmin", () => {
-  it("works for group admin user", () => {
+describe('ensureGroupAdmin', () => {
+  it('works for group admin user', () => {
     expect.assertions(1);
     const req = {
       params: { groupID: 1 },
-      body: { adminUsername: 'u1' }
+      body: { adminUsername: 'u1' },
     };
     const res = { locals: { user: { username: 'u1' } } };
     const next = function (err) {
@@ -125,11 +123,11 @@ describe("ensureGroupAdmin", () => {
     ensureGroupAdmin(req, res, next);
   });
 
-  it("throws unauth if not group admin user", () => {
+  it('throws unauth if not group admin user', () => {
     expect.assertions(1);
     const req = {
       params: { groupID: 1 },
-      body: { adminUsername: 'u1' }
+      body: { adminUsername: 'u1' },
     };
     const res = { locals: { user: { username: 'u2' } } };
     const next = function (err) {
@@ -139,12 +137,12 @@ describe("ensureGroupAdmin", () => {
   });
 });
 
-describe("ensureGroupUser", () => {
-  it("works for group user", () => {
+describe('ensureGroupUser', () => {
+  it('works for group user', () => {
     expect.assertions(1);
     const req = {
       params: { groupID: 1 },
-      body: { groupUsers: ['u1', 'u2'] }
+      body: { groupUsers: ['u1', 'u2'] },
     };
     const res = { locals: { user: { username: 'u1' } } };
     const next = function (err) {
@@ -153,11 +151,11 @@ describe("ensureGroupUser", () => {
     ensureGroupUser(req, res, next);
   });
 
-  it("throws unauth if not group user", () => {
+  it('throws unauth if not group user', () => {
     expect.assertions(1);
     const req = {
       params: { groupID: 1 },
-      body: { groupUsers: ['u1', 'u2'] }
+      body: { groupUsers: ['u1', 'u2'] },
     };
     const res = { locals: { user: { username: 'u3' } } };
     const next = function (err) {

@@ -1,15 +1,15 @@
-"use strict";
+'use strict';
 
-const db = require("../db");
-const bcrypt = require("bcrypt");
-const sqlForPartialUpdate = require("../helpers/sql");
+const db = require('../db');
+const bcrypt = require('bcrypt');
+const sqlForPartialUpdate = require('../helpers/sql');
 const {
   NotFoundError,
   BadRequestError,
   UnauthorizedError,
-} = require("../expressError");
+} = require('../expressError');
 
-const { BCRYPT_WORK_FACTOR } = require("../config.js");
+const { BCRYPT_WORK_FACTOR } = require('../config.js');
 
 /** Related functions for users. */
 
@@ -28,7 +28,7 @@ class User {
         password
       FROM users
       WHERE username = $1`,
-      [username],
+      [username]
     );
 
     const user = result.rows[0];
@@ -37,12 +37,12 @@ class User {
       // compare hashed password to a new hash from password
       const isValid = await bcrypt.compare(password, user.password);
       if (isValid === true) {
-        delete user.password
+        delete user.password;
         return user;
       }
     }
 
-    throw new UnauthorizedError("Invalid username/password");
+    throw new UnauthorizedError('Invalid username/password');
   }
 
   /** Register user with data.
@@ -52,20 +52,18 @@ class User {
    * Throws BadRequestError on duplicates.
    **/
 
-  static async register(
-    { username, password, email }
-  ) {
+  static async register({ username, password, email }) {
     const duplicateUsernameCheck = await db.query(
       `SELECT username
       FROM users
       WHERE username = $1`,
-      [username],
+      [username]
     );
     const duplicateEmailCheck = await db.query(
       `SELECT email
       FROM users
       WHERE email = $1`,
-      [email],
+      [email]
     );
     if (duplicateUsernameCheck.rows[0]) {
       throw new BadRequestError(`Duplicate username: ${username}`);
@@ -82,11 +80,7 @@ class User {
         (username, password, email)
       VALUES ($1, $2, $3)
       RETURNING username`,
-      [
-        username,
-        hashedPassword,
-        email
-      ],
+      [username, hashedPassword, email]
     );
 
     const user = result.rows[0];
@@ -109,7 +103,7 @@ class User {
         image_url AS "imageURL"
       FROM users
       WHERE username = $1`,
-      [reqUsername],
+      [reqUsername]
     );
 
     if (!userRes.rows[0]) throw new NotFoundError(`No user: ${reqUsername}`);
@@ -121,7 +115,8 @@ class User {
 
   /** Get all groups for a user. */
   static async getGroups(username) {
-    const results = await db.query(`
+    const results = await db.query(
+      `
       SELECT 
         g.id,
         g.name,
@@ -131,9 +126,9 @@ class User {
       LEFT JOIN users_groups ug
         ON ug.username = $1
       ORDER BY g.name`,
-      [username],
+      [username]
     );
-    return results.rows
+    return results.rows;
   }
 
   /** Update user data with `data`.
@@ -159,7 +154,7 @@ class User {
         `SELECT username
         FROM users
         WHERE username = $1`,
-        [data.username],
+        [data.username]
       );
 
       if (duplicateCheck.rows[0]) {
@@ -168,9 +163,9 @@ class User {
     }
 
     const { setCols, values } = sqlForPartialUpdate(data, {
-      imageURL: "image_url"
+      imageURL: 'image_url',
     });
-    const idVarIdx = "$" + (values.length + 1);
+    const idVarIdx = '$' + (values.length + 1);
 
     const querySql = `UPDATE users 
                       SET ${setCols} 
@@ -186,7 +181,7 @@ class User {
   }
 
   /** Delete given user from database; returns undefined.
-   * 
+   *
    * Throws NotFoundError if not found.
    */
 
@@ -195,7 +190,7 @@ class User {
       `DELETE FROM users
         WHERE username = $1
         RETURNING username`,
-      [username],
+      [username]
     );
     const user = result.rows[0];
 
