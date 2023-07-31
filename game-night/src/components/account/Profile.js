@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState, lazy } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import UserContext from '../../context/UserContext';
 import DataContext from '../../context/DataContext';
 import {
@@ -21,7 +21,7 @@ const CollectionComp = lazy(() => import('../games/Collection'));
 
 export default function Profile({ itemsOnPage }) {
   const { username } = useParams();
-  const { navigate, currentUser, getCurrentUser, userData } =
+  const { currentUser, getCurrentUser, userData, token } =
     useContext(UserContext);
 
   const { userGameIDs, collection, getCollection } = useContext(DataContext);
@@ -55,7 +55,7 @@ export default function Profile({ itemsOnPage }) {
     </Typography>
   );
 
-  if (!currentUser) return navigate('/login');
+  if (!token) return <Navigate to={'/login'} />;
 
   return (
     <Stack>
