@@ -172,18 +172,16 @@ export default function DataProvider({ children }) {
   }
 
   const getGameIDs = useCallback(async () => {
-    if (currentUser) {
-      try {
-        const results = await GameNightApi.getGames(currentUser);
-        setUserGameIDs(new Set(results.games));
-      } catch (err) {
-        console.error('Error: ', err);
-      }
+    try {
+      const results = await GameNightApi.getGames(currentUser);
+      setUserGameIDs(new Set(results.games));
+    } catch (err) {
+      console.error('Error: ', err);
     }
   }, [currentUser]);
 
   useEffect(() => {
-    if (!userGameIDs.size) getGameIDs();
+    if (!userGameIDs.size && currentUser) getGameIDs();
     // eslint-disable-next-line
   }, [getGameIDs]);
 
@@ -207,6 +205,7 @@ export default function DataProvider({ children }) {
         game,
         checkGameCache,
         setGame,
+        getGameIDs,
         collection,
         getCollection,
         getCollectionValue,
