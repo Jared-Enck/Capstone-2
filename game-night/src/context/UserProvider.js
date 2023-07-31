@@ -14,6 +14,18 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
   const [token, setToken] = useLocalStorage(TOKEN_STORAGE_ID);
   const navigate = useNavigate();
 
+  const saveToken = useCallback(() => {
+    GameNightApi.token = token;
+    const { username } = jwt_decode(token);
+    setCurrentUser(username);
+  }, [token, setCurrentUser]);
+
+  useEffect(() => {
+    if (token) {
+      saveToken();
+    }
+  }, [token, saveToken]);
+
   const handleThemeToggle = () => {
     setDarkMode(`${!isDark}`);
   };
@@ -40,12 +52,6 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
     }
   }
 
-  const saveToken = useCallback(() => {
-    GameNightApi.token = token;
-    const { username } = jwt_decode(token);
-    setCurrentUser(username);
-  }, [token, setCurrentUser]);
-
   async function updateUser(formData, username) {
     try {
       const result = await GameNightApi.updateUser(formData, username);
@@ -69,32 +75,24 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
     navigate('/login');
   }, [setToken, navigate]);
 
-  const getCurrentUser = useCallback(
-    async (username) => {
-      try {
-        const user = await GameNightApi.getCurrentUser(username);
-        setUserData(user);
-      } catch (err) {
-        console.error('Error: ', err);
-        if (err[0] === 'Unauthorized') {
-          logout();
-        }
+  async function getCurrentUser(username) {
+    try {
+      const user = await GameNightApi.getCurrentUser(username);
+      setUserData(user);
+    } catch (err) {
+      console.error('Error: ', err);
+      if (err[0] === 'Unauthorized') {
+        return logout();
       }
-    },
-    [setUserData, logout]
-  );
-
-  useEffect(() => {
-    if (token) {
-      saveToken();
     }
-  }, [token, saveToken]);
+  }
 
   return (
     <UserContext.Provider
       value={{
         isLoading,
         setIsLoading,
+        token,
         currentUser,
         getCurrentUser,
         userData,
