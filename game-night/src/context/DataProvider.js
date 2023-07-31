@@ -171,19 +171,19 @@ export default function DataProvider({ children }) {
     }
   }
 
-  const getGameIDs = useCallback(async () => {
+  async function getGameIDs() {
     try {
       const results = await GameNightApi.getGames(currentUser);
       setUserGameIDs(new Set(results.games));
     } catch (err) {
       console.error('Error: ', err);
     }
-  }, [currentUser]);
+  }
 
-  useEffect(() => {
-    if (!userGameIDs.size && currentUser) getGameIDs();
-    // eslint-disable-next-line
-  }, [getGameIDs]);
+  // useEffect(() => {
+  //   if (!userGameIDs.size && currentUser) getGameIDs();
+  //   // eslint-disable-next-line
+  // }, [getGameIDs]);
 
   return (
     <DataContext.Provider

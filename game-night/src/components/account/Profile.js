@@ -24,7 +24,8 @@ export default function Profile({ itemsOnPage }) {
   const { currentUser, getCurrentUser, userData, token } =
     useContext(UserContext);
 
-  const { userGameIDs, collection, getCollection } = useContext(DataContext);
+  const { userGameIDs, collection, getCollection, getGameIDs } =
+    useContext(DataContext);
 
   const [open, setOpen] = useState(false);
 
@@ -34,6 +35,7 @@ export default function Profile({ itemsOnPage }) {
 
   useEffect(() => {
     if (!userData && currentUser) getCurrentUser(username);
+    if (!userGameIDs.size && currentUser) getGameIDs();
     // eslint-disable-next-line
   }, [currentUser, getCurrentUser]);
 
