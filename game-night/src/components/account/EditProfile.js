@@ -38,6 +38,7 @@ export default function EditProfile({ open, setOpen, username }) {
 
   const handleClose = () => {
     setFormErrors([]);
+    setFormData(userData);
     setOpen(false);
   };
 
