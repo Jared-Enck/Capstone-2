@@ -39,12 +39,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     width: '100%',
-    border: '2px solid rgba(0,0,0,0)',
+    border: `.1rem solid ${theme.palette.primary.muted}`,
+    borderRadius: theme.shape.borderRadius,
     [theme.breakpoints.up('sm')]: {
       width: '50ch',
     },
     '&:hover, &:focus': {
-      border: `2px solid ${theme.palette.primary.contrastText}`,
+      border: `.1rem solid ${theme.palette.primary.contrastText}`,
       borderRadius: theme.shape.borderRadius,
     },
   },
