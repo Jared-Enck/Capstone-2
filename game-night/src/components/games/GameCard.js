@@ -15,8 +15,8 @@ import DataContext from '../../context/DataContext';
 import UserContext from '../../context/UserContext';
 
 export default function GameCard({ game, onProfilePage }) {
-  const { setGame, userGameIDs, addGame, removeGame } = useContext(DataContext);
-  const { navigate } = useContext(UserContext);
+  const { setGame, addGame, removeGame } = useContext(DataContext);
+  const { userGameIDs, navigate } = useContext(UserContext);
   const inCollection = userGameIDs.has(game.id);
 
   const handleCardClick = () => {

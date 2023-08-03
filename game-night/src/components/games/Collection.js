@@ -1,15 +1,27 @@
-import React, { useState, useEffect, lazy, useCallback } from 'react';
-import { Grid, Stack } from '@mui/material';
+import React, {
+  useState,
+  useEffect,
+  lazy,
+  useContext,
+  useCallback,
+} from 'react';
+import DataContext from '../../context/DataContext';
+import UserContext from '../../context/UserContext';
+import { Grid, Stack, Typography } from '@mui/material';
 import GameCard from './GameCard';
 import ResultsPagination from '../common/ResultsPagination';
 import usePagination from '../../hooks/usePagination';
+import CollectionSkeleton from './CollectionSkeleton';
+
 const CollectionStatsComp = lazy(() => import('./CollectionStats'));
 
-export default function Collection({ size, collection, itemsOnPage }) {
-  const [pageContent, setPageContent] = useState([]);
+export default function Collection({ itemsOnPage }) {
+  const [pageContent, setPageContent] = useState('');
+  const { getCollection } = useContext(DataContext);
+  const { collection, userGameIDs } = useContext(UserContext);
 
   const [page, pageCount, handleChange, setPage] = usePagination(
-    size,
+    userGameIDs.size,
     itemsOnPage
   );
 
@@ -24,8 +36,12 @@ export default function Collection({ size, collection, itemsOnPage }) {
   }, [page, itemsOnPage, setPageContent, collection]);
 
   useEffect(() => {
+    if (!collection && userGameIDs) getCollection();
+    // eslint-disable-next-line
+  }, [collection, getCollection]);
+
+  useEffect(() => {
     getPageContent();
-    window.scrollTo({ top: 0, behavior: 'instant' });
   }, [page, getPageContent]);
 
   useEffect(() => {
@@ -33,9 +49,18 @@ export default function Collection({ size, collection, itemsOnPage }) {
     // eslint-disable-next-line
   }, [pageContent.length, setPage]);
 
-  return (
+  const noGamesMsg = (
+    <Typography
+      sx={{ color: 'primary.text', padding: 3 }}
+      variant='h5'
+    >
+      There are no games in your collection.
+    </Typography>
+  );
+
+  return pageContent ? (
     <Stack spacing={2}>
-      <CollectionStatsComp size={size} />
+      <CollectionStatsComp size={userGameIDs.size} />
       <Grid
         container
         direction={'row'}
@@ -54,7 +79,7 @@ export default function Collection({ size, collection, itemsOnPage }) {
                 />
               </Grid>
             ))
-          : null}
+          : noGamesMsg}
         {pageCount > 1 ? (
           <Grid
             item
@@ -69,5 +94,7 @@ export default function Collection({ size, collection, itemsOnPage }) {
         ) : null}
       </Grid>
     </Stack>
+  ) : (
+    <CollectionSkeleton itemsOnPage={itemsOnPage} />
   );
 }

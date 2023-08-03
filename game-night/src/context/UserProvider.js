@@ -8,9 +8,10 @@ import jwt_decode from 'jwt-decode';
 export const TOKEN_STORAGE_ID = 'game-night-token';
 
 export default function UserProvider({ children, isDark, setDarkMode }) {
-  const [isLoading, setIsLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState('');
   const [userData, setUserData] = useState('');
+  const [collection, setCollection] = useState('');
+  const [userGameIDs, setUserGameIDs] = useState('');
   const [token, setToken] = useLocalStorage(TOKEN_STORAGE_ID);
   const navigate = useNavigate();
 
@@ -21,9 +22,7 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
   }, [token, setCurrentUser]);
 
   useEffect(() => {
-    if (token) {
-      saveToken();
-    }
+    if (token) saveToken();
   }, [token, saveToken]);
 
   const handleThemeToggle = () => {
@@ -58,7 +57,6 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
       const user = result.user;
       if (result.token) {
         setToken(result.token);
-        saveToken();
         navigate(`/profile/${user.username}`);
       }
       setUserData({ ...user });
@@ -72,6 +70,9 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
     GameNightApi.token = '';
     setCurrentUser('');
     setToken('');
+    setUserData('');
+    setCollection('');
+    setUserGameIDs('');
     navigate('/login');
   }, [setToken, navigate]);
 
@@ -90,11 +91,13 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
   return (
     <UserContext.Provider
       value={{
-        isLoading,
-        setIsLoading,
         token,
         currentUser,
         getCurrentUser,
+        collection,
+        setCollection,
+        userGameIDs,
+        setUserGameIDs,
         userData,
         registerUser,
         loginUser,

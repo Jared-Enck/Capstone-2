@@ -1,15 +1,9 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import DataContext from '../../context/DataContext';
 import { Stack, Typography } from '@mui/material';
 
 export default function CollectionStats({ size }) {
-  const { colValue, getCollectionValue } = useContext(DataContext);
-
-  useEffect(() => {
-    if (!colValue) {
-      getCollectionValue();
-    }
-  }, [colValue, getCollectionValue]);
+  const { colValue } = useContext(DataContext);
 
   return (
     <Stack

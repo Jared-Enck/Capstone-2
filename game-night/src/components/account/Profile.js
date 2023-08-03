@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState, lazy } from 'react';
+import React, { useContext, useEffect, useState, lazy, Suspense } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import UserContext from '../../context/UserContext';
-import DataContext from '../../context/DataContext';
 import {
   Stack,
   Typography,
@@ -24,9 +23,6 @@ export default function Profile({ itemsOnPage }) {
   const { currentUser, getCurrentUser, userData, token } =
     useContext(UserContext);
 
-  const { userGameIDs, collection, getCollection, getGameIDs } =
-    useContext(DataContext);
-
   const [open, setOpen] = useState(false);
 
   const handleEditClick = () => {
@@ -35,27 +31,8 @@ export default function Profile({ itemsOnPage }) {
 
   useEffect(() => {
     if (!userData && currentUser) getCurrentUser(username);
-    if (!userGameIDs.size && currentUser) getGameIDs();
     // eslint-disable-next-line
   }, [currentUser, getCurrentUser]);
-
-  useEffect(() => {
-    if (!collection.length && userGameIDs.size && currentUser) {
-      // API requires additional comma at start and end of string
-      const IdString = `,${[...userGameIDs].join(',')},`;
-      getCollection(IdString);
-    }
-    // eslint-disable-next-line
-  }, [userGameIDs, getCollection, collection.length]);
-
-  const noGamesMsg = (
-    <Typography
-      sx={{ color: 'primary.text', paddingLeft: 2 }}
-      variant='h5'
-    >
-      There are no games in your collection.
-    </Typography>
-  );
 
   if (!token) return <Navigate to={'/login'} />;
 
@@ -117,19 +94,9 @@ export default function Profile({ itemsOnPage }) {
             <Divider />
           </Grid>
         </Grid>
-        {collection.length ? (
-          userGameIDs.size ? (
-            <CollectionComp
-              size={userGameIDs.size}
-              collection={collection}
-              itemsOnPage={itemsOnPage}
-            />
-          ) : (
-            noGamesMsg
-          )
-        ) : (
-          <CollectionSkeleton itemsOnPage={itemsOnPage} />
-        )}
+        <Suspense fallback={<CollectionSkeleton itemsOnPage={itemsOnPage} />}>
+          <CollectionComp itemsOnPage={itemsOnPage} />
+        </Suspense>
       </ContentContainer>
     </Stack>
   );

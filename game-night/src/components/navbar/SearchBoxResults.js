@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Box, Stack, Divider, Typography } from '@mui/material';
 import styled from '@emotion/styled';
 import DataContext from '../../context/DataContext';
-import UserContext from '../../context/UserContext';
 import CircularLoading from '../common/CircularLoading';
 
 const SearchBoxSectionComp = lazy(() => import('./SearchBoxSection'));
@@ -26,10 +25,8 @@ export default function SearchBoxResults({ results, clearBoxResults }) {
   const categories = results.foundCategories || [];
   const games = results.foundGames || [];
 
-  const { setGame, setResultsHeader, setSearchResults } =
+  const { setGame, setResultsHeader, setSearchResults, isLoading } =
     useContext(DataContext);
-
-  const { isLoading } = useContext(UserContext);
 
   const handleBtnClick = (path, item) => {
     clearBoxResults();
