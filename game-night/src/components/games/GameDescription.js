@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import DataContext from '../../context/DataContext';
+import UserContext from '../../context/UserContext';
 import {
   Box,
   Typography,
@@ -13,6 +14,7 @@ import { ExpandMore, ExpandLess, Add, Check } from '@mui/icons-material';
 import PlayersAndDuration from '../common/PlayersAndDuration';
 import styled from '@emotion/styled';
 import ContentContainer from '../common/ContentContainer';
+import CircularLoading from '../common/CircularLoading';
 
 const AddButton = styled(Button)(({ theme }) => ({
   display: 'flex',
@@ -31,17 +33,19 @@ const AddedBadgeBox = styled(Box)(({ theme }) => ({
 
 export default function GameDescription({ game }) {
   const [open, setOpen] = useState(false);
-  const { addGame, userGameIDs } = useContext(DataContext);
-  const inCollection = userGameIDs.has(game.id);
+  const { addGame } = useContext(DataContext);
+  const { userGameIDs } = useContext(UserContext);
+  const inCollection = userGameIDs ? userGameIDs.has(game.id) : false;
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleDescBtnClick = () => {
     setOpen(!open);
   };
 
-  const handleAddBtnClick = () => {
-    if (!inCollection) {
-      addGame(game);
-    }
+  const handleAddBtnClick = async () => {
+    setIsLoading(true);
+    await addGame(game);
+    setIsLoading(false);
   };
 
   const AddButtonComp = () => (
@@ -51,7 +55,17 @@ export default function GameDescription({ game }) {
       onClick={handleAddBtnClick}
     >
       <Add fontSize='small' />
-      Add to collection
+
+      <Typography paddingRight={1}>Add to collection</Typography>
+
+      {isLoading ? (
+        <CircularLoading
+          size='1rem'
+          color='primary.light'
+        />
+      ) : (
+        <Box width={'1rem'} />
+      )}
     </AddButton>
   );
 
@@ -76,7 +90,7 @@ export default function GameDescription({ game }) {
         >
           {game.name}
         </Typography>
-        {inCollection ? AddedBadgeComp() : AddButtonComp()}
+        {inCollection && !isLoading ? AddedBadgeComp() : AddButtonComp()}
       </Box>
       <Grid
         sx={{
