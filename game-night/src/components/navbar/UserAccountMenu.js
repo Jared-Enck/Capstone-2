@@ -1,35 +1,42 @@
 import React, { useState, useContext } from 'react';
 import {
   IconButton,
-  Menu,
+  Drawer,
   MenuItem,
-  Avatar,
   Divider,
   ListItemIcon,
 } from '@mui/material';
-import { Settings, Logout } from '@mui/icons-material';
+import styled from '@emotion/styled';
+import { Logout, PersonOutline } from '@mui/icons-material';
 import MenuIcon from '@mui/icons-material/Menu';
 import UserContext from '../../context/UserContext';
+import Settings from '../settings/Settings';
+
+const StyledDrawer = styled(Drawer)(({ theme }) => ({
+  '& .MuiPaper-root': {
+    width: '30ch',
+    backgroundColor: theme.palette.primary.light,
+    color: theme.palette.primary.text,
+  },
+}));
 
 export default function UserAccountMenu() {
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [open, setOpen] = useState(false);
   const { logout, currentUser, navigate } = useContext(UserContext);
-  const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+    setOpen(true);
   };
   const handleClose = () => {
-    setAnchorEl(null);
+    setOpen(false);
   };
   const handleProfile = () => {
+    handleClose();
     navigate(`/profile/${currentUser}`);
   };
-  const handleSettings = () => {};
 
   const handleLogout = () => {
     logout();
-    navigate('/');
   };
 
   return (
@@ -42,72 +49,45 @@ export default function UserAccountMenu() {
         aria-haspopup='true'
         aria-expanded={open ? 'true' : undefined}
       >
-        <MenuIcon sx={{ width: 32, height: 32 }} />
-      </IconButton>
-      <Menu
-        anchorEl={anchorEl}
-        id='account-menu'
-        open={open}
-        onClose={handleClose}
-        onClick={handleClose}
-        slotProps={{
-          paper: {
-            elevation: 0,
-            sx: {
-              overflow: 'visible',
-              filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-              mt: 1,
-              backgroundColor: 'primary.light',
-              '& .MuiAvatar-root': {
-                width: 32,
-                height: 32,
-                ml: -0.5,
-                mr: 1,
-                bgcolor: 'primary.main',
-              },
-              '&:before': {
-                display: 'block',
-                position: 'absolute',
-                top: 0,
-                right: 14,
-                width: 10,
-                height: 10,
-                bgcolor: 'primary.contrastText',
-                transform: 'translateY(-50%) rotate(45deg)',
-                zIndex: 0,
-              },
+        <MenuIcon
+          sx={{
+            padding: 0.7,
+            width: 40,
+            height: 40,
+            color: 'primary.muted',
+            '&: hover': {
+              color: 'primary.contrastText',
             },
-          },
-        }}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+          }}
+        />
+      </IconButton>
+      <StyledDrawer
+        anchor={'right'}
+        open={open}
+        id='account-menu'
+        onClose={handleClose}
       >
         <MenuItem
           onClick={handleProfile}
           aria-label='profile'
         >
-          <Avatar /> Profile
+          <ListItemIcon sx={{ marginRight: 1 }}>
+            <PersonOutline fontSize='large' />
+          </ListItemIcon>
+          Profile
         </MenuItem>
         <Divider />
-        <MenuItem
-          onClick={handleSettings}
-          aria-label='open settings drawer'
-        >
-          <ListItemIcon>
-            <Settings fontSize='small' />
-          </ListItemIcon>
-          Settings
-        </MenuItem>
+        <Settings />
         <MenuItem
           onClick={handleLogout}
           aria-label='logout'
         >
           <ListItemIcon>
-            <Logout fontSize='small' />
+            <Logout />
           </ListItemIcon>
           Logout
         </MenuItem>
-      </Menu>
+      </StyledDrawer>
     </>
   );
 }
