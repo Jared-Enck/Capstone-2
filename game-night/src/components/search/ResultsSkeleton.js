@@ -14,6 +14,7 @@ export default function ResultsSkeleton({ itemsOnPage }) {
         <BaseSkeleton
           width={345}
           height={383}
+          shadow={1}
         />
       </Grid>
     );
