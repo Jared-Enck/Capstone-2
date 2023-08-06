@@ -61,7 +61,7 @@ export default function Profile({ itemsOnPage }) {
               <Grid item>
                 <Typography
                   variant='h5'
-                  color={'primary.text'}
+                  color={'primary.contrastText'}
                 >
                   {userData.username}
                 </Typography>
