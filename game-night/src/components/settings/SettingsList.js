@@ -7,22 +7,30 @@ import {
   ListItem,
   ListItemIcon,
   Typography,
-  Button,
 } from '@mui/material';
 import { LightMode, DarkMode } from '@mui/icons-material';
-import styled from '@emotion/styled';
-
-const StyledListItem = styled(ListItem)(({ theme }) => ({
-  padding: 0,
-}));
+import DeleteDialog from './DeleteDialog';
 
 export default function SettingsList() {
   const { isDark, handleThemeToggle } = useContext(UserContext);
   const [checked, setChecked] = useState(isDark);
+  const [open, setOpen] = useState(false);
 
-  const handleChange = () => {
+  const handleToggle = () => {
     handleThemeToggle();
     setChecked(!checked);
+  };
+
+  const handleDeleteClick = () => {
+    setOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpen(false);
+  };
+
+  const handleChangePassword = () => {
+    console.log('change password?');
   };
 
   return (
@@ -30,26 +38,23 @@ export default function SettingsList() {
       spacing={3}
       paddingLeft={2}
     >
-      <StyledListItem>
-        <ListItemIcon
-          sx={{ paddingLeft: '.5rem', color: 'primary.contrastText' }}
-        >
+      <ListItem>
+        <ListItemIcon sx={{ color: 'primary.contrastText' }}>
           {isDark ? <DarkMode /> : <LightMode />}
         </ListItemIcon>
         <Switch
           checked={checked}
-          onChange={handleChange}
+          onChange={handleToggle}
           sx={{
             marginLeft: 'auto',
             color: 'primary',
           }}
         />
-      </StyledListItem>
-      <StyledListItem>
-        <Link>
+      </ListItem>
+      <ListItem>
+        <Link onClick={handleChangePassword}>
           <Typography
             sx={{
-              paddingLeft: '.5rem',
               color: 'primary.text',
               '&:hover': {
                 color: 'primary.contrastText',
@@ -59,19 +64,25 @@ export default function SettingsList() {
             Change Password
           </Typography>
         </Link>
-      </StyledListItem>
-      <StyledListItem>
-        <Button
-          variant='text'
-          sx={{
-            marginTop: 3,
-            color: 'red',
-            '&:hover': { backgroundColor: 'red', color: 'white' },
-          }}
-        >
-          <Typography>Delete Account</Typography>
-        </Button>
-      </StyledListItem>
+      </ListItem>
+      <ListItem>
+        <Link onClick={handleDeleteClick}>
+          <Typography
+            sx={{
+              color: 'rgb(200,0,0)',
+              '&:hover': {
+                color: 'red',
+              },
+            }}
+          >
+            Delete Account
+          </Typography>
+        </Link>
+        <DeleteDialog
+          open={open}
+          handleCloseDialog={handleCloseDialog}
+        />
+      </ListItem>
     </Stack>
   );
 }
