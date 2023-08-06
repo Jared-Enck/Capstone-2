@@ -1,15 +1,9 @@
 import React, { useState, useContext } from 'react';
 import UserContext from '../../context/UserContext';
-import { FormControl, Stack, InputAdornment, IconButton } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import {
-  FormBox,
-  PrimaryButton,
-  ErrorSpan,
-  FormOutlinedInput,
-  FormInputLabel,
-} from './LoginForm';
+import { FormControl, Stack, Typography } from '@mui/material';
+import { FormBox, PrimaryButton, ErrorSpan } from '../common/styled';
 import ContentContainer from '../common/ContentContainer';
+import FormInput from '../common/FormInput';
 import useFields from '../../hooks/useFields';
 
 const genError = (err, idx) => {
@@ -18,6 +12,8 @@ const genError = (err, idx) => {
 
 export default function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const inputType = showPassword ? 'text' : 'password';
+
   const initialState = {
     username: '',
     password: '',
@@ -27,11 +23,7 @@ export default function SignUpForm() {
     useFields(initialState);
   const { registerUser, navigate } = useContext(UserContext);
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
+  const handleShowPassword = () => setShowPassword((show) => !show);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,58 +44,30 @@ export default function SignUpForm() {
           autoComplete='off'
         >
           <Stack spacing={2}>
-            <FormControl>
-              <FormInputLabel htmlFor='username'>Username</FormInputLabel>
-              <FormOutlinedInput
-                type='text'
-                label='Username'
-                name='username'
-                value={formData.username}
-                onChange={handleChange}
-                autoFocus
+            <Typography
+              variant='h5'
+              sx={{ color: 'primary.muted' }}
+            >
+              Sign Up
+            </Typography>
+            {['username', 'password', 'email'].map((i, idx) => (
+              <FormInput
+                key={i}
+                name={i}
+                formData={formData}
+                handleChange={handleChange}
+                idx={idx}
+                inputType={inputType}
+                showPassword={showPassword}
+                handleShowPassword={handleShowPassword}
               />
-            </FormControl>
-
-            <FormControl>
-              <FormInputLabel htmlFor='password'>Password</FormInputLabel>
-              <FormOutlinedInput
-                type={showPassword ? 'text' : 'password'}
-                endAdornment={
-                  <InputAdornment position='end'>
-                    <IconButton
-                      aria-label='toggle password visibility'
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge='end'
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                label='Password'
-                name='password'
-                value={formData.password}
-                onChange={handleChange}
-              />
-            </FormControl>
-
-            <FormControl>
-              <FormInputLabel htmlFor='email'>Email</FormInputLabel>
-              <FormOutlinedInput
-                type='text'
-                label='Email'
-                name='email'
-                value={formData.email}
-                onChange={handleChange}
-              />
-            </FormControl>
-
+            ))}
             <FormControl>
               {formErrors ? formErrors.map((e, idx) => genError(e, idx)) : null}
-
               <PrimaryButton
+                variant='contained'
                 type='submit'
-                size='medium'
+                className='main-button'
               >
                 Sign Up
               </PrimaryButton>
