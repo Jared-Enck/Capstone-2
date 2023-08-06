@@ -4,13 +4,14 @@ import {
   Drawer,
   MenuItem,
   Divider,
-  ListItemIcon,
+  Typography,
 } from '@mui/material';
 import styled from '@emotion/styled';
-import { Logout, PersonOutline } from '@mui/icons-material';
+import { Logout, Person } from '@mui/icons-material';
 import MenuIcon from '@mui/icons-material/Menu';
 import UserContext from '../../context/UserContext';
 import Settings from '../settings/Settings';
+import { StyledIcon } from '../common/styled';
 
 const StyledDrawer = styled(Drawer)(({ theme }) => ({
   '& .MuiPaper-root': {
@@ -71,10 +72,11 @@ export default function UserAccountMenu() {
           onClick={handleProfile}
           aria-label='profile'
         >
-          <ListItemIcon sx={{ marginRight: 1 }}>
-            <PersonOutline fontSize='large' />
-          </ListItemIcon>
-          Profile
+          <Person
+            fontSize='large'
+            sx={{ color: 'primary.muted', marginRight: 1 }}
+          />
+          <Typography fontSize={'1.2rem'}>Profile</Typography>
         </MenuItem>
         <Divider />
         <Settings />
@@ -82,9 +84,9 @@ export default function UserAccountMenu() {
           onClick={handleLogout}
           aria-label='logout'
         >
-          <ListItemIcon>
+          <StyledIcon>
             <Logout />
-          </ListItemIcon>
+          </StyledIcon>
           Logout
         </MenuItem>
       </StyledDrawer>
