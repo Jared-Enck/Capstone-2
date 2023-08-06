@@ -9,11 +9,18 @@ const StyledPagination = styled(Pagination)(({ theme }) => ({
   '& .MuiPaginationItem-root': {
     color: theme.palette.primary.text,
   },
+  '& .MuiPaginationItem-root.Mui-selected': {
+    color: theme.palette.primary.main,
+    backgroundColor: theme.palette.primary.contrastText,
+    '&:hover': {
+      color: theme.palette.primary.main,
+      backgroundColor: theme.palette.primary.contrastText,
+    },
+  },
   '& .MuiButtonBase-root': {
     '&:hover': {
-      backgroundColor: theme.palette.primary.contrastText,
-      color: theme.palette.primary.main,
-      fontWeight: 'bold',
+      color: theme.palette.primary.text,
+      backgroundColor: theme.palette.primary.light,
     },
   },
 }));
