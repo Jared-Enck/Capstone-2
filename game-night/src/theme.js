@@ -5,7 +5,7 @@ import { green, lightBlue, grey, red, common } from '@mui/material/colors';
 export const themeLight = createTheme({
   palette: {
     background: {
-      default: grey[400],
+      default: grey[300],
     },
     primary: {
       main: common.white,
