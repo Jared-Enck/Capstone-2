@@ -22,7 +22,7 @@ export default class GameNightApi {
     }
   }
 
-  // Individual API routes to db
+  // Individual API routes to server
 
   /**Registers new user */
   static async register(data) {
@@ -46,6 +46,12 @@ export default class GameNightApi {
   /** Update user info */
   static async updateUser(formData, username) {
     let res = await this.request(`users/${username}`, formData, 'patch');
+    return res;
+  }
+
+  /** Delete user */
+  static async deleteUser(username) {
+    let res = await this.request(`users/${username}`, {}, 'delete');
     return res;
   }
 
