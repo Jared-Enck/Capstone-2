@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import DataContext from '../../context/DataContext';
+import UserContext from '../../context/UserContext';
 import { Stack, Grid } from '@mui/material';
 import ContentContainer from '../common/ContentContainer';
 import GameCard from '../games/GameCard';
@@ -19,6 +20,7 @@ export default function SearchResultsPage({ itemsOnPage }) {
     getSearchHeader,
     errors,
   } = useContext(DataContext);
+  const { currentUser } = useContext(UserContext);
   const { pages, count } = searchResults;
 
   const [page, pageCount, handleChange, setPage] = usePagination(
@@ -82,7 +84,10 @@ export default function SearchResultsPage({ itemsOnPage }) {
           ) : pages[page] ? (
             pages[page].map((g) => gridItemComp(g))
           ) : (
-            <ResultsSkeleton itemsOnPage={itemsOnPage} />
+            <ResultsSkeleton
+              itemsOnPage={itemsOnPage}
+              currentUser={currentUser}
+            />
           )}
         </Grid>
         {pageCount > 1 ? (
