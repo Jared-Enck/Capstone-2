@@ -17,12 +17,10 @@ import ContentContainer from '../common/ContentContainer';
 import CircularLoading from '../common/CircularLoading';
 
 const AddButton = styled(Button)(({ theme }) => ({
-  display: 'flex',
   color: theme.palette.primary.contrastText,
   '&:hover': {
     backgroundColor: theme.palette.primary.contrastText,
     color: theme.palette.primary.main,
-    fontWeight: 'bold',
   },
 }));
 
@@ -34,7 +32,7 @@ const AddedBadgeBox = styled(Box)(({ theme }) => ({
 export default function GameDescription({ game }) {
   const [open, setOpen] = useState(false);
   const { addGame } = useContext(DataContext);
-  const { userGameIDs } = useContext(UserContext);
+  const { currentUser, userGameIDs } = useContext(UserContext);
   const inCollection = userGameIDs ? userGameIDs.has(game.id) : false;
   const [isLoading, setIsLoading] = useState(false);
 
@@ -50,9 +48,9 @@ export default function GameDescription({ game }) {
 
   const AddButtonComp = () => (
     <AddButton
-      size='medium'
       variant='text'
       onClick={handleAddBtnClick}
+      className='main-button'
     >
       <Add fontSize='small' />
 
@@ -90,7 +88,11 @@ export default function GameDescription({ game }) {
         >
           {game.name}
         </Typography>
-        {inCollection && !isLoading ? AddedBadgeComp() : AddButtonComp()}
+        {currentUser
+          ? inCollection && !isLoading
+            ? AddedBadgeComp()
+            : AddButtonComp()
+          : null}
       </Box>
       <Grid
         sx={{

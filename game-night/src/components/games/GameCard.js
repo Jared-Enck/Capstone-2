@@ -16,8 +16,8 @@ import UserContext from '../../context/UserContext';
 
 export default function GameCard({ game, onProfilePage }) {
   const { setGame, addGame, removeGame } = useContext(DataContext);
-  const { userGameIDs, navigate } = useContext(UserContext);
-  const inCollection = userGameIDs.has(game.id);
+  const { currentUser, userGameIDs, navigate } = useContext(UserContext);
+  const inCollection = userGameIDs ? userGameIDs.has(game.id) : false;
 
   const handleCardClick = () => {
     setGame(game);
@@ -47,7 +47,11 @@ export default function GameCard({ game, onProfilePage }) {
   const trashBtn = (
     <IconButton
       aria-label='remove from collection'
-      sx={{ color: 'primary.contrastText', marginLeft: 'auto' }}
+      sx={{
+        color: 'primary.muted',
+        marginLeft: 'auto',
+        '&:hover': { color: 'red' },
+      }}
       onClick={handleTrashClick}
     >
       <Delete />
@@ -99,9 +103,11 @@ export default function GameCard({ game, onProfilePage }) {
           </Grid>
         </CardContent>
       </CardActionArea>
-      <CardActions disableSpacing>
-        {!onProfilePage ? quickAddBtn : trashBtn}
-      </CardActions>
+      {currentUser ? (
+        <CardActions disableSpacing>
+          {!onProfilePage ? quickAddBtn : trashBtn}
+        </CardActions>
+      ) : null}
     </Card>
   );
 }
