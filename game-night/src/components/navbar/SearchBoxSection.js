@@ -1,12 +1,11 @@
 import React, { Suspense } from 'react';
-import { Typography, Grid, Button } from '@mui/material';
+import { Typography, Grid, Button, alpha } from '@mui/material';
 import styled from '@emotion/styled';
 import CircularLoading from '../common/CircularLoading';
 
 const SearchBoxButton = styled(Button)(({ theme }) => ({
-  borderRadius: '9999px',
   color: theme.palette.primary.text,
-  backgroundColor: theme.palette.primary.main,
+  backgroundColor: alpha(`${theme.palette.primary.main}`, 0.3),
   height: '1.5rem',
   fontSize: '.7rem',
   padding: '.5rem',
@@ -45,8 +44,10 @@ export default function SearchBoxSection({ sectionName, items, handleClick }) {
                   sx={{ marginRight: '.5rem' }}
                 >
                   <SearchBoxButton
+                    variant='contained'
                     size='small'
                     onClick={() => handleClick(sectionName.toLowerCase(), i)}
+                    className='main-button'
                   >
                     {i.name}
                   </SearchBoxButton>

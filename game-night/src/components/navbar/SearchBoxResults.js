@@ -48,7 +48,8 @@ export default function SearchBoxResults({ results, clearBoxResults }) {
         sx={{
           fontStyle: 'italic',
           color: 'primary.text',
-          paddingLeft: '2rem',
+          padding: '.5rem',
+          textAlign: 'center',
         }}
       >
         No results found.
@@ -73,9 +74,13 @@ export default function SearchBoxResults({ results, clearBoxResults }) {
             handleClick={handleBtnClick}
           />
         ) : null}
-        {mechanics.length || categories.length ? <Divider /> : null}
+        {mechanics.length || categories.length ? (
+          <Divider sx={{ color: 'primary.muted' }} />
+        ) : null}
         {isLoading ? (
-          <CircularLoading />
+          <Box padding={1}>
+            <CircularLoading />
+          </Box>
         ) : games.length ? (
           <GamesListComp
             games={games.slice(0, 10)}

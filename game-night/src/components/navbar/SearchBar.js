@@ -9,9 +9,9 @@ const SearchBoxResultsComp = lazy(() => import('./SearchBoxResults'));
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.primary.light, 0.6),
+  backgroundColor: alpha(theme.palette.primary.light, 0.5),
   '&:hover': {
-    backgroundColor: alpha(theme.palette.primary.light, 0.8),
+    backgroundColor: alpha(theme.palette.primary.light, 0.7),
   },
   marginLeft: 0,
   width: '100%',
@@ -39,12 +39,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     width: '100%',
-    border: `.1rem solid ${theme.palette.primary.muted}`,
+    border: `.1rem solid transparent`,
     borderRadius: theme.shape.borderRadius,
     [theme.breakpoints.up('sm')]: {
       width: '50ch',
     },
-    '&:hover, &:focus': {
+    '&:focus': {
       border: `.1rem solid ${theme.palette.primary.contrastText}`,
       borderRadius: theme.shape.borderRadius,
     },
