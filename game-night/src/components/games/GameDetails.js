@@ -85,10 +85,7 @@ export default function GameDetails({ game }) {
     ];
   }
   return (
-    <ContentContainer
-      header='Details'
-      divider
-    >
+    <ContentContainer header='Details'>
       <Table>
         <TableBody>
           {rows
