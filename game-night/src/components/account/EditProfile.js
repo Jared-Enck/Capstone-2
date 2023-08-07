@@ -1,22 +1,24 @@
 import React, { useContext, useEffect } from 'react';
 import {
   Box,
+  Grid,
   Modal,
   Stack,
-  FormControl,
   Typography,
   Button,
+  Avatar,
 } from '@mui/material';
+import { PhotoCamera } from '@mui/icons-material';
 import styled from '@emotion/styled';
 import {
   FormBox,
-  FormInputLabel,
-  FormOutlinedInput,
-  ErrorSpan,
   PrimaryButton,
-} from './LoginForm';
+  CancelButton,
+  ErrorSpan,
+} from '../common/styled';
 import useFields from '../../hooks/useFields';
 import UserContext from '../../context/UserContext';
+import FormInput from '../common/FormInput';
 
 const StyledBox = styled(Box)(({ theme }) => ({
   width: '800px',
@@ -40,6 +42,17 @@ export default function EditProfile({ open, setOpen, username }) {
     setFormErrors([]);
     setFormData(userData);
     setOpen(false);
+  };
+
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      setFormData({ ...formData, imageURL: reader.result });
+    };
+
+    reader.readAsDataURL(file);
   };
 
   const getChanges = (formData, userData) => {
@@ -106,42 +119,65 @@ export default function EditProfile({ open, setOpen, username }) {
             >
               Edit Profile
             </Typography>
-            <FormControl
-              key={'username'}
-              sx={{ width: '100%' }}
+            <Grid
+              container
+              direction={'row'}
+              justifyContent={'space-between'}
             >
-              <FormInputLabel htmlFor={'username'}>Username</FormInputLabel>
-              <FormOutlinedInput
-                type='text'
-                name={'username'}
-                value={formData.username}
-                onChange={handleChange}
+              <Grid item>
+                <Avatar
+                  src={formData.imageURL}
+                  sx={{
+                    width: 120,
+                    height: 120,
+                  }}
+                />
+              </Grid>
+              <Grid
+                item
+                sx={{ display: 'flex' }}
+              >
+                <Box sx={{ marginTop: 'auto' }}>
+                  <label htmlFor='imageURL'>
+                    <Button
+                      variant='contained'
+                      component='span'
+                      className='main-button'
+                      sx={{
+                        bgcolor: 'primary.light',
+                        '&:hover': {
+                          bgcolor: 'primary.contrastText',
+                          color: 'primary.main',
+                        },
+                      }}
+                    >
+                      <PhotoCamera
+                        fontSize='small'
+                        sx={{ marginRight: 1 }}
+                      />
+                      Upload Image
+                    </Button>
+                    <input
+                      id='imageURL'
+                      accept='image/*'
+                      type='file'
+                      hidden
+                      onChange={handleFileUpload}
+                    />
+                  </label>
+                </Box>
+              </Grid>
+            </Grid>
+
+            {['username', 'email'].map((i) => (
+              <FormInput
+                key={i}
+                name={i}
+                formData={formData}
+                handleChange={handleChange}
               />
-            </FormControl>
-            <FormControl
-              key={'email'}
-              sx={{ width: '100%' }}
-            >
-              <FormInputLabel htmlFor={'email'}>Email</FormInputLabel>
-              <FormOutlinedInput
-                type='text'
-                name={'email'}
-                value={formData.email}
-                onChange={handleChange}
-              />
-            </FormControl>
-            <FormControl
-              key={'imageURL'}
-              sx={{ width: '100%' }}
-            >
-              <FormInputLabel htmlFor={'imageURL'}>ImageURL</FormInputLabel>
-              <FormOutlinedInput
-                type='text'
-                name={'imageURL'}
-                value={formData.imageURL}
-                onChange={handleChange}
-              />
-            </FormControl>
+            ))}
+
             {formErrors.length
               ? formErrors.map((e, idx) => genError(e, idx))
               : null}
@@ -149,24 +185,17 @@ export default function EditProfile({ open, setOpen, username }) {
               direction={'row'}
               spacing={2}
             >
-              <Button
+              <CancelButton
                 variant='outlined'
-                sx={{
-                  borderColor: 'primary.light',
-                  color: 'primary.muted',
-                  borderRadius: 9999,
-                  '&:hover': {
-                    borderColor: 'primary.text',
-                    color: 'primary.contrastText',
-                  },
-                }}
                 onClick={handleClose}
+                className='main-button'
               >
                 Cancel
-              </Button>
+              </CancelButton>
               <PrimaryButton
                 variant='contained'
                 type='submit'
+                className='main-button'
               >
                 Submit
               </PrimaryButton>

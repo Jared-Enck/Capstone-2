@@ -16,7 +16,6 @@ export default function DataProvider({ children }) {
   const [open, setOpen] = useState(false);
   const {
     currentUser,
-    navigate,
     collection,
     setCollection,
     userGameIDs,
@@ -164,22 +163,18 @@ export default function DataProvider({ children }) {
 
   async function addGame(game) {
     try {
-      if (currentUser) {
-        setIsLoading(true);
-        const { id } = game;
-        await GameNightApi.addGame({ id, username: currentUser });
-        if (!collection) {
-          await getCollection();
-        }
-        setCollection((prev) => [...prev, game]);
-        setUserGameIDs((prev) => new Set(prev).add(id));
-        setColValue((prev) => (prev += game.msrp));
-
-        console.log(`${game.name} has been added to your collection.`);
-        setIsLoading(false);
-      } else {
-        navigate('/login');
+      setIsLoading(true);
+      const { id } = game;
+      await GameNightApi.addGame({ id, username: currentUser });
+      if (!collection) {
+        await getCollection();
       }
+      setCollection((prev) => [...prev, game]);
+      setUserGameIDs((prev) => new Set(prev).add(id));
+      setColValue((prev) => (prev += game.msrp));
+
+      console.log(`${game.name} has been added to your collection.`);
+      setIsLoading(false);
     } catch (err) {
       console.error('Error: ', err);
     }

@@ -12,7 +12,7 @@ export default function CollectionStats({ size }) {
     >
       <Typography
         variant='h5'
-        color={'primary.contrastText'}
+        color={'primary.text'}
       >
         Collection
       </Typography>

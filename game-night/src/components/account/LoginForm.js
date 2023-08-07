@@ -1,59 +1,11 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import UserContext from '../../context/UserContext';
-import {
-  InputLabel,
-  FormControl,
-  InputAdornment,
-  IconButton,
-  Stack,
-  Box,
-  Button,
-  alpha,
-  Typography,
-  OutlinedInput,
-} from '@mui/material';
-import styled from '@emotion/styled';
+import { FormControl, Stack, Typography } from '@mui/material';
 import ContentContainer from '../common/ContentContainer';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
 import useFields from '../../hooks/useFields';
-
-export const FormBox = styled(Box)(() => ({
-  maxWidth: '400px',
-  margin: 'auto',
-}));
-
-export const FormOutlinedInput = styled(OutlinedInput)(({ theme }) => ({
-  backgroundColor: alpha(theme.palette.primary.light, 0.45),
-  borderRadius: theme.shape.borderRadius,
-  color: theme.palette.primary.text,
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.primary.light, 0.7),
-  },
-  '& .MuiInputBase-outlined': {
-    '&:focus': {
-      borderColor: theme.palette.primary.contrastText,
-    },
-  },
-}));
-
-export const FormInputLabel = styled(InputLabel)(({ theme }) => ({
-  color: theme.palette.primary.muted,
-}));
-
-export const PrimaryButton = styled(Button)(({ theme }) => ({
-  borderRadius: '9999px',
-  backgroundColor: alpha(theme.palette.primary.contrastText, 0.8),
-  color: theme.palette.primary.main,
-  '&:hover': {
-    backgroundColor: theme.palette.primary.contrastText,
-  },
-}));
-
-export const ErrorSpan = styled('span')(({ theme }) => ({
-  color: theme.palette.error.main,
-  textAlign: 'center',
-}));
+import { FormBox, PrimaryButton, ErrorSpan } from '../common/styled';
+import FormInput from '../common/FormInput';
 
 const genError = (err, idx) => {
   return <ErrorSpan key={idx}>{err}</ErrorSpan>;
@@ -61,6 +13,8 @@ const genError = (err, idx) => {
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const inputType = showPassword ? 'text' : 'password';
+
   const initialState = {
     username: '',
     password: '',
@@ -69,11 +23,8 @@ export default function LoginForm() {
     useFields(initialState);
 
   const { loginUser, navigate } = useContext(UserContext);
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
+  const handleShowPassword = () => setShowPassword((show) => !show);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -94,40 +45,24 @@ export default function LoginForm() {
           autoComplete='off'
         >
           <Stack spacing={2}>
-            <FormControl>
-              <FormInputLabel htmlFor='username'>Username</FormInputLabel>
-              <FormOutlinedInput
-                type='text'
-                label='Username'
-                name='username'
-                value={formData.username}
-                onChange={handleChange}
-                autoFocus
+            <Typography
+              variant='h5'
+              sx={{ color: 'primary.muted' }}
+            >
+              Login
+            </Typography>
+            {['username', 'password'].map((i, idx) => (
+              <FormInput
+                key={i}
+                name={i}
+                formData={formData}
+                handleChange={handleChange}
+                idx={idx}
+                inputType={inputType}
+                showPassword={showPassword}
+                handleShowPassword={handleShowPassword}
               />
-            </FormControl>
-
-            <FormControl>
-              <FormInputLabel htmlFor='password'>Password</FormInputLabel>
-              <FormOutlinedInput
-                type={showPassword ? 'text' : 'password'}
-                endAdornment={
-                  <InputAdornment position='end'>
-                    <IconButton
-                      aria-label='toggle password visibility'
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge='end'
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                label='Password'
-                name='password'
-                value={formData.password}
-                onChange={handleChange}
-              />
-            </FormControl>
+            ))}
             <FormControl>
               <Stack spacing={2}>
                 {formErrors.length
@@ -143,9 +78,9 @@ export default function LoginForm() {
                   <Link to={'/signup'}>here.</Link>
                 </Typography>
                 <PrimaryButton
-                  type='submit'
                   variant='contained'
-                  size='medium'
+                  type='submit'
+                  className='main-button'
                 >
                   Login
                 </PrimaryButton>

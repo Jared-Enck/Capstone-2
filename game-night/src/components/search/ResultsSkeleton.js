@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid } from '@mui/material';
 import BaseSkeleton from '../common/BaseSkeleton';
 
-export default function ResultsSkeleton({ itemsOnPage }) {
+export default function ResultsSkeleton({ itemsOnPage, currentUser }) {
   let skelItems = [];
 
   for (let i = 0; i < itemsOnPage; i++) {
@@ -13,7 +13,7 @@ export default function ResultsSkeleton({ itemsOnPage }) {
       >
         <BaseSkeleton
           width={345}
-          height={383}
+          height={currentUser ? 383 : 328}
           shadow={1}
         />
       </Grid>

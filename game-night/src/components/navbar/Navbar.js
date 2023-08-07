@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Grid, AppBar, Typography, Container } from '@mui/material';
 import UserContext from '../../context/UserContext';
 import UserAccountMenu from './UserAccountMenu';
 import SearchBar from './SearchBar';
 import styled from '@emotion/styled';
+import AnonUserLinks from './AnonUserLinks';
 
 const StyledGrid = styled(Grid)(() => ({
   gridTemplateRows: 'auto',
@@ -20,29 +21,14 @@ const Brand = styled(Typography)(({ theme }) => ({
   color: theme.palette.primary.contrastText,
 }));
 
-const StyledNavLink = styled(NavLink)(({ theme }) => ({
-  color: theme.palette.primary.muted,
-  marginRight: '2rem',
-  '&:hover': {
-    color: theme.palette.primary.contrastText,
-  },
-}));
-
 export default function Navbar() {
   const { currentUser } = useContext(UserContext);
-
-  const AnonUserLinks = () => (
-    <>
-      <StyledNavLink to='/login'>Login</StyledNavLink>
-      <StyledNavLink to='/signup'>Sign Up</StyledNavLink>
-    </>
-  );
 
   return (
     <AppBar position='fixed'>
       <Container
         sx={{
-          height: '4rem',
+          height: '3.5rem',
         }}
         maxWidth='xl'
       >

@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  ListItemIcon,
   Accordion,
   AccordionSummary,
   AccordionDetails,
@@ -9,6 +8,7 @@ import {
 import { ExpandMore } from '@mui/icons-material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import SettingsList from '../settings/SettingsList';
+import { StyledIcon } from '../common/styled';
 
 export default function Settings() {
   return (
@@ -32,9 +32,9 @@ export default function Settings() {
           },
         }}
       >
-        <ListItemIcon sx={{ marginRight: '-1.2rem' }}>
+        <StyledIcon sx={{ marginRight: '-1.2rem' }}>
           <SettingsIcon />
-        </ListItemIcon>
+        </StyledIcon>
         Settings
       </AccordionSummary>
       <AccordionDetails>

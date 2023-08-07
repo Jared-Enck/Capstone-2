@@ -61,7 +61,6 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
       }
       setUserData({ ...user });
     } catch (err) {
-      console.log(err);
       return { msg: err };
     }
   }
@@ -73,7 +72,7 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
     setUserData('');
     setCollection('');
     setUserGameIDs('');
-    navigate('/login');
+    navigate('/');
   }, [setToken, navigate]);
 
   async function getCurrentUser(username) {
@@ -85,6 +84,15 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
       if (err[0] === 'Unauthorized') {
         return logout();
       }
+    }
+  }
+
+  async function deleteUser() {
+    try {
+      const result = await GameNightApi.deleteUser(currentUser);
+      return result;
+    } catch (err) {
+      console.error('Error: ', err);
     }
   }
 
@@ -106,6 +114,7 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
         handleThemeToggle,
         isDark,
         navigate,
+        deleteUser,
       }}
     >
       {children}
