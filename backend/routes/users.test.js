@@ -29,6 +29,7 @@ describe('PATCH /users/:username', () => {
       })
       .set('authorization', u1Token);
     expect(resp.body).toEqual({
+      token: expect.any(String),
       user: {
         username: 'NewU1',
         email: 'u1@email.com',
