@@ -52,9 +52,7 @@ describe('POST /gameCollections/:username', () => {
       .post('/gameCollections/u1')
       .send(addGameObj)
       .set('authorization', u1Token);
-    expect(resp.body).toEqual({
-      msg: `Moonrakers has been added to your collection.`,
-    });
+    expect(resp.body).toEqual('added');
   });
 
   it('throws unauth for not owner', async function () {
@@ -85,9 +83,7 @@ describe('DELETE /gameCollections/:username', () => {
       .delete('/gameCollections/u1')
       .send(removeGameObj)
       .set('authorization', u1Token);
-    expect(resp.body).toEqual({
-      msg: `Dinosaur Island has been removed from your collection.`,
-    });
+    expect(resp.body).toEqual('deleted');
   });
 
   it('throws unauth for not owner', async function () {

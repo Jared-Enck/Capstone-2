@@ -73,7 +73,7 @@ router.delete(
       const { id } = req.body;
       const result = await GameCollection.removeGame({ username, id });
       const statusCode = result === -1 ? 204 : 200;
-      return res.status(statusCode).json('deleted');
+      return res.status(statusCode).json(result);
     } catch (err) {
       return next(err);
     }

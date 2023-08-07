@@ -40,7 +40,8 @@ class GameCollection {
 
   static async removeGame({ username, id }) {
     const querySql = `DELETE FROM game_collections
-        WHERE username = $1 AND game_id = $2`;
+        WHERE username = $1 AND game_id = $2
+        RETURNING game_id AS "gameID"`;
 
     const results = await db.query(querySql, [username, id]);
 
