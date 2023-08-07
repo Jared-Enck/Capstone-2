@@ -29,20 +29,13 @@ describe('getGames', () => {
 describe('addGame', () => {
   const addGameObj = {
     username: 'u1',
-    game: {
-      id: '78ZDzlpvdb',
-      name: 'Moonrakers',
-    },
+    id: '78ZDzlpvdb',
   };
   it('works', async () => {
-    const res = await GameCollection.addGame(addGameObj);
+    await GameCollection.addGame(addGameObj);
 
     const games = new Set(await GameCollection.getGames('u1'));
-
     expect(games.has('78ZDzlpvdb')).toBe(true);
-    expect(res).toEqual({
-      msg: `Moonrakers has been added to your collection.`,
-    });
   });
 });
 
@@ -51,10 +44,7 @@ describe('addGame', () => {
 describe('removeGame', () => {
   const removeGameObj = {
     username: 'u1',
-    game: {
-      id: 'nSZTnbgacm',
-      name: 'Dinosaur Island',
-    },
+    id: 'nSZTnbgacm',
   };
 
   it('works', async () => {
@@ -67,8 +57,6 @@ describe('removeGame', () => {
     const updatedGames = new Set(await GameCollection.getGames('u1'));
 
     expect(updatedGames.has('nSZTnbgacm')).toBe(false);
-    expect(res).toEqual({
-      msg: `Dinosaur Island has been removed from your collection.`,
-    });
+    expect(res).toEqual('deleted');
   });
 });
