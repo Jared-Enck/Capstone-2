@@ -1,13 +1,11 @@
-import React, { useContext, lazy } from 'react';
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Stack, Divider, Typography } from '@mui/material';
 import styled from '@emotion/styled';
 import DataContext from '../../context/DataContext';
 import CircularLoading from '../common/CircularLoading';
-
-const SearchBoxSectionComp = lazy(() => import('./SearchBoxSection'));
-
-const GamesListComp = lazy(() => import('./GamesList'));
+import GamesList from './GamesList';
+import SearchBoxSection from './SearchBoxSection';
 
 const StyledBox = styled(Box)(({ theme }) => ({
   marginTop: '.3rem',
@@ -59,37 +57,43 @@ export default function SearchBoxResults({ results, clearBoxResults }) {
 
   return (
     <StyledBox sx={{ boxShadow: 2 }}>
-      <Stack>
-        {mechanics.length ? (
-          <SearchBoxSectionComp
-            sectionName={'Mechanics'}
-            items={mechanics}
-            handleClick={handleBtnClick}
-          />
-        ) : null}
-        {categories.length ? (
-          <SearchBoxSectionComp
-            sectionName={'Categories'}
-            items={categories}
-            handleClick={handleBtnClick}
-          />
-        ) : null}
-        {mechanics.length || categories.length ? (
-          <Divider sx={{ color: 'primary.muted' }} />
-        ) : null}
-        {isLoading ? (
-          <Box padding={1}>
-            <CircularLoading />
-          </Box>
-        ) : games.length ? (
-          <GamesListComp
-            games={games.slice(0, 10)}
-            handleGameClick={handleGameClick}
-          />
-        ) : (
-          <NoGamesFound />
-        )}
-      </Stack>
+      {results ? (
+        <Stack>
+          {mechanics.length ? (
+            <SearchBoxSection
+              sectionName={'Mechanics'}
+              items={mechanics}
+              handleClick={handleBtnClick}
+            />
+          ) : null}
+          {categories.length ? (
+            <SearchBoxSection
+              sectionName={'Categories'}
+              items={categories}
+              handleClick={handleBtnClick}
+            />
+          ) : null}
+          {mechanics.length || categories.length ? (
+            <Divider sx={{ color: 'primary.muted' }} />
+          ) : null}
+          {isLoading ? (
+            <Box padding={1}>
+              <CircularLoading />
+            </Box>
+          ) : games.length ? (
+            <GamesList
+              games={games.slice(0, 10)}
+              handleGameClick={handleGameClick}
+            />
+          ) : (
+            <NoGamesFound />
+          )}
+        </Stack>
+      ) : (
+        <Box padding={1}>
+          <CircularLoading />
+        </Box>
+      )}
     </StyledBox>
   );
 }

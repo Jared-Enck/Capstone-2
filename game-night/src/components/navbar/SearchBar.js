@@ -1,10 +1,9 @@
-import React, { useContext, lazy } from 'react';
+import React, { useContext } from 'react';
 import DataContext from '../../context/DataContext';
 import SearchIcon from '@mui/icons-material/Search';
 import { InputBase, Collapse, alpha, ClickAwayListener } from '@mui/material';
 import styled from '@emotion/styled';
-
-const SearchBoxResultsComp = lazy(() => import('./SearchBoxResults'));
+import SearchBoxResults from './SearchBoxResults';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -65,7 +64,7 @@ export default function SearchBar() {
   const clearBoxResults = () => {
     setOpen(false);
     setSearchTerm('');
-    setBoxResults({});
+    setBoxResults('');
   };
 
   const handleClickAway = () => {
@@ -75,7 +74,7 @@ export default function SearchBar() {
   const handleChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
-    setBoxResults({});
+    setBoxResults('');
     debouncedRequest();
   };
 
@@ -96,7 +95,7 @@ export default function SearchBar() {
       {Object.keys(boxResults).length ? (
         <ClickAwayListener onClickAway={handleClickAway}>
           <Collapse in={open}>
-            <SearchBoxResultsComp
+            <SearchBoxResults
               results={boxResults}
               clearBoxResults={clearBoxResults}
             />
