@@ -8,7 +8,7 @@ export default function DataProvider({ children }) {
   const [errors, setErrors] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [boxResults, setBoxResults] = useState({});
+  const [boxResults, setBoxResults] = useState('');
   const [searchResults, setSearchResults] = useState({ pages: {} });
   const [resultsHeader, setResultsHeader] = useState('');
   const [game, setGame] = useState('');
