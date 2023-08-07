@@ -137,9 +137,9 @@ class User {
    * all the fields; this only changes provided ones.
    *
    * Data can include:
-   *   { username, password, email }
+   *   { username, password, email, imageURL }
    *
-   * Returns { username, email }
+   * Returns { username, email, imageURL }
    *
    * Throws NotFoundError if not found.
    */
