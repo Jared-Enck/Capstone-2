@@ -1,24 +1,16 @@
 import React, { useContext, useEffect } from 'react';
-import {
-  Box,
-  Grid,
-  Modal,
-  Stack,
-  Typography,
-  Button,
-  Avatar,
-} from '@mui/material';
-import { PhotoCamera } from '@mui/icons-material';
+import { Box, Modal, Stack, Typography, FormControl } from '@mui/material';
 import styled from '@emotion/styled';
 import {
   FormBox,
+  FormTextField,
   PrimaryButton,
   CancelButton,
   ErrorSpan,
 } from '../common/styled';
 import useFields from '../../hooks/useFields';
 import UserContext from '../../context/UserContext';
-import FormInput from '../common/FormInput';
+import EditAvatar from './EditAvatar';
 
 const StyledBox = styled(Box)(({ theme }) => ({
   width: '800px',
@@ -27,10 +19,6 @@ const StyledBox = styled(Box)(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
   margin: 'auto',
 }));
-
-const genError = (err, idx) => {
-  return <ErrorSpan key={idx}>{err}</ErrorSpan>;
-};
 
 export default function EditProfile({ open, setOpen, username }) {
   const { updateUser, userData } = useContext(UserContext);
@@ -119,67 +107,34 @@ export default function EditProfile({ open, setOpen, username }) {
             >
               Edit Profile
             </Typography>
-            <Grid
-              container
-              direction={'row'}
-              justifyContent={'space-between'}
-            >
-              <Grid item>
-                <Avatar
-                  src={formData.imageURL}
-                  sx={{
-                    width: 120,
-                    height: 120,
-                  }}
-                />
-              </Grid>
-              <Grid
-                item
-                sx={{ display: 'flex' }}
-              >
-                <Box sx={{ marginTop: 'auto' }}>
-                  <label htmlFor='imageURL'>
-                    <Button
-                      variant='contained'
-                      component='span'
-                      className='main-button'
-                      sx={{
-                        bgcolor: 'primary.light',
-                        '&:hover': {
-                          bgcolor: 'primary.contrastText',
-                          color: 'primary.main',
-                        },
-                      }}
-                    >
-                      <PhotoCamera
-                        fontSize='small'
-                        sx={{ marginRight: 1 }}
-                      />
-                      Upload Image
-                    </Button>
-                    <input
-                      id='imageURL'
-                      accept='image/*'
-                      type='file'
-                      hidden
-                      onChange={handleFileUpload}
-                    />
-                  </label>
-                </Box>
-              </Grid>
-            </Grid>
 
-            {['username', 'email'].map((i) => (
-              <FormInput
-                key={i}
-                name={i}
-                formData={formData}
-                handleChange={handleChange}
-              />
-            ))}
+            <EditAvatar
+              imageURL={formData.imageURL}
+              handleFileUpload={handleFileUpload}
+            />
+
+            {['username', 'email'].map((name) => {
+              const firstLetter = name[0].toUpperCase();
+              const label = firstLetter.concat(name.slice(1));
+
+              return (
+                <FormControl
+                  key={name}
+                  variant='outlined'
+                >
+                  <FormTextField
+                    label={label}
+                    type={'text'}
+                    name={name}
+                    value={formData[name]}
+                    onChange={handleChange}
+                  />
+                </FormControl>
+              );
+            })}
 
             {formErrors.length
-              ? formErrors.map((e, idx) => genError(e, idx))
+              ? formErrors.map((e, idx) => <ErrorSpan key={idx}>{e}</ErrorSpan>)
               : null}
             <Stack
               direction={'row'}
