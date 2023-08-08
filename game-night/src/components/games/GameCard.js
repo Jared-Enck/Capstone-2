@@ -8,7 +8,6 @@ import {
   Typography,
   Grid,
   IconButton,
-  easing,
 } from '@mui/material';
 import styled from '@emotion/styled';
 import PlayersAndDuration from '../common/PlayersAndDuration';

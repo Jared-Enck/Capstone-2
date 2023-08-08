@@ -29,10 +29,6 @@ export default function SettingsList() {
     setOpen(false);
   };
 
-  const handleChangePassword = () => {
-    console.log('change password?');
-  };
-
   return (
     <Stack
       spacing={3}

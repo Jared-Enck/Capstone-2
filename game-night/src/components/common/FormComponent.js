@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import UserContext from '../../context/UserContext';
 import { FormControl, Stack, Typography, Box } from '@mui/material';
 import { FormBox, FormTextField, ErrorSpan } from '../common/styled';
@@ -16,7 +16,7 @@ export default function FormComponent({
   submitFunc,
 }) {
   const [showPassword, setShowPassword] = useState(false);
-  const { currentUser, navigate } = useContext(UserContext);
+  const { navigate } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
 
   const inputType = showPassword ? 'text' : 'password';
