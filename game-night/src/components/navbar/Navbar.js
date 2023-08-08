@@ -34,7 +34,7 @@ export default function Navbar() {
       >
         <StyledGrid container>
           <Link to='/'>
-            <Brand>Game Night</Brand>
+            <Brand>GameNight</Brand>
           </Link>
 
           <SearchBar />
