@@ -44,7 +44,7 @@ export default function UserAccountMenu() {
   return (
     <Grid
       item
-      sx={{ marginRight: '89px' }}
+      sx={{ marginRight: '121px' }}
     >
       <IconButton
         onClick={handleClick}
