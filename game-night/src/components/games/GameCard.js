@@ -8,11 +8,23 @@ import {
   Typography,
   Grid,
   IconButton,
+  easing,
 } from '@mui/material';
+import styled from '@emotion/styled';
 import PlayersAndDuration from '../common/PlayersAndDuration';
 import { Favorite, FavoriteBorder, Delete } from '@mui/icons-material';
 import DataContext from '../../context/DataContext';
 import UserContext from '../../context/UserContext';
+
+const StyledCard = styled(Card)(({ theme }) => ({
+  transition: theme.transitions.create(['transform', 'boxShadow'], {
+    duration: 250,
+  }),
+  '&:hover': {
+    transform: 'scale(1.02)',
+    boxShadow: theme.shadows[4],
+  },
+}));
 
 export default function GameCard({ game, onProfilePage }) {
   const { setGame, addGame, removeGame } = useContext(DataContext);
@@ -59,7 +71,7 @@ export default function GameCard({ game, onProfilePage }) {
   );
 
   return (
-    <Card
+    <StyledCard
       sx={{
         width: 345,
         backgroundColor: 'primary.light',
@@ -108,6 +120,6 @@ export default function GameCard({ game, onProfilePage }) {
           {!onProfilePage ? quickAddBtn : trashBtn}
         </CardActions>
       ) : null}
-    </Card>
+    </StyledCard>
   );
 }
