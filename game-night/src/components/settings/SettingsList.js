@@ -51,20 +51,7 @@ export default function SettingsList() {
           }}
         />
       </ListItem>
-      <ListItem>
-        <Link onClick={handleChangePassword}>
-          <Typography
-            sx={{
-              color: 'primary.text',
-              '&:hover': {
-                color: 'primary.contrastText',
-              },
-            }}
-          >
-            Change Password
-          </Typography>
-        </Link>
-      </ListItem>
+
       <ListItem>
         <Link onClick={handleDeleteClick}>
           <Typography

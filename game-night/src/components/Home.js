@@ -4,24 +4,28 @@ import ContentContainer from './common/ContentContainer';
 
 export default function Home() {
   return (
-    <Stack>
-      <ContentContainer>
+    <Stack sx={{ paddingTop: 10 }}>
+      <ContentContainer shadow={2}>
         <Box
           sx={{
             color: 'primary.text',
             fontSize: '1.2rem',
             width: 800,
             margin: 'auto',
+            textShadow: '1px 1px 1px rgba(0,0,0,.2)',
           }}
         >
           <Typography
             variant='h5'
             gutterBottom
+            sx={{
+              color: 'primary.contrastText',
+            }}
           >
             Welcome to GameNight!
           </Typography>
           <p>
-            You can browse an extensive library of games by searching for game
+            You can browse an extensive library of games by searching for
             titles, mechanics, or categories.
           </p>
           <p>

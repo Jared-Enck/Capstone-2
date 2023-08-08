@@ -8,9 +8,9 @@ import SearchBoxResults from './SearchBoxResults';
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.primary.light, 0.5),
+  backgroundColor: alpha(theme.palette.primary.muted, 0.3),
   '&:hover': {
-    backgroundColor: alpha(theme.palette.primary.light, 0.7),
+    backgroundColor: alpha(theme.palette.primary.muted, 0.4),
   },
 }));
 
@@ -80,7 +80,7 @@ export default function SearchBar() {
       <StyledInputBase
         id='search'
         name='search'
-        placeholder='Search games by name, mechanic, or category...'
+        placeholder='Search games by title, mechanic, or category...'
         inputProps={{ 'aria-label': 'search' }}
         onChange={handleChange}
         value={searchTerm}
