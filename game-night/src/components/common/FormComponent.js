@@ -1,11 +1,13 @@
 import React, { useState, useContext } from 'react';
+import { Link, Navigate } from 'react-router-dom';
 import UserContext from '../../context/UserContext';
-import { FormControl, Stack, Typography } from '@mui/material';
+import { FormControl, Stack, Typography, Box } from '@mui/material';
 import { FormBox, FormTextField, ErrorSpan } from '../common/styled';
 import ContentContainer from '../common/ContentContainer';
 import PasswordAdornment from './PasswordAdornment';
 import { PrimaryButton } from '../common/styled';
 import useFields from '../../hooks/useFields';
+import CircularLoading from '../common/CircularLoading';
 
 export default function FormComponent({
   header,
@@ -14,7 +16,8 @@ export default function FormComponent({
   submitFunc,
 }) {
   const [showPassword, setShowPassword] = useState(false);
-  const { navigate } = useContext(UserContext);
+  const { currentUser, navigate } = useContext(UserContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   const inputType = showPassword ? 'text' : 'password';
 
@@ -25,17 +28,20 @@ export default function FormComponent({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const result = await submitFunc(formData);
     if (result.msg === 'success') {
+      setIsLoading(false);
       navigate('/');
     } else {
       setFormErrors(result.msg);
+      setIsLoading(false);
     }
   };
 
   return (
-    <Stack>
-      <ContentContainer>
+    <Stack sx={{ paddingTop: 10 }}>
+      <ContentContainer shadow={2}>
         <FormBox
           component='form'
           onSubmit={handleSubmit}
@@ -74,6 +80,7 @@ export default function FormComponent({
                           />
                         ) : null,
                     }}
+                    required
                   />
                 </FormControl>
               );
@@ -83,12 +90,32 @@ export default function FormComponent({
               ? formErrors.map((e, idx) => <ErrorSpan key={idx}>{e}</ErrorSpan>)
               : null}
 
+            {inputs.length < 3 ? (
+              <Typography sx={{ textAlign: 'center', color: 'primary.text' }}>
+                Don't have an account yet? Sign in
+                <Link to={'/signup'}> here.</Link>
+              </Typography>
+            ) : null}
+
             <PrimaryButton
               variant='contained'
               type='submit'
               className='main-button'
             >
               Submit
+              {isLoading ? (
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    right: 20,
+                  }}
+                >
+                  <CircularLoading
+                    size='1.3rem'
+                    color='primary.light'
+                  />
+                </Box>
+              ) : null}
             </PrimaryButton>
           </Stack>
         </FormBox>
