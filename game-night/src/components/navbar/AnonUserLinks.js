@@ -15,35 +15,46 @@ export default function AnonUserLinks() {
   };
 
   return (
-    <>
+    <Grid
+      item
+      sx={{ marginLeft: '3px' }}
+    >
       <Grid
-        item
-        marginRight={1}
+        container
+        direction='row'
+        alignItems='center'
+        justifyContent='flex-end'
+        height='100%'
       >
-        <PrimaryButton
-          size='small'
-          className='main-button'
-          onClick={handleLoginClick}
+        <Grid
+          item
+          marginRight={1}
         >
-          Login
-        </PrimaryButton>
+          <PrimaryButton
+            size='small'
+            className='main-button'
+            onClick={handleLoginClick}
+          >
+            Login
+          </PrimaryButton>
+        </Grid>
+        <Grid item>
+          <Button
+            size='small'
+            variant='text'
+            className='main-button'
+            sx={{
+              color: 'primary.muted',
+              '&:hover': {
+                color: 'primary.contrastText',
+              },
+            }}
+            onClick={handleSignUpClick}
+          >
+            Sign Up
+          </Button>
+        </Grid>
       </Grid>
-      <Grid item>
-        <Button
-          size='small'
-          variant='text'
-          className='main-button'
-          sx={{
-            color: 'primary.muted',
-            '&:hover': {
-              color: 'primary.contrastText',
-            },
-          }}
-          onClick={handleSignUpClick}
-        >
-          Sign Up
-        </Button>
-      </Grid>
-    </>
+    </Grid>
   );
 }

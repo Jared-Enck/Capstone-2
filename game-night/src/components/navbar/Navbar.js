@@ -39,17 +39,7 @@ export default function Navbar() {
 
           <SearchBar />
 
-          <Grid item>
-            <Grid
-              container
-              direction='row'
-              alignItems='center'
-              justifyContent='flex-end'
-              height='100%'
-            >
-              {currentUser ? <UserAccountMenu /> : <AnonUserLinks />}
-            </Grid>
-          </Grid>
+          {currentUser ? <UserAccountMenu /> : <AnonUserLinks />}
         </StyledGrid>
       </Container>
     </AppBar>

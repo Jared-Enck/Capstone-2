@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import {
+  Grid,
   IconButton,
   Drawer,
   MenuItem,
@@ -41,7 +42,10 @@ export default function UserAccountMenu() {
   };
 
   return (
-    <>
+    <Grid
+      item
+      sx={{ marginRight: '89px' }}
+    >
       <IconButton
         onClick={handleClick}
         size='small'
@@ -90,6 +94,6 @@ export default function UserAccountMenu() {
           Logout
         </MenuItem>
       </StyledDrawer>
-    </>
+    </Grid>
   );
 }
