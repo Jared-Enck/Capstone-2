@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { ErrorSpan } from '../common/styled';
+import { ErrorSpan } from '../styled';
 import useFields from '../../hooks/useFields';
 import UserContext from '../../context/UserContext';
 import {
@@ -15,22 +15,19 @@ import {
 } from '@mui/material';
 import CircularLoading from '../common/CircularLoading';
 import styled from '@emotion/styled';
-import { CancelButton, DeleteButton } from '../common/styled';
+import { CancelButton, DeleteButton } from '../styled';
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
   '& .MuiInputBase-root': {
     color: theme.palette.primary.text,
   },
   '& .MuiInput-underline:after': {
-    borderBottomColor: theme.palette.primary.contrastText,
+    borderBottomColor: theme.palette.secondary.main,
   },
 }));
 
 export default function DeleteDialog({ open, handleCloseDialog }) {
   const [isLoading, setIsLoading] = useState(false);
-  const genError = (err, idx) => {
-    return <ErrorSpan key={idx}>{err}</ErrorSpan>;
-  };
 
   const { deleteUser, logout } = useContext(UserContext);
 
@@ -69,11 +66,11 @@ export default function DeleteDialog({ open, handleCloseDialog }) {
       onClose={handleCloseDialog}
       sx={{
         '& .MuiPaper-root': {
-          bgcolor: 'primary.light',
+          bgcolor: 'primary.dark',
         },
       }}
     >
-      <DialogTitle sx={{ color: 'primary.contrastText' }}>
+      <DialogTitle sx={{ color: 'secondary.main' }}>
         Delete Account?
       </DialogTitle>
       <DialogContent>
@@ -91,7 +88,7 @@ export default function DeleteDialog({ open, handleCloseDialog }) {
             onChange={handleChange}
           />
           {formErrors.length
-            ? formErrors.map((e, idx) => genError(e, idx))
+            ? formErrors.map((e, idx) => <ErrorSpan key={idx}>{e}</ErrorSpan>)
             : null}
         </Stack>
       </DialogContent>

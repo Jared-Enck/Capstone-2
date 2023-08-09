@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import UserContext from '../../context/UserContext';
-import { PrimaryButton } from '../common/styled';
+import { PrimaryButton } from '../styled';
 import { Grid, Button } from '@mui/material';
 
 export default function AnonUserLinks() {
@@ -46,7 +46,7 @@ export default function AnonUserLinks() {
             sx={{
               color: 'primary.muted',
               '&:hover': {
-                color: 'primary.contrastText',
+                color: 'secondary.main',
               },
             }}
             onClick={handleSignUpClick}

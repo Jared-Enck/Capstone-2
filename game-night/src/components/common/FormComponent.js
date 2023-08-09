@@ -2,10 +2,10 @@ import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import UserContext from '../../context/UserContext';
 import { FormControl, Stack, Typography, Box } from '@mui/material';
-import { FormBox, FormTextField, ErrorSpan } from '../common/styled';
+import { FormBox, FormTextField, ErrorSpan } from '../styled';
 import ContentContainer from '../common/ContentContainer';
 import PasswordAdornment from './PasswordAdornment';
-import { PrimaryButton } from '../common/styled';
+import { PrimaryButton } from '../styled';
 import useFields from '../../hooks/useFields';
 import CircularLoading from '../common/CircularLoading';
 
@@ -41,7 +41,11 @@ export default function FormComponent({
 
   return (
     <Stack sx={{ paddingTop: 10 }}>
-      <ContentContainer shadow={2}>
+      <ContentContainer
+        shadow={2}
+        alphaScale={0.2}
+        blur
+      >
         <FormBox
           component='form'
           onSubmit={handleSubmit}
@@ -50,7 +54,7 @@ export default function FormComponent({
           <Stack spacing={2}>
             <Typography
               variant='h5'
-              sx={{ color: 'primary.muted' }}
+              sx={{ color: 'primary.text' }}
             >
               {header}
             </Typography>
@@ -90,7 +94,7 @@ export default function FormComponent({
               ? formErrors.map((e, idx) => <ErrorSpan key={idx}>{e}</ErrorSpan>)
               : null}
 
-            {inputs.length < 3 ? (
+            {header === 'Login' ? (
               <Typography sx={{ textAlign: 'center', color: 'primary.text' }}>
                 Don't have an account yet? Sign in
                 <Link to={'/signup'}> here.</Link>
@@ -112,7 +116,7 @@ export default function FormComponent({
                 >
                   <CircularLoading
                     size='1.3rem'
-                    color='primary.light'
+                    color='primary.dark'
                   />
                 </Box>
               ) : null}

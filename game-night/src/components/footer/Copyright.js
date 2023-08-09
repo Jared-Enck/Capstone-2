@@ -14,7 +14,7 @@ export default function Copyright() {
         color='inherit'
         to='/'
       >
-        Game Night
+        GameNight
       </Link>{' '}
       {new Date().getFullYear()}.
     </Typography>

@@ -10,7 +10,7 @@ import SearchBoxSection from './SearchBoxSection';
 const StyledBox = styled(Box)(({ theme }) => ({
   marginTop: '.3rem',
   width: '100%',
-  backgroundColor: theme.palette.primary.light,
+  backgroundColor: theme.palette.primary.dark,
   borderRadius: theme.shape.borderRadius,
   border: '1px solid black',
   position: 'absolute',

@@ -16,12 +16,9 @@ import DataContext from '../../context/DataContext';
 import UserContext from '../../context/UserContext';
 
 const StyledCard = styled(Card)(({ theme }) => ({
-  transition: theme.transitions.create(['transform', 'boxShadow'], {
-    duration: 250,
-  }),
+  transition: 'all 250ms',
   '&:hover': {
     transform: 'scale(1.02)',
-    boxShadow: theme.shadows[4],
   },
 }));
 
@@ -48,7 +45,7 @@ export default function GameCard({ game, onProfilePage }) {
   const quickAddBtn = (
     <IconButton
       aria-label='add to collection'
-      sx={{ color: 'primary.contrastText', marginLeft: 'auto' }}
+      sx={{ color: 'secondary.main', marginLeft: 'auto' }}
       onClick={handleQuickAddClick}
     >
       {inCollection ? <Favorite /> : <FavoriteBorder />}
@@ -73,7 +70,7 @@ export default function GameCard({ game, onProfilePage }) {
     <StyledCard
       sx={{
         width: 345,
-        backgroundColor: 'primary.light',
+        backgroundColor: 'primary.dark',
       }}
     >
       <CardActionArea onClick={handleCardClick}>
@@ -86,7 +83,7 @@ export default function GameCard({ game, onProfilePage }) {
           image={game.images.large || game.image_url}
           alt={game.name}
         />
-        <CardContent sx={{ color: 'primary.contrastText' }}>
+        <CardContent sx={{ color: 'secondary.main' }}>
           <Typography
             textAlign={'center'}
             gutterBottom

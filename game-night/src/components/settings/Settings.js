@@ -8,7 +8,7 @@ import {
 import { ExpandMore } from '@mui/icons-material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import SettingsList from '../settings/SettingsList';
-import { StyledIcon } from '../common/styled';
+import { StyledIcon } from '../styled';
 
 export default function Settings() {
   return (
@@ -17,7 +17,7 @@ export default function Settings() {
         border: 'none',
         boxShadow: 'none',
         '&: hover': {
-          backgroundColor: alpha('rgb(0,0,0)', 0.05),
+          backgroundColor: alpha('rgb(0,0,0)', 0.03),
         },
       }}
     >

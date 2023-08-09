@@ -5,22 +5,23 @@ import ContentContainer from './common/ContentContainer';
 export default function Home() {
   return (
     <Stack sx={{ paddingTop: 10 }}>
-      <ContentContainer shadow={2}>
+      <ContentContainer
+        shadow={2}
+        alphaScale={0.3}
+        blur
+      >
         <Box
           sx={{
             color: 'primary.text',
             fontSize: '1.2rem',
             width: 800,
             margin: 'auto',
-            textShadow: '1px 1px 1px rgba(0,0,0,.2)',
+            textShadow: '2px 1px 1px rgba(0,0,0,.2)',
           }}
         >
           <Typography
             variant='h5'
             gutterBottom
-            sx={{
-              color: 'primary.contrastText',
-            }}
           >
             Welcome to GameNight!
           </Typography>

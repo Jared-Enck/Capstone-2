@@ -14,7 +14,7 @@ const StyledRow = styled(TableRow)(({ theme }) => ({
     border: 0,
   },
   '&:nth-of-type(odd)': {
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: theme.palette.primary.dark,
   },
 }));
 
@@ -27,34 +27,24 @@ export default function GameDetails({ game }) {
       MechanicsComps = game.mechanics.map((m, idx) => (
         <DetailListItem
           key={idx}
-          name={m.name}
+          param={'mechanics'}
+          item={m}
           lastItem={game.mechanics.length - 1 === idx}
         />
       ));
-    } else {
-      MechanicsComps = (
-        <DetailListItem
-          name={'N/A'}
-          lastItem={true}
-        />
-      );
     }
+
     if (game.categories.length) {
       CategoriesComps = game.categories.map((c, idx) => (
         <DetailListItem
           key={idx}
-          name={c.name}
+          param={'categories'}
+          item={c}
           lastItem={game.categories.length - 1 === idx}
         />
       ));
-    } else {
-      CategoriesComps = (
-        <DetailListItem
-          name={'N/A'}
-          lastItem={true}
-        />
-      );
     }
+
     const year = game.year_published ? game.year_published : 'N/A';
     const publisher = game.primary_publisher
       ? game.primary_publisher.name
@@ -97,8 +87,7 @@ export default function GameDetails({ game }) {
                     sx={{
                       width: '40ch',
                       color: 'primary.text',
-                      fontWeight: 'bold',
-                      fontSize: '1.1rem',
+                      fontSize: '1.2rem',
                     }}
                   >
                     {row.name}

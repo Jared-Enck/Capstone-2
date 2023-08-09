@@ -1,18 +1,27 @@
 import '@fontsource/roboto/400.css';
 import { createTheme } from '@mui/material/styles';
-import { green, lightBlue, grey, red, common } from '@mui/material/colors';
+import {
+  green,
+  lightBlue,
+  blue,
+  grey,
+  red,
+  common,
+} from '@mui/material/colors';
 
 export const themeLight = createTheme({
   palette: {
-    background: {
-      default: grey[300],
-    },
     primary: {
-      main: common.white,
-      light: grey[100],
+      light: common.white,
+      main: '#faf9f6',
+      dark: grey[300],
       text: grey[800],
       muted: grey[500],
-      contrastText: lightBlue[400],
+    },
+    secondary: {
+      light: blue[300],
+      main: blue[500],
+      dark: blue[700],
     },
     success: {
       main: green[500],
@@ -24,19 +33,35 @@ export const themeLight = createTheme({
   shape: {
     borderRadius: 6,
   },
+  components: {
+    MuiSwitch: {
+      styleOverrides: {
+        switchBase: {
+          // Controls default (unchecked) color for the thumb
+          color: blue[500],
+        },
+        track: {
+          // Controls default (unchecked) color for the track
+          opacity: 0.2,
+          backgroundColor: grey[500],
+        },
+      },
+    },
+  },
 });
 
 export const themeDark = createTheme({
   palette: {
-    background: {
-      default: common.black,
-    },
     primary: {
+      light: grey[600],
       main: grey[900],
-      light: grey[800],
+      dark: grey[800],
       text: grey[200],
       muted: grey[500],
-      contrastText: lightBlue[50],
+    },
+    secondary: {
+      main: lightBlue[50],
+      dark: lightBlue[100],
     },
     success: {
       main: green['A400'],
@@ -47,5 +72,24 @@ export const themeDark = createTheme({
   },
   shape: {
     borderRadius: 6,
+  },
+  components: {
+    MuiSwitch: {
+      styleOverrides: {
+        colorPrimary: {
+          '&.Mui-checked': {
+            // Controls checked color for the thumb
+            color: lightBlue[50],
+          },
+        },
+        track: {
+          '.Mui-checked.Mui-checked + &': {
+            // Controls checked color for the track
+            opacity: 0.7,
+            backgroundColor: grey[800],
+          },
+        },
+      },
+    },
   },
 });

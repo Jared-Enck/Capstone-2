@@ -12,12 +12,12 @@ import { Logout, Person } from '@mui/icons-material';
 import MenuIcon from '@mui/icons-material/Menu';
 import UserContext from '../../context/UserContext';
 import Settings from '../settings/Settings';
-import { StyledIcon } from '../common/styled';
+import { StyledIcon } from '../styled';
 
 const StyledDrawer = styled(Drawer)(({ theme }) => ({
   '& .MuiPaper-root': {
     width: '30ch',
-    backgroundColor: theme.palette.primary.light,
+    backgroundColor: theme.palette.primary.main,
     color: theme.palette.primary.text,
   },
 }));
@@ -61,7 +61,7 @@ export default function UserAccountMenu() {
             height: 40,
             color: 'primary.muted',
             '&: hover': {
-              color: 'primary.contrastText',
+              color: 'secondary.main',
             },
           }}
         />

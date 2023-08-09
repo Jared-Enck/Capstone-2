@@ -10,9 +10,9 @@ const SearchBoxButton = styled(Button)(({ theme }) => ({
   fontSize: '.7rem',
   padding: '.5rem',
   '&:hover': {
-    backgroundColor: theme.palette.primary.contrastText,
+    backgroundColor: theme.palette.secondary.main,
     color: theme.palette.primary.main,
-    borderColor: theme.palette.primary.contrastText,
+    borderColor: theme.palette.secondary.main,
   },
 }));
 
@@ -23,7 +23,7 @@ export default function SearchBoxSection({ sectionName, items, handleClick }) {
         sx={{
           marginLeft: '.3rem',
           textAlign: 'left',
-          color: 'primary.contrastText',
+          color: 'secondary.main',
         }}
       >
         {sectionName}

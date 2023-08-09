@@ -38,7 +38,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
       width: '50ch',
     },
     '&:focus': {
-      border: `.1rem solid ${theme.palette.primary.contrastText}`,
+      border: `.1rem solid ${theme.palette.secondary.main}`,
       borderRadius: theme.shape.borderRadius,
     },
   },

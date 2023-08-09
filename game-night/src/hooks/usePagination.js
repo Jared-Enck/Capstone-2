@@ -7,9 +7,11 @@ export default function usePagination(count, itemsOnPage) {
   useEffect(() => {
     if (count) {
       const initialPages = count / itemsOnPage;
-      setPageCount(
-        initialPages % 1 === 0 ? initialPages : Math.ceil(initialPages)
-      );
+      if (initialPages > 34) setPageCount(34);
+      else
+        setPageCount(
+          initialPages % 1 === 0 ? initialPages : Math.ceil(initialPages)
+        );
     }
   }, [count, itemsOnPage]);
 

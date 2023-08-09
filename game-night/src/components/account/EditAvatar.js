@@ -29,9 +29,9 @@ export default function EditAvatar({ imageURL, handleFileUpload }) {
               component='span'
               className='main-button'
               sx={{
-                bgcolor: 'primary.light',
+                bgcolor: 'primary.dark',
                 '&:hover': {
-                  bgcolor: 'primary.contrastText',
+                  bgcolor: 'secondary.main',
                   color: 'primary.main',
                 },
               }}

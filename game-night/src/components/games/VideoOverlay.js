@@ -18,7 +18,7 @@ export default function VideoOverlay({ title }) {
       <StyledBox>
         <Typography
           sx={{
-            color: 'primary.contrastText',
+            color: 'secondary.main',
             textShadow: '2px 1px 1px solid black',
           }}
           variant='h5'

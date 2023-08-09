@@ -35,7 +35,7 @@ export default function SettingsList() {
       paddingLeft={2}
     >
       <ListItem>
-        <ListItemIcon sx={{ color: 'primary.contrastText' }}>
+        <ListItemIcon sx={{ color: 'secondary.main' }}>
           {isDark ? <DarkMode /> : <LightMode />}
         </ListItemIcon>
         <Switch
@@ -43,7 +43,6 @@ export default function SettingsList() {
           onChange={handleToggle}
           sx={{
             marginLeft: 'auto',
-            color: 'primary',
           }}
         />
       </ListItem>

@@ -13,8 +13,7 @@ import { Edit } from '@mui/icons-material';
 import ContentContainer from '../common/ContentContainer';
 import ProfileSkeleton from './ProfileSkeleton';
 import CollectionSkeleton from '../games/CollectionSkeleton';
-
-const EditProfileModal = lazy(() => import('./EditProfile'));
+import EditProfile from './EditProfile';
 
 const CollectionComp = lazy(() => import('../games/Collection'));
 
@@ -47,7 +46,7 @@ export default function Profile({ itemsOnPage }) {
         >
           {userData ? (
             <>
-              <EditProfileModal
+              <EditProfile
                 open={open}
                 setOpen={setOpen}
                 username={username}
@@ -61,7 +60,7 @@ export default function Profile({ itemsOnPage }) {
               <Grid item>
                 <Typography
                   variant='h5'
-                  color={'primary.contrastText'}
+                  color={'secondary.main'}
                 >
                   {userData.username}
                 </Typography>
@@ -77,7 +76,7 @@ export default function Profile({ itemsOnPage }) {
                   <Edit
                     fontSize='medium'
                     sx={{
-                      color: 'primary.contrastText',
+                      color: 'secondary.main',
                       marginLeft: 2,
                     }}
                   />
@@ -91,7 +90,7 @@ export default function Profile({ itemsOnPage }) {
             item
             xs={12}
           >
-            <Divider />
+            <Divider sx={{ color: 'primary.dark' }} />
           </Grid>
         </Grid>
         <Suspense fallback={<CollectionSkeleton itemsOnPage={itemsOnPage} />}>

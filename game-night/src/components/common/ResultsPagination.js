@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pagination } from '@mui/material';
+import { Pagination, alpha } from '@mui/material';
 import styled from '@emotion/styled';
 
 const StyledPagination = styled(Pagination)(({ theme }) => ({
@@ -11,16 +11,15 @@ const StyledPagination = styled(Pagination)(({ theme }) => ({
   },
   '& .MuiPaginationItem-root.Mui-selected': {
     color: theme.palette.primary.main,
-    backgroundColor: theme.palette.primary.contrastText,
+    backgroundColor: theme.palette.secondary.main,
     '&:hover': {
       color: theme.palette.primary.main,
-      backgroundColor: theme.palette.primary.contrastText,
+      backgroundColor: theme.palette.secondary.dark,
     },
   },
   '& .MuiButtonBase-root': {
     '&:hover': {
-      color: theme.palette.primary.text,
-      backgroundColor: theme.palette.primary.light,
+      backgroundColor: alpha(`${theme.palette.primary.dark}`, 0.6),
     },
   },
 }));

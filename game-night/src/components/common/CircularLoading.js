@@ -3,7 +3,7 @@ import { CircularProgress, Box } from '@mui/material';
 
 export default function CircularLoading({
   size = '2rem',
-  color = 'primary.contrastText',
+  color = 'secondary.main',
 }) {
   return (
     <Box

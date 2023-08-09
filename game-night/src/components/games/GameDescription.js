@@ -17,9 +17,9 @@ import ContentContainer from '../common/ContentContainer';
 import CircularLoading from '../common/CircularLoading';
 
 const AddButton = styled(Button)(({ theme }) => ({
-  color: theme.palette.primary.contrastText,
+  color: theme.palette.secondary.main,
   '&:hover': {
-    backgroundColor: theme.palette.primary.contrastText,
+    backgroundColor: theme.palette.secondary.main,
     color: theme.palette.primary.main,
   },
 }));
@@ -59,7 +59,7 @@ export default function GameDescription({ game }) {
       {isLoading ? (
         <CircularLoading
           size='1rem'
-          color='primary.light'
+          color='primary.dark'
         />
       ) : (
         <Box width={'1rem'} />
@@ -82,7 +82,7 @@ export default function GameDescription({ game }) {
         <Typography
           variant={'h4'}
           sx={{
-            color: 'primary.contrastText',
+            color: 'secondary.main',
             flex: 1,
           }}
         >
@@ -96,7 +96,7 @@ export default function GameDescription({ game }) {
       </Box>
       <Grid
         sx={{
-          color: 'primary.muted',
+          color: 'primary.text',
           padding: '.3rem',
         }}
         container
@@ -111,7 +111,7 @@ export default function GameDescription({ game }) {
           max_playtime={game.max_playtime}
         />
       </Grid>
-      <Divider sx={{ color: 'primary.muted' }} />
+      <Divider sx={{ color: 'primary.dark' }} />
       <Grid
         container
         direction={'row'}
@@ -158,9 +158,9 @@ export default function GameDescription({ game }) {
                 <Button
                   sx={{
                     height: '1.5rem',
-                    color: 'primary.contrastText',
+                    color: 'secondary.main',
                     '&:hover': {
-                      backgroundColor: 'primary.contrastText',
+                      backgroundColor: 'secondary.main',
                       color: 'primary.main',
                     },
                   }}

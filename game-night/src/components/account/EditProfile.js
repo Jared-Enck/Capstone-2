@@ -1,24 +1,21 @@
 import React, { useContext, useEffect } from 'react';
-import { Box, Modal, Stack, Typography, FormControl } from '@mui/material';
-import styled from '@emotion/styled';
 import {
-  FormBox,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Stack,
+  FormControl,
+} from '@mui/material';
+import {
   FormTextField,
   PrimaryButton,
   CancelButton,
   ErrorSpan,
-} from '../common/styled';
+} from '../styled';
 import useFields from '../../hooks/useFields';
 import UserContext from '../../context/UserContext';
 import EditAvatar from './EditAvatar';
-
-const StyledBox = styled(Box)(({ theme }) => ({
-  width: '800px',
-  height: '500px',
-  backgroundColor: theme.palette.primary.main,
-  borderRadius: theme.shape.borderRadius,
-  margin: 'auto',
-}));
 
 export default function EditProfile({ open, setOpen, username }) {
   const { updateUser, userData } = useContext(UserContext);
@@ -79,85 +76,71 @@ export default function EditProfile({ open, setOpen, username }) {
   }, [userData, setFormData]);
 
   return (
-    <Modal
+    <Dialog
       open={open}
       onClose={handleClose}
-      aria-labelledby='edit-profile'
       sx={{
-        display: 'flex',
+        '& .MuiPaper-root': {
+          bgcolor: 'primary.main',
+          width: 600,
+          padding: '0rem 4rem 1rem 4rem',
+        },
       }}
     >
-      <StyledBox
-        boxShadow={3}
-        sx={{
-          display: 'flex',
-          marginTop: '-10%vh',
-        }}
+      <DialogTitle
+        fontSize={'1.5rem'}
+        sx={{ color: 'primary.text' }}
       >
-        <FormBox
-          component='form'
-          onSubmit={handleSubmit}
-          autoComplete='off'
-          sx={{ width: '100%' }}
-        >
-          <Stack spacing={3}>
-            <Typography
-              variant='h5'
-              color={'primary.text'}
-            >
-              Edit Profile
-            </Typography>
+        Edit Profile
+      </DialogTitle>
+      <DialogContent>
+        <Stack spacing={2}>
+          <EditAvatar
+            imageURL={formData.imageURL}
+            handleFileUpload={handleFileUpload}
+          />
 
-            <EditAvatar
-              imageURL={formData.imageURL}
-              handleFileUpload={handleFileUpload}
-            />
+          {['username', 'email'].map((name) => {
+            const firstLetter = name[0].toUpperCase();
+            const label = firstLetter.concat(name.slice(1));
 
-            {['username', 'email'].map((name) => {
-              const firstLetter = name[0].toUpperCase();
-              const label = firstLetter.concat(name.slice(1));
-
-              return (
-                <FormControl
-                  key={name}
-                  variant='outlined'
-                >
-                  <FormTextField
-                    label={label}
-                    type={'text'}
-                    name={name}
-                    value={formData[name]}
-                    onChange={handleChange}
-                  />
-                </FormControl>
-              );
-            })}
-
-            {formErrors.length
-              ? formErrors.map((e, idx) => <ErrorSpan key={idx}>{e}</ErrorSpan>)
-              : null}
-            <Stack
-              direction={'row'}
-              spacing={2}
-            >
-              <CancelButton
+            return (
+              <FormControl
+                key={name}
                 variant='outlined'
-                onClick={handleClose}
-                className='main-button'
               >
-                Cancel
-              </CancelButton>
-              <PrimaryButton
-                variant='contained'
-                type='submit'
-                className='main-button'
-              >
-                Submit
-              </PrimaryButton>
-            </Stack>
-          </Stack>
-        </FormBox>
-      </StyledBox>
-    </Modal>
+                <FormTextField
+                  label={label}
+                  type={'text'}
+                  name={name}
+                  value={formData[name]}
+                  onChange={handleChange}
+                />
+              </FormControl>
+            );
+          })}
+
+          {formErrors.length
+            ? formErrors.map((e, idx) => <ErrorSpan key={idx}>{e}</ErrorSpan>)
+            : null}
+        </Stack>
+      </DialogContent>
+      <DialogActions sx={{ marginRight: 'auto', padding: '0px 0px 0px 24px' }}>
+        <CancelButton
+          variant='outlined'
+          onClick={handleClose}
+          className='main-button'
+        >
+          Cancel
+        </CancelButton>
+        <PrimaryButton
+          variant='contained'
+          onClick={handleSubmit}
+          className='main-button'
+        >
+          Submit
+        </PrimaryButton>
+      </DialogActions>
+    </Dialog>
   );
 }
