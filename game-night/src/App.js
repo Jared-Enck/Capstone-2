@@ -18,8 +18,8 @@ export default function App() {
   return (
     <Suspense fallback={<Background />}>
       <CssBaseline />
-      <Background />
       <ThemeProvider theme={isDark ? themeDark : themeLight}>
+        <Background />
         <UserProvider
           isDark={isDark}
           setDarkMode={setDarkMode}

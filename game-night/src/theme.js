@@ -37,13 +37,27 @@ export const themeLight = createTheme({
     MuiSwitch: {
       styleOverrides: {
         switchBase: {
-          // Controls default (unchecked) color for the thumb
           color: blue[500],
         },
         track: {
-          // Controls default (unchecked) color for the track
           opacity: 0.2,
           backgroundColor: grey[500],
+        },
+      },
+    },
+  },
+  overrides: {
+    MuiCssBaseline: {
+      '@global': {
+        '*::-webkit-scrollbar': {
+          width: '2rem',
+        },
+        '*::-webkit-scrollbar-track': {
+          '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.00)',
+        },
+        '*::-webkit-scrollbar-thumb': {
+          backgroundColor: 'rgba(255,0,0,1)',
+          outline: '1px solid slategrey',
         },
       },
     },
@@ -88,6 +102,22 @@ export const themeDark = createTheme({
             opacity: 0.7,
             backgroundColor: grey[800],
           },
+        },
+      },
+    },
+  },
+  overrides: {
+    MuiCssBaseline: {
+      '@global': {
+        '*::-webkit-scrollbar': {
+          width: '2rem',
+        },
+        '*::-webkit-scrollbar-track': {
+          '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.00)',
+        },
+        '*::-webkit-scrollbar-thumb': {
+          backgroundColor: 'rgba(255,0,0,1)',
+          outline: '1px solid slategrey',
         },
       },
     },

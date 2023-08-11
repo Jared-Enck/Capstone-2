@@ -10,3 +10,8 @@ main {
 a {
   text-decoration: none;
 }
+
+input:-webkit-autofill,
+.MuiInputBase-root:has(> input:-webkit-autofill) {
+  border-radius: 6px;
+}
