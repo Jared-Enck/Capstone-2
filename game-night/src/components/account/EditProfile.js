@@ -83,6 +83,7 @@ export default function EditProfile({ open, setOpen, username }) {
       onClose={handleClose}
       sx={{
         '& .MuiPaper-root': {
+          bottom: '20vh',
           bgcolor: 'primary.main',
           width: 600,
           padding: '0rem 4rem 1rem 4rem',
