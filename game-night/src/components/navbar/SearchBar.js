@@ -9,6 +9,7 @@ const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.primary.muted, 0.3),
+  transition: 'all 200ms',
   '&:hover': {
     backgroundColor: alpha(theme.palette.primary.muted, 0.4),
   },

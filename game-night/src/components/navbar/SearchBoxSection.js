@@ -5,7 +5,7 @@ import CircularLoading from '../common/CircularLoading';
 
 const SearchBoxButton = styled(Button)(({ theme }) => ({
   color: theme.palette.primary.text,
-  backgroundColor: alpha(`${theme.palette.primary.main}`, 0.3),
+  backgroundColor: theme.palette.primary.dark,
   height: '1.5rem',
   fontSize: '.7rem',
   padding: '.5rem',

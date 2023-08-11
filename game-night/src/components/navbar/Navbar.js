@@ -11,7 +11,10 @@ export default function Navbar() {
   const { currentUser } = useContext(UserContext);
 
   return (
-    <AppBar position='fixed'>
+    <AppBar
+      position='fixed'
+      sx={{ width: '100vw' }}
+    >
       <Container
         sx={{
           height: '3.5rem',
