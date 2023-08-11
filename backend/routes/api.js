@@ -110,11 +110,9 @@ router.get('/search', async function (req, res, next) {
   }
 });
 
-/** GET /api/search: => {
- *  ids: [gameID,...]
- * }
+/** GET /api/games: => [{game},...]
  *
- * Takes array of game ids,
+ * Takes string of game ids,
  * sends request to api for games that match
  *
  * Returns json for found items

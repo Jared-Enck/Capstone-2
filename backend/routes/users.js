@@ -6,6 +6,7 @@ const jsonschema = require('jsonschema');
 const express = require('express');
 const { ensureLoggedIn, ensureOwner } = require('../middleware/auth');
 const { createToken } = require('../helpers/tokens');
+const formatErrors = require('../helpers/formatErrors');
 const { BadRequestError } = require('../expressError');
 const User = require('../models/user');
 const userUpdateSchema = require('../schemas/userUpdate.json');
@@ -52,8 +53,9 @@ router.patch(
     try {
       const validator = jsonschema.validate(req.body, userUpdateSchema);
       if (!validator.valid) {
-        const errs = validator.errors.map((e) => e.stack);
-        throw new BadRequestError(errs);
+        const errs = validator.errors.map((e) => e);
+        const formattedErrs = formatErrors(errs);
+        throw new BadRequestError(formattedErrs);
       }
       const user = await User.update(req.params.username, req.body);
       let response;

@@ -158,7 +158,7 @@ class User {
       );
 
       if (duplicateCheck.rows[0]) {
-        throw new BadRequestError(`Invalid username: ${username}`);
+        throw new BadRequestError(`Invalid username: ${data.username}`);
       }
     }
 
