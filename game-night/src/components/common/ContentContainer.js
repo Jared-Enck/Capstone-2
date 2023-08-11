@@ -2,16 +2,16 @@ import React from 'react';
 import { Container, Typography, Divider, alpha } from '@mui/material';
 import styled from '@emotion/styled';
 
-const StyledContainer = styled(Container)(({ alphaScale, theme }) => ({
+const StyledContainer = styled(Container)(({ alphascale, theme }) => ({
   margin: 0,
-  backgroundColor: alpha(`${theme.palette.primary.main}`, alphaScale),
+  backgroundColor: alpha(`${theme.palette.primary.main}`, alphascale),
   borderRadius: theme.shape.borderRadius,
   padding: '1.5rem',
   alignSelf: 'center',
 }));
 
 export default function ContentContainer({
-  alphaScale = 1,
+  alphascale = 1,
   shadow = 'none',
   header = null,
   divider,
@@ -21,7 +21,7 @@ export default function ContentContainer({
   return (
     <StyledContainer
       maxWidth={'lg'}
-      alphaScale={alphaScale}
+      alphascale={alphascale}
       sx={{
         boxShadow: shadow,
         backdropFilter: blur ? `blur(7px)` : 'none',
@@ -38,7 +38,7 @@ export default function ContentContainer({
           {header}
         </Typography>
       ) : null}
-      {divider ? <Divider sx={{ color: 'primary.dark' }} /> : null}
+      {divider ? <Divider sx={{ color: 'primary.muted' }} /> : null}
       {children}
     </StyledContainer>
   );
