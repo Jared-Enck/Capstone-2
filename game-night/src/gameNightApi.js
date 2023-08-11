@@ -27,14 +27,13 @@ export default class GameNightApi {
   /**Registers new user */
   static async register(data) {
     // { username, password, email }
-    let res = await this.request('auth/register', data, 'post');
-    return res.token;
+    return await this.request('auth/register', data, 'post');
   }
 
   /** Logs user in if username and password are correct */
   static async login(data) {
     let res = await this.request('auth/token', data, 'post');
-    return res.token;
+    return res;
   }
 
   /** Gets user info */

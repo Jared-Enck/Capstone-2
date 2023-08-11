@@ -42,36 +42,45 @@ export const Brand = styled(Typography)(({ theme }) => ({
 // ******************************************** Forms
 
 export const FormBox = styled(Box)(() => ({
-  maxWidth: '400px',
+  maxWidth: '350px',
   margin: 'auto',
 }));
 
 export const FormTextField = styled(TextField)(({ theme }) => ({
-  backgroundColor: alpha(theme.palette.primary.dark, 0.45),
+  backgroundColor: theme.palette.primary.dark,
   borderRadius: theme.shape.borderRadius,
   color: theme.palette.primary.text,
-  '&: hover': {
-    backgroundColor: alpha(theme.palette.primary.dark, 0.7),
-  },
   '& label': {
+    '&:required': 'false',
     color: theme.palette.primary.muted,
   },
   '& label.Mui-focused': {
     color: theme.palette.secondary.main,
   },
   '& .MuiOutlinedInput-root': {
+    borderRadius: theme.shape.borderRadius,
     color: theme.palette.primary.text,
+    transition: 'all 200ms',
+    '&: hover': {
+      backgroundColor: alpha(`${theme.palette.primary.light}`, 0.5),
+    },
   },
-  '& .MuiOutlinedInput-root.Mui-focused': {
+  '& .MuiInputBase-root.Mui-focused': {
+    backgroundColor: alpha(`${theme.palette.primary.light}`, 0.5),
+    borderRadius: theme.shape.borderRadius,
     '& > fieldset': {
       borderColor: theme.palette.secondary.main,
     },
+  },
+  '& .MuiFormHelperText-root': {
+    margin: 0,
+    paddingLeft: '.5rem',
   },
 }));
 
 export const ErrorSpan = styled('span')(({ theme }) => ({
   color: theme.palette.error.main,
-  textAlign: 'center',
+  position: 'absolute',
 }));
 
 // ******************************************** Buttons

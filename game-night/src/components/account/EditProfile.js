@@ -6,6 +6,7 @@ import {
   DialogActions,
   Stack,
   FormControl,
+  Box,
 } from '@mui/material';
 import {
   FormTextField,
@@ -72,6 +73,7 @@ export default function EditProfile({ open, setOpen, username }) {
   };
 
   useEffect(() => {
+    console.log(formErrors);
     setFormData(userData);
   }, [userData, setFormData]);
 
@@ -89,43 +91,46 @@ export default function EditProfile({ open, setOpen, username }) {
     >
       <DialogTitle
         fontSize={'1.5rem'}
-        sx={{ color: 'primary.text' }}
+        sx={{ color: 'primary.text', paddingBottom: 0 }}
       >
         Edit Profile
       </DialogTitle>
       <DialogContent>
-        <Stack spacing={2}>
+        <Box sx={{ height: 24, width: 400, marginBottom: '.4rem' }}>
+          {typeof formErrors[0] === 'string' ? (
+            <ErrorSpan>{formErrors[0]}</ErrorSpan>
+          ) : null}
+        </Box>
+        <Stack spacing={3}>
           <EditAvatar
             imageURL={formData.imageURL}
             handleFileUpload={handleFileUpload}
           />
-
           {['username', 'email'].map((name) => {
             const firstLetter = name[0].toUpperCase();
             const label = firstLetter.concat(name.slice(1));
 
             return (
-              <FormControl
-                key={name}
-                variant='outlined'
-              >
+              <FormControl key={name}>
                 <FormTextField
+                  variant='outlined'
                   label={label}
                   type={'text'}
                   name={name}
                   value={formData[name]}
                   onChange={handleChange}
+                  helperText={
+                    formErrors.length && typeof formErrors[0] !== 'string' ? (
+                      <ErrorSpan>{formErrors[0][name]}</ErrorSpan>
+                    ) : null
+                  }
                 />
               </FormControl>
             );
           })}
-
-          {formErrors.length
-            ? formErrors.map((e, idx) => <ErrorSpan key={idx}>{e}</ErrorSpan>)
-            : null}
         </Stack>
       </DialogContent>
-      <DialogActions sx={{ marginRight: 'auto', padding: '0px 0px 0px 24px' }}>
+      <DialogActions sx={{ marginRight: 'auto', padding: '5px 0px 0px 24px' }}>
         <CancelButton
           variant='outlined'
           onClick={handleClose}

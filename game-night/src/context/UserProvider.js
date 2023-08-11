@@ -31,23 +31,19 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
 
   async function registerUser(registerData) {
     try {
-      let token = await GameNightApi.register(registerData);
+      let { token } = await GameNightApi.register(registerData);
       setToken(token);
-      return { msg: 'success' };
     } catch (err) {
-      console.error('register failed', err);
-      return { msg: err };
+      return { err };
     }
   }
 
   async function loginUser(loginData) {
     try {
-      let token = await GameNightApi.login(loginData);
+      let { token } = await GameNightApi.login(loginData);
       setToken(token);
-      return { msg: 'success' };
     } catch (err) {
-      console.log(err);
-      return { msg: err };
+      return { err };
     }
   }
 

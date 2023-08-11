@@ -86,13 +86,12 @@ export default function DeleteDialog({ open, handleCloseDialog }) {
             name='delete'
             value={formData.delete}
             onChange={handleChange}
+            helperText={<ErrorSpan>{formErrors[0]}</ErrorSpan>}
+            sx={{ marginBottom: '20px' }}
           />
-          {formErrors.length
-            ? formErrors.map((e, idx) => <ErrorSpan key={idx}>{e}</ErrorSpan>)
-            : null}
         </Stack>
       </DialogContent>
-      <DialogActions sx={{ marginRight: 'auto', paddingLeft: '20px' }}>
+      <DialogActions sx={{ marginRight: 'auto', padding: '0px 0px 10px 20px' }}>
         <CancelButton
           variant='outlined'
           onClick={handleCloseDialog}

@@ -75,7 +75,6 @@ export default function DataProvider({ children }) {
         };
         const results = { pages, count: res.count };
         setSearchResults(results);
-        setIsLoading(false);
       } catch (err) {
         console.error('Error: ', err);
       }

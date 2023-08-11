@@ -18,6 +18,7 @@ export default function FormComponent({
   const [showPassword, setShowPassword] = useState(false);
   const { navigate } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
+  const isLogin = header === 'Login';
 
   const inputType = showPassword ? 'text' : 'password';
 
@@ -30,75 +31,88 @@ export default function FormComponent({
     e.preventDefault();
     setIsLoading(true);
     const result = await submitFunc(formData);
-    if (result.msg === 'success') {
+    if (result) {
+      setFormErrors(result.err);
+      console.log('Errors:', result.err);
+      setIsLoading(false);
+    } else {
       setIsLoading(false);
       navigate('/');
-    } else {
-      setFormErrors(result.msg);
-      setIsLoading(false);
     }
   };
 
   return (
     <Stack sx={{ paddingTop: 10 }}>
       <ContentContainer
-        shadow={2}
-        alphaScale={0.2}
+        alphascale={0.4}
         blur
       >
         <FormBox
           component='form'
           onSubmit={handleSubmit}
-          autoComplete='off'
         >
-          <Stack spacing={2}>
-            <Typography
-              variant='h5'
-              sx={{ color: 'primary.text' }}
-            >
-              {header}
-            </Typography>
+          <Typography
+            variant='h5'
+            sx={{ color: 'primary.text' }}
+          >
+            {header}
+          </Typography>
 
+          <Box sx={{ height: 24, width: 400, marginBottom: '.4rem' }}>
+            {typeof formErrors[0] === 'string' ? (
+              <ErrorSpan>{formErrors[0]}</ErrorSpan>
+            ) : null}
+          </Box>
+
+          <Stack spacing={3}>
             {inputs.map((name, idx) => {
               const firstLetter = name[0].toUpperCase();
               const label = firstLetter.concat(name.slice(1));
+              const isPassword = name === 'password';
 
               return (
-                <FormControl
-                  key={name}
-                  variant='outlined'
-                >
+                <FormControl key={name}>
                   <FormTextField
+                    variant='outlined'
                     label={label}
-                    type={name === 'password' ? inputType : 'text'}
+                    type={isPassword ? inputType : 'text'}
                     name={name}
                     value={formData[name]}
                     onChange={handleChange}
                     autoFocus={idx === 0}
+                    autoComplete={isPassword ? 'current-password' : ''}
                     InputProps={{
-                      endAdornment:
-                        name === 'password' ? (
-                          <PasswordAdornment
-                            showPassword={showPassword}
-                            handleShowPassword={handleShowPassword}
-                          />
-                        ) : null,
+                      endAdornment: isPassword ? (
+                        <PasswordAdornment
+                          showPassword={showPassword}
+                          handleShowPassword={handleShowPassword}
+                        />
+                      ) : null,
                     }}
+                    helperText={
+                      formErrors.length && !isLogin ? (
+                        <ErrorSpan>{formErrors[0][name]}</ErrorSpan>
+                      ) : null
+                    }
                     required
                   />
                 </FormControl>
               );
             })}
 
-            {formErrors
-              ? formErrors.map((e, idx) => <ErrorSpan key={idx}>{e}</ErrorSpan>)
-              : null}
-
-            {header === 'Login' ? (
-              <Typography sx={{ textAlign: 'center', color: 'primary.text' }}>
-                Don't have an account yet? Sign in
-                <Link to={'/signup'}> here.</Link>
-              </Typography>
+            {isLogin ? (
+              <Box sx={{ height: 56, display: 'flex' }}>
+                <Typography
+                  sx={{
+                    textAlign: 'center',
+                    color: 'primary.text',
+                    margin: 'auto',
+                  }}
+                >
+                  Don't have an account yet? Sign in
+                  <Link to={'/signup'}> here.</Link>
+                </Typography>
+              </Box>
             ) : null}
 
             <PrimaryButton
