@@ -9,18 +9,10 @@ import {
   Grid,
   IconButton,
 } from '@mui/material';
-import styled from '@emotion/styled';
 import PlayersAndDuration from '../common/PlayersAndDuration';
 import { Favorite, FavoriteBorder, Delete } from '@mui/icons-material';
 import DataContext from '../../context/DataContext';
 import UserContext from '../../context/UserContext';
-
-const StyledCard = styled(Card)(({ theme }) => ({
-  transition: 'all 250ms',
-  '&:hover': {
-    transform: 'scale(1.02)',
-  },
-}));
 
 export default function GameCard({ game, onProfilePage }) {
   const { setGame, addGame, removeGame } = useContext(DataContext);
@@ -67,10 +59,14 @@ export default function GameCard({ game, onProfilePage }) {
   );
 
   return (
-    <StyledCard
+    <Card
       sx={{
         width: 345,
         backgroundColor: 'primary.dark',
+        transition: 'all 200ms',
+        '&:hover': {
+          transform: 'scale(1.02)',
+        },
       }}
     >
       <CardActionArea onClick={handleCardClick}>
@@ -116,6 +112,6 @@ export default function GameCard({ game, onProfilePage }) {
           {!onProfilePage ? quickAddBtn : trashBtn}
         </CardActions>
       ) : null}
-    </StyledCard>
+    </Card>
   );
 }
