@@ -4,7 +4,7 @@ import UserContext from '../../context/UserContext';
 import { Link } from '@mui/material';
 import { Typography, Grid } from '@mui/material';
 
-export default function DetailListItem({ param, item, lastItem }) {
+export default function DetailListItem({ param, item, isLastItem }) {
   const { setSearchResults, setResultsHeader, resultsHeader } =
     useContext(DataContext);
   const { navigate } = useContext(UserContext);
@@ -24,6 +24,7 @@ export default function DetailListItem({ param, item, lastItem }) {
           textDecoration: 'none',
           cursor: 'pointer',
         }}
+        aria-label={`search ${param} ${item.name}`}
       >
         <Typography
           sx={{
@@ -34,7 +35,7 @@ export default function DetailListItem({ param, item, lastItem }) {
             },
           }}
         >
-          {lastItem ? item.name : item.name + ','}
+          {isLastItem ? item.name : item.name + ','}
         </Typography>
       </Link>
     </Grid>

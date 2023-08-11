@@ -22,6 +22,7 @@ export default function GameDetails({ game }) {
   let MechanicsComps;
   let CategoriesComps;
   let rows;
+
   if (game) {
     if (game.mechanics.length) {
       MechanicsComps = game.mechanics.map((m, idx) => (
@@ -29,7 +30,7 @@ export default function GameDetails({ game }) {
           key={idx}
           param={'mechanics'}
           item={m}
-          lastItem={game.mechanics.length - 1 === idx}
+          isLastItem={game.mechanics.length - 1 === idx}
         />
       ));
     }
@@ -40,7 +41,7 @@ export default function GameDetails({ game }) {
           key={idx}
           param={'categories'}
           item={c}
-          lastItem={game.categories.length - 1 === idx}
+          isLastItem={game.categories.length - 1 === idx}
         />
       ));
     }
@@ -49,6 +50,8 @@ export default function GameDetails({ game }) {
     const publisher = game.primary_publisher
       ? game.primary_publisher.name
       : 'N/A';
+    const artists = game.artists.length ? game.artists.join(', ') : 'N/A';
+
     rows = [
       createData('Year Published', year),
       createData('Publisher', publisher),
@@ -72,6 +75,7 @@ export default function GameDetails({ game }) {
           {CategoriesComps}
         </Grid>
       ),
+      createData('Artists', artists),
     ];
   }
   return (
@@ -85,7 +89,7 @@ export default function GameDetails({ game }) {
                     component='th'
                     scope='row'
                     sx={{
-                      width: '40ch',
+                      width: '35ch',
                       color: 'primary.text',
                       fontSize: '1.2rem',
                     }}
