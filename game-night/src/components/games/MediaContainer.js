@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import MediaCard from './MediaCard';
 import ContentContainer from '../common/ContentContainer';
 
@@ -30,6 +30,16 @@ export default function MediaContainer({ items, isVideo }) {
     />
   );
 
+  const NoMediaMessage = () => (
+    <Typography
+      variant='h5'
+      color={'primary.text'}
+      paddingLeft={5}
+    >
+      Sorry, no {header.toLowerCase()} uploaded yet.
+    </Typography>
+  );
+
   return (
     <ContentContainer
       header={header}
@@ -46,15 +56,19 @@ export default function MediaContainer({ items, isVideo }) {
         direction={'row'}
         spacing={2}
       >
-        {items.map((i) => (
-          <Grid
-            key={i.id}
-            item
-            justifyContent={'center'}
-          >
-            {isVideo ? VideoCardComponent(i) : ImageCardComponent(i)}
-          </Grid>
-        ))}
+        {items.length ? (
+          items.map((i) => (
+            <Grid
+              key={i.id}
+              item
+              justifyContent={'center'}
+            >
+              {isVideo ? VideoCardComponent(i) : ImageCardComponent(i)}
+            </Grid>
+          ))
+        ) : (
+          <NoMediaMessage />
+        )}
       </Grid>
     </ContentContainer>
   );

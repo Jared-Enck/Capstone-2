@@ -1,7 +1,8 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import DataContext from '../../context/DataContext';
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
+import ContentContainer from '../common/ContentContainer';
 import GameDescription from './GameDescription';
 import GameDescSkeleton from './GameDescSkeleton';
 import MediaContainer from './MediaContainer';
@@ -11,11 +12,12 @@ import GameDetails from './GameDetails';
 export default function GameDetailsPage() {
   const { game, checkGameCache } = useContext(DataContext);
   const gameID = useParams().id;
+  const { pathname } = useLocation();
   const [images, setImages] = useState('');
   const [videos, setVideos] = useState('');
 
   useEffect(() => {
-    if (!game.videos) {
+    if (!game.videos || game.id !== gameID) {
       setImages('');
       setVideos('');
       checkGameCache(gameID);
@@ -23,25 +25,33 @@ export default function GameDetailsPage() {
     if (game.detail_images) setImages(game.detail_images);
     if (game.videos) setVideos(game.videos);
     // eslint-disable-next-line
-  }, [game]);
+  }, [game, pathname]);
+
+  const NoGameFound = () => (
+    <Stack>
+      <ContentContainer>
+        <Typography
+          variant='h5'
+          textAlign={'center'}
+          color={'primary.text'}
+        >
+          Sorry, no game found with ID '{gameID}'.
+        </Typography>
+      </ContentContainer>
+    </Stack>
+  );
+
+  if (gameID.length < 10) return <NoGameFound />;
 
   return (
     <Stack spacing={'.3rem'}>
       {game.videos ? <GameDescription game={game} /> : <GameDescSkeleton />}
-      {images ? (
-        images.length ? (
-          <MediaContainer items={images} />
-        ) : null
-      ) : (
-        <MediaSkeleton />
-      )}
+      {images ? <MediaContainer items={images} /> : <MediaSkeleton />}
       {videos ? (
-        videos.length ? (
-          <MediaContainer
-            items={videos}
-            isVideo
-          />
-        ) : null
+        <MediaContainer
+          items={videos}
+          isVideo
+        />
       ) : (
         <MediaSkeleton isVideo />
       )}
