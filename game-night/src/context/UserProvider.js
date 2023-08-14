@@ -7,6 +7,7 @@ import jwt_decode from 'jwt-decode';
 
 export const TOKEN_STORAGE_ID = 'game-night-token';
 
+// Provides UserContext to children
 export default function UserProvider({ children, isDark, setDarkMode }) {
   const [currentUser, setCurrentUser] = useState('');
   const [userData, setUserData] = useState('');
@@ -15,6 +16,12 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
   const [token, setToken] = useLocalStorage(TOKEN_STORAGE_ID);
   const navigate = useNavigate();
 
+  /** Saves token from login or register
+   *
+   * set GameNightApi.token
+   *
+   * decodes token and sets currentUser to username
+   */
   const saveToken = useCallback(() => {
     GameNightApi.token = token;
     const { username } = jwt_decode(token);
@@ -29,6 +36,12 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
     setDarkMode(`${!isDark}`);
   };
 
+  /** Sends request to register a user
+   *
+   * @param {*} registerData { username, password, email }
+   *
+   * then sets token
+   */
   async function registerUser(registerData) {
     try {
       let { token } = await GameNightApi.register(registerData);
@@ -38,6 +51,12 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
     }
   }
 
+  /** Sends request to login a user
+   *
+   * @param {*} loginData { username, password }
+   *
+   * then sets token
+   */
   async function loginUser(loginData) {
     try {
       let { token } = await GameNightApi.login(loginData);
@@ -47,6 +66,17 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
     }
   }
 
+  /** Sends request to update a user
+   *
+   * @param {*} formData
+   * @param {*} username
+   *
+   * then sets token
+   *
+   * and sets userData to result.user
+   *
+   * userData = { ...user }
+   */
   async function updateUser(formData, username) {
     try {
       const result = await GameNightApi.updateUser(formData, username);
@@ -61,6 +91,7 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
     }
   }
 
+  // Logout user and clear data, navigates to home
   const logout = useCallback(() => {
     GameNightApi.token = '';
     setCurrentUser('');
@@ -71,6 +102,10 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
     navigate('/');
   }, [setToken, navigate]);
 
+  /** Gets userData based on username
+   *
+   * @param {*} username
+   */
   async function getCurrentUser(username) {
     try {
       const user = await GameNightApi.getCurrentUser(username);
@@ -83,6 +118,7 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
     }
   }
 
+  // Delete user from db
   async function deleteUser() {
     try {
       const result = await GameNightApi.deleteUser(currentUser);

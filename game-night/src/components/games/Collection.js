@@ -24,7 +24,14 @@ export default function Collection({ itemsOnPage }) {
     userGameIDs.size,
     itemsOnPage
   );
-
+  /** Get current page content
+   *
+   * @returns {*} [ game, ... ]
+   *
+   * slices games from collection with set range
+   *
+   * range is calculated with itemsOnPage, page, and skipAmount
+   */
   const getPageContent = useCallback(() => {
     let range = [0, itemsOnPage];
     if (page !== 1) {
@@ -36,6 +43,7 @@ export default function Collection({ itemsOnPage }) {
   }, [page, itemsOnPage, setPageContent, collection]);
 
   useEffect(() => {
+    // if no collection set, GET request to API with userGameIDs
     if (!collection && userGameIDs) getCollection();
     // eslint-disable-next-line
   }, [collection, getCollection]);

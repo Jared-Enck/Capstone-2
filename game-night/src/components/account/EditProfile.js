@@ -24,12 +24,14 @@ export default function EditProfile({ open, setOpen, username }) {
   const [formData, handleChange, formErrors, setFormErrors, setFormData] =
     useFields(userData);
 
+  // handle closing of dialog box
   const handleClose = () => {
     setFormErrors([]);
     setFormData(userData);
     setOpen(false);
   };
 
+  // handle file uploading of imageURL
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
@@ -41,6 +43,23 @@ export default function EditProfile({ open, setOpen, username }) {
     reader.readAsDataURL(file);
   };
 
+  /** Check for changes in edit form
+   *
+   * @param {*} formData { username, email, imageURL }
+   * @param {*} userData { username, email, imageURL }
+   * @returns {*} { username: 'newUser' }
+   *
+   * maps entries of formData and compare values
+   *  against userData values
+   *
+   * if no changes, return -1
+   *
+   * example --
+   *
+   * userData = { username: 'testUser', email: 'me@me.com', imageURL: 'someImageURL' }
+   *
+   * formData = { username: 'newUser', email: 'me@me.com', imageURL: 'someImageURL' }
+   */
   const getChanges = (formData, userData) => {
     const formEntries = Object.entries(formData);
     const initialEntries = Object.entries(userData);
@@ -57,12 +76,16 @@ export default function EditProfile({ open, setOpen, username }) {
     return updateData;
   };
 
+  // handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // check for any changes
     const updateData = getChanges(formData, userData);
 
     if (updateData === -1) return handleClose();
 
+    // Patch request with updated data
     const result = await updateUser(updateData, username);
 
     if (result) {
@@ -73,7 +96,6 @@ export default function EditProfile({ open, setOpen, username }) {
   };
 
   useEffect(() => {
-    console.log(formErrors);
     setFormData(userData);
   }, [userData, setFormData]);
 
@@ -83,7 +105,7 @@ export default function EditProfile({ open, setOpen, username }) {
       onClose={handleClose}
       sx={{
         '& .MuiPaper-root': {
-          bottom: '20vh',
+          bottom: '5rem',
           bgcolor: 'primary.main',
           width: 600,
           padding: '0rem 4rem 1rem 4rem',

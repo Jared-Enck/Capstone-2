@@ -1,3 +1,4 @@
+// Format sql for adding multiple users to group
 function addUsersSql(usersLength) {
   const groupIDVarIdx = '$' + (usersLength + 1);
   const sqlVals = [];

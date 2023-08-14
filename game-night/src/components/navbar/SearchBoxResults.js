@@ -26,14 +26,18 @@ export default function SearchBoxResults({ results, clearBoxResults }) {
   const { setGame, setResultsHeader, setSearchResults, isLoading } =
     useContext(DataContext);
 
+  // handles SearchBoxSection button click
   const handleBtnClick = (path, item) => {
+    // clear prev results and set new header
     clearBoxResults();
     setResultsHeader(item.name);
     setSearchResults({ pages: {} });
     navigate(`search/${path}/${item.id}`);
   };
 
+  // handle game list item click
   const handleGameClick = (idx, gameID) => {
+    // sets game and navigates to game details
     setGame(games[idx]);
     navigate(`/games/${gameID}`);
     clearBoxResults();

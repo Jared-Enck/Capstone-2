@@ -66,10 +66,12 @@ export default function SearchBar() {
     clearBoxResults();
   };
 
+  // handles search term change
   const handleChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
     setBoxResults('');
+    // GET request to API for results matching searchTerm
     debouncedRequest();
   };
 

@@ -29,6 +29,7 @@ export default function Profile({ itemsOnPage }) {
   };
 
   useEffect(() => {
+    // GET request for userData
     if (!userData && currentUser) getCurrentUser(username);
     // eslint-disable-next-line
   }, [currentUser, getCurrentUser]);

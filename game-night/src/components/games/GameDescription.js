@@ -42,6 +42,7 @@ export default function GameDescription({ game }) {
 
   const handleAddBtnClick = async () => {
     setIsLoading(true);
+    // POST request to server to add game
     await addGame(game);
     setIsLoading(false);
   };

@@ -46,22 +46,6 @@ export const themeLight = createTheme({
       },
     },
   },
-  overrides: {
-    MuiCssBaseline: {
-      '@global': {
-        '*::-webkit-scrollbar': {
-          width: '2rem',
-        },
-        '*::-webkit-scrollbar-track': {
-          '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.00)',
-        },
-        '*::-webkit-scrollbar-thumb': {
-          backgroundColor: 'rgba(255,0,0,1)',
-          outline: '1px solid slategrey',
-        },
-      },
-    },
-  },
 });
 
 export const themeDark = createTheme({
@@ -102,22 +86,6 @@ export const themeDark = createTheme({
             opacity: 0.7,
             backgroundColor: grey[800],
           },
-        },
-      },
-    },
-  },
-  overrides: {
-    MuiCssBaseline: {
-      '@global': {
-        '*::-webkit-scrollbar': {
-          width: '2rem',
-        },
-        '*::-webkit-scrollbar-track': {
-          '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.00)',
-        },
-        '*::-webkit-scrollbar-thumb': {
-          backgroundColor: 'rgba(255,0,0,1)',
-          outline: '1px solid slategrey',
         },
       },
     },

@@ -35,10 +35,12 @@ export default function DeleteDialog({ open, handleCloseDialog }) {
   const [formData, handleChange, formErrors, setFormErrors, setFormData] =
     useFields(initialState);
 
+  // handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.delete.toLowerCase() === 'delete') {
       setIsLoading(true);
+      // DELETE request to server
       const res = await deleteUser();
       setIsLoading(false);
       if (res.deleted) {

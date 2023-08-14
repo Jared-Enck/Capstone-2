@@ -4,6 +4,7 @@ import DetailListItem from './DetailListItem';
 import styled from '@emotion/styled';
 import ContentContainer from '../common/ContentContainer';
 
+// create data for rows in table
 const createData = (name, data = 'N/A') => {
   return { name, data };
 };

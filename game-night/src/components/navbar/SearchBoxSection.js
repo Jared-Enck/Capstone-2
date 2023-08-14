@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Typography, Grid, Button, alpha } from '@mui/material';
+import { Typography, Grid, Button } from '@mui/material';
 import styled from '@emotion/styled';
 import CircularLoading from '../common/CircularLoading';
 

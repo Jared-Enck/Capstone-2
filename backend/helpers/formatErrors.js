@@ -1,3 +1,12 @@
+/** Format error messages
+ *
+ * @param {*} messages
+ * @returns {*} { [path]: message, ... }
+ *
+ * if multiple errors thrown, map errors and set errs object to
+ *  { [m.path]: message }
+ */
+
 function formatErrors(messages) {
   let errs;
   if (typeof messages === 'object') {

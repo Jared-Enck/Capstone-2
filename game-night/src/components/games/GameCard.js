@@ -26,11 +26,13 @@ export default function GameCard({ game, onProfilePage }) {
 
   const handleQuickAddClick = () => {
     if (!inCollection) {
+      // POST request to server to add game
       addGame(game);
     }
   };
 
   const handleTrashClick = () => {
+    // POST request to server to delete game
     removeGame(game);
   };
 

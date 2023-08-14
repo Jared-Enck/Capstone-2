@@ -8,8 +8,11 @@ export default function DetailListItem({ param, item, isLastItem }) {
   const { setSearchResults, setResultsHeader, resultsHeader } =
     useContext(DataContext);
   const { navigate } = useContext(UserContext);
+
+  // handle list item click
   const handleClick = () => {
     if (resultsHeader !== item.name) {
+      // clear previous results
       setSearchResults({ pages: {} });
       setResultsHeader('');
     }

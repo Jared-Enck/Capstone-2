@@ -1,6 +1,14 @@
 import { useEffect, useRef, useMemo } from 'react';
 import { debounce } from '@mui/material';
 
+/** After set time from debounce returns debouncedCallback
+ *
+ * @param {*} callback
+ *
+ * debounce 300 milliseconds
+ *
+ * @returns {*} debouncedCallback
+ */
 export default function useDebounce(callback) {
   const ref = useRef();
 

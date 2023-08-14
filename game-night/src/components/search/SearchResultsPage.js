@@ -23,16 +23,21 @@ export default function SearchResultsPage({ itemsOnPage }) {
   );
 
   useEffect(() => {
+    // if no header, gets header
     if (!resultsHeader) getSearchHeader(id);
   }, [resultsHeader, getSearchHeader, id]);
 
   useEffect(() => {
+    // get search results from params
     const searchObj = { [path]: id };
     if (!Object.keys(pages).length) {
+      // no content in pages set page to 1
       setPage(1);
+      // GET request for search results
       getSearchResults(searchObj);
     } else {
       if (!pages[page]) {
+        // Get request for pagination skip amount
         const skipAmount = (page - 1) * itemsOnPage;
         getSearchResults(searchObj, page, skipAmount);
       }

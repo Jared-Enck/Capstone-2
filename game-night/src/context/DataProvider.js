@@ -4,6 +4,7 @@ import useDebounce from '../hooks/useDebounce';
 import GameNightApi from '../gameNightApi';
 import UserContext from './UserContext';
 
+// Provides DataContext for children
 export default function DataProvider({ children }) {
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -21,23 +22,24 @@ export default function DataProvider({ children }) {
     setUserGameIDs,
   } = useContext(UserContext);
 
-  const getCommonCache = useCallback(async () => {
-    try {
-      await GameNightApi.getCommonCache();
-    } catch (err) {
-      console.error('Error: ', err);
-    }
-  }, []);
-
   useEffect(() => {
+    // GET request for mechanics and categories, then set cache
+    async function getCommonCache() {
+      try {
+        await GameNightApi.getCommonCache();
+      } catch (err) {
+        console.error('Error: ', err);
+      }
+    }
     getCommonCache();
-  }, [getCommonCache]);
+  }, []);
 
   const debouncedRequest = useDebounce(async () => {
     try {
       if (searchTerm && searchTerm.length > 2) {
         setIsLoading(true);
         setOpen(true);
+        // GET request to API for search results
         const res = await GameNightApi.getSearchResults({ name: searchTerm });
         setBoxResults(res.results);
         setIsLoading(false);
@@ -49,6 +51,7 @@ export default function DataProvider({ children }) {
 
   async function getSearchHeader(id) {
     try {
+      // GET request, checks cached mechanics/categories for id
       const res = await GameNightApi.getHeaderById(id);
       setResultsHeader(res);
     } catch (err) {
@@ -66,6 +69,7 @@ export default function DataProvider({ children }) {
         } else {
           res = await GameNightApi.getSearchResults(searchObj);
         }
+        // set search results pages for pagination
         const pages = {
           ...searchResults.pages,
           [page]: res.results.foundGames,
@@ -79,6 +83,20 @@ export default function DataProvider({ children }) {
     [searchResults.pages]
   );
 
+  /** Get game media based on gameID
+   * @param {*} gameID string
+   *
+   * GET mechanic and category info from cache
+   * GET request to API for images and videos
+   * 
+   * caches completeGame obj
+   * 
+   * where completeGame = {
+          ...game,
+          detail_images,
+          videos,
+        }
+   */
   const getGameMedia = useCallback(
     async (gameID) => {
       try {
@@ -102,6 +120,13 @@ export default function DataProvider({ children }) {
     [game]
   );
 
+  /** Check cache for game
+   *
+   * @param {*} gameID string
+   *
+   * if not found, call getGameMedia with gameID
+   *
+   */
   const checkGameCache = useCallback(
     async (gameID) => {
       try {
@@ -119,12 +144,18 @@ export default function DataProvider({ children }) {
     [getGameMedia]
   );
 
+  /** Calculate collection value
+   * @param {*} collection [ game, ...]
+   *
+   * maps collection and setColValue with total
+   */
   const getCollectionValue = (collection) => {
     let total = 0;
     collection.map((g) => (total += g.msrp));
     setColValue(total);
   };
 
+  // GET gameIDs for currentUser
   const getGameIDs = useCallback(async () => {
     try {
       const results = await GameNightApi.getGames(currentUser);
@@ -138,6 +169,10 @@ export default function DataProvider({ children }) {
     if (currentUser) getGameIDs();
   }, [currentUser, getGameIDs]);
 
+  /** Get game data for each game in collection
+   *
+   * formats userGameIDs to string
+   */
   const getCollection = useCallback(async () => {
     try {
       if (!collection) {
@@ -157,11 +192,22 @@ export default function DataProvider({ children }) {
     }
   }, [collection, setCollection, userGameIDs]);
 
+  /** Add game to currentUser collection
+   *
+   * @param {*} game
+   *
+   * will get collection if not set
+   *
+   * then update collection, userGameIDs, and colValue
+   *  with added game
+   */
   async function addGame(game) {
     try {
       setIsLoading(true);
       const { id } = game;
+      // POST request to server
       await GameNightApi.addGame({ id, username: currentUser });
+      // if collection is not set yet, call getCollection
       if (!collection) {
         await getCollection();
       }
@@ -176,6 +222,13 @@ export default function DataProvider({ children }) {
     }
   }
 
+  /** Remove game from currentUser collection
+   *
+   * @param {*} game
+   *
+   * then update collection, userGameIDs, and colValue
+   *  with removed game
+   */
   async function removeGame(game) {
     try {
       const { id } = game;

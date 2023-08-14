@@ -17,6 +17,7 @@ export default function SettingsList() {
   const [open, setOpen] = useState(false);
 
   const handleToggle = () => {
+    // light/dark theme toggle
     handleThemeToggle();
     setChecked(!checked);
   };

@@ -13,6 +13,15 @@ export default function PlayersAndDuration({
   min_playtime,
   max_playtime,
 }) {
+  /** format string for num of players to only display
+   * min_players if it's equal to max_players
+   *
+   * some API data with have min and max as same value
+   *
+   * instead of displaying players as 1-1,
+   * will just have display of 1
+   *
+   */
   const getPlayers = useCallback(() => {
     return min_players === max_players
       ? min_players
@@ -21,6 +30,15 @@ export default function PlayersAndDuration({
 
   const players = useMemo(() => getPlayers(), [getPlayers]);
 
+  /** format string for duration of playtime to only display
+   * min_playtime if it's equal to max_playtime
+   *
+   * some API data with have min and max as same value
+   *
+   * instead of displaying playtime as 30-30,
+   * will just have display of 30
+   *
+   */
   const getDuration = useCallback(() => {
     return min_playtime === max_playtime
       ? min_playtime

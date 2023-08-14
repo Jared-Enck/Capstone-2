@@ -17,9 +17,11 @@ export default function GameDetailsPage() {
   const [videos, setVideos] = useState('');
 
   useEffect(() => {
+    // if no media on game obj check cache for game obj with media
     if (!game.videos || game.id !== gameID) {
       setImages('');
       setVideos('');
+      // GET request to check cache for game
       checkGameCache(gameID);
     }
     if (game.detail_images) setImages(game.detail_images);

@@ -1,6 +1,9 @@
 import { useState } from 'react';
 
-/**Controls form fields */
+/** Controls form fields
+ *
+ * resets formErrors on change, if any
+ */
 
 export default function useFields(initialState) {
   const [formData, setFormData] = useState(initialState);

@@ -25,13 +25,17 @@ export default function FormComponent({
   const [formData, handleChange, formErrors, setFormErrors] =
     useFields(initialState);
 
+  // handle showPassword toggle
   const handleShowPassword = () => setShowPassword((show) => !show);
 
+  // handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    // POST request in submitFunc with formData
     const result = await submitFunc(formData);
     if (result) {
+      // if errors in POST request
       setFormErrors(result.err);
       console.log('Errors:', result.err);
       setIsLoading(false);

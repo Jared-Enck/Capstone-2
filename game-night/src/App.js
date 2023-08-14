@@ -8,13 +8,12 @@ import Navbar from './components/navbar/Navbar';
 import { CssBaseline } from '@mui/material';
 import useLocalStorage from './hooks/useLocalStorage';
 import { Background } from './components/styled';
-// import Footer from './components/footer/Footer';
 
 const AllRoutesComp = lazy(() => import('./AllRoutes'));
 
 export default function App() {
   const [darkMode, setDarkMode] = useLocalStorage('dark-mode-preferred');
-  const isDark = darkMode === 'true' ? true : false;
+  const isDark = darkMode === 'true';
   return (
     <Suspense fallback={<Background />}>
       <CssBaseline />
