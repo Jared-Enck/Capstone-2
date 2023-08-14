@@ -5,7 +5,6 @@ import GameNightApi from '../gameNightApi';
 import UserContext from './UserContext';
 
 export default function DataProvider({ children }) {
-  const [errors, setErrors] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [boxResults, setBoxResults] = useState('');
@@ -39,7 +38,6 @@ export default function DataProvider({ children }) {
       if (searchTerm && searchTerm.length > 2) {
         setIsLoading(true);
         setOpen(true);
-        setErrors(false);
         const res = await GameNightApi.getSearchResults({ name: searchTerm });
         setBoxResults(res.results);
         setIsLoading(false);
@@ -62,7 +60,6 @@ export default function DataProvider({ children }) {
     async (searchObj, page = 1, skipAmount) => {
       try {
         setSearchTerm('');
-        setErrors(false);
         let res;
         if (skipAmount) {
           res = await GameNightApi.getSearchResults(searchObj, skipAmount);
@@ -215,7 +212,6 @@ export default function DataProvider({ children }) {
         setResultsHeader,
         getSearchResults,
         debouncedRequest,
-        errors,
         open,
         setOpen,
         game,

@@ -5,7 +5,6 @@ import UserContext from '../../context/UserContext';
 import { Stack, Grid } from '@mui/material';
 import ContentContainer from '../common/ContentContainer';
 import GameCard from '../games/GameCard';
-import ErrorMessage from '../common/ErrorMessage';
 import ResultsPagination from '../common/ResultsPagination';
 import usePagination from '../../hooks/usePagination';
 import ResultsSkeleton from './ResultsSkeleton';
@@ -13,13 +12,8 @@ import BaseSkeleton from '../common/BaseSkeleton';
 
 export default function SearchResultsPage({ itemsOnPage }) {
   const { path, id } = useParams();
-  const {
-    searchResults,
-    getSearchResults,
-    resultsHeader,
-    getSearchHeader,
-    errors,
-  } = useContext(DataContext);
+  const { searchResults, getSearchResults, resultsHeader, getSearchHeader } =
+    useContext(DataContext);
   const { currentUser } = useContext(UserContext);
   const { pages, count } = searchResults;
 
@@ -79,9 +73,7 @@ export default function SearchResultsPage({ itemsOnPage }) {
           direction={'row'}
           justifyContent={'center'}
         >
-          {errors.length ? (
-            <ErrorMessage />
-          ) : pages[page] ? (
+          {pages[page] ? (
             pages[page].map((g) => gridItemComp(g))
           ) : (
             <ResultsSkeleton
