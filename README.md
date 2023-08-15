@@ -1,8 +1,8 @@
-# GameNight
+# MyGameNights
 
 ### Description
 
-GameNight is a web application for searching board games and creating a digital collection of your games. It has an estimated value of your collection based on the MSRP of the game.
+MyGameNights is a web application for searching board games and creating a digital collection of your games. It has an estimated value of your collection based on the MSRP of the game.
 
 <i> Mobile friendly update coming soon! </i>
 
