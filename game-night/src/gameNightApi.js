@@ -7,7 +7,7 @@ export default class GameNightApi {
   static token;
 
   static async request(endpoint, data = {}, method = 'get') {
-    console.debug('API Server Call:', endpoint, data, method);
+    // console.debug('API Server Call:', endpoint, data, method);
 
     const url = `${BASE_URL}/${endpoint}`;
 
