@@ -214,8 +214,6 @@ export default function DataProvider({ children }) {
       setCollection((prev) => [...prev, game]);
       setUserGameIDs((prev) => new Set(prev).add(id));
       setColValue((prev) => (prev += game.msrp));
-
-      console.log(`${game.name} has been added to your collection.`);
       setIsLoading(false);
     } catch (err) {
       console.error('Error: ', err);
@@ -242,7 +240,6 @@ export default function DataProvider({ children }) {
           return next;
         });
         setColValue((prev) => (prev -= game.msrp));
-        console.log(`${game.name} has been removed from your collection.`);
       }
     } catch (err) {
       console.error('Error: ', err);

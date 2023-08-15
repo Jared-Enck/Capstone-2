@@ -37,7 +37,6 @@ export default function FormComponent({
     if (result) {
       // if errors in POST request
       setFormErrors(result.err);
-      console.log('Errors:', result.err);
       setIsLoading(false);
     } else {
       setIsLoading(false);
