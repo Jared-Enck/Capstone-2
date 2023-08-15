@@ -1,0 +1,17 @@
+main {
+  margin-top: 56px;
+  padding: 0.3rem;
+}
+
+.main-button {
+  border-radius: 9999px !important;
+}
+
+a {
+  text-decoration: none;
+}
+
+input:-webkit-autofill,
+.MuiInputBase-root:has(> input:-webkit-autofill) {
+  border-radius: 6px;
+}
