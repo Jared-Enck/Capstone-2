@@ -16,6 +16,7 @@ function getDatabaseUri() {
   const { SECRET_KEY, PORT, USER, HOST } = config;
   const dbase = env.NODE_ENV === 'test' ? env.DATABASE_TEST : env.DATABASE;
   if (env.NODE_ENV === 'production') {
+    console.log(config);
     return `postgres://${USER}:${SECRET_KEY}@${HOST}:${PORT}/${dbase}`;
   }
   return `socket:/var/run/postgresql?db=${dbase}`;
