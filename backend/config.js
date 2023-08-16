@@ -14,7 +14,7 @@ const config = {
 };
 
 function getDatabaseUri() {
-  const { USER, DB_PASSWORD, HOST } = config;
+  const { USER, DB_PASSWORD, HOSTNAME } = config;
   const dbase = env.NODE_ENV === 'test' ? env.DATABASE_TEST : env.DATABASE;
   if (env.NODE_ENV === 'production') {
     return `postgres://${USER}:${DB_PASSWORD}@${HOSTNAME}/${dbase}`;
