@@ -22,6 +22,6 @@ function getDatabaseUri() {
   return `socket:/var/run/postgresql?db=${dbase}`;
 }
 
-console.debug('**************DBURI: ', config.DB_URI());
+console.debug('*****DB_URI: ', config.DB_URI());
 
 module.exports = config;
