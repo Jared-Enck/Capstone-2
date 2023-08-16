@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:3001';
+const BASE_URL = 'http://localhost:3001' || 'https://gamenight.onrender.com';
 
 export default class GameNightApi {
   // the token for interactive with the API will be stored here.
