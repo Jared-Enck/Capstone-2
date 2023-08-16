@@ -3,7 +3,7 @@ const { env } = process;
 
 const config = {
   SECRET_KEY: env.SECRET_KEY,
-  HOST: env.HOST,
+  HOSTNAME: env.HOSTNAME,
   PORT: +env.PORT || 3001,
   DB_PASSWORD: env.DB_PASSWORD,
   DB_URI: getDatabaseUri,
@@ -17,7 +17,7 @@ function getDatabaseUri() {
   const { USER, DB_PASSWORD, HOST } = config;
   const dbase = env.NODE_ENV === 'test' ? env.DATABASE_TEST : env.DATABASE;
   if (env.NODE_ENV === 'production') {
-    return `postgres://${USER}:${DB_PASSWORD}@${HOST}/${dbase}`;
+    return `postgres://${USER}:${DB_PASSWORD}@${HOSTNAME}/${dbase}`;
   }
   return `socket:/var/run/postgresql?db=${dbase}`;
 }
