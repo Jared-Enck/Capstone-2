@@ -15,9 +15,9 @@ class ThirdPartyApi {
     const url = `${API_BASE_URL}/${endpoint}`;
 
     const params = method === 'get' ? { ...data, client_id: CLIENT_ID } : {};
-    const headers = { origin: `https://www.mygamenights.com` };
+
     try {
-      return (await axios({ url, method, data, params, headers })).data;
+      return (await axios({ url, method, data, params })).data;
     } catch (err) {
       console.error('API Error:', err.message);
     }

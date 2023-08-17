@@ -28,7 +28,7 @@ export default function Navbar() {
 
           <SearchBar />
 
-          {!currentUser ? <UserAccountMenu /> : <AnonUserLinks />}
+          {currentUser ? <UserAccountMenu /> : <AnonUserLinks />}
         </StyledGrid>
       </Container>
     </AppBar>
