@@ -53,7 +53,6 @@ class User {
    **/
 
   static async register({ username, password, email }) {
-    console.debug('registering...', username, password, email);
     const duplicateUsernameCheck = await db.query(
       `SELECT username
       FROM users
@@ -75,6 +74,8 @@ class User {
     }
 
     const hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
+
+    console.debug('registering...', username, hashedPassword, email);
 
     const result = await db.query(
       `INSERT INTO users
