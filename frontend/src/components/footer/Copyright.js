@@ -4,19 +4,9 @@ import { Link } from 'react-router-dom';
 
 export default function Copyright() {
   return (
-    <Typography
-      variant='body2'
-      color='text.secondary'
-      align='center'
-    >
+    <Typography sx={{ color: 'primary.text' }}>
       {'Copyright © '}
-      <Link
-        color='inherit'
-        to='/'
-      >
-        MyGameNights
-      </Link>{' '}
-      {new Date().getFullYear()}.
+      <Link to='/'>MyGameNights</Link> {new Date().getFullYear()}.
     </Typography>
   );
 }

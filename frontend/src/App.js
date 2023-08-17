@@ -8,6 +8,7 @@ import Navbar from './components/navbar/Navbar';
 import { CssBaseline } from '@mui/material';
 import useLocalStorage from './hooks/useLocalStorage';
 import { Background } from './components/styled';
+import Footer from './components/footer/Footer';
 
 const AllRoutesComp = lazy(() => import('./AllRoutes'));
 
@@ -28,6 +29,7 @@ export default function App() {
             <main>
               <AllRoutesComp />
             </main>
+            <Footer />
           </DataProvider>
         </UserProvider>
       </ThemeProvider>
