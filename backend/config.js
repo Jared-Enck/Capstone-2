@@ -4,7 +4,7 @@ const { env } = process;
 const config = {
   SECRET_KEY: env.SECRET_KEY,
   HOSTNAME: env.HOSTNAME,
-  PORT: +env.PORT || 3001,
+  PORT: env.PORT || 3001,
   DB_PASSWORD: env.DB_PASSWORD,
   DB_URI: getDatabaseUri,
   BCRYPT_WORK_FACTOR: env.NODE_ENV === 'test' ? 1 : 13,
