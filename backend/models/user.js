@@ -86,6 +86,7 @@ class User {
 
     const user = result.rows[0];
 
+    console.debug('result...', result, user);
     return user;
   }
 
