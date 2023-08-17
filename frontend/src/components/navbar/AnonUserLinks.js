@@ -17,7 +17,7 @@ export default function AnonUserLinks() {
   return (
     <Grid
       item
-      sx={{ marginRight: '35px' }}
+      sx={{ marginRight: '86px' }}
     >
       <Grid
         container

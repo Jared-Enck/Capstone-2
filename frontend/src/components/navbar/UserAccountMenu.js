@@ -44,7 +44,7 @@ export default function UserAccountMenu() {
   return (
     <Grid
       item
-      sx={{ display: 'flex', width: '171px' }}
+      sx={{ display: 'flex', width: '222px' }}
     >
       <IconButton
         onClick={handleClick}
