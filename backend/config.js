@@ -13,7 +13,7 @@ const config = {
 function getDatabaseUri() {
   const dbase = env.NODE_ENV === 'test' ? env.DATABASE_TEST : env.DATABASE;
   if (env.NODE_ENV === 'production') {
-    return `postgres:///${dbase}`.replace('://', 'ql://', 1);
+    return env.DATABASE_URL;
   }
   return `socket:/var/run/postgresql?db=${dbase}`;
 }
