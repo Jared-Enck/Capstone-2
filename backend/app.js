@@ -27,7 +27,8 @@ app.use('/api', apiRoutes);
 
 /** Handle 404 errors -- this matches everything */
 app.use(function (req, res, next) {
-  return next(new NotFoundError());
+  console.log('***********', req.header, req.body);
+  return next(new NotFoundError(req.body));
 });
 
 /** Generic error handler; anything unhandled goes here. */
