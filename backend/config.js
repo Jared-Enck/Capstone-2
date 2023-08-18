@@ -17,7 +17,11 @@ function getDatabaseUri() {
   const { USER, DB_PASSWORD, HOSTNAME, PORT } = config;
   const dbase = env.NODE_ENV === 'test' ? env.DATABASE_TEST : env.DATABASE;
   if (env.NODE_ENV === 'production') {
-    return `postgres://${USER}:${DB_PASSWORD}@${HOSTNAME}:${PORT}/${dbase}`;
+    return `postgres://${USER}:${DB_PASSWORD}@${HOSTNAME}:${PORT}/${dbase}`.replace(
+      '://',
+      'ql://',
+      1
+    );
   }
   return `socket:/var/run/postgresql?db=${dbase}`;
 }
