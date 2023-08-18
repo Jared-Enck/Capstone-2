@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { Box, Container, Grid, Button } from '@mui/material';
+import { Box, Container, Grid, Link, Stack } from '@mui/material';
 import { LinkedIn, GitHub } from '@mui/icons-material';
 import Copyright from './Copyright';
 
@@ -18,13 +18,8 @@ const StyledContainer = styled(Container)(({ theme }) => ({
 
 export default function Footer() {
   // Open in new tab
-  const newTab = (idx) => {
-    const urls = [
-      'https://www.linkedin.com/in/jared-enck',
-      'https://github.com/Jared-Enck',
-    ];
-    window.open(urls[idx], '_blank');
-  };
+  const newTab = (url) => window.open(url, '_blank');
+
   return (
     <footer style={{ marginTop: '4rem' }}>
       <StyledBox sx={{ padding: '.5rem' }}>
@@ -39,23 +34,37 @@ export default function Footer() {
               <Copyright />
             </Grid>
             <Grid item>
-              {[<LinkedIn fontSize='large' />, <GitHub fontSize='large' />].map(
-                (icon, idx) => (
-                  <Button
-                    key={idx}
-                    variant='text'
-                    onClick={() => newTab(idx)}
-                    sx={{
-                      padding: 0,
-                      color: 'primary.text',
-                      transition: '200ms ease-in-out',
-                      '&:hover': { color: 'secondary.main' },
-                    }}
-                  >
-                    {icon}
-                  </Button>
-                )
-              )}
+              <Stack
+                direction={'row'}
+                spacing={2}
+              >
+                {[
+                  <LinkedIn fontSize='large' />,
+                  <GitHub fontSize='large' />,
+                ].map((icon, idx) => {
+                  const urls = [
+                    'https://www.linkedin.com/in/jared-enck',
+                    'https://github.com/Jared-Enck',
+                  ];
+                  return (
+                    <Link
+                      key={idx}
+                      onClick={() => newTab(urls[idx])}
+                      sx={{
+                        padding: 0,
+                        color: 'primary.text',
+                        transition: '200ms ease-in-out',
+                        '&:hover': {
+                          color: 'secondary.main',
+                          cursor: 'pointer',
+                        },
+                      }}
+                    >
+                      {icon}
+                    </Link>
+                  );
+                })}
+              </Stack>
             </Grid>
           </Grid>
         </StyledContainer>
