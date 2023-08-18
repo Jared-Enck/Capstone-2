@@ -1,7 +1,7 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "Game Night",
+  "description": "MyGameNights",
   "main": "db.js",
   "scripts": {
     "start": "node server.js",

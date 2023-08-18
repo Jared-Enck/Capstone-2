@@ -1,7 +1,7 @@
 {
-  "name": "game-night",
+  "name": "frontend",
   "version": "1.0.0",
-  "description": "",
+  "description": "MyGameNights",
   "main": "index.js",
   "scripts": {
     "start": "react-app-rewired start",
