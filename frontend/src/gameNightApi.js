@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://gamenight.onrender.com';
+const BASE_URL = 'https://mygamenights-backend-7938064403b3.herokuapp.com';
 
 export default class GameNightApi {
   // the token for interactive with the API will be stored here.
