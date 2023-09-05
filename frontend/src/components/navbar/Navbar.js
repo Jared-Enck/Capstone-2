@@ -13,7 +13,9 @@ export default function Navbar() {
   return (
     <AppBar
       position='fixed'
-      sx={{ width: '100vw' }}
+      sx={{
+        width: '100%',
+      }}
     >
       <Container
         sx={{

@@ -1,13 +1,14 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://mygamenights-backend-7938064403b3.herokuapp.com';
+// const BASE_URL = 'https://mygamenights-backend-7938064403b3.herokuapp.com';
+const BASE_URL = 'http://localhost:3001';
 
 export default class GameNightApi {
   // the token for interactive with the API will be stored here.
   static token;
 
   static async request(endpoint, data = {}, method = 'get') {
-    // console.debug('API Server Call:', endpoint, data, method);
+    console.debug('API Server Call:', endpoint, data, method);
 
     const url = `${BASE_URL}/${endpoint}`;
 
