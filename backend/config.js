@@ -6,8 +6,8 @@ const config = {
   PORT: env.PORT || 3001,
   DB_URI: getDatabaseUri,
   BCRYPT_WORK_FACTOR: env.NODE_ENV === 'test' ? 1 : 13,
-  CLIENT_ID: env.CLIENT_ID,
-  API_BASE_URL: env.API_BASE_URL,
+  API_BASE_V1: env.API_BASE_V1,
+  API_BASE_V2: env.API_BASE_V2,
 };
 
 function getDatabaseUri() {
@@ -17,7 +17,5 @@ function getDatabaseUri() {
   }
   return `socket:/var/run/postgresql?db=${dbase}`;
 }
-
-console.debug('*****DB_URI: ', config.DB_URI());
 
 module.exports = config;

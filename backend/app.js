@@ -6,6 +6,7 @@ const express = require('express');
 const cors = require('cors');
 const { NotFoundError } = require('./expressError');
 const { authenticateJWT } = require('./middleware/auth');
+const xmlparser = require('express-xml-bodyparser');
 const authRoutes = require('./routes/auth');
 const usersRoutes = require('./routes/users');
 const groupsRoutes = require('./routes/groups');
@@ -17,6 +18,7 @@ const app = express();
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(xmlparser());
 app.use(authenticateJWT);
 
 app.use('/auth', authRoutes);
