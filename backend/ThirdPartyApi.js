@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { CLIENT_ID, API_BASE_URL } = require('./config');
+const { API_BASE_V2 } = require('./config');
 const moment = require('moment');
 const NodeCache = require('node-cache');
 const commonCache = new NodeCache();
@@ -10,12 +10,10 @@ let APICachedDate;
 
 class ThirdPartyApi {
   static async request(endpoint, data = {}, method = 'get') {
-    console.debug('API Call:', endpoint, data, method);
+    const url = `${API_BASE_V2}/${endpoint}`;
+    console.debug('API Call:', url, data, method);
 
-    const url = `${API_BASE_URL}/${endpoint}`;
-
-    const params = method === 'get' ? { ...data, client_id: CLIENT_ID } : {};
-
+    const params = method === 'get' ? { format: 'xml' } : {};
     try {
       return (await axios({ url, method, data, params })).data;
     } catch (err) {
@@ -101,18 +99,19 @@ class ThirdPartyApi {
 
   static async getSearchResults(query) {
     let results = {};
-    if (query.name) {
-      results = this.checkCommonByName(query.name);
-    }
+    // if (query.name) {
+    //   results = this.checkCommonByName(query.name);
+    // }
     const [key, val] = Object.entries(query)[0];
 
     const queryStr = query.skip
       ? `${key}=${val}&skip=${query.skip}`
       : `${key}=${val}`;
-    const response = await this.request(`/search?${queryStr}&limit=30`);
-    const { games, count } = response;
-    results.foundGames = games;
-    return { results, count };
+    return (await axios.get(`${API_BASE_V2}/search?${queryStr}&type=boardgame`))
+      .data;
+    // const { games, count } = response;
+    // results.foundGames = games;
+    // return { results, count };
   }
 
   static cacheGame(game) {

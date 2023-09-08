@@ -3,8 +3,11 @@
 /** Routes for third party api. */
 
 const express = require('express');
+const axios = require('axios');
+const { API_BASE_V2 } = require('../config');
 const router = new express.Router();
 const ThirdPartyApi = require('../ThirdPartyApi');
+const xmlparser = require('express-xml-bodyparser');
 
 /** GET /api/cache => { date }
  *
@@ -20,6 +23,26 @@ router.get('/cache', async function (req, res, next) {
   try {
     const date = await ThirdPartyApi.getCommonCache();
     return res.json({ date });
+  } catch (err) {
+    return next(err);
+  }
+});
+
+/** GET /api/hot => [game, ...]
+ *
+ * Checks ApiCacheDate
+ * and requests data if no date or date past 24 hrs.
+ *
+ * Returns json date when cache last updated.
+ *
+ * Authorization required: none
+ */
+
+router.get('/V2/hot', async function (req, res, next) {
+  try {
+    res.type('txt');
+    const xml = (await axios.get(`${API_BASE_V2}/hot?type=boardgame`)).data;
+    return res.send(xml);
   } catch (err) {
     return next(err);
   }
@@ -100,11 +123,12 @@ router.post('/cache/games', function (req, res, next) {
  * Authorization required: none
  */
 
-router.get('/search', async function (req, res, next) {
+router.get('/V2/search', async function (req, res, next) {
   try {
+    res.type('txt');
     const query = req.query;
     const results = await ThirdPartyApi.getSearchResults(query);
-    return res.json(results);
+    return res.send(results);
   } catch (err) {
     return next(err);
   }
