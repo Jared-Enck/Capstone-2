@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import DataContext from '../../context/DataContext';
 import SearchIcon from '@mui/icons-material/Search';
 import { InputBase, Collapse, alpha, ClickAwayListener } from '@mui/material';
@@ -75,6 +75,8 @@ export default function SearchBar() {
     debouncedRequest();
   };
 
+  useEffect(() => console.log(boxResults, boxResults.length), []);
+
   return (
     <Search>
       <SearchIconWrapper>
@@ -89,7 +91,8 @@ export default function SearchBar() {
         value={searchTerm}
         autoComplete='off'
       />
-      {Object.keys(boxResults).length ? (
+      {/* {Object.keys(boxResults).length} */}
+      {boxResults.length ? (
         <ClickAwayListener onClickAway={handleClickAway}>
           <Collapse in={open}>
             <SearchBoxResults
