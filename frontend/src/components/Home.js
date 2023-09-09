@@ -1,10 +1,103 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import UserContext from '../context/UserContext';
-import { Stack, Typography, Box } from '@mui/material';
+import DataContext from '../context/DataContext';
+import { Stack, Typography, Box, Grid } from '@mui/material';
 import ContentContainer from './common/ContentContainer';
+import GamesListItem from './common/GamesListItem';
+import CircularLoading from './common/CircularLoading';
 
 export default function Home() {
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, navigate } = useContext(UserContext);
+  const { hotGames, getHotGames } = useContext(DataContext);
+
+  useEffect(() => {
+    if (!hotGames.length && currentUser) getHotGames();
+  }, [hotGames.length]);
+
+  const WelcomeMsg = () => {
+    return (
+      <Box
+        sx={{
+          color: 'primary.text',
+          fontSize: '1.2rem',
+          width: '95%',
+          margin: 'auto',
+        }}
+      >
+        <Typography
+          variant='h5'
+          gutterBottom
+        >
+          Welcome to MyGameNights!
+        </Typography>
+        <p>
+          You can browse an extensive library of games by searching for game
+          titles, mechanics, or categories.
+        </p>
+        <p>
+          Create a profile and use MyGameNights to compile a digital library of
+          all your games. Your personal collection is now complete with
+          pictures, videos, and resources to jog your memory when you’ve
+          forgotten the rules or to help you decide what to play. There’s even
+          an estimated value feature so you can flex on your friends!
+        </p>
+        <p>
+          MyGameNights makes it easy to find new games using a mechanic you
+          love, expansions for your tried and true staples, or games built
+          around your favorite franchise. (Star Wars anyone?)
+        </p>
+        <p>
+          Click around. Have fun. Build your collection. Game night has never
+          been better.
+        </p>
+      </Box>
+    );
+  };
+  const handleGameClick = (gameID) => {
+    navigate(`/games/${gameID}`);
+  };
+  const HotGames = () => {
+    return (
+      <>
+        <Grid
+          container
+          direction={'column'}
+          spacing={1}
+        >
+          <Grid item>
+            <Typography
+              variant='h4'
+              sx={{ color: 'secondary.main' }}
+            >
+              Popular Games
+            </Typography>
+          </Grid>
+          {hotGames.length ? (
+            hotGames.map((i) => {
+              const game = hotGames[i];
+              return (
+                <Grid
+                  item
+                  key={game.id}
+                >
+                  <GamesListItem
+                    item={game}
+                    idx={i}
+                    clickFunc={() => handleGameClick(game.id)}
+                    isLastItem={i === hotGames.length - 1}
+                    dimensions={{ width: '8ch', height: '8ch', fontSize: 'h4' }}
+                    homepage
+                  />
+                </Grid>
+              );
+            })
+          ) : (
+            <CircularLoading />
+          )}
+        </Grid>
+      </>
+    );
+  };
   return (
     <Stack sx={{ paddingTop: 10 }}>
       <ContentContainer
@@ -12,43 +105,7 @@ export default function Home() {
         alphascale={0.4}
         blur
       >
-        <Box
-          sx={{
-            color: 'primary.text',
-            fontSize: '1.2rem',
-            width: '95%',
-            margin: 'auto',
-          }}
-        >
-          <Typography
-            variant='h5'
-            gutterBottom
-          >
-            {currentUser
-              ? `Welcome back, ${currentUser}!`
-              : 'Welcome to MyGameNights!'}
-          </Typography>
-          <p>
-            You can browse an extensive library of games by searching for game
-            titles, mechanics, or categories.
-          </p>
-          <p>
-            Create a profile and use MyGameNights to compile a digital library
-            of all your games. Your personal collection is now complete with
-            pictures, videos, and resources to jog your memory when you’ve
-            forgotten the rules or to help you decide what to play. There’s even
-            an estimated value feature so you can flex on your friends!
-          </p>
-          <p>
-            MyGameNights makes it easy to find new games using a mechanic you
-            love, expansions for your tried and true staples, or games built
-            around your favorite franchise. (Star Wars anyone?)
-          </p>
-          <p>
-            Click around. Have fun. Build your collection. Game night has never
-            been better.
-          </p>
-        </Box>
+        {currentUser ? <HotGames /> : <WelcomeMsg />}
       </ContentContainer>
     </Stack>
   );
