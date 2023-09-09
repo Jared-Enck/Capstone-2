@@ -8,7 +8,12 @@ export default class GameNightApi {
   static token;
 
   static async request(endpoint, data = {}, method = 'get') {
-    console.debug('API Server Call:', endpoint, data, method);
+    console.debug(
+      'API Server Call:',
+      endpoint,
+      data.password ? data.username : data,
+      method
+    );
 
     const url = `${BASE_URL}/${endpoint}`;
 
@@ -58,7 +63,13 @@ export default class GameNightApi {
   /** Get search results */
   static async getSearchResults(params, skipAmount) {
     const data = skipAmount ? { ...params, skip: skipAmount } : params;
-    let res = await this.request('api/search', data);
+    let res = await this.request('api/V2/search', data);
+    return res;
+  }
+
+  /** Get current hot games */
+  static async hotGames() {
+    let res = await this.request('api/V2/hot');
     return res;
   }
 
@@ -86,9 +97,8 @@ export default class GameNightApi {
   }
 
   /** Get game images, videos, mechanic names, and category names for specific game id */
-  static async getGameMedia(gameID, mechanicIDs, categoryIDs) {
-    const data = { gameID, mechanicIDs, categoryIDs };
-    const res = await this.request(`api/game_media`, data);
+  static async getGame(gameID) {
+    const res = await this.request(`api/game_media`, { gameID });
 
     return res;
   }

@@ -21,7 +21,7 @@ export default function useDebounce(callback) {
       ref.current?.();
     };
 
-    return debounce(func, 300);
+    return debounce(func, 400);
   }, []);
 
   return debouncedCallback;

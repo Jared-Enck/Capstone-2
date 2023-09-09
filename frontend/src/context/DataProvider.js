@@ -3,12 +3,14 @@ import DataContext from './DataContext';
 import useDebounce from '../hooks/useDebounce';
 import GameNightApi from '../gameNightApi';
 import UserContext from './UserContext';
+import $ from 'jquery';
 
 // Provides DataContext for children
 export default function DataProvider({ children }) {
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [boxResults, setBoxResults] = useState('');
+  const [hotGames, setHotGames] = useState([]);
   const [searchResults, setSearchResults] = useState({ pages: {} });
   const [resultsHeader, setResultsHeader] = useState('');
   const [game, setGame] = useState('');
@@ -22,17 +24,43 @@ export default function DataProvider({ children }) {
     setUserGameIDs,
   } = useContext(UserContext);
 
-  useEffect(() => {
-    // GET request for mechanics and categories, then set cache
-    async function getCommonCache() {
-      try {
-        await GameNightApi.getCommonCache();
-      } catch (err) {
-        console.error('Error: ', err);
-      }
+  // useEffect(() => {
+  //   // GET request for mechanics and categories, then set cache
+  //   async function getCommonCache() {
+  //     try {
+  //       await GameNightApi.getCommonCache();
+  //     } catch (err) {
+  //       console.error('Error: ', err);
+  //     }
+  //   }
+  //   getCommonCache();
+  // }, []);
+
+  async function getHotGames() {
+    try {
+      const xmlGames = await GameNightApi.hotGames();
+      const $items = $(xmlGames).find('item');
+      const $serialized = $items.map((i) => serializeXML($items[i]));
+      setHotGames($serialized);
+    } catch (err) {
+      console.error(err);
     }
-    getCommonCache();
-  }, []);
+  }
+
+  const serializeXML = (xml) => {
+    const serializedGame = {};
+    let current = xml;
+    while (current !== null) {
+      if ($(current).attr('id')) {
+        serializedGame['id'] = $(current).attr('id');
+      } else {
+        serializedGame[current.nodeName.toLowerCase()] =
+          current.attributes.value.nodeValue;
+      }
+      current = current.children[0] ? current.children[0] : null;
+    }
+    return serializedGame;
+  };
 
   const debouncedRequest = useDebounce(async () => {
     try {
@@ -40,8 +68,13 @@ export default function DataProvider({ children }) {
         setIsLoading(true);
         setOpen(true);
         // GET request to API for search results
-        const res = await GameNightApi.getSearchResults({ name: searchTerm });
-        setBoxResults(res.results);
+        const xmlResults = await GameNightApi.getSearchResults({
+          query: searchTerm,
+        });
+        const $items = $(xmlResults).find('item');
+        const $serialized = $items.map((i) => serializeXML($items[i]));
+        console.log('serializedGames: ', $serialized);
+        setBoxResults($serialized);
         setIsLoading(false);
       }
     } catch (err) {
@@ -132,7 +165,7 @@ export default function DataProvider({ children }) {
       try {
         const found = await GameNightApi.checkGameCache(gameID);
         if (!found) {
-          await getGameMedia(gameID);
+          console.log('checking cache...');
         } else {
           setGame(found);
         }
@@ -272,6 +305,8 @@ export default function DataProvider({ children }) {
         colValue,
         addGame,
         removeGame,
+        hotGames,
+        getHotGames,
       }}
     >
       {children}
