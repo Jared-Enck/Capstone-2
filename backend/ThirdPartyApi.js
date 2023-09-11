@@ -1,59 +1,37 @@
 const axios = require('axios');
 const { API_BASE_V2 } = require('./config');
+const convert = require('xml-js');
 const moment = require('moment');
 const NodeCache = require('node-cache');
-const commonCache = new NodeCache();
+const hotCache = new NodeCache();
 const gamesCache = new NodeCache();
 const moreThanADay = require('./helpers/moreThanADay');
 
 let APICachedDate;
 
 class ThirdPartyApi {
-  static async request(endpoint, data = {}, method = 'get') {
-    const url = `${API_BASE_V2}/${endpoint}`;
-    console.debug('API Call:', url, data, method);
-
-    const params = method === 'get' ? { format: 'xml' } : {};
-    try {
-      return (await axios({ url, method, data, params })).data;
-    } catch (err) {
-      console.error('API Error:', err.message);
-    }
-  }
-
   // Individual API routes
 
-  // Get common data
-  static async cacheCommon() {
-    commonCache.flushAll();
-    const results = await Promise.allSettled([
-      this.request('game/mechanics'),
-      this.request('game/categories'),
-    ]);
-    const failed = results.filter((r) => r.status === 'rejected');
+  // Get hot games data
+  static async cacheHot() {
+    hotCache.flushAll();
+    const xml = (await axios.get(`${API_BASE_V2}/hot?type=boardgame`)).data;
 
-    if (failed.length) console.error({ errors: failed });
+    const serialized = convert.xml2json(xml, { compact: true, spaces: 4 });
+    hotCache.set('hotGames', JSON.parse(serialized).items.item);
 
-    const success = commonCache.mset([
-      { key: 'mechanics', val: results[0].value.mechanics, ttl: 86400 },
-      { key: 'categories', val: results[1].value.categories, ttl: 86400 },
-    ]);
-    const msg = success
-      ? { success: 'Successfully cached data.' }
-      : { failure: 'Failed to cache data.' };
-    console.debug(msg);
-    return msg;
+    return hotCache.has('hotGames');
   }
 
-  static async getCommonCache() {
+  static async getHotCache() {
     const isDayOld = moreThanADay(APICachedDate);
     if (!APICachedDate || isDayOld) {
-      const msg = await this.cacheCommon();
-      if (msg.success) {
+      const success = await this.cacheHot();
+      if (success) {
         APICachedDate = moment().format();
       }
     }
-    return APICachedDate;
+    return await hotCache.get('hotGames');
   }
 
   static checkCommonByName(name) {
@@ -107,8 +85,14 @@ class ThirdPartyApi {
     const queryStr = query.skip
       ? `${key}=${val}&skip=${query.skip}`
       : `${key}=${val}`;
-    return (await axios.get(`${API_BASE_V2}/search?${queryStr}&type=boardgame`))
-      .data;
+
+    const xml = (
+      await axios.get(`${API_BASE_V2}/search?${queryStr}&type=boardgame`)
+    ).data;
+
+    const serialized = convert.xml2json(xml, { compact: true, spaces: 4 });
+
+    return JSON.parse(serialized).items.item;
     // const { games, count } = response;
     // results.foundGames = games;
     // return { results, count };
