@@ -75,8 +75,6 @@ export default function SearchBar() {
     debouncedRequest();
   };
 
-  useEffect(() => console.log(boxResults, boxResults.length), []);
-
   return (
     <Search>
       <SearchIconWrapper>

@@ -1,9 +1,8 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import DataContext from './DataContext';
 import useDebounce from '../hooks/useDebounce';
-import GameNightApi from '../gameNightApi';
+import GameNightApi from '../GameNightApi';
 import UserContext from './UserContext';
-import $ from 'jquery';
 
 // Provides DataContext for children
 export default function DataProvider({ children }) {
@@ -24,43 +23,16 @@ export default function DataProvider({ children }) {
     setUserGameIDs,
   } = useContext(UserContext);
 
-  // useEffect(() => {
-  //   // GET request for mechanics and categories, then set cache
-  //   async function getCommonCache() {
-  //     try {
-  //       await GameNightApi.getCommonCache();
-  //     } catch (err) {
-  //       console.error('Error: ', err);
-  //     }
-  //   }
-  //   getCommonCache();
-  // }, []);
-
-  async function getHotGames() {
+  // Check cache for hot games
+  // on cache miss, GET request to API for games
+  async function getHotCache() {
     try {
-      const xmlGames = await GameNightApi.hotGames();
-      const $items = $(xmlGames).find('item');
-      const $serialized = $items.map((i) => serializeXML($items[i]));
-      setHotGames($serialized);
+      const hotness = await GameNightApi.getHotCache();
+      setHotGames(hotness);
     } catch (err) {
-      console.error(err);
+      console.error('Error: ', err);
     }
   }
-
-  const serializeXML = (xml) => {
-    const serializedGame = {};
-    let current = xml;
-    while (current !== null) {
-      if ($(current).attr('id')) {
-        serializedGame['id'] = $(current).attr('id');
-      } else {
-        serializedGame[current.nodeName.toLowerCase()] =
-          current.attributes.value.nodeValue;
-      }
-      current = current.children[0] ? current.children[0] : null;
-    }
-    return serializedGame;
-  };
 
   const debouncedRequest = useDebounce(async () => {
     try {
@@ -68,13 +40,10 @@ export default function DataProvider({ children }) {
         setIsLoading(true);
         setOpen(true);
         // GET request to API for search results
-        const xmlResults = await GameNightApi.getSearchResults({
+        const results = await GameNightApi.getSearchResults({
           query: searchTerm,
         });
-        const $items = $(xmlResults).find('item');
-        const $serialized = $items.map((i) => serializeXML($items[i]));
-        console.log('serializedGames: ', $serialized);
-        setBoxResults($serialized);
+        setBoxResults(results);
         setIsLoading(false);
       }
     } catch (err) {
@@ -306,7 +275,7 @@ export default function DataProvider({ children }) {
         addGame,
         removeGame,
         hotGames,
-        getHotGames,
+        getHotCache,
       }}
     >
       {children}

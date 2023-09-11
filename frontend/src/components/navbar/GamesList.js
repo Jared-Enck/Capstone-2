@@ -8,12 +8,12 @@ export default function GamesList({ games, handleGameClick }) {
     <List sx={{ width: '100%', paddingBottom: '0' }}>
       <Suspense fallback={<CircularLoading size={'1.5rem'} />}>
         {games.length
-          ? games.map((i) => (
+          ? games.map((i, idx) => (
               <GamesListItem
-                key={games[i].id}
-                item={games[i]}
+                key={i._attributes.id}
+                item={i}
                 clickFunc={handleGameClick}
-                isLastItem={i === games.length - 1}
+                isLastItem={idx === games.length - 1}
               />
             ))
           : null}

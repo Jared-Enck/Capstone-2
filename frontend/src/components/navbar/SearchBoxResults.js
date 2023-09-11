@@ -37,9 +37,8 @@ export default function SearchBoxResults({ results, clearBoxResults }) {
   // };
 
   // handle game list item click
-  const handleGameClick = (idx, gameID) => {
+  const handleGameClick = (gameID) => {
     // sets game and navigates to game details
-    setGame(games[idx]);
     navigate(`/games/${gameID}`);
     clearBoxResults();
   };

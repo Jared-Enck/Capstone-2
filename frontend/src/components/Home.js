@@ -8,10 +8,10 @@ import CircularLoading from './common/CircularLoading';
 
 export default function Home() {
   const { currentUser, navigate } = useContext(UserContext);
-  const { hotGames, getHotGames } = useContext(DataContext);
+  const { hotGames, getHotCache } = useContext(DataContext);
 
   useEffect(() => {
-    if (!hotGames.length && currentUser) getHotGames();
+    if (!hotGames.length && currentUser) getHotCache();
   }, [hotGames.length]);
 
   const WelcomeMsg = () => {
@@ -73,17 +73,19 @@ export default function Home() {
             </Typography>
           </Grid>
           {hotGames.length ? (
-            hotGames.map((i) => {
-              const game = hotGames[i];
+            hotGames.map((i, idx) => {
+              const id = i._attributes.id;
+              const rank = i._attributes.rank;
+
               return (
                 <Grid
                   item
-                  key={game.id}
+                  key={id}
                 >
                   <GamesListItem
-                    item={game}
-                    idx={i}
-                    clickFunc={() => handleGameClick(game.id)}
+                    item={i}
+                    idx={idx}
+                    clickFunc={() => handleGameClick(id)}
                     isLastItem={i === hotGames.length - 1}
                     dimensions={{ width: '8ch', height: '8ch', fontSize: 'h4' }}
                     homepage

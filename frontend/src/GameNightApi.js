@@ -67,15 +67,9 @@ export default class GameNightApi {
     return res;
   }
 
-  /** Get current hot games */
-  static async hotGames() {
-    let res = await this.request('api/V2/hot');
-    return res;
-  }
-
-  /** Cache mechanics and categories */
-  static async getCommonCache() {
-    let res = await this.request('api/cache');
+  /** Cache hot games */
+  static async getHotCache() {
+    let res = await this.request('api/cache/hot');
     return res;
   }
 

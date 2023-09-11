@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserContext from './UserContext';
-import GameNightApi from '../gameNightApi';
+import GameNightApi from '../GameNightApi';
 import useLocalStorage from '../hooks/useLocalStorage';
 import jwt_decode from 'jwt-decode';
 
