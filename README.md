@@ -1,6 +1,6 @@
 # MyGameNights
 
-*** Unfortunately the free API being used is no longer live. I will try to find a different API source for data. MyGameNights is not currently functional ***
+*** Unfortunately the free API being used for data is no longer live. I am working on update to resolve this issue. ***
 
 Deployed on render: https://mygamenights.onrender.com/
 
