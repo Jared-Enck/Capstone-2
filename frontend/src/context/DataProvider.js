@@ -13,6 +13,8 @@ export default function DataProvider({ children }) {
   const [searchResults, setSearchResults] = useState({ pages: {} });
   const [resultsHeader, setResultsHeader] = useState('');
   const [game, setGame] = useState('');
+  const [videos, setVideos] = useState('');
+  const [nextPageToken, setNextPageToken] = useState('');
   const [colValue, setColValue] = useState(0);
   const [open, setOpen] = useState(false);
   const {
@@ -24,15 +26,14 @@ export default function DataProvider({ children }) {
   } = useContext(UserContext);
 
   // Check cache for hot games
-  // on cache miss, GET request to API for games
-  async function getHotCache() {
+  const getHotCache = useCallback(async () => {
     try {
       const hotness = await GameNightApi.getHotCache();
       setHotGames(hotness);
     } catch (err) {
       console.error('Error: ', err);
     }
-  }
+  }, []);
 
   const debouncedRequest = useDebounce(async () => {
     try {
@@ -99,52 +100,64 @@ export default function DataProvider({ children }) {
           videos,
         }
    */
-  const getGameMedia = useCallback(
-    async (gameID) => {
-      try {
-        const mechanicIDs = game.mechanics.map((m) => m.id);
-        const categoryIDs = game.categories.map((m) => m.id);
-        const { mechanicsRes, categoriesRes, detail_images, videos } =
-          await GameNightApi.getGameMedia(gameID, mechanicIDs, categoryIDs);
-        game.mechanics = mechanicsRes;
-        game.categories = categoriesRes;
-        const completeGame = {
-          ...game,
-          detail_images,
-          videos,
-        };
-        setGame(completeGame);
-        GameNightApi.cacheGame(completeGame);
-      } catch (err) {
-        console.error('Error: ', err);
-      }
-    },
-    [game]
-  );
+  // const getGameMedia = useCallback(
+  //   async (gameID) => {
+  //     try {
+  //       const mechanicIDs = game.mechanics.map((m) => m.id);
+  //       const categoryIDs = game.categories.map((m) => m.id);
+  //       const { mechanicsRes, categoriesRes, detail_images, videos } =
+  //         await GameNightApi.getGameMedia(gameID, mechanicIDs, categoryIDs);
+  //       game.mechanics = mechanicsRes;
+  //       game.categories = categoriesRes;
+  //       const completeGame = {
+  //         ...game,
+  //         detail_images,
+  //         videos,
+  //       };
+  //       setGame(completeGame);
+  //       GameNightApi.cacheGame(completeGame);
+  //     } catch (err) {
+  //       console.error('Error: ', err);
+  //     }
+  //   },
+  //   [game]
+  // );
 
   /** Check cache for game
    *
-   * @param {*} gameID string
+   * @param {*} game string
    *
    * if not found, call getGameMedia with gameID
    *
    */
-  const checkGameCache = useCallback(
-    async (gameID) => {
-      try {
-        const found = await GameNightApi.checkGameCache(gameID);
-        if (!found) {
-          console.log('checking cache...');
-        } else {
-          setGame(found);
-        }
-        setOpen(false);
-      } catch (err) {
-        console.error('Error: ', err);
-      }
-    },
-    [getGameMedia]
-  );
+  const checkGameCache = useCallback(async (game) => {
+    try {
+      const res = await GameNightApi.checkGameCache(game);
+      setGame(res);
+      console.log(res);
+      setVideos(res.videos.items);
+      setNextPageToken(res.videos.nextPageToken);
+    } catch (err) {
+      console.error('Error: ', err);
+    }
+  }, []);
+
+  async function getVideos(nextPageToken = '') {
+    try {
+      const videosRequest = {
+        title: game.name,
+        nextPageToken: nextPageToken,
+      };
+      setIsLoading(true);
+      const res = await GameNightApi.getVideos(videosRequest);
+      console.log(res);
+      setVideos(res.items);
+      setNextPageToken(res.nextPageToken);
+      setIsLoading(false);
+    } catch (err) {
+      console.error('Error: ', err);
+    }
+  }
 
   /** Calculate collection value
    * @param {*} collection [ game, ...]
@@ -180,10 +193,9 @@ export default function DataProvider({ children }) {
       if (!collection) {
         if (userGameIDs.size) {
           // Third party API requires commas at start and end of string
-          const gameIDsStr = `,${[...userGameIDs].join(',')},`;
+          const gameIDsStr = `${[...userGameIDs].join(',')}`;
           const res = await GameNightApi.getCollection(gameIDsStr);
-          setCollection([...res.games]);
-          getCollectionValue(res.games);
+          setCollection(Array.isArray(res) ? res : [res]);
         } else {
           setCollection([]);
           setColValue(0);
@@ -206,16 +218,16 @@ export default function DataProvider({ children }) {
   async function addGame(game) {
     try {
       setIsLoading(true);
-      const { id } = game;
+      const gameID = game.objectid;
       // POST request to server
-      await GameNightApi.addGame({ id, username: currentUser });
+      await GameNightApi.addGame({ gameID, username: currentUser });
       // if collection is not set yet, call getCollection
       if (!collection) {
         await getCollection();
       }
       setCollection((prev) => [...prev, game]);
-      setUserGameIDs((prev) => new Set(prev).add(id));
-      setColValue((prev) => (prev += game.msrp));
+      setUserGameIDs((prev) => new Set(prev).add(gameID));
+      // setColValue((prev) => (prev += game.msrp));
       setIsLoading(false);
     } catch (err) {
       console.error('Error: ', err);
@@ -231,17 +243,17 @@ export default function DataProvider({ children }) {
    */
   async function removeGame(game) {
     try {
-      const { id } = game;
+      const gameID = game.objectid;
       if (currentUser) {
-        await GameNightApi.removeGame({ id, username: currentUser });
+        await GameNightApi.removeGame({ gameID, username: currentUser });
 
-        setCollection((prev) => prev.filter((g) => g.id !== id));
+        setCollection((prev) => prev.filter((g) => g.objectid !== gameID));
         setUserGameIDs((prev) => {
           const next = new Set(prev);
-          next.delete(id);
+          next.delete(gameID);
           return next;
         });
-        setColValue((prev) => (prev -= game.msrp));
+        // setColValue((prev) => (prev -= game.msrp));
       }
     } catch (err) {
       console.error('Error: ', err);
@@ -267,6 +279,9 @@ export default function DataProvider({ children }) {
         open,
         setOpen,
         game,
+        videos,
+        getVideos,
+        nextPageToken,
         checkGameCache,
         setGame,
         getCollection,

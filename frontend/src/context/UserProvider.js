@@ -10,6 +10,7 @@ export const TOKEN_STORAGE_ID = 'game-night-token';
 // Provides UserContext to children
 export default function UserProvider({ children, isDark, setDarkMode }) {
   const [currentUser, setCurrentUser] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const [userData, setUserData] = useState('');
   const [collection, setCollection] = useState('');
   const [userGameIDs, setUserGameIDs] = useState('');
@@ -30,6 +31,7 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
 
   useEffect(() => {
     if (token) saveToken();
+    setIsLoading(false);
   }, [token, saveToken]);
 
   const handleThemeToggle = () => {
@@ -131,6 +133,7 @@ export default function UserProvider({ children, isDark, setDarkMode }) {
   return (
     <UserContext.Provider
       value={{
+        isLoading,
         token,
         currentUser,
         getCurrentUser,
