@@ -10,24 +10,22 @@ import MediaSkeleton from './MediaSkeleton';
 import GameDetails from './GameDetails';
 
 export default function GameDetailsPage() {
-  const { game, checkGameCache } = useContext(DataContext);
+  const { game, videos, getVideos, nextPageToken, checkGameCache } =
+    useContext(DataContext);
   const gameID = useParams().id;
   const { pathname } = useLocation();
-  const [images, setImages] = useState('');
-  const [videos, setVideos] = useState('');
 
   useEffect(() => {
-    // if no media on game obj check cache for game obj with media
-    if (!game.videos || game.id !== gameID) {
-      setImages('');
-      setVideos('');
-      // GET request to check cache for game
-      checkGameCache(gameID);
+    try {
+      if (!game || game.objectid !== gameID) {
+        // GET request to check cache for game
+        checkGameCache(gameID);
+      }
+      if (game) console.log(game);
+    } catch (err) {
+      console.error(err);
     }
-    if (game.detail_images) setImages(game.detail_images);
-    if (game.videos) setVideos(game.videos);
-    // eslint-disable-next-line
-  }, [game, pathname]);
+  }, [game, pathname, checkGameCache, gameID]);
 
   const NoGameFound = () => (
     <Stack>
@@ -43,16 +41,13 @@ export default function GameDetailsPage() {
     </Stack>
   );
 
-  if (gameID.length < 10) return <NoGameFound />;
-
   return (
     <Stack spacing={'.3rem'}>
-      {game.videos ? <GameDescription game={game} /> : <GameDescSkeleton />}
-      {images ? <MediaContainer items={images} /> : <MediaSkeleton />}
-      {videos ? (
+      {game ? <GameDescription game={game} /> : <GameDescSkeleton />}
+      {game ? (
         <MediaContainer
           items={videos}
-          isVideo
+          getVideos={() => getVideos(nextPageToken)}
         />
       ) : (
         <MediaSkeleton isVideo />

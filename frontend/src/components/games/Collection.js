@@ -46,7 +46,7 @@ export default function Collection({ itemsOnPage }) {
     // if no collection set, GET request to API with userGameIDs
     if (!collection && userGameIDs) getCollection();
     // eslint-disable-next-line
-  }, [collection, getCollection]);
+  }, [collection, userGameIDs, getCollection]);
 
   useEffect(() => {
     getPageContent();
@@ -78,7 +78,7 @@ export default function Collection({ itemsOnPage }) {
         {pageContent.length
           ? pageContent.map((g) => (
               <Grid
-                key={g.id}
+                key={g.objectid}
                 item
               >
                 <GameCard

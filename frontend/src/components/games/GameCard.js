@@ -17,11 +17,14 @@ import UserContext from '../../context/UserContext';
 export default function GameCard({ game, onProfilePage }) {
   const { setGame, addGame, removeGame } = useContext(DataContext);
   const { currentUser, userGameIDs, navigate } = useContext(UserContext);
-  const inCollection = userGameIDs ? userGameIDs.has(game.id) : false;
+  const inCollection = userGameIDs ? userGameIDs.has(game.objectid) : false;
+  const name = Array.isArray(game.name)
+    ? game.name.filter((n) => n.primary)[0]._text
+    : game.name;
 
   const handleCardClick = () => {
-    setGame(game);
-    navigate(`/games/${game.id}`);
+    setGame('');
+    navigate(`/games/${game.objectid}`);
   };
 
   const handleQuickAddClick = () => {
@@ -78,8 +81,8 @@ export default function GameCard({ game, onProfilePage }) {
           }}
           component={'img'}
           height={230}
-          image={game.images.large || game.image_url}
-          alt={game.name}
+          image={game.image || game.thumbnail}
+          alt={name}
         />
         <CardContent sx={{ color: 'secondary.main' }}>
           <Typography
@@ -89,7 +92,7 @@ export default function GameCard({ game, onProfilePage }) {
             component='div'
             noWrap
           >
-            {game.name}
+            {name}
           </Typography>
           <Grid
             container
@@ -101,10 +104,10 @@ export default function GameCard({ game, onProfilePage }) {
             }}
           >
             <PlayersAndDuration
-              min_players={game.min_players}
-              max_players={game.max_players}
-              min_playtime={game.min_playtime}
-              max_playtime={game.max_playtime}
+              min_players={game.minplayers}
+              max_players={game.maxplayers}
+              min_playtime={game.minplaytime}
+              max_playtime={game.maxplaytime}
             />
           </Grid>
         </CardContent>

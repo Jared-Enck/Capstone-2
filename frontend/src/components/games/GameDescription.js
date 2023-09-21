@@ -9,6 +9,8 @@ import {
   Grid,
   Button,
   Stack,
+  ListItem,
+  ListItemText,
 } from '@mui/material';
 import { ExpandMore, ExpandLess, Add, Check } from '@mui/icons-material';
 import PlayersAndDuration from '../common/PlayersAndDuration';
@@ -33,7 +35,7 @@ export default function GameDescription({ game }) {
   const [open, setOpen] = useState(false);
   const { addGame } = useContext(DataContext);
   const { currentUser, userGameIDs } = useContext(UserContext);
-  const inCollection = userGameIDs ? userGameIDs.has(game.id) : false;
+  const inCollection = userGameIDs ? userGameIDs.has(game.objectid) : false;
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDescBtnClick = () => {
@@ -76,109 +78,115 @@ export default function GameDescription({ game }) {
       </Typography>
     </AddedBadgeBox>
   );
-
   return (
     <ContentContainer>
-      <Box display={'flex'}>
-        <Typography
-          variant={'h4'}
-          sx={{
-            color: 'secondary.main',
-            flex: 1,
-          }}
-        >
-          {game.name}
-        </Typography>
-        {currentUser
-          ? inCollection && !isLoading
-            ? AddedBadgeComp()
-            : AddButtonComp()
-          : null}
-      </Box>
-      <Grid
-        sx={{
-          color: 'primary.text',
-          padding: '.3rem',
-        }}
-        container
-        direction={'row'}
-        spacing={3}
-      >
-        <Grid item>{game.year_published}</Grid>
-        <PlayersAndDuration
-          min_players={game.min_players}
-          max_players={game.max_players}
-          min_playtime={game.min_playtime}
-          max_playtime={game.max_playtime}
-        />
-      </Grid>
-      <Divider sx={{ color: 'primary.muted' }} />
-      <Grid
-        container
-        direction={'row'}
-        padding={'1.2rem'}
-      >
+      <Stack spacing={1}>
+        <Box display={'flex'}>
+          <Typography
+            variant={'h4'}
+            sx={{
+              color: 'secondary.main',
+              flex: 1,
+            }}
+          >
+            {game.name}
+          </Typography>
+          {currentUser
+            ? inCollection
+              ? AddedBadgeComp()
+              : AddButtonComp()
+            : null}
+        </Box>
         <Grid
-          item
-          xs={4}
+          sx={{
+            color: 'primary.text',
+          }}
+          container
+          direction={'row'}
+          height={'2rem'}
         >
-          <img
-            width={300}
-            height={300}
-            src={game.image_url}
-            alt={game.name}
+          <Grid item>
+            <ListItem
+              disableGutters
+              sx={{ marginRight: 2 }}
+            >
+              <ListItemText>{game.yearpublished}</ListItemText>
+            </ListItem>
+          </Grid>
+          <PlayersAndDuration
+            min_players={game.minplayers}
+            max_players={game.maxplayers}
+            min_playtime={game.minplaytime}
+            max_playtime={game.maxplaytime}
           />
         </Grid>
+        <Divider sx={{ color: 'primary.muted' }} />
         <Grid
-          item
-          xs={7}
+          container
+          direction={'row'}
         >
-          {game.description_preview ? (
-            game.description_preview.length <= 900 ? (
-              <Typography
-                sx={{
-                  color: 'primary.text',
-                }}
-              >
-                {game.description_preview}
-              </Typography>
-            ) : (
-              <Stack>
-                <Collapse
-                  in={open}
-                  collapsedSize={265}
-                >
-                  <Typography
-                    sx={{
-                      color: 'primary.text',
-                    }}
-                  >
-                    {game.description_preview}
-                  </Typography>
-                </Collapse>
-                <Button
+          <Grid
+            item
+            xs={4}
+          >
+            <img
+              width={300}
+              height={300}
+              src={game.image}
+              alt={game.name}
+            />
+          </Grid>
+          <Grid
+            item
+            xs={7}
+          >
+            {game.description ? (
+              game.description.length < 900 ? (
+                <Typography
                   sx={{
-                    height: '1.5rem',
-                    color: 'secondary.main',
-                    '&:hover': {
-                      backgroundColor: 'secondary.main',
-                      color: 'primary.main',
-                    },
+                    color: 'primary.text',
                   }}
-                  variant='text'
-                  onClick={handleDescBtnClick}
                 >
-                  {open ? (
-                    <ExpandLess fontSize='large' />
-                  ) : (
-                    <ExpandMore fontSize='large' />
-                  )}
-                </Button>
-              </Stack>
-            )
-          ) : null}
+                  {game.description}
+                </Typography>
+              ) : (
+                <Stack>
+                  <Collapse
+                    in={open}
+                    collapsedSize={265}
+                  >
+                    <Typography
+                      sx={{
+                        color: 'primary.text',
+                      }}
+                    >
+                      {game.description}
+                    </Typography>
+                  </Collapse>
+                  <Button
+                    sx={{
+                      height: '1.5rem',
+                      color: 'secondary.main',
+                      '&:hover': {
+                        backgroundColor: 'secondary.main',
+                        color: 'primary.main',
+                      },
+                    }}
+                    variant='text'
+                    onClick={handleDescBtnClick}
+                  >
+                    {open ? (
+                      <ExpandLess fontSize='large' />
+                    ) : (
+                      <ExpandMore fontSize='large' />
+                    )}
+                  </Button>
+                </Stack>
+              )
+            ) : null}
+          </Grid>
         </Grid>
-      </Grid>
+      </Stack>
     </ContentContainer>
   );
 }

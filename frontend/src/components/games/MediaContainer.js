@@ -1,48 +1,36 @@
-import React from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { Grid, Typography } from '@mui/material';
 import MediaCard from './MediaCard';
 import ContentContainer from '../common/ContentContainer';
+import MediaSkeleton from './MediaSkeleton';
 
-export default function MediaContainer({ items, isVideo }) {
-  const handleClick = (url) => {
-    window.open(url, '_blank');
+export default function MediaContainer({ items, getVideos }) {
+  const videos = useRef();
+
+  const handleClick = (item) => {
+    console.log('opening video player...');
+    console.log(item);
   };
 
-  const header = isVideo ? 'Videos' : 'Images';
+  const handleScroll = useCallback((div) => {
+    const bottom = div.scrollHeight - div.scrollTop === div.clientHeight;
+    if (bottom) {
+      getVideos();
+      div.removeEventListener('scroll', () => handleScroll(div));
+    }
+  }, []);
 
-  const ImageCardComponent = (item) => (
-    <MediaCard
-      item={item}
-      size={'medium'}
-      height={200}
-      width={200}
-      handleClick={handleClick}
-    />
-  );
-
-  const VideoCardComponent = (item) => (
-    <MediaCard
-      item={item}
-      height={200}
-      width={300}
-      handleClick={handleClick}
-      isVideo
-    />
-  );
-
-  const NoMediaMessage = () => (
-    <Typography
-      variant='h5'
-      color={'primary.text'}
-      paddingLeft={5}
-    >
-      Sorry, no {header.toLowerCase()} uploaded yet.
-    </Typography>
-  );
+  useEffect(() => {
+    const div = videos.current;
+    if (div) {
+      div.addEventListener('scroll', () => handleScroll(div));
+    }
+  }, [videos, handleScroll]);
 
   return (
     <ContentContainer
-      header={header}
+      header={'Videos'}
+      headerData={items ? items.length : 0}
       divider
     >
       <Grid
@@ -55,19 +43,25 @@ export default function MediaContainer({ items, isVideo }) {
         container
         direction={'row'}
         spacing={2}
+        ref={videos}
       >
-        {items.length ? (
+        {items ? (
           items.map((i) => (
             <Grid
-              key={i.id}
+              key={i.id.videoId}
               item
               justifyContent={'center'}
             >
-              {isVideo ? VideoCardComponent(i) : ImageCardComponent(i)}
+              <MediaCard
+                item={i}
+                height={200}
+                width={300}
+                handleClick={handleClick}
+              />
             </Grid>
           ))
         ) : (
-          <NoMediaMessage />
+          <MediaSkeleton isVideo />
         )}
       </Grid>
     </ContentContainer>

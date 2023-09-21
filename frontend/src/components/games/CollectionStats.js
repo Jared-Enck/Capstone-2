@@ -18,7 +18,7 @@ export default function CollectionStats({ size }) {
       </Typography>
       <Typography color={'primary.text'}>Total Games: {size}</Typography>
       <Typography color={'primary.text'}>
-        Estimated Value: {`$${colValue.toLocaleString('en-Us')}`}
+        {/* Estimated Value: {`$${colValue.toLocaleString('en-Us')}`} */}
       </Typography>
     </Stack>
   );

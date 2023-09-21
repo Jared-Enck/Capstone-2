@@ -10,7 +10,7 @@ export default function GamesList({ games, handleGameClick }) {
         {games.length
           ? games.map((i, idx) => (
               <GamesListItem
-                key={i._attributes.id}
+                key={i.id}
                 item={i}
                 clickFunc={handleGameClick}
                 isLastItem={idx === games.length - 1}

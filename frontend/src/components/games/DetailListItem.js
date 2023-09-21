@@ -11,36 +11,36 @@ export default function DetailListItem({ param, item, isLastItem }) {
 
   // handle list item click
   const handleClick = () => {
-    if (resultsHeader !== item.name) {
+    if (resultsHeader !== item._text) {
       // clear previous results
       setSearchResults({ pages: {} });
       setResultsHeader('');
     }
-    navigate(`/search/${param}/${item.id}`);
+    navigate(`/search/${param}/${item.objectid}`);
   };
   return (
     <Grid item>
-      <Link
+      {/* <Link
         onClick={handleClick}
         variant='subtitle1'
         sx={{
           textDecoration: 'none',
           cursor: 'pointer',
         }}
-        aria-label={`search ${param} ${item.name}`}
+        aria-label={`search ${param} ${item.value}`}
+      > */}
+      <Typography
+        sx={{
+          color: 'primary.text',
+          // transition: 'all 250ms',
+          // '&:hover': {
+          //   color: 'secondary.main',
+          // },
+        }}
       >
-        <Typography
-          sx={{
-            color: 'primary.text',
-            transition: 'all 250ms',
-            '&:hover': {
-              color: 'secondary.main',
-            },
-          }}
-        >
-          {isLastItem ? item.name : item.name + ','}
-        </Typography>
-      </Link>
+        {isLastItem ? item._text : item._text + ','}
+      </Typography>
+      {/* </Link> */}
     </Grid>
   );
 }

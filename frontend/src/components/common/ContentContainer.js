@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Typography, Divider, alpha } from '@mui/material';
+import { Container, Typography, Divider, alpha, Stack } from '@mui/material';
 import styled from '@emotion/styled';
 
 const StyledContainer = styled(Container)(({ alphascale, theme }) => ({
@@ -14,6 +14,7 @@ export default function ContentContainer({
   alphascale = 1,
   shadow = 'none',
   header = null,
+  headerData,
   divider,
   blur,
   children,
@@ -28,15 +29,27 @@ export default function ContentContainer({
       }}
     >
       {header ? (
-        <Typography
-          variant={'h5'}
-          sx={{
-            color: 'secondary.main',
-          }}
-          gutterBottom
+        <Stack
+          direction={'row'}
+          spacing={2}
         >
-          {header}
-        </Typography>
+          <Typography
+            variant={'h5'}
+            sx={{
+              color: 'secondary.main',
+            }}
+            gutterBottom
+          >
+            {header}
+          </Typography>
+
+          {headerData ? (
+            <Typography
+              variant='h6'
+              sx={{ color: 'primary.muted' }}
+            >{`(${headerData})`}</Typography>
+          ) : null}
+        </Stack>
       ) : null}
       {divider ? <Divider sx={{ color: 'primary.muted' }} /> : null}
       {children}

@@ -24,7 +24,7 @@ const StyledListButton = styled(ListItemButton, {
 
 export default function GamesListItem({
   item,
-  id,
+  idx,
   clickFunc,
   isLastItem,
   dimensions = {
@@ -36,16 +36,13 @@ export default function GamesListItem({
 }) {
   const titleMaxWidth = homepage ? '80ch' : '47ch';
   const { name, thumbnail, yearpublished } = item;
-  const nameVal = name._attributes.value;
-  const thumbnailVal = item.thumbnail ? thumbnail._attributes.value : '';
-  const yearVal = yearpublished._attributes.value;
   return (
     <StyledListButton
       alignitems={'flex-start'}
-      onClick={() => clickFunc(id)}
+      onClick={() => clickFunc(item.id)}
       isLastItem={isLastItem}
     >
-      {thumbnailVal ? (
+      {thumbnail ? (
         <ListItemAvatar sx={{ marginRight: 2 }}>
           <Avatar
             variant='rounded'
@@ -53,8 +50,8 @@ export default function GamesListItem({
               height: dimensions.height,
               width: dimensions.width,
             }}
-            alt={nameVal}
-            src={thumbnailVal}
+            alt={name}
+            src={thumbnail}
           />
         </ListItemAvatar>
       ) : null}
@@ -75,7 +72,7 @@ export default function GamesListItem({
                 color: 'primary.text',
               }}
             >
-              {nameVal}
+              {name}
             </Typography>
           </Grid>
           <Grid
@@ -89,7 +86,7 @@ export default function GamesListItem({
                 color: 'primary.muted',
               }}
             >
-              {`( ${yearVal} )`}
+              {`( ${yearpublished} )`}
             </Typography>
           </Grid>
         </Grid>
