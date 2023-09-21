@@ -6,8 +6,9 @@ const config = {
   PORT: env.PORT || 3001,
   DB_URI: getDatabaseUri,
   BCRYPT_WORK_FACTOR: env.NODE_ENV === 'test' ? 1 : 13,
-  API_BASE_V1: env.API_BASE_V1,
-  API_BASE_V2: env.API_BASE_V2,
+  YOUTUBE_API_KEY: env.YOUTUBE_API_KEY,
+  BGG_API_BASE_V1: env.BGG_API_BASE_V1,
+  BGG_API_BASE_V2: env.BGG_API_BASE_V2,
 };
 
 function getDatabaseUri() {
