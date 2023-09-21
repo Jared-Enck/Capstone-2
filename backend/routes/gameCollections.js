@@ -45,8 +45,8 @@ router.post(
   async function (req, res, next) {
     try {
       const username = req.params.username;
-      const { id } = req.body;
-      await GameCollection.addGame({ username, id });
+      const { gameID } = req.body;
+      await GameCollection.addGame({ username, gameID });
       return res.status(201).json('added');
     } catch (err) {
       return next(err);
@@ -70,8 +70,8 @@ router.delete(
   async function (req, res, next) {
     try {
       const username = req.params.username;
-      const { id } = req.body;
-      const result = await GameCollection.removeGame({ username, id });
+      const { gameID } = req.body;
+      const result = await GameCollection.removeGame({ username, gameID });
       const statusCode = result === -1 ? 204 : 200;
       return res.status(statusCode).json(result);
     } catch (err) {
