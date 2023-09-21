@@ -23,13 +23,13 @@ class GameCollection {
    *
    **/
 
-  static async addGame({ username, id }) {
+  static async addGame({ username, gameID }) {
     const querySql = `INSERT INTO game_collections
           (username, game_id)
         VALUES
           ($1,$2)`;
 
-    await db.query(querySql, [username, id]);
+    await db.query(querySql, [username, gameID]);
   }
 
   /** Remove games from a user's collection with username and game object
@@ -38,12 +38,12 @@ class GameCollection {
    *
    **/
 
-  static async removeGame({ username, id }) {
+  static async removeGame({ username, gameID }) {
     const querySql = `DELETE FROM game_collections
         WHERE username = $1 AND game_id = $2
         RETURNING game_id AS "gameID"`;
 
-    const results = await db.query(querySql, [username, id]);
+    const results = await db.query(querySql, [username, gameID]);
 
     return results.rows.length > 0 ? 'deleted' : -1;
   }
