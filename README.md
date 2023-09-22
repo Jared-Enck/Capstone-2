@@ -1,6 +1,6 @@
 # MyGameNights
 
-Deployed on render: https://mygamenights.onrender.com/
+https://mygamenights.com/
 
 ### Description
 
