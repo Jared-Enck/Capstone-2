@@ -29,7 +29,6 @@ export default function CollectionSkeleton({ itemsOnPage }) {
       >
         <BaseSkeleton />
         <BaseSkeleton height='1.5rem' />
-        <BaseSkeleton height='1.5rem' />
       </Stack>
       <Grid
         container

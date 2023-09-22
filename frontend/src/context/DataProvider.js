@@ -148,9 +148,7 @@ export default function DataProvider({ children }) {
       };
       setIsLoading(true);
       const res = await GameNightApi.getVideos(videosRequest);
-      console.log(res);
       setVideos((prev) => [...prev, ...res.items]);
-      console.log(res.nextPageToken);
       setNextPageToken(res.nextPageToken);
       setIsLoading(false);
     } catch (err) {
