@@ -221,7 +221,8 @@ class ThirdPartyApi {
       return (await youtube.search.list(params)).data;
     } catch (err) {
       console.error('Error: ', err.config.url, err.config.params, err.errors);
-      throw new Error(err.errors);
+      let message = err.errors;
+      throw Array.isArray(message) ? message : [message];
     }
   }
 
