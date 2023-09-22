@@ -1,6 +1,12 @@
 # MyGameNights
 
+<<<<<<< HEAD
 https://mygamenights.com/
+=======
+*** Unfortunately the free API being used for data is no longer live. I am working on update to resolve this issue. ***
+
+Deployed on render: https://mygamenights.com/
+>>>>>>> 8fca3fcbb2c99b34b8e66b7d72993ce7ece10cb8
 
 ### Description
 
