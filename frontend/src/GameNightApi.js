@@ -1,7 +1,6 @@
 import axios from 'axios';
-
-// const BASE_URL = 'https://mygamenights-backend-7938064403b3.herokuapp.com';
-const BASE_URL = 'http://localhost:3001';
+import { config } from './constants';
+const BASE_URL = config.BASE_URL;
 
 export default class GameNightApi {
   // the token for interactive with the API will be stored here.
