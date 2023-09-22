@@ -61,22 +61,33 @@ class ThirdPartyApi {
   static xmlConverter = (xml, version) => {
     const serialized = convert.xml2json(xml, { compact: true, spaces: 4 });
 
+    const found = (serialized) => {
+      const jsonItems = JSON.parse(serialized).items;
+      if (jsonItems._attributes.total === '0') {
+        return -1;
+      } else {
+        return jsonItems.item;
+      }
+    };
+
     const result =
       version === 'V2'
-        ? JSON.parse(serialized).items.item
+        ? found(serialized)
         : JSON.parse(serialized).boardgames.boardgame;
 
-    if (Array.isArray(result)) {
-      return result.map((i) => this.flatten(i));
+    if (result) {
+      if (Array.isArray(result)) {
+        return result.map((i) => this.flatten(i));
+      } else {
+        return this.flatten(result);
+      }
     } else {
-      return this.flatten(result);
+      return result;
     }
   };
 
   // Flatten nested node like objects
   static flatten = (obj) => {
-    if (obj.poll) delete obj.poll;
-
     for (let key in obj) {
       if (obj[key]._text) obj[key] = obj[key]._text;
 
