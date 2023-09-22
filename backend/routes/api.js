@@ -33,11 +33,10 @@ router.get('/cache/hot', async function (req, res, next) {
  * Authorization required: none
  */
 
-router.get('/cache/games', function (req, res, next) {
+router.get('/cache/games', async function (req, res, next) {
   try {
-    const { gameID } = req.query;
-    const result = ThirdPartyApi.checkGames(gameID);
-    return res.json(result);
+    const game = await ThirdPartyApi.checkGames(req.query);
+    return res.json(game);
   } catch (err) {
     return next(err);
   }
@@ -123,6 +122,16 @@ router.get('/collection', async function (req, res, next) {
   try {
     const query = req.query;
     const results = await ThirdPartyApi.getCollection(query);
+    return res.json(results);
+  } catch (err) {
+    return next(err);
+  }
+});
+
+router.get('/search-with-googleapis', async function (req, res, next) {
+  try {
+    const { title, nextPageToken } = req.query;
+    const results = await ThirdPartyApi.getVideos(title, nextPageToken);
     return res.json(results);
   } catch (err) {
     return next(err);
