@@ -22,9 +22,9 @@ export default class GameNightApi {
     try {
       return (await axios({ url, method, data, params, headers })).data;
     } catch (err) {
-      console.error('API Server Error:', err.response);
-      let message = err.response.data.error.message;
-      throw Array.isArray(message) ? message : [message];
+      console.error('API Error:', err);
+      let message = err.errors;
+      throw new Error(Array.isArray(message) ? message : [message]);
     }
   }
 
@@ -85,17 +85,23 @@ export default class GameNightApi {
     return res;
   }
 
+  /** Get next videos based on game title and nextPageToken */
+  static async getVideos(videosRequest) {
+    const res = await this.request('api/search-with-googleapis', videosRequest);
+    return res;
+  }
+
   /** Cache game complete obj */
   static async cacheGame(game) {
     await this.request('api/cache/games', game, 'post');
   }
 
-  /** Get game images, videos, mechanic names, and category names for specific game id */
-  static async getGame(gameID) {
-    const res = await this.request(`api/game_media`, { gameID });
-
-    return res;
-  }
+  // ***Depricated due to new API***
+  // /** Get game images, videos, mechanic names, and category names for specific game id */
+  // static async getGame(gameID) {
+  //   const res = await this.request(`api/game_media`, { gameID });
+  //   return res;
+  // }
 
   /** Get game ids in a user's collection */
   static async getGames(username) {
@@ -104,20 +110,20 @@ export default class GameNightApi {
   }
 
   /** Add game to currentUser collection */
-  static async addGame({ id, username }) {
+  static async addGame({ gameID, username }) {
     const res = await this.request(
       `gameCollections/${username}`,
-      { id },
+      { gameID },
       'post'
     );
     return res;
   }
 
   /** Remove game from currentUser collection */
-  static async removeGame({ id, username }) {
+  static async removeGame({ gameID, username }) {
     const res = await this.request(
       `gameCollections/${username}`,
-      { id },
+      { gameID },
       'delete'
     );
     return res;
@@ -127,7 +133,6 @@ export default class GameNightApi {
   static async getCollection(gameIDs) {
     const res = await this.request(`api/collection`, {
       ids: gameIDs,
-      limit: 100,
     });
     return res;
   }

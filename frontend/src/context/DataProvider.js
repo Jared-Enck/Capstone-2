@@ -134,9 +134,7 @@ export default function DataProvider({ children }) {
     try {
       const res = await GameNightApi.checkGameCache(game);
       setGame(res);
-      console.log(res);
       setVideos(res.videos.items);
-      setNextPageToken(res.videos.nextPageToken);
     } catch (err) {
       console.error('Error: ', err);
     }
@@ -151,7 +149,8 @@ export default function DataProvider({ children }) {
       setIsLoading(true);
       const res = await GameNightApi.getVideos(videosRequest);
       console.log(res);
-      setVideos(res.items);
+      setVideos((prev) => [...prev, ...res.items]);
+      console.log(res.nextPageToken);
       setNextPageToken(res.nextPageToken);
       setIsLoading(false);
     } catch (err) {
