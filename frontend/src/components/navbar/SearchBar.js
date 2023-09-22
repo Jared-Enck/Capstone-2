@@ -59,7 +59,6 @@ export default function SearchBar() {
   const clearBoxResults = () => {
     setOpen(false);
     setSearchTerm('');
-    setBoxResults('');
   };
 
   const handleClickAway = () => {
@@ -70,7 +69,6 @@ export default function SearchBar() {
   const handleChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
-    setBoxResults('');
     // GET request to API for results matching searchTerm
     debouncedRequest();
   };
@@ -90,16 +88,14 @@ export default function SearchBar() {
         autoComplete='off'
       />
       {/* {Object.keys(boxResults).length} */}
-      {boxResults.length ? (
-        <ClickAwayListener onClickAway={handleClickAway}>
-          <Collapse in={open}>
-            <SearchBoxResults
-              results={boxResults}
-              clearBoxResults={clearBoxResults}
-            />
-          </Collapse>
-        </ClickAwayListener>
-      ) : null}
+      <ClickAwayListener onClickAway={handleClickAway}>
+        <Collapse in={open}>
+          <SearchBoxResults
+            results={boxResults}
+            clearBoxResults={clearBoxResults}
+          />
+        </Collapse>
+      </ClickAwayListener>
     </Search>
   );
 }

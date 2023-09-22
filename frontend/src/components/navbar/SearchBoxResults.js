@@ -22,7 +22,6 @@ export default function SearchBoxResults({ results, clearBoxResults }) {
   // const mechanics = results.foundMechanics || [];
   // const categories = results.foundCategories || [];
   // const games = results.foundGames || [];
-  const games = results || [];
 
   const { setGame, setResultsHeader, setSearchResults, isLoading } =
     useContext(DataContext);
@@ -44,7 +43,7 @@ export default function SearchBoxResults({ results, clearBoxResults }) {
     clearBoxResults();
   };
 
-  const NoGamesFound = () => {
+  function NoGamesFound() {
     return (
       <Typography
         variant='h6'
@@ -58,7 +57,7 @@ export default function SearchBoxResults({ results, clearBoxResults }) {
         No results found.
       </Typography>
     );
-  };
+  }
 
   return (
     <StyledBox sx={{ boxShadow: 2 }}>
@@ -93,9 +92,9 @@ export default function SearchBoxResults({ results, clearBoxResults }) {
           <Box padding={1}>
             <CircularLoading />
           </Box>
-        ) : games.length ? (
+        ) : results.length ? (
           <GamesList
-            games={games.slice(0, 10)}
+            games={results.slice(0, 10)}
             handleGameClick={handleGameClick}
           />
         ) : (
