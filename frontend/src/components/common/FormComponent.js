@@ -112,7 +112,7 @@ export default function FormComponent({
                     margin: 'auto',
                   }}
                 >
-                  Don't have an account yet? Sign in
+                  Don't have an account yet? Sign up
                   <Link to={'/signup'}> here.</Link>
                 </Typography>
               </Box>
