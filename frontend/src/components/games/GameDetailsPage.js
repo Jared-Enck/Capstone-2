@@ -21,7 +21,6 @@ export default function GameDetailsPage() {
         // GET request to check cache for game
         checkGameCache(gameID);
       }
-      if (game) console.log(game);
     } catch (err) {
       console.error(err);
     }

@@ -12,20 +12,20 @@ export default function MediaContainer({ items, getVideos }) {
     console.log(item);
   };
 
-  const handleScroll = useCallback((div) => {
-    const bottom = div.scrollHeight - div.scrollTop === div.clientHeight;
-    if (bottom) {
-      getVideos();
-      div.removeEventListener('scroll', () => handleScroll(div));
-    }
-  }, []);
+  // const handleScroll = useCallback((div) => {
+  //   const bottom = div.scrollHeight - div.scrollTop === div.clientHeight;
+  //   if (bottom) {
+  //     getVideos();
+  //     div.removeEventListener('scroll', () => handleScroll(div));
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    const div = videos.current;
-    if (div) {
-      div.addEventListener('scroll', () => handleScroll(div));
-    }
-  }, [videos, handleScroll]);
+  // useEffect(() => {
+  //   const div = videos.current;
+  //   if (div) {
+  //     div.addEventListener('scroll', () => handleScroll(div));
+  //   }
+  // }, [videos, handleScroll]);
 
   return (
     <ContentContainer
