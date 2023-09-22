@@ -31,21 +31,20 @@ export default function Home() {
           Welcome to MyGameNights!
         </Typography>
         <p>
-          You can browse an extensive library of games by searching for game
-          titles, mechanics, or categories.
+          You can browse an extensive library of games by searching for board
+          game titles.
         </p>
         <p>
           Create a profile and use MyGameNights to compile a digital library of
-          all your games. Your personal collection is now complete with
-          pictures, videos, and resources to jog your memory when you’ve
-          forgotten the rules or to help you decide what to play. There’s even
-          an estimated value feature so you can flex on your friends!
+          all your games. Your personal collection is now complete with videos
+          and resources to jog your memory when you’ve forgotten the rules or to
+          help you decide what to play.
         </p>
-        <p>
+        {/* <p>
           MyGameNights makes it easy to find new games using a mechanic you
           love, expansions for your tried and true staples, or games built
           around your favorite franchise. (Star Wars anyone?)
-        </p>
+        </p> */}
         <p>
           Click around. Have fun. Build your collection. Game night has never
           been better.
