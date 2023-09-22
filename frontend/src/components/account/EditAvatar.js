@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Grid,
-  Avatar,
-  Box,
-  Button,
-  InputLabel,
-  TextField,
-} from '@mui/material';
+import { Grid, Avatar, Box, Button, InputLabel } from '@mui/material';
 import { PhotoCamera } from '@mui/icons-material';
 
 export default function EditAvatar({ imageURL, handleFileUpload }) {
@@ -49,7 +42,7 @@ export default function EditAvatar({ imageURL, handleFileUpload }) {
               />
               Upload Image
             </Button>
-            <TextField
+            <input
               id='imageURL'
               type='file'
               hidden
