@@ -130,11 +130,11 @@ export default function DataProvider({ children }) {
    * if not found, call getGameMedia with gameID
    *
    */
-  const checkGameCache = useCallback(async (game) => {
+  const checkGameCache = useCallback(async (gameID) => {
     try {
-      const res = await GameNightApi.checkGameCache(game);
+      const res = await GameNightApi.checkGameCache(gameID);
       setGame(res);
-      setVideos(res.videos.items);
+      if (res !== -1) setVideos(res.videos.items);
     } catch (err) {
       console.error('Error: ', err);
     }
