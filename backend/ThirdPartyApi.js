@@ -179,13 +179,19 @@ class ThirdPartyApi {
 
   static async checkGames(query) {
     const { gameID } = query;
+    if (!Number(gameID)) return -1;
+
     const found = gamesCache.get(`${gameID}`);
 
     if (!found) {
       try {
         const game = await this.getGame(gameID);
-        gamesCache.set(gameID, game, [14400]);
-        return game;
+        if (game.error) {
+          return -1;
+        } else {
+          gamesCache.set(gameID, game, [14400]);
+          return game;
+        }
       } catch (err) {
         console.error(err);
 
