@@ -12,10 +12,10 @@ import {
 import { Edit } from '@mui/icons-material';
 import ContentContainer from '../common/ContentContainer';
 import ProfileSkeleton from './ProfileSkeleton';
-import CollectionSkeleton from '../games/CollectionSkeleton';
+import CollectionSkeleton from '../collection/CollectionSkeleton';
 import EditProfile from './EditProfile';
 
-const CollectionComp = lazy(() => import('../games/Collection'));
+const CollectionComp = lazy(() => import('../collection/Collection'));
 
 export default function Profile({ itemsOnPage }) {
   const { username } = useParams();

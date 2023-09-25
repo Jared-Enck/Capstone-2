@@ -1,15 +1,12 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React from 'react';
 import { Grid, Typography } from '@mui/material';
 import MediaCard from './MediaCard';
 import ContentContainer from '../common/ContentContainer';
 import MediaSkeleton from './MediaSkeleton';
 
-export default function MediaContainer({ items, getVideos }) {
-  const videos = useRef();
-
+export default function MediaContainer({ items }) {
   const handleClick = (item) => {
-    console.log('opening video player...');
-    console.log(item);
+    console.log(item.id.videoId);
   };
 
   // const handleScroll = useCallback((div) => {
@@ -43,7 +40,6 @@ export default function MediaContainer({ items, getVideos }) {
         container
         direction={'row'}
         spacing={2}
-        ref={videos}
       >
         {items ? (
           items.map((i) => (

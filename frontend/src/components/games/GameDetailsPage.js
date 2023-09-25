@@ -1,17 +1,16 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import DataContext from '../../context/DataContext';
 import { Stack, Typography } from '@mui/material';
 import ContentContainer from '../common/ContentContainer';
 import GameDescription from './GameDescription';
 import GameDescSkeleton from './GameDescSkeleton';
-import MediaContainer from './MediaContainer';
-import MediaSkeleton from './MediaSkeleton';
+import MediaContainer from '../videos/MediaContainer';
+import MediaSkeleton from '../videos/MediaSkeleton';
 import GameDetails from './GameDetails';
 
 export default function GameDetailsPage() {
-  const { game, videos, getVideos, nextPageToken, checkGameCache } =
-    useContext(DataContext);
+  const { game, videos, checkGameCache } = useContext(DataContext);
   const gameID = useParams().id;
   const { pathname } = useLocation();
 
@@ -40,17 +39,12 @@ export default function GameDetailsPage() {
     </Stack>
   );
 
-  return (
+  return game === -1 ? (
+    <NoGameFound />
+  ) : (
     <Stack spacing={'.3rem'}>
       {game ? <GameDescription game={game} /> : <GameDescSkeleton />}
-      {game ? (
-        <MediaContainer
-          items={videos}
-          getVideos={() => getVideos(nextPageToken)}
-        />
-      ) : (
-        <MediaSkeleton isVideo />
-      )}
+      {game ? <MediaContainer items={videos} /> : <MediaSkeleton isVideo />}
       <GameDetails game={game} />
     </Stack>
   );

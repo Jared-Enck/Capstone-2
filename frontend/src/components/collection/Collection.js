@@ -8,7 +8,7 @@ import React, {
 import DataContext from '../../context/DataContext';
 import UserContext from '../../context/UserContext';
 import { Grid, Stack, Typography } from '@mui/material';
-import GameCard from './GameCard';
+import GameCard from '../games/GameCard';
 import ResultsPagination from '../common/ResultsPagination';
 import usePagination from '../../hooks/usePagination';
 import CollectionSkeleton from './CollectionSkeleton';
