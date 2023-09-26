@@ -49,7 +49,6 @@ export default function MediaContainer({ items }) {
             <Grid
               key={i.id.videoId}
               item
-              justifyContent={'center'}
             >
               <MediaCard
                 item={i}
@@ -60,7 +59,10 @@ export default function MediaContainer({ items }) {
             </Grid>
           ))
         ) : (
-          <MediaSkeleton isVideo />
+          <MediaSkeleton
+            fullScreen={fullScreen}
+            isVideo
+          />
         )}
       </Grid>
     </ContentContainer>
