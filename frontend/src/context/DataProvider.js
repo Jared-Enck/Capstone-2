@@ -86,48 +86,9 @@ export default function DataProvider({ children }) {
     [searchResults.pages]
   );
 
-  /** Get game media based on gameID
-   * @param {*} gameID string
-   *
-   * GET mechanic and category info from cache
-   * GET request to API for images and videos
-   * 
-   * caches completeGame obj
-   * 
-   * where completeGame = {
-          ...game,
-          detail_images,
-          videos,
-        }
-   */
-  // const getGameMedia = useCallback(
-  //   async (gameID) => {
-  //     try {
-  //       const mechanicIDs = game.mechanics.map((m) => m.id);
-  //       const categoryIDs = game.categories.map((m) => m.id);
-  //       const { mechanicsRes, categoriesRes, detail_images, videos } =
-  //         await GameNightApi.getGameMedia(gameID, mechanicIDs, categoryIDs);
-  //       game.mechanics = mechanicsRes;
-  //       game.categories = categoriesRes;
-  //       const completeGame = {
-  //         ...game,
-  //         detail_images,
-  //         videos,
-  //       };
-  //       setGame(completeGame);
-  //       GameNightApi.cacheGame(completeGame);
-  //     } catch (err) {
-  //       console.error('Error: ', err);
-  //     }
-  //   },
-  //   [game]
-  // );
-
   /** Check cache for game
    *
    * @param {*} game string
-   *
-   * if not found, call getGameMedia with gameID
    *
    */
   const checkGameCache = useCallback(async (gameID) => {
@@ -155,17 +116,6 @@ export default function DataProvider({ children }) {
       console.error('Error: ', err);
     }
   }
-
-  /** Calculate collection value
-   * @param {*} collection [ game, ...]
-   *
-   * maps collection and setColValue with total
-   */
-  const getCollectionValue = (collection) => {
-    let total = 0;
-    collection.map((g) => (total += g.msrp));
-    setColValue(total);
-  };
 
   // GET gameIDs for currentUser
   const getGameIDs = useCallback(async () => {
