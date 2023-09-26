@@ -6,7 +6,7 @@ import MediaSkeleton from './MediaSkeleton';
 import VideoPlayer from './VideoPlayer';
 import { useTheme } from '@mui/material/styles';
 
-export default function MediaContainer({ items }) {
+export default function MediaContainer({ game, items }) {
   const [open, setOpen] = useState(false);
   const [video, setVideo] = useState('');
   const theme = useTheme();
@@ -44,7 +44,7 @@ export default function MediaContainer({ items }) {
         spacing={2}
         justifyContent={fullScreen ? 'space-around' : 'space-between'}
       >
-        {items ? (
+        {game ? (
           items.map((i) => (
             <Grid
               key={i.id.videoId}

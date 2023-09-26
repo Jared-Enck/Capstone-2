@@ -44,7 +44,10 @@ export default function GameDetailsPage() {
   ) : (
     <Stack spacing={'.3rem'}>
       {game ? <GameDescription game={game} /> : <GameDescSkeleton />}
-      {game ? <MediaContainer items={videos} /> : <MediaSkeleton isVideo />}
+      <MediaContainer
+        game={game}
+        items={videos}
+      />
       <GameDetails game={game} />
     </Stack>
   );
