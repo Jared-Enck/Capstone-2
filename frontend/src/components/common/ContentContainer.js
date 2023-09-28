@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import DataContext from '../../context/DataContext';
 import { Container, Typography, Divider, alpha, Stack } from '@mui/material';
 import styled from '@emotion/styled';
 
@@ -6,7 +7,6 @@ const StyledContainer = styled(Container)(({ alphascale, theme }) => ({
   margin: 0,
   backgroundColor: alpha(`${theme.palette.primary.main}`, alphascale),
   borderRadius: theme.shape.borderRadius,
-  padding: '1.5rem',
   alignSelf: 'center',
 }));
 
@@ -19,11 +19,13 @@ export default function ContentContainer({
   blur,
   children,
 }) {
+  const { isSmallScreen } = useContext(DataContext);
   return (
     <StyledContainer
       maxWidth={'lg'}
       alphascale={alphascale}
       sx={{
+        padding: isSmallScreen ? '.5rem' : '1.5rem',
         boxShadow: shadow,
         backdropFilter: blur ? `blur(7px)` : 'none',
       }}
@@ -34,7 +36,7 @@ export default function ContentContainer({
           spacing={2}
         >
           <Typography
-            variant={'h5'}
+            variant={isSmallScreen ? 'h5' : 'h4'}
             sx={{
               color: 'secondary.main',
             }}
@@ -51,7 +53,7 @@ export default function ContentContainer({
           ) : null}
         </Stack>
       ) : null}
-      {divider ? <Divider sx={{ color: 'primary.muted' }} /> : null}
+      {divider ? <Divider sx={{ bgcolor: 'primary.dark' }} /> : null}
       {children}
     </StyledContainer>
   );

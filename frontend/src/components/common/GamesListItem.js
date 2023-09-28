@@ -6,18 +6,20 @@ import {
   Avatar,
   Typography,
   alpha,
-  Grid,
+  Box,
 } from '@mui/material';
 import styled from '@emotion/styled';
 
 const StyledListButton = styled(ListItemButton, {
   shouldForwardProp: (prop) => prop !== 'isLastItem',
-})(({ isLastItem, theme }) => ({
+})(({ isLastItem, homepage, theme }) => ({
   padding: '.3rem .3rem',
   fontSize: '.7rem',
+  color: theme.palette.primary.text,
+  width: '100%',
   borderRadius: isLastItem ? '0px 0px 6px 6px' : null,
   '&:hover': {
-    backgroundColor: alpha(theme.palette.primary.main, 0.4),
+    backgroundColor: alpha(theme.palette.primary.main, 0.2),
     borderRadius: isLastItem ? '0px 0px 6px 6px' : null,
   },
 }));
@@ -33,8 +35,8 @@ export default function GamesListItem({
     fontSize: 'h6',
   },
   homepage,
+  isSmallScreen,
 }) {
-  const titleMaxWidth = homepage ? '80ch' : '47ch';
   const { name, thumbnail, yearpublished } = item;
   return (
     <StyledListButton
@@ -43,7 +45,7 @@ export default function GamesListItem({
       isLastItem={isLastItem}
     >
       {thumbnail ? (
-        <ListItemAvatar sx={{ marginRight: 2 }}>
+        <ListItemAvatar sx={{ marginRight: isSmallScreen ? -1 : 2 }}>
           <Avatar
             variant='rounded'
             sx={{
@@ -56,40 +58,27 @@ export default function GamesListItem({
         </ListItemAvatar>
       ) : null}
       <ListItemText>
-        <Grid
-          container
-          direction={'row'}
-          spacing={2}
+        <Box
+          sx={{
+            display: 'flex',
+            color: homepage ? 'white' : 'inherit',
+            textShadow: homepage ? `1px 1px 1px rgba(0,0,0,.5)` : 'none',
+          }}
         >
-          <Grid
-            item
-            sx={{ maxWidth: titleMaxWidth }}
+          <Typography
+            variant={dimensions.fontSize}
+            noWrap
+            sx={{
+              maxWidth: isSmallScreen ? '72%' : '85%',
+              flexGrow: 1,
+            }}
           >
-            <Typography
-              variant={dimensions.fontSize}
-              noWrap
-              sx={{
-                color: 'primary.text',
-              }}
-            >
-              {name}
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            alignSelf={'center'}
-          >
-            <Typography
-              variant={dimensions.fontSize}
-              noWrap
-              sx={{
-                color: 'primary.muted',
-              }}
-            >
-              {`( ${yearpublished} )`}
-            </Typography>
-          </Grid>
-        </Grid>
+            {name}
+          </Typography>
+          <Typography variant={dimensions.fontSize}>
+            {`( ${yearpublished ? yearpublished : 'N/A'} )`}
+          </Typography>
+        </Box>
       </ListItemText>
     </StyledListButton>
   );
