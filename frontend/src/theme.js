@@ -15,7 +15,7 @@ export const themeLight = createTheme({
       light: common.white,
       main: '#faf9f6',
       dark: grey[300],
-      text: grey[800],
+      text: grey[900],
       muted: grey[500],
     },
     secondary: {
