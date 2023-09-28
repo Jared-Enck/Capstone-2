@@ -47,7 +47,7 @@ export const FormBox = styled(Box)(() => ({
 }));
 
 export const FormTextField = styled(TextField)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.dark,
+  backgroundColor: alpha(theme.palette.primary.main, 0.4),
   borderRadius: theme.shape.borderRadius,
   color: theme.palette.primary.text,
   '& label': {
@@ -62,11 +62,11 @@ export const FormTextField = styled(TextField)(({ theme }) => ({
     color: theme.palette.primary.text,
     transition: 'all 200ms',
     '&: hover': {
-      backgroundColor: alpha(`${theme.palette.primary.light}`, 0.5),
+      backgroundColor: alpha(`${theme.palette.primary.light}`, 0.4),
     },
   },
   '& .MuiInputBase-root.Mui-focused': {
-    backgroundColor: alpha(`${theme.palette.primary.light}`, 0.5),
+    backgroundColor: alpha(`${theme.palette.primary.light}`, 0.4),
     borderRadius: theme.shape.borderRadius,
     '& > fieldset': {
       borderColor: theme.palette.secondary.main,

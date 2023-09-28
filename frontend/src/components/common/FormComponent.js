@@ -46,10 +46,7 @@ export default function FormComponent({
 
   return (
     <Stack sx={{ paddingTop: 10 }}>
-      <ContentContainer
-        alphascale={0.4}
-        blur
-      >
+      <ContentContainer alphascale={0.4}>
         <FormBox
           component='form'
           onSubmit={handleSubmit}
