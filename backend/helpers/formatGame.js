@@ -1,3 +1,5 @@
+const he = require('he');
+
 const formatGame = (game) => {
   game.name = Array.isArray(game.name)
     ? game.name.filter((n) => n.primary)[0]._text
@@ -21,6 +23,8 @@ const formatGame = (game) => {
 
   delete game.boardgamepublisher;
   delete game.boardgameartist;
+
+  game.description = he.decode(game.description);
 };
 
 module.exports = formatGame;
