@@ -3,9 +3,14 @@ import DataContext from './DataContext';
 import useDebounce from '../hooks/useDebounce';
 import GameNightApi from '../GameNightApi';
 import UserContext from './UserContext';
+import { useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 // Provides DataContext for children
 export default function DataProvider({ children }) {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
+
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [boxResults, setBoxResults] = useState('');
@@ -210,6 +215,7 @@ export default function DataProvider({ children }) {
   return (
     <DataContext.Provider
       value={{
+        isSmallScreen,
         isLoading,
         setIsLoading,
         searchTerm,
