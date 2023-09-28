@@ -6,7 +6,6 @@ import ContentContainer from '../common/ContentContainer';
 import GameDescription from './GameDescription';
 import GameDescSkeleton from './GameDescSkeleton';
 import MediaContainer from '../videos/MediaContainer';
-import MediaSkeleton from '../videos/MediaSkeleton';
 import GameDetails from './GameDetails';
 
 export default function GameDetailsPage() {
