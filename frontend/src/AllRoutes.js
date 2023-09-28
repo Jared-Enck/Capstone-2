@@ -6,7 +6,7 @@ import Home from './components/Home';
 import LoginForm from './components/account/LoginForm';
 import SignUpForm from './components/account/SignUpForm';
 import Profile from './components/account/Profile';
-import SearchResultsPage from './components/search/SearchResultsPage';
+// import SearchResultsPage from './components/search/SearchResultsPage';
 import GameDetailsPage from './components/games/GameDetailsPage';
 
 export default function AllRoutes() {
@@ -33,10 +33,10 @@ export default function AllRoutes() {
         path='/profile/:username'
         element={<Profile itemsOnPage={9} />}
       />
-      <Route
+      {/* <Route
         path='search/:path/:id'
         element={<SearchResultsPage itemsOnPage={30} />}
-      />
+      /> */}
       <Route
         path='/games/:id'
         element={<GameDetailsPage />}
