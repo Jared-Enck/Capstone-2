@@ -129,7 +129,7 @@ export default function GameDescription({ game }) {
             max_playtime={game.maxplaytime}
           />
         </Grid>
-        <Divider sx={{ color: 'primary.muted' }} />
+        <Divider sx={{ bgcolor: 'primary.dark' }} />
         <Grid
           container
           direction={'row'}
