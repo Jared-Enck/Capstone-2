@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import DataContext from '../../context/DataContext';
 import UserContext from '../../context/UserContext';
 import {
@@ -78,6 +78,15 @@ export default function GameDescription({ game }) {
       </Typography>
     </AddedBadgeBox>
   );
+
+  useEffect(() => {
+    const descFrag = document
+      .createRange()
+      .createContextualFragment(game.description);
+    const description = document.getElementById('description');
+    description.appendChild(descFrag);
+  }, []);
+
   return (
     <ContentContainer>
       <Stack spacing={1}>
@@ -141,28 +150,19 @@ export default function GameDescription({ game }) {
             xs={7}
           >
             {game.description ? (
-              game.description.length < 900 ? (
-                <Typography
-                  sx={{
-                    color: 'primary.text',
-                  }}
+              <Stack spacing={1}>
+                <Collapse
+                  in={open}
+                  collapsedSize={265}
                 >
-                  {game.description}
-                </Typography>
-              ) : (
-                <Stack>
-                  <Collapse
-                    in={open}
-                    collapsedSize={265}
-                  >
-                    <Typography
-                      sx={{
-                        color: 'primary.text',
-                      }}
-                    >
-                      {game.description}
-                    </Typography>
-                  </Collapse>
+                  <Typography
+                    id='description'
+                    sx={{
+                      color: 'primary.text',
+                    }}
+                  />
+                </Collapse>
+                {game.description.length > 900 ? (
                   <Button
                     sx={{
                       height: '1.5rem',
@@ -181,8 +181,8 @@ export default function GameDescription({ game }) {
                       <ExpandMore fontSize='large' />
                     )}
                   </Button>
-                </Stack>
-              )
+                ) : null}
+              </Stack>
             ) : null}
           </Grid>
         </Grid>
