@@ -94,7 +94,7 @@ export default function Home() {
                   isLastItem={i === hotGames.length - 1}
                   dimensions={isSmallScreen ? {} : homeListDimensions}
                   isSmallScreen={isSmallScreen}
-                  homepage
+                  hotListItem
                 />
               );
             })
