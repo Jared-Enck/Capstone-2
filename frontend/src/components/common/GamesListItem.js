@@ -12,15 +12,17 @@ import styled from '@emotion/styled';
 
 const StyledListButton = styled(ListItemButton, {
   shouldForwardProp: (prop) => prop !== 'isLastItem',
-})(({ isLastItem, homepage, theme }) => ({
+})(({ isLastItem, theme }) => ({
   padding: '.3rem .3rem',
   fontSize: '.7rem',
-  color: theme.palette.primary.text,
   width: '100%',
   borderRadius: isLastItem ? '0px 0px 6px 6px' : null,
+  transition: '150ms ease-out',
   '&:hover': {
     backgroundColor: alpha(theme.palette.primary.main, 0.2),
+    color: theme.palette.secondary.main,
     borderRadius: isLastItem ? '0px 0px 6px 6px' : null,
+    transition: '200ms ease-in',
   },
 }));
 
@@ -34,7 +36,7 @@ export default function GamesListItem({
     height: '2.2rem',
     fontSize: 'h6',
   },
-  homepage,
+  hotListItem,
   isSmallScreen,
 }) {
   const { name, thumbnail, yearpublished } = item;
@@ -43,6 +45,10 @@ export default function GamesListItem({
       alignitems={'flex-start'}
       onClick={() => clickFunc(item.id)}
       isLastItem={isLastItem}
+      sx={{
+        color: hotListItem ? '#FAF9F6' : 'inherit',
+        textShadow: hotListItem ? `1px 1px 1px rgba(0,0,0,.5)` : 'none',
+      }}
     >
       {thumbnail ? (
         <ListItemAvatar sx={{ marginRight: isSmallScreen ? -1 : 2 }}>
@@ -58,13 +64,7 @@ export default function GamesListItem({
         </ListItemAvatar>
       ) : null}
       <ListItemText>
-        <Box
-          sx={{
-            display: 'flex',
-            color: homepage ? 'white' : 'inherit',
-            textShadow: homepage ? `1px 1px 1px rgba(0,0,0,.5)` : 'none',
-          }}
-        >
+        <Box sx={{ display: 'flex' }}>
           <Typography
             variant={dimensions.fontSize}
             noWrap
