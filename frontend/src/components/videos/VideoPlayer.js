@@ -52,7 +52,7 @@ export default function VideoPlayer({ open, video, handleClose, fullScreen }) {
       >
         <CardMedia
           component={'iframe'}
-          src={`https://www.youtube.com/embed/${video.id.videoId}`}
+          src={`https://www.youtube.com/embed/${video.id.videoId}?autoplay=1`}
           title={video.snippet.title}
           allowFullScreen
           allow='accelerometer; 
