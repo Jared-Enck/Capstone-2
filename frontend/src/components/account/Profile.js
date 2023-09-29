@@ -91,7 +91,7 @@ export default function Profile({ itemsOnPage }) {
             item
             xs={12}
           >
-            <Divider sx={{ color: 'primary.muted' }} />
+            <Divider sx={{ bgcolor: 'primary.dark' }} />
           </Grid>
         </Grid>
         <Suspense fallback={<CollectionSkeleton itemsOnPage={itemsOnPage} />}>
