@@ -36,10 +36,12 @@ export const StyledGrid = styled(Grid)(() => ({
 export const Logo = styled(Box)(({ theme }) => ({
   display: 'flex',
   backgroundColor: theme.palette.secondary.main,
-  padding: 3,
+  padding: 2,
   borderRadius: 3,
-  height: '2.5rem',
+  height: '2.2rem',
+  width: '2.2rem',
   color: theme.palette.primary.main,
+  justifyContent: 'center',
 }));
 
 // ******************************************** Search
@@ -75,10 +77,10 @@ export const StyledInputBase = styled(InputBase)(({ theme }) => ({
     border: `.1rem solid transparent`,
     borderRadius: theme.shape.borderRadius,
     [theme.breakpoints.down('md')]: {
-      width: '30ch',
+      width: '40ch',
     },
     [theme.breakpoints.down('sm')]: {
-      width: '20ch',
+      width: '100%',
     },
     '&:focus': {
       border: `.1rem solid ${theme.palette.secondary.main}`,
