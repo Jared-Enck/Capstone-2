@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import UserContext from '../../context/UserContext';
-import { Box, Stack, Divider, Typography } from '@mui/material';
+import { Box, Stack, useMediaQuery, Typography } from '@mui/material';
 import styled from '@emotion/styled';
 import DataContext from '../../context/DataContext';
 import CircularLoading from '../common/CircularLoading';
 import GamesList from './GamesList';
-import SearchBoxSection from './SearchBoxSection';
+// import SearchBoxSection from './SearchBoxSection';
 
 const StyledBox = styled(Box)(({ theme }) => ({
   marginTop: '.3rem',
@@ -23,8 +23,7 @@ export default function SearchBoxResults({ results, clearBoxResults }) {
   // const categories = results.foundCategories || [];
   // const games = results.foundGames || [];
 
-  const { setGame, setResultsHeader, setSearchResults, isLoading } =
-    useContext(DataContext);
+  const { setGame, isLoading } = useContext(DataContext);
 
   // handles SearchBoxSection button click
   // const handleBtnClick = (path, item) => {
@@ -92,14 +91,14 @@ export default function SearchBoxResults({ results, clearBoxResults }) {
           <Box padding={1}>
             <CircularLoading />
           </Box>
+        ) : results === -1 ? (
+          <NoGamesFound />
         ) : results.length ? (
           <GamesList
             games={results.slice(0, 10)}
             handleGameClick={handleGameClick}
           />
-        ) : (
-          <NoGamesFound />
-        )}
+        ) : null}
       </Stack>
     </StyledBox>
   );
