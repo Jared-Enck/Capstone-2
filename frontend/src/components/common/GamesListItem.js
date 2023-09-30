@@ -34,7 +34,7 @@ export default function GamesListItem({
   dimensions = {
     width: '2.2rem',
     height: '2.2rem',
-    fontSize: 'h6',
+    fontSize: '.9rem',
   },
   hotListItem,
   isSmallScreen,
@@ -64,18 +64,18 @@ export default function GamesListItem({
         </ListItemAvatar>
       ) : null}
       <ListItemText>
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Typography
-            variant={dimensions.fontSize}
             noWrap
             sx={{
-              maxWidth: isSmallScreen ? '72%' : '85%',
+              maxWidth: isSmallScreen ? '72%' : '83%',
               flexGrow: 1,
+              fontSize: dimensions.fontSize,
             }}
           >
             {name}
           </Typography>
-          <Typography variant={dimensions.fontSize}>
+          <Typography sx={{ fontSize: dimensions.fontSize }}>
             {`( ${yearpublished ? yearpublished : 'N/A'} )`}
           </Typography>
         </Box>
