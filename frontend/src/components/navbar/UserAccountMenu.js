@@ -26,7 +26,7 @@ export default function UserAccountMenu() {
   const [open, setOpen] = useState(false);
   const { logout, currentUser, navigate } = useContext(UserContext);
 
-  const handleClick = (event) => {
+  const handleClick = () => {
     setOpen(true);
   };
   const handleClose = () => {
@@ -42,10 +42,7 @@ export default function UserAccountMenu() {
   };
 
   return (
-    <Grid
-      item
-      sx={{ display: 'flex', width: '222px' }}
-    >
+    <Grid item>
       <IconButton
         onClick={handleClick}
         size='small'
