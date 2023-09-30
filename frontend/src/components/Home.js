@@ -15,10 +15,10 @@ export default function Home() {
     if (!hotGames.length && currentUser) getHotCache();
   }, [hotGames.length, currentUser, getHotCache]);
 
-  const homeListDimensions = {
+  const hotListDimensions = {
     width: '5rem',
     height: '5rem',
-    fontSize: 'h4',
+    fontSize: '1.8rem',
   };
 
   const WelcomeMsgComp = () => {
@@ -92,7 +92,7 @@ export default function Home() {
                   idx={idx}
                   clickFunc={handleGameClick}
                   isLastItem={i === hotGames.length - 1}
-                  dimensions={isSmallScreen ? {} : homeListDimensions}
+                  dimensions={isSmallScreen ? {} : hotListDimensions}
                   isSmallScreen={isSmallScreen}
                   hotListItem
                 />
