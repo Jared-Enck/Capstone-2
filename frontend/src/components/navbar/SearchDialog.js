@@ -93,7 +93,7 @@ export default function SearchDialog({ open, setOpen }) {
             <NoGamesFound />
           ) : boxResults.length ? (
             <GamesList
-              games={boxResults.slice(0, 10)}
+              games={boxResults.slice(0, 12)}
               handleGameClick={handleGameClick}
             />
           ) : null}

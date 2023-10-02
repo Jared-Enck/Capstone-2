@@ -79,7 +79,7 @@ export default function SearchBoxResults({ results, clearBoxResults }) {
         <NoGamesFound />
       ) : results.length ? (
         <GamesList
-          games={results.slice(0, 10)}
+          games={results.slice(0, 12)}
           handleGameClick={handleGameClick}
         />
       ) : null}
