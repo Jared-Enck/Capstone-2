@@ -186,8 +186,8 @@ class ThirdPartyApi {
     if (!found) {
       try {
         const game = await this.getGame(gameID);
-        if (game.error) {
-          return -1;
+        if (game === -1) {
+          return game;
         } else {
           gamesCache.set(gameID, game, [14400]);
           return game;
@@ -204,10 +204,14 @@ class ThirdPartyApi {
 
   static async getGame(gameID) {
     try {
-      const game = await this.bggRequest(`boardgame/${gameID}`);
-      formatGame(game);
-      game.videos = await this.getVideos(game.name);
-      return game;
+      const res = await this.bggRequest(`boardgame/${gameID}`);
+      if (!res.error) {
+        formatGame(res);
+        res.videos = await this.getVideos(res.name);
+        return res;
+      } else {
+        return -1;
+      }
     } catch (err) {
       console.error(err);
     }
