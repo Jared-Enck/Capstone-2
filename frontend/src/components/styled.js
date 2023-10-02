@@ -80,7 +80,8 @@ export const StyledInputBase = styled(InputBase)(({ theme }) => ({
       width: '40ch',
     },
     [theme.breakpoints.down('sm')]: {
-      width: '100%',
+      paddingLeft: `calc(1em + ${theme.spacing(0)})`,
+      width: '25ch',
     },
     '&:focus': {
       border: `.1rem solid ${theme.palette.secondary.main}`,
