@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import DataContext from '../../context/DataContext';
 import CircularLoading from '../common/CircularLoading';
 import GamesList from './GamesList';
+import NoGamesFound from './NoGamesFound';
 // import SearchBoxSection from './SearchBoxSection';
 
 const StyledBox = styled(Box)(({ theme }) => ({
@@ -42,22 +43,6 @@ export default function SearchBoxResults({ results, clearBoxResults }) {
     clearBoxResults();
   };
 
-  function NoGamesFound() {
-    return (
-      <Typography
-        variant='h6'
-        sx={{
-          fontStyle: 'italic',
-          color: 'primary.text',
-          padding: '.5rem',
-          textAlign: 'center',
-        }}
-      >
-        No results found.
-      </Typography>
-    );
-  }
-
   return (
     <StyledBox sx={{ boxShadow: 2 }}>
       {/* {results ? (
@@ -86,20 +71,18 @@ export default function SearchBoxResults({ results, clearBoxResults }) {
           <CircularLoading />
         </Box>
       )} */}
-      <Stack>
-        {isLoading ? (
-          <Box padding={1}>
-            <CircularLoading />
-          </Box>
-        ) : results === -1 ? (
-          <NoGamesFound />
-        ) : results.length ? (
-          <GamesList
-            games={results.slice(0, 10)}
-            handleGameClick={handleGameClick}
-          />
-        ) : null}
-      </Stack>
+      {isLoading ? (
+        <Box padding={1}>
+          <CircularLoading />
+        </Box>
+      ) : results === -1 ? (
+        <NoGamesFound />
+      ) : results.length ? (
+        <GamesList
+          games={results.slice(0, 10)}
+          handleGameClick={handleGameClick}
+        />
+      ) : null}
     </StyledBox>
   );
 }
