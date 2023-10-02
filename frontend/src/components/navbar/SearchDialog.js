@@ -1,19 +1,25 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import DataContext from '../../context/DataContext';
-import { Dialog, Box, DialogContent, IconButton } from '@mui/material';
+import UserContext from '../../context/UserContext';
+import { Stack, Dialog, Box, DialogContent, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import SearchBoxResults from './SearchBoxResults';
 import { Search, StyledInputBase } from '../styled';
+import CircularLoading from '../common/CircularLoading';
+import NoGamesFound from './NoGamesFound';
+import GamesList from './GamesList';
 
 export default function SearchDialog({ open, setOpen }) {
   const {
+    setGame,
+    isLoading,
     searchTerm,
     boxResults,
     setBoxResults,
     debouncedRequest,
     setSearchTerm,
   } = useContext(DataContext);
+  const { navigate } = useContext(UserContext);
 
   const clearBoxResults = () => {
     setBoxResults('');
@@ -33,6 +39,14 @@ export default function SearchDialog({ open, setOpen }) {
     debouncedRequest();
   };
 
+  // handle game list item click
+  const handleGameClick = (gameID) => {
+    // sets game and navigates to game details
+    setGame('');
+    navigate(`/games/${gameID}`);
+    clearBoxResults();
+  };
+
   return (
     <>
       <IconButton onClick={() => setOpen(true)}>
@@ -48,7 +62,12 @@ export default function SearchDialog({ open, setOpen }) {
           },
         }}
       >
-        <Box sx={{ display: 'flex', padding: 1 }}>
+        <Stack
+          direction={'row'}
+          sx={{
+            padding: 1,
+          }}
+        >
           <IconButton onClick={handleClose}>
             <ArrowBackIcon sx={{ color: 'primary.text' }} />
           </IconButton>
@@ -61,15 +80,23 @@ export default function SearchDialog({ open, setOpen }) {
               onChange={handleChange}
               value={searchTerm}
               autoComplete='off'
-              sx={{ paddingLeft: 0 }}
+              autoFocus
             />
           </Search>
-        </Box>
-        <DialogContent>
-          {/* <SearchBoxResults
-            results={boxResults}
-            clearBoxResults={clearBoxResults}
-          /> */}
+        </Stack>
+        <DialogContent sx={{ color: 'primary.text', padding: 0.5 }}>
+          {isLoading ? (
+            <Box padding={1}>
+              <CircularLoading />
+            </Box>
+          ) : boxResults === -1 ? (
+            <NoGamesFound />
+          ) : boxResults.length ? (
+            <GamesList
+              games={boxResults.slice(0, 10)}
+              handleGameClick={handleGameClick}
+            />
+          ) : null}
         </DialogContent>
       </Dialog>
     </>

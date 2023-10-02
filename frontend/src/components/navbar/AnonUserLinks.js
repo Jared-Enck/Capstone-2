@@ -15,10 +15,7 @@ export default function AnonUserLinks() {
   };
 
   return (
-    <Grid
-      item
-      sx={{ marginRight: '86px' }}
-    >
+    <Grid item>
       <Grid
         container
         direction='row'

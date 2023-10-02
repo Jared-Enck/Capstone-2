@@ -48,6 +48,7 @@ export default function GamesListItem({
       sx={{
         color: hotListItem ? '#FAF9F6' : 'inherit',
         textShadow: hotListItem ? `1px 1px 1px rgba(0,0,0,.5)` : 'none',
+        padding: 1,
       }}
     >
       {thumbnail ? (
@@ -68,14 +69,19 @@ export default function GamesListItem({
           <Typography
             noWrap
             sx={{
-              maxWidth: isSmallScreen ? '72%' : '83%',
               flexGrow: 1,
               fontSize: dimensions.fontSize,
             }}
           >
             {name}
           </Typography>
-          <Typography sx={{ fontSize: dimensions.fontSize }}>
+          <Typography
+            sx={{
+              fontSize: dimensions.fontSize,
+              minWidth: isSmallScreen ? '3.506rem' : '4.207rem',
+              textAlign: 'right',
+            }}
+          >
             {`( ${yearpublished ? yearpublished : 'N/A'} )`}
           </Typography>
         </Box>
