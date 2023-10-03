@@ -19,7 +19,7 @@ export default function VideoPlayer({ open, video, handleClose, fullScreen }) {
           bgcolor: 'primary.dark',
         },
       }}
-      maxWidth={'xl'}
+      maxWidth={'lg'}
       fullWidth
     >
       {fullScreen ? (
