@@ -33,7 +33,7 @@ const AddedBadgeBox = styled(Box)(({ theme }) => ({
 
 export default function GameDescription({ game }) {
   const [open, setOpen] = useState(false);
-  const { addGame } = useContext(DataContext);
+  const { addGame, isSmallScreen } = useContext(DataContext);
   const { currentUser, userGameIDs } = useContext(UserContext);
   const inCollection = userGameIDs ? userGameIDs.has(game.objectid) : false;
   const [isLoading, setIsLoading] = useState(false);
@@ -92,7 +92,7 @@ export default function GameDescription({ game }) {
       <Stack spacing={1}>
         <Box display={'flex'}>
           <Typography
-            variant={'h4'}
+            variant={isSmallScreen ? 'h5' : 'h4'}
             sx={{
               color: 'secondary.main',
               flex: 1,
