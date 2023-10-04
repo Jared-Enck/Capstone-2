@@ -11,6 +11,8 @@ import {
   Stack,
   ListItem,
   ListItemText,
+  Fab,
+  CardMedia,
 } from '@mui/material';
 import { ExpandMore, ExpandLess, Add, Check } from '@mui/icons-material';
 import PlayersAndDuration from '../common/PlayersAndDuration';
@@ -31,15 +33,25 @@ const AddedBadgeBox = styled(Box)(({ theme }) => ({
   display: 'flex',
 }));
 
+const PlayersAndDurationGrid = styled(Grid)(({ theme }) => ({
+  height: '2rem',
+  color: theme.palette.primary.text,
+  [theme.breakpoints.down('sm')]: {
+    justifyContent: 'space-around',
+  },
+}));
+
 export default function GameDescription({ game }) {
   const [open, setOpen] = useState(false);
   const { addGame, isSmallScreen } = useContext(DataContext);
   const { currentUser, userGameIDs } = useContext(UserContext);
   const inCollection = userGameIDs ? userGameIDs.has(game.objectid) : false;
   const [isLoading, setIsLoading] = useState(false);
+  const showExpandDesc = isSmallScreen ? 300 : 800;
 
   const handleDescBtnClick = () => {
     setOpen(!open);
+    if (open) window.scrollTo({ top: 0 });
   };
 
   const handleAddBtnClick = async () => {
@@ -49,33 +61,67 @@ export default function GameDescription({ game }) {
     setIsLoading(false);
   };
 
-  const AddButtonComp = () => (
-    <AddButton
-      variant='text'
-      onClick={handleAddBtnClick}
-      className='main-button'
-    >
-      <Add fontSize='small' />
+  const AddButtonComp = () =>
+    isSmallScreen ? (
+      <Fab
+        size='small'
+        sx={{
+          color: 'secondary.main',
+          bgcolor: 'primary.dark',
+          alignSelf: 'flex-end',
+        }}
+        onClick={handleAddBtnClick}
+      >
+        {isLoading ? (
+          <CircularLoading
+            size='1rem'
+            color='secondary.main'
+          />
+        ) : (
+          <Add />
+        )}
+      </Fab>
+    ) : (
+      <AddButton
+        variant='text'
+        onClick={handleAddBtnClick}
+        className='main-button'
+      >
+        <Add fontSize='small' />
 
-      <Typography paddingRight={1}>Add to collection</Typography>
+        <Typography paddingRight={1}>Add to collection</Typography>
 
-      {isLoading ? (
-        <CircularLoading
-          size='1rem'
-          color='primary.dark'
-        />
-      ) : (
-        <Box width={'1rem'} />
-      )}
-    </AddButton>
-  );
+        {isLoading ? (
+          <CircularLoading
+            size='1rem'
+            color='primary.dark'
+          />
+        ) : (
+          <Box width={'1rem'} />
+        )}
+      </AddButton>
+    );
 
   const AddedBadgeComp = () => (
     <AddedBadgeBox>
-      <Typography margin={1}>In Collection</Typography>
-      <Typography padding={'.3rem'}>
-        <Check />
-      </Typography>
+      {isSmallScreen ? (
+        <Typography
+          sx={{
+            alignSelf: 'flex-end',
+            display: 'flex',
+            padding: '.3rem',
+          }}
+        >
+          <Check />
+        </Typography>
+      ) : (
+        <>
+          <Typography margin={1}>In Collection</Typography>
+          <Typography padding={'.3rem'}>
+            <Check />
+          </Typography>
+        </>
+      )}
     </AddedBadgeBox>
   );
 
@@ -85,6 +131,7 @@ export default function GameDescription({ game }) {
       .createContextualFragment(game.description);
     const description = document.getElementById('description');
     description.appendChild(descFrag);
+    console.log(game.description.length);
   }, []);
 
   return (
@@ -96,6 +143,7 @@ export default function GameDescription({ game }) {
             sx={{
               color: 'secondary.main',
               flex: 1,
+              alignSelf: 'center',
             }}
           >
             {game.name}
@@ -106,13 +154,9 @@ export default function GameDescription({ game }) {
               : AddButtonComp()
             : null}
         </Box>
-        <Grid
-          sx={{
-            color: 'primary.text',
-          }}
+        <PlayersAndDurationGrid
           container
           direction={'row'}
-          height={'2rem'}
         >
           <Grid item>
             <ListItem
@@ -128,21 +172,23 @@ export default function GameDescription({ game }) {
             min_playtime={game.minplaytime}
             max_playtime={game.maxplaytime}
           />
-        </Grid>
+        </PlayersAndDurationGrid>
         <Divider sx={{ bgcolor: 'primary.dark' }} />
         <Grid
           container
-          direction={'row'}
+          direction={isSmallScreen ? 'column' : 'row'}
+          justifyContent={isSmallScreen ? 'center' : 'space-around'}
         >
           <Grid
             item
-            xs={4}
+            display={'flex'}
+            justifyContent={'center'}
           >
-            <img
-              width={300}
-              height={300}
+            <CardMedia
+              component={'img'}
               src={game.image}
               alt={game.name}
+              sx={{ maxWidth: '18rem', maxHeight: '18rem' }}
             />
           </Grid>
           <Grid
@@ -150,10 +196,13 @@ export default function GameDescription({ game }) {
             xs={7}
           >
             {game.description ? (
-              <Stack spacing={1}>
+              <Stack
+                spacing={1}
+                padding={1}
+              >
                 <Collapse
                   in={open}
-                  collapsedSize={265}
+                  collapsedSize={isSmallScreen ? '7.8rem' : '18rem'}
                 >
                   <Typography
                     id='description'
@@ -162,7 +211,7 @@ export default function GameDescription({ game }) {
                     }}
                   />
                 </Collapse>
-                {game.description.length > 900 ? (
+                {game.description.length > showExpandDesc ? (
                   <Button
                     sx={{
                       height: '1.5rem',
