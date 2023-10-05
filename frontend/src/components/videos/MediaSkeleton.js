@@ -15,8 +15,8 @@ export default function MediaSkeleton({ isSmallScreen }) {
         >
           <Card sx={{ boxShadow: 0, bgcolor: 'transparent' }}>
             <BaseSkeleton
-              width={'20rem'}
-              height={'11.25rem'}
+              width={isSmallScreen ? '18rem' : '20rem'}
+              height={isSmallScreen ? '9.25rem' : '11.25rem'}
             />
           </Card>
         </Grid>

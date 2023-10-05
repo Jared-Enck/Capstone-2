@@ -64,7 +64,7 @@ export default function GameDescSkeleton() {
               display={'flex'}
               alignItems={'flex-end'}
             >
-              <ListItem>
+              <ListItem sx={{ padding: isSmallScreen ? 0 : null }}>
                 <BaseSkeleton
                   width={isSmallScreen ? '4rem' : '4.816rem'}
                   height={isSmallScreen ? '1.5rem' : '1.7rem'}
@@ -86,8 +86,8 @@ export default function GameDescSkeleton() {
             width={isSmallScreen ? '100%' : 'none'}
           >
             <BaseSkeleton
-              width='18rem'
-              height='18rem'
+              width={isSmallScreen ? '17rem' : '18rem'}
+              height={isSmallScreen ? '17rem' : '18rem'}
             />
           </Grid>
           <Grid

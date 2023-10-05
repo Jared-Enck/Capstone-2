@@ -38,7 +38,7 @@ export default function MediaContainer({ game, items }) {
         sx={{
           marginTop: 1,
           overflow: 'auto',
-          height: isSmallScreen ? '23.5rem' : null,
+          height: isSmallScreen ? '21.5rem' : null,
         }}
         container
         direction={'row'}
