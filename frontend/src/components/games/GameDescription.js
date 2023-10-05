@@ -131,7 +131,6 @@ export default function GameDescription({ game }) {
       .createContextualFragment(game.description);
     const description = document.getElementById('description');
     description.appendChild(descFrag);
-    console.log(game.description.length);
   }, []);
 
   return (
@@ -159,10 +158,7 @@ export default function GameDescription({ game }) {
           direction={'row'}
         >
           <Grid item>
-            <ListItem
-              disableGutters
-              sx={{ marginRight: 2 }}
-            >
+            <ListItem>
               <ListItemText>{game.yearpublished}</ListItemText>
             </ListItem>
           </Grid>
@@ -188,7 +184,10 @@ export default function GameDescription({ game }) {
               component={'img'}
               src={game.image}
               alt={game.name}
-              sx={{ maxWidth: '18rem', maxHeight: '18rem' }}
+              sx={{
+                width: '18rem',
+                height: '18rem',
+              }}
             />
           </Grid>
           <Grid
@@ -198,7 +197,7 @@ export default function GameDescription({ game }) {
             {game.description ? (
               <Stack
                 spacing={1}
-                padding={1}
+                padding={isSmallScreen ? 1 : 0}
               >
                 <Collapse
                   in={open}
@@ -220,6 +219,7 @@ export default function GameDescription({ game }) {
                         backgroundColor: 'secondary.main',
                         color: 'primary.main',
                       },
+                      alignSelf: 'flex-end',
                     }}
                     variant='text'
                     onClick={handleDescBtnClick}

@@ -51,10 +51,7 @@ export default function PlayersAndDuration({
             item
             key={idx}
           >
-            <ListItem
-              disableGutters
-              sx={{ marginRight: idx === last ? 0 : 2 }}
-            >
+            <ListItem>
               <ListItemIcon sx={{ color: 'primary.text', minWidth: 30 }}>
                 {i[0]}
               </ListItemIcon>
