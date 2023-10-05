@@ -1,19 +1,17 @@
 import React, { useContext, useState } from 'react';
 import { AppBar, Container } from '@mui/material';
 import UserContext from '../../context/UserContext';
+import DataContext from '../../context/DataContext';
 import UserAccountMenu from './UserAccountMenu';
 import SearchBar from './SearchBar';
 import AnonUserLinks from './AnonUserLinks';
 import { StyledGrid } from '../styled';
 import Brand from './Brand';
 import SearchDialog from './SearchDialog';
-import { useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 
 export default function Navbar() {
   const { currentUser } = useContext(UserContext);
-  const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const { isSmallScreen } = useContext(DataContext);
   const [open, setOpen] = useState(false);
 
   return (
