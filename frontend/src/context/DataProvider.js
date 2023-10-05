@@ -9,7 +9,7 @@ import { useTheme } from '@mui/material/styles';
 // Provides DataContext for children
 export default function DataProvider({ children }) {
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
