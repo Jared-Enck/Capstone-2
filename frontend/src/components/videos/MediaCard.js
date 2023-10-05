@@ -3,7 +3,6 @@ import { CardMedia, Card, CardActionArea } from '@mui/material';
 import VideoOverlay from './VideoOverlay';
 
 export default function MediaCard({ item, handleClick }) {
-  console.log(item.snippet.thumbnails.medium);
   return (
     <Card
       sx={{

@@ -1,9 +1,17 @@
 import React from 'react';
-import { Table, TableBody, TableCell, TableRow, Grid } from '@mui/material';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+  Grid,
+  useMediaQuery,
+} from '@mui/material';
 import DetailListItem from './DetailListItem';
 import styled from '@emotion/styled';
 import ContentContainer from '../common/ContentContainer';
 import CircularLoading from '../common/CircularLoading';
+import { useTheme } from '@mui/material/styles';
 
 // create data for rows in table
 const createData = (name, data = 'N/A') => {
@@ -25,12 +33,17 @@ export default function GameDetails({ game }) {
   let CategoriesComps;
   let rows;
 
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const gridSpacing = isSmallScreen ? 1 : 2;
+
   if (game) {
     MechanicsComps = game.boardgamemechanic.length
       ? game.boardgamemechanic.map((m, idx) => (
           <DetailListItem
             key={idx}
-            param={'mechanics'}
+            // param={'mechanics'}
+            isSmallScreen={isSmallScreen}
             item={m}
             isLastItem={game.boardgamemechanic.length - 1 === idx}
           />
@@ -41,7 +54,8 @@ export default function GameDetails({ game }) {
       ? game.boardgamecategory.map((c, idx) => (
           <DetailListItem
             key={idx}
-            param={'categories'}
+            // param={'categories'}
+            isSmallScreen={isSmallScreen}
             item={c}
             isLastItem={game.boardgamecategory.length - 1 === idx}
           />
@@ -64,7 +78,7 @@ export default function GameDetails({ game }) {
         'Mechanics',
         <Grid
           container
-          spacing={2}
+          spacing={gridSpacing}
           direction={'row'}
         >
           {MechanicsComps}
@@ -74,7 +88,7 @@ export default function GameDetails({ game }) {
         'Categories',
         <Grid
           container
-          spacing={2}
+          spacing={gridSpacing}
           direction={'row'}
         >
           {CategoriesComps}
@@ -94,9 +108,8 @@ export default function GameDetails({ game }) {
                       component='th'
                       scope='row'
                       sx={{
-                        width: '35ch',
                         color: 'primary.text',
-                        fontSize: '1.2rem',
+                        fontSize: isSmallScreen ? '1.1rem' : '1.3rem',
                       }}
                     >
                       {row.name}
@@ -104,7 +117,7 @@ export default function GameDetails({ game }) {
                     <TableCell
                       sx={{
                         color: 'primary.text',
-                        fontSize: '1.1rem',
+                        fontSize: isSmallScreen ? '.9rem' : '1.1rem',
                       }}
                     >
                       {row.data}

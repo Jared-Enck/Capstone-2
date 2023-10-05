@@ -1,23 +1,23 @@
 import React, { useContext } from 'react';
 import DataContext from '../../context/DataContext';
 import UserContext from '../../context/UserContext';
-import { Link } from '@mui/material';
+// import { Link } from '@mui/material';
 import { Typography, Grid } from '@mui/material';
 
-export default function DetailListItem({ param, item, isLastItem }) {
-  const { setSearchResults, setResultsHeader, resultsHeader } =
-    useContext(DataContext);
-  const { navigate } = useContext(UserContext);
+export default function DetailListItem({ isSmallScreen, item, isLastItem }) {
+  // const { setSearchResults, setResultsHeader, resultsHeader } =
+  //   useContext(DataContext);
+  // const { navigate } = useContext(UserContext);
 
   // handle list item click
-  const handleClick = () => {
-    if (resultsHeader !== item._text) {
-      // clear previous results
-      setSearchResults({ pages: {} });
-      setResultsHeader('');
-    }
-    navigate(`/search/${param}/${item.objectid}`);
-  };
+  // const handleClick = () => {
+  //   if (resultsHeader !== item._text) {
+  //     // clear previous results
+  //     setSearchResults({ pages: {} });
+  //     setResultsHeader('');
+  //   }
+  //   navigate(`/search/${param}/${item.objectid}`);
+  // };
   return (
     <Grid item>
       {/* <Link
@@ -31,6 +31,7 @@ export default function DetailListItem({ param, item, isLastItem }) {
       > */}
       <Typography
         sx={{
+          fontSize: isSmallScreen ? '.9rem' : '1.1rem',
           color: 'primary.text',
           // transition: 'all 250ms',
           // '&:hover': {

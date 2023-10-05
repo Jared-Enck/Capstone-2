@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Grid, useMediaQuery, Box } from '@mui/material';
+import { Grid, useMediaQuery } from '@mui/material';
 import MediaCard from './MediaCard';
 import ContentContainer from '../common/ContentContainer';
 import MediaSkeleton from './MediaSkeleton';
