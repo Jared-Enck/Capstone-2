@@ -158,7 +158,7 @@ export default function GameDescription({ game }) {
           direction={'row'}
         >
           <Grid item>
-            <ListItem>
+            <ListItem sx={{ padding: isSmallScreen ? 0 : null }}>
               <ListItemText>{game.yearpublished}</ListItemText>
             </ListItem>
           </Grid>
@@ -167,6 +167,7 @@ export default function GameDescription({ game }) {
             max_players={game.maxplayers}
             min_playtime={game.minplaytime}
             max_playtime={game.maxplaytime}
+            isSmallScreen={isSmallScreen}
           />
         </PlayersAndDurationGrid>
         <Divider sx={{ bgcolor: 'primary.dark' }} />
@@ -185,8 +186,8 @@ export default function GameDescription({ game }) {
               src={game.image}
               alt={game.name}
               sx={{
-                width: '18rem',
-                height: '18rem',
+                maxWidth: '18rem',
+                maxHeight: '18rem',
               }}
             />
           </Grid>
