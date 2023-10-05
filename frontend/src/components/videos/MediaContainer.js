@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Grid, useMediaQuery } from '@mui/material';
+import { Grid, useMediaQuery, Box } from '@mui/material';
 import MediaCard from './MediaCard';
 import ContentContainer from '../common/ContentContainer';
 import MediaSkeleton from './MediaSkeleton';
@@ -10,7 +10,7 @@ export default function MediaContainer({ game, items }) {
   const [open, setOpen] = useState(false);
   const [video, setVideo] = useState('');
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleClick = (item) => {
     setOpen(true);
@@ -32,37 +32,35 @@ export default function MediaContainer({ game, items }) {
           open={open}
           video={video}
           handleClose={handleClose}
-          fullScreen={fullScreen}
+          fullScreen={isSmallScreen}
         />
       ) : null}
       <Grid
         sx={{
-          paddingTop: 1,
+          marginTop: 1,
+          overflow: 'auto',
+          height: isSmallScreen ? '23.5rem' : null,
         }}
         container
         direction={'row'}
         spacing={2}
-        justifyContent={fullScreen ? 'space-around' : 'space-between'}
       >
         {game ? (
           items.map((i) => (
             <Grid
               key={i.id.videoId}
               item
+              margin='auto'
             >
               <MediaCard
                 item={i}
-                height={200}
-                width={300}
                 handleClick={handleClick}
+                isSmallScreen={isSmallScreen}
               />
             </Grid>
           ))
         ) : (
-          <MediaSkeleton
-            fullScreen={fullScreen}
-            isVideo
-          />
+          <MediaSkeleton isSmallScreen={isSmallScreen} />
         )}
       </Grid>
     </ContentContainer>

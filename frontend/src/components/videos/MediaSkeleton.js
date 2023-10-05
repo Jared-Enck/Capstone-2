@@ -1,10 +1,8 @@
 import React from 'react';
-import { Grid } from '@mui/material';
+import { Grid, Card, CardActionArea } from '@mui/material';
 import BaseSkeleton from '../common/BaseSkeleton';
 
-export default function MediaSkeleton({ isVideo }) {
-  const height = 200;
-  const width = isVideo ? 300 : 200;
+export default function MediaSkeleton({ isSmallScreen }) {
   const genSkels = () => {
     const skels = [];
     for (let i = 0; i < 6; i++) {
@@ -12,11 +10,15 @@ export default function MediaSkeleton({ isVideo }) {
         <Grid
           key={i}
           item
+          margin={'auto'}
+          width={isSmallScreen ? '100%' : null}
         >
-          <BaseSkeleton
-            height={height}
-            width={width}
-          />
+          <Card sx={{ boxShadow: 0, bgcolor: 'transparent' }}>
+            <BaseSkeleton
+              width={'20rem'}
+              height={'11.25rem'}
+            />
+          </Card>
         </Grid>
       );
     }

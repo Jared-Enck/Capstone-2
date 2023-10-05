@@ -1,13 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { CardMedia, Card, CardActionArea } from '@mui/material';
 import VideoOverlay from './VideoOverlay';
 
-export default function MediaCard({ item, width, height, handleClick }) {
+export default function MediaCard({ item, handleClick }) {
+  console.log(item.snippet.thumbnails.medium);
   return (
     <Card
       sx={{
-        height: height,
-        width: width,
         boxShadow: 0,
       }}
     >
@@ -16,8 +15,6 @@ export default function MediaCard({ item, width, height, handleClick }) {
         <CardMedia
           src={item.snippet.thumbnails.medium.url}
           sx={{
-            height: height,
-            width: width,
             objectFit: 'fill',
           }}
           component='img'
