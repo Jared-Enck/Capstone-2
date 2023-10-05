@@ -10,13 +10,13 @@ export default function AnonUserLinks() {
     navigate('/login');
   };
 
-  const handleSignUpClick = () => {
-    navigate('/signup');
-  };
+  // const handleSignUpClick = () => {
+  //   navigate('/signup');
+  // };
 
   return (
     <Grid item>
-      <Grid
+      {/* <Grid
         container
         direction='row'
         alignItems='center'
@@ -26,15 +26,15 @@ export default function AnonUserLinks() {
         <Grid
           item
           marginRight={1}
-        >
-          <PrimaryButton
-            size='small'
-            className='main-button'
-            onClick={handleLoginClick}
-          >
-            Login
-          </PrimaryButton>
-        </Grid>
+        > */}
+      <PrimaryButton
+        size='small'
+        className='main-button'
+        onClick={handleLoginClick}
+      >
+        Login
+      </PrimaryButton>
+      {/* </Grid>
         <Grid item>
           <Button
             size='small'
@@ -51,7 +51,7 @@ export default function AnonUserLinks() {
             Sign Up
           </Button>
         </Grid>
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 }

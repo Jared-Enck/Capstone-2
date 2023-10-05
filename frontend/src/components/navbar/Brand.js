@@ -9,8 +9,9 @@ export default function Brand() {
       item
       sx={{
         display: 'flex',
-        width: '3.125rem',
+        width: '4rem',
         height: '3.125rem',
+        justifyContent: 'left',
       }}
     >
       <Link

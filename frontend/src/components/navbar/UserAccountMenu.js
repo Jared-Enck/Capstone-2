@@ -42,11 +42,15 @@ export default function UserAccountMenu() {
   };
 
   return (
-    <Grid item>
+    <Grid
+      item
+      width={'4rem'}
+      display={'flex'}
+    >
       <IconButton
         onClick={handleClick}
         size='small'
-        sx={{ margin: 'auto' }}
+        sx={{ marginLeft: 'auto' }}
         aria-controls={open ? 'account-menu' : undefined}
         aria-haspopup='true'
         aria-expanded={open ? 'true' : undefined}
