@@ -1,16 +1,15 @@
-import React, { useState } from 'react';
-import { Grid, useMediaQuery } from '@mui/material';
+import React, { useState, useContext } from 'react';
+import DataContext from '../../context/DataContext';
+import { Grid } from '@mui/material';
 import MediaCard from './MediaCard';
 import ContentContainer from '../common/ContentContainer';
 import MediaSkeleton from './MediaSkeleton';
 import VideoPlayer from './VideoPlayer';
-import { useTheme } from '@mui/material/styles';
 
 export default function MediaContainer({ game, items }) {
   const [open, setOpen] = useState(false);
   const [video, setVideo] = useState('');
-  const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const { isSmallScreen } = useContext(DataContext);
 
   const handleClick = (item) => {
     setOpen(true);
