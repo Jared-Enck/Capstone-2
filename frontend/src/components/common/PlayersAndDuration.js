@@ -7,6 +7,7 @@ export default function PlayersAndDuration({
   max_players,
   min_playtime,
   max_playtime,
+  isSmallScreen,
 }) {
   /** format string for num of players to only display
    * min_players if it's equal to max_players
@@ -51,7 +52,7 @@ export default function PlayersAndDuration({
             item
             key={idx}
           >
-            <ListItem>
+            <ListItem sx={{ padding: isSmallScreen ? 0 : null }}>
               <ListItemIcon sx={{ color: 'primary.text', minWidth: 30 }}>
                 {i[0]}
               </ListItemIcon>
