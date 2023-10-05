@@ -58,7 +58,9 @@ export default function FormComponent({
             {header}
           </Typography>
 
-          <Box sx={{ height: 24, width: 400, marginBottom: '.4rem' }}>
+          <Box
+            sx={{ height: '1.5rem', maxWidth: '22rem', marginBottom: '.4rem' }}
+          >
             {typeof formErrors[0] === 'string' ? (
               <ErrorSpan>{formErrors[0]}</ErrorSpan>
             ) : null}
@@ -101,18 +103,30 @@ export default function FormComponent({
             })}
 
             {isLogin ? (
-              <Box sx={{ height: 56, display: 'flex' }}>
-                <Typography
-                  sx={{
-                    textAlign: 'center',
-                    color: 'primary.text',
-                    margin: 'auto',
-                  }}
-                >
-                  Don't have an account yet? Sign up
-                  <Link to={'/signup'}> here.</Link>
+              <Stack
+                sx={{
+                  height: '3.5rem',
+                  justifyContent: 'center',
+                  color: 'primary.text',
+                  margin: 'auto',
+                }}
+              >
+                <Typography sx={{ textAlign: 'center' }}>
+                  Don't have an account yet?
                 </Typography>
-              </Box>
+                <Stack
+                  spacing={0.6}
+                  direction={'row'}
+                  justifyContent={'center'}
+                >
+                  <Typography>Sign up</Typography>
+                  <Link to={'/signup'}>
+                    <Typography sx={{ color: 'secondary.main' }}>
+                      here.
+                    </Typography>
+                  </Link>
+                </Stack>
+              </Stack>
             ) : null}
 
             <PrimaryButton

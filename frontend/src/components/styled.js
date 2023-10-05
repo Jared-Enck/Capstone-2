@@ -93,7 +93,7 @@ export const StyledInputBase = styled(InputBase)(({ theme }) => ({
 // ******************************************** Forms
 
 export const FormBox = styled(Box)(() => ({
-  maxWidth: '350px',
+  maxWidth: '22rem',
   margin: 'auto',
 }));
 
