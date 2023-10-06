@@ -78,12 +78,14 @@ export default function UserAccountMenu() {
           aria-label='profile'
         >
           <Person
-            fontSize='large'
-            sx={{ color: 'primary.muted', marginRight: 1 }}
+            fontSize='medium'
+            sx={{ color: 'primary.muted', marginRight: 1.5, scale: '1.2' }}
           />
           <Typography fontSize={'1.2rem'}>Profile</Typography>
         </MenuItem>
-        <Divider />
+        <Divider
+          sx={{ bgcolor: 'primary.dark', width: '90%', alignSelf: 'center' }}
+        />
         <Settings />
         <MenuItem
           onClick={handleLogout}
