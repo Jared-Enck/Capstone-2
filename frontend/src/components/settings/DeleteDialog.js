@@ -2,6 +2,7 @@ import React, { useEffect, useContext, useState } from 'react';
 import { ErrorSpan } from '../styled';
 import useFields from '../../hooks/useFields';
 import UserContext from '../../context/UserContext';
+import DataContext from '../../context/DataContext';
 import {
   Dialog,
   DialogTitle,
@@ -10,7 +11,6 @@ import {
   DialogActions,
   Stack,
   Box,
-  Typography,
   TextField,
 } from '@mui/material';
 import CircularLoading from '../common/CircularLoading';
@@ -30,6 +30,7 @@ export default function DeleteDialog({ open, handleCloseDialog }) {
   const [isLoading, setIsLoading] = useState(false);
 
   const { deleteUser, logout } = useContext(UserContext);
+  const { isSmallScreen } = useContext(DataContext);
 
   const initialState = { delete: '' };
   const [formData, handleChange, formErrors, setFormErrors, setFormData] =
@@ -64,6 +65,7 @@ export default function DeleteDialog({ open, handleCloseDialog }) {
 
   return (
     <Dialog
+      fullScreen={isSmallScreen}
       open={open}
       onClose={handleCloseDialog}
       sx={{
@@ -102,11 +104,11 @@ export default function DeleteDialog({ open, handleCloseDialog }) {
           Cancel
         </CancelButton>
         <DeleteButton
-          variant='contained'
+          variant={'contained'}
           onClick={handleSubmit}
           className='main-button'
         >
-          <Typography paddingRight={1}>Confirm Delete</Typography>
+          Confirm Delete
           {isLoading ? (
             <CircularLoading
               size='1rem'
