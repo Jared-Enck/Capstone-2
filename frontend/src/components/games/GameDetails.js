@@ -4,7 +4,6 @@ import {
   TableBody,
   TableCell,
   TableRow,
-  Grid,
   useMediaQuery,
 } from '@mui/material';
 // import DetailListItem from './DetailListItem';
@@ -68,16 +67,14 @@ export default function GameDetails({ game }) {
       : 'N/A';
 
     const year = game.yearpublished ? game.yearpublished : 'N/A';
-    const publishers = game.publishers.length
-      ? game.publishers.join(', ')
-      : 'N/A';
+    const publisher = game.publishers.length ? game.publishers[0] : 'N/A';
     const artists = game.artists ? game.artists.join(', ') : 'N/A';
     const ages = game.age.concat('+');
 
     rows = [
       createData('Ages', ages),
       createData('Year Published', year),
-      createData('Publishers', publishers),
+      createData('Publisher', publisher),
       createData('Artists', artists),
       createData(
         'Mechanics',
