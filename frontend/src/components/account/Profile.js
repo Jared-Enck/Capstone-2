@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState, lazy, Suspense } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import UserContext from '../../context/UserContext';
+import DataContext from '../../context/DataContext';
 import {
   Stack,
   Typography,
@@ -22,6 +23,10 @@ export default function Profile({ itemsOnPage }) {
   const { currentUser, getCurrentUser, userData, token } =
     useContext(UserContext);
 
+  const { isSmallScreen } = useContext(DataContext);
+  const avatarSize = isSmallScreen
+    ? { width: '5.5rem', height: '5.5rem' }
+    : { width: '7.5rem', height: '7.5rem' };
   const [open, setOpen] = useState(false);
 
   const handleEditClick = () => {
@@ -38,6 +43,14 @@ export default function Profile({ itemsOnPage }) {
 
   return (
     <Stack>
+      {userData ? (
+        <EditProfile
+          open={open}
+          setOpen={setOpen}
+          username={username}
+          avatarSize={avatarSize}
+        />
+      ) : null}
       <ContentContainer>
         <Grid
           container
@@ -47,15 +60,10 @@ export default function Profile({ itemsOnPage }) {
         >
           {userData ? (
             <>
-              <EditProfile
-                open={open}
-                setOpen={setOpen}
-                username={username}
-              />
               <Grid item>
                 <Avatar
                   src={userData.imageURL}
-                  sx={{ width: 120, height: 120 }}
+                  sx={{ width: avatarSize.width, height: avatarSize.height }}
                 />
               </Grid>
               <Grid item>
@@ -87,10 +95,7 @@ export default function Profile({ itemsOnPage }) {
           ) : (
             <ProfileSkeleton />
           )}
-          <Grid
-            item
-            xs={12}
-          >
+          <Grid item>
             <Divider sx={{ bgcolor: 'primary.dark' }} />
           </Grid>
         </Grid>

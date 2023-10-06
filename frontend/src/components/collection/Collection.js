@@ -17,7 +17,7 @@ const CollectionStatsComp = lazy(() => import('./CollectionStats'));
 
 export default function Collection({ itemsOnPage }) {
   const [pageContent, setPageContent] = useState('');
-  const { getCollection } = useContext(DataContext);
+  const { getCollection, isSmallScreen } = useContext(DataContext);
   const { collection, userGameIDs } = useContext(UserContext);
 
   const [page, pageCount, handleChange, setPage] = usePagination(
@@ -72,35 +72,32 @@ export default function Collection({ itemsOnPage }) {
       <Grid
         container
         direction={'row'}
-        spacing={3}
-        paddingLeft={'.5rem'}
+        sx={{ width: '100%', justifyContent: 'space-around' }}
       >
         {pageContent.length
           ? pageContent.map((g) => (
               <Grid
                 key={g.objectid}
                 item
+                sx={{ marginBottom: 2 }}
+                lg={4}
               >
                 <GameCard
                   game={g}
                   onProfilePage
+                  isSmallScreen={isSmallScreen}
                 />
               </Grid>
             ))
           : noGamesMsg}
-        {pageCount > 1 ? (
-          <Grid
-            item
-            xs={12}
-          >
-            <ResultsPagination
-              page={page}
-              handleChange={handleChange}
-              pageCount={pageCount}
-            />
-          </Grid>
-        ) : null}
       </Grid>
+      {pageCount > 1 ? (
+        <ResultsPagination
+          page={page}
+          handleChange={handleChange}
+          pageCount={pageCount}
+        />
+      ) : null}
     </Stack>
   ) : (
     <CollectionSkeleton itemsOnPage={itemsOnPage} />

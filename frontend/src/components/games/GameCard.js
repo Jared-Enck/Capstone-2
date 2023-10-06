@@ -14,7 +14,7 @@ import { Favorite, FavoriteBorder, Delete } from '@mui/icons-material';
 import DataContext from '../../context/DataContext';
 import UserContext from '../../context/UserContext';
 
-export default function GameCard({ game, onProfilePage }) {
+export default function GameCard({ game, onProfilePage, isSmallScreen }) {
   const { setGame, addGame, removeGame } = useContext(DataContext);
   const { currentUser, userGameIDs, navigate } = useContext(UserContext);
   const inCollection = userGameIDs ? userGameIDs.has(game.objectid) : false;
@@ -66,7 +66,8 @@ export default function GameCard({ game, onProfilePage }) {
   return (
     <Card
       sx={{
-        width: 345,
+        margin: 'auto',
+        width: isSmallScreen ? '16rem' : '20rem',
         backgroundColor: 'primary.dark',
         transition: 'all 200ms',
         '&:hover': {
@@ -77,18 +78,18 @@ export default function GameCard({ game, onProfilePage }) {
       <CardActionArea onClick={handleCardClick}>
         <CardMedia
           sx={{
-            objectFit: 'fill',
+            height: isSmallScreen ? '10rem' : '14rem',
+            objectFit: 'cover',
           }}
           component={'img'}
-          height={230}
-          image={game.image || game.thumbnail}
+          image={game.image}
           alt={name}
         />
-        <CardContent sx={{ color: 'secondary.main' }}>
+        <CardContent sx={{ color: 'secondary.main', padding: 1 }}>
           <Typography
             textAlign={'center'}
             gutterBottom
-            variant='h5'
+            variant={isSmallScreen ? 'h6' : 'h5'}
             component='div'
             noWrap
           >
@@ -108,6 +109,7 @@ export default function GameCard({ game, onProfilePage }) {
               max_players={game.maxplayers}
               min_playtime={game.minplaytime}
               max_playtime={game.maxplaytime}
+              isSmallScreen={isSmallScreen}
             />
           </Grid>
         </CardContent>

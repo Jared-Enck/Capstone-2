@@ -16,10 +16,12 @@ import {
 } from '../styled';
 import useFields from '../../hooks/useFields';
 import UserContext from '../../context/UserContext';
+import DataContext from '../../context/DataContext';
 import EditAvatar from './EditAvatar';
 
-export default function EditProfile({ open, setOpen, username }) {
+export default function EditProfile({ open, setOpen, username, avatarSize }) {
   const { updateUser, userData } = useContext(UserContext);
+  const { isSmallScreen } = useContext(DataContext);
 
   const [formData, handleChange, formErrors, setFormErrors, setFormData] =
     useFields(userData);
@@ -101,25 +103,26 @@ export default function EditProfile({ open, setOpen, username }) {
 
   return (
     <Dialog
+      fullScreen={isSmallScreen}
       open={open}
       onClose={handleClose}
+      fullWidth={true}
+      maxWidth='sm'
       sx={{
         '& .MuiPaper-root': {
-          bottom: '5rem',
           bgcolor: 'primary.main',
-          width: 600,
           padding: '0rem 4rem 1rem 4rem',
         },
       }}
     >
       <DialogTitle
-        fontSize={'1.5rem'}
+        fontSize={isSmallScreen ? '1.2rem' : '1.5rem'}
         sx={{ color: 'primary.text', paddingBottom: 0 }}
       >
         Edit Profile
       </DialogTitle>
       <DialogContent>
-        <Box sx={{ height: 24, width: 400, marginBottom: '.4rem' }}>
+        <Box sx={{ marginBottom: '.4rem' }}>
           {typeof formErrors[0] === 'string' ? (
             <ErrorSpan>{formErrors[0]}</ErrorSpan>
           ) : null}
@@ -128,27 +131,28 @@ export default function EditProfile({ open, setOpen, username }) {
           <EditAvatar
             imageURL={formData.imageURL}
             handleFileUpload={handleFileUpload}
+            avatarSize={avatarSize}
+            isSmallScreen={isSmallScreen}
           />
           {['username', 'email'].map((name) => {
             const firstLetter = name[0].toUpperCase();
             const label = firstLetter.concat(name.slice(1));
 
             return (
-              <FormControl key={name}>
-                <FormTextField
-                  variant='outlined'
-                  label={label}
-                  type={'text'}
-                  name={name}
-                  value={formData[name]}
-                  onChange={handleChange}
-                  helperText={
-                    formErrors.length && typeof formErrors[0] !== 'string' ? (
-                      <ErrorSpan>{formErrors[0][name]}</ErrorSpan>
-                    ) : null
-                  }
-                />
-              </FormControl>
+              <FormTextField
+                key={name}
+                variant='outlined'
+                label={label}
+                type={'text'}
+                name={name}
+                value={formData[name]}
+                onChange={handleChange}
+                helperText={
+                  formErrors.length && typeof formErrors[0] !== 'string' ? (
+                    <ErrorSpan>{formErrors[0][name]}</ErrorSpan>
+                  ) : null
+                }
+              />
             );
           })}
         </Stack>
