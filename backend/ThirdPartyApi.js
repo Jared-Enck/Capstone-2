@@ -220,7 +220,7 @@ class ThirdPartyApi {
   static async getVideos(title, nextPageToken = '', maxResults = 6) {
     try {
       const params = {
-        q: `${title} board game`,
+        q: `${title} how to play`,
         relevanceLanguage: 'en',
         type: 'video',
         maxResults: maxResults,
