@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import DataContext from '../../context/DataContext';
 import styled from '@emotion/styled';
 import { Box, Container, Grid, Link, Stack } from '@mui/material';
 import { LinkedIn, GitHub } from '@mui/icons-material';
@@ -19,7 +20,7 @@ const StyledContainer = styled(Container)(({ theme }) => ({
 export default function Footer() {
   // Open in new tab
   const newTab = (url) => window.open(url, '_blank');
-
+  const { isSmallScreen } = useContext(DataContext);
   return (
     <footer style={{ marginTop: '4rem' }}>
       <StyledBox sx={{ padding: '.5rem' }}>
@@ -39,8 +40,8 @@ export default function Footer() {
                 spacing={2}
               >
                 {[
-                  <LinkedIn fontSize='large' />,
-                  <GitHub fontSize='large' />,
+                  <LinkedIn fontSize={isSmallScreen ? 'medium' : 'large'} />,
+                  <GitHub fontSize={isSmallScreen ? 'medium' : 'large'} />,
                 ].map((icon, idx) => {
                   const urls = [
                     'https://www.linkedin.com/in/jared-enck',
@@ -51,6 +52,7 @@ export default function Footer() {
                       key={idx}
                       onClick={() => newTab(urls[idx])}
                       sx={{
+                        display: 'flex',
                         padding: 0,
                         color: 'primary.text',
                         transition: '200ms ease-in-out',
