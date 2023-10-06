@@ -131,7 +131,7 @@ export default function GameDescription({ game }) {
       .createContextualFragment(game.description);
     const description = document.getElementById('description');
     description.appendChild(descFrag);
-  }, []);
+  }, [game.description]);
 
   return (
     <ContentContainer>

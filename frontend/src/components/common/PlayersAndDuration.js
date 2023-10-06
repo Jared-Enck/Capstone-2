@@ -46,7 +46,6 @@ export default function PlayersAndDuration({
   return (
     <>
       {[players(), duration()].map((i, idx, arr) => {
-        const last = arr.length - 1;
         return (
           <Grid
             item

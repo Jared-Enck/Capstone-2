@@ -1,14 +1,6 @@
 import React, { useContext } from 'react';
 import DataContext from '../../context/DataContext';
-import {
-  Stack,
-  Grid,
-  Divider,
-  Typography,
-  ListItem,
-  ListItemText,
-  Box,
-} from '@mui/material';
+import { Stack, Grid, Divider, Typography, ListItem, Box } from '@mui/material';
 import styled from '@emotion/styled';
 import BaseSkeleton from '../common/BaseSkeleton';
 import ContentContainer from '../common/ContentContainer';

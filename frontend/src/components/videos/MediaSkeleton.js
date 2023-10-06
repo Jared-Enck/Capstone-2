@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Card, CardActionArea } from '@mui/material';
+import { Grid, Card } from '@mui/material';
 import BaseSkeleton from '../common/BaseSkeleton';
 
 export default function MediaSkeleton({ isSmallScreen }) {

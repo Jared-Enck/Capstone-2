@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import UserContext from '../../context/UserContext';
 import { PrimaryButton } from '../styled';
-import { Grid, Button } from '@mui/material';
+import { Grid } from '@mui/material';
 
 export default function AnonUserLinks() {
   const { navigate } = useContext(UserContext);

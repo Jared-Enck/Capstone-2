@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import UserContext from '../../context/UserContext';
-import { Box, Stack, useMediaQuery, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import styled from '@emotion/styled';
 import DataContext from '../../context/DataContext';
 import CircularLoading from '../common/CircularLoading';

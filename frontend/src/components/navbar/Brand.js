@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Grid, Typography, alpha } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { Logo } from '../styled';
 
 export default function Brand() {
