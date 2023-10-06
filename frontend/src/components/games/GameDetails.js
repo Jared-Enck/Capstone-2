@@ -7,7 +7,7 @@ import {
   Grid,
   useMediaQuery,
 } from '@mui/material';
-import DetailListItem from './DetailListItem';
+// import DetailListItem from './DetailListItem';
 import styled from '@emotion/styled';
 import ContentContainer from '../common/ContentContainer';
 import CircularLoading from '../common/CircularLoading';
@@ -35,31 +35,36 @@ export default function GameDetails({ game }) {
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  const gridSpacing = isSmallScreen ? 1 : 2;
 
   if (game) {
     MechanicsComps = game.boardgamemechanic.length
-      ? game.boardgamemechanic.map((m, idx) => (
-          <DetailListItem
-            key={idx}
-            // param={'mechanics'}
-            isSmallScreen={isSmallScreen}
-            item={m}
-            isLastItem={game.boardgamemechanic.length - 1 === idx}
-          />
-        ))
+      ? game.boardgamemechanic
+          .map(
+            (m, idx) => m._text
+            // <DetailListItem
+            //   key={idx}
+            //   // param={'mechanics'}
+            //   isSmallScreen={isSmallScreen}
+            //   item={m}
+            //   isLastItem={game.boardgamemechanic.length - 1 === idx}
+            // />
+          )
+          .join(', ')
       : 'N/A';
 
     CategoriesComps = game.boardgamecategory.length
-      ? game.boardgamecategory.map((c, idx) => (
-          <DetailListItem
-            key={idx}
-            // param={'categories'}
-            isSmallScreen={isSmallScreen}
-            item={c}
-            isLastItem={game.boardgamecategory.length - 1 === idx}
-          />
-        ))
+      ? game.boardgamecategory
+          .map(
+            (c, idx) => c._text
+            // <DetailListItem
+            //   key={idx}
+            //   // param={'categories'}
+            //   isSmallScreen={isSmallScreen}
+            //   item={c}
+            //   isLastItem={game.boardgamecategory.length - 1 === idx}
+            // />
+          )
+          .join(', ')
       : 'N/A';
 
     const year = game.yearpublished ? game.yearpublished : 'N/A';
@@ -76,23 +81,23 @@ export default function GameDetails({ game }) {
       createData('Artists', artists),
       createData(
         'Mechanics',
-        <Grid
-          container
-          spacing={gridSpacing}
-          direction={'row'}
-        >
-          {MechanicsComps}
-        </Grid>
+        // <Grid
+        //   container
+        //   spacing={gridSpacing}
+        //   direction={'row'}
+        // >
+        MechanicsComps
+        // {/* </Grid> */}
       ),
       createData(
         'Categories',
-        <Grid
-          container
-          spacing={gridSpacing}
-          direction={'row'}
-        >
-          {CategoriesComps}
-        </Grid>
+        // <Grid
+        //   container
+        //   spacing={gridSpacing}
+        //   direction={'row'}
+        // >
+        CategoriesComps
+        // {/* </Grid> */}
       ),
     ];
   }
