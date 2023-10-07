@@ -111,7 +111,7 @@ export default function EditProfile({ open, setOpen, username, avatarSize }) {
       sx={{
         '& .MuiPaper-root': {
           bgcolor: 'primary.main',
-          padding: '0rem 4rem 1rem 4rem',
+          padding: isSmallScreen ? 1 : '0rem 4rem 1rem 4rem',
         },
       }}
     >
