@@ -50,6 +50,7 @@ export default function Collection({ itemsOnPage }) {
 
   useEffect(() => {
     getPageContent();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [page, getPageContent]);
 
   useEffect(() => {
@@ -100,6 +101,9 @@ export default function Collection({ itemsOnPage }) {
       ) : null}
     </Stack>
   ) : (
-    <CollectionSkeleton itemsOnPage={itemsOnPage} />
+    <CollectionSkeleton
+      itemsOnPage={itemsOnPage}
+      isSmallScreen={isSmallScreen}
+    />
   );
 }

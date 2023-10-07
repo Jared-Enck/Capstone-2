@@ -2,7 +2,7 @@ import React from 'react';
 import { Stack, Grid } from '@mui/material';
 import BaseSkeleton from '../common/BaseSkeleton';
 
-export default function CollectionSkeleton({ itemsOnPage }) {
+export default function CollectionSkeleton({ itemsOnPage, isSmallScreen }) {
   let skelItems = [];
 
   for (let i = 0; i < itemsOnPage; i++) {
@@ -10,11 +10,14 @@ export default function CollectionSkeleton({ itemsOnPage }) {
       <Grid
         item
         key={i}
+        sx={{ marginBottom: 2 }}
+        lg={4}
       >
         <BaseSkeleton
-          width={345}
-          height={383}
+          width={isSmallScreen ? '16rem' : '20rem'}
+          height={isSmallScreen ? '19rem' : '24rem'}
           shadow={1}
+          center={true}
         />
       </Grid>
     );
@@ -24,17 +27,18 @@ export default function CollectionSkeleton({ itemsOnPage }) {
     <Stack spacing={2}>
       <Stack
         spacing={1}
-        width={300}
         padding={'1.5rem 1.5rem 0rem 2rem'}
       >
-        <BaseSkeleton />
-        <BaseSkeleton height='1.5rem' />
+        <BaseSkeleton width='7rem' />
+        <BaseSkeleton
+          width='8rem'
+          height='1.5rem'
+        />
       </Stack>
       <Grid
         container
         direction={'row'}
-        spacing={3}
-        paddingLeft={'.5rem'}
+        sx={{ width: '100%', justifyContent: 'space-around' }}
       >
         {skelItems.map((i) => i)}
       </Grid>
