@@ -93,12 +93,12 @@ export default function Profile({ itemsOnPage }) {
               </Grid>
             </>
           ) : (
-            <ProfileSkeleton />
+            <ProfileSkeleton avatarSize={avatarSize} />
           )}
-          <Grid item>
-            <Divider sx={{ bgcolor: 'primary.dark' }} />
-          </Grid>
         </Grid>
+
+        <Divider sx={{ bgcolor: 'primary.dark', margin: 1 }} />
+
         <Suspense fallback={<CollectionSkeleton itemsOnPage={itemsOnPage} />}>
           <CollectionComp itemsOnPage={itemsOnPage} />
         </Suspense>

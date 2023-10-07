@@ -2,22 +2,21 @@ import React from 'react';
 import { Grid } from '@mui/material';
 import BaseSkeleton from '../common/BaseSkeleton';
 
-export default function ProfileSkeleton() {
+export default function ProfileSkeleton({ avatarSize }) {
   return (
     <>
       <Grid item>
         <BaseSkeleton
           variant='circular'
-          width={120}
-          height={120}
+          width={avatarSize.width}
+          height={avatarSize.height}
         />
       </Grid>
       <Grid
         item
-        xs={8}
         marginTop={'auto'}
       >
-        <BaseSkeleton />
+        <BaseSkeleton width='10rem' />
       </Grid>
     </>
   );
