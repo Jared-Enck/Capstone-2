@@ -68,6 +68,7 @@ export default function GameCard({ game, onProfilePage, isSmallScreen }) {
       sx={{
         margin: 'auto',
         width: isSmallScreen ? '16rem' : '20rem',
+        height: isSmallScreen ? '19rem' : '24rem',
         backgroundColor: 'primary.dark',
         transition: 'all 200ms',
         '&:hover': {
@@ -79,7 +80,7 @@ export default function GameCard({ game, onProfilePage, isSmallScreen }) {
         <CardMedia
           sx={{
             height: isSmallScreen ? '10rem' : '14rem',
-            objectFit: 'cover',
+            objectFit: 'fill',
           }}
           component={'img'}
           image={game.image}
