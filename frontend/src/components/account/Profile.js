@@ -105,7 +105,14 @@ export default function Profile({ itemsOnPage }) {
 
         <Divider sx={{ bgcolor: 'primary.dark', margin: 1 }} />
 
-        <Suspense fallback={<CollectionSkeleton itemsOnPage={itemsOnPage} />}>
+        <Suspense
+          fallback={
+            <CollectionSkeleton
+              itemsOnPage={itemsOnPage}
+              isSmallScreen={isSmallScreen}
+            />
+          }
+        >
           <CollectionComp itemsOnPage={itemsOnPage} />
         </Suspense>
       </ContentContainer>
