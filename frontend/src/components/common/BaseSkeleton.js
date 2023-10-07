@@ -14,6 +14,7 @@ export default function BaseSkeleton({
   width = '100%',
   height = '2rem',
   shadow,
+  center,
 }) {
   const boxShadow = shadow ? shadow : 'none';
   return (
@@ -21,6 +22,7 @@ export default function BaseSkeleton({
       variant={variant}
       animation='wave'
       sx={{
+        margin: center ? 'auto' : null,
         width: width,
         height: height,
         boxShadow: boxShadow,
