@@ -57,27 +57,33 @@ export default function Profile({ itemsOnPage }) {
           spacing={2}
           direction={'row'}
           alignItems={'flex-end'}
+          padding={1}
         >
           {userData ? (
             <>
-              <Grid item>
+              <Grid
+                item
+                xs={12}
+                md={2}
+              >
                 <Avatar
                   src={userData.imageURL}
                   sx={{ width: avatarSize.width, height: avatarSize.height }}
                 />
               </Grid>
-              <Grid item>
+              <Grid
+                item
+                sx={{ display: 'flex' }}
+                xs={12}
+                md={10}
+              >
                 <Typography
                   variant='h5'
                   color={'secondary.main'}
+                  sx={{ flexGrow: 1 }}
                 >
                   {userData.username}
                 </Typography>
-              </Grid>
-              <Grid
-                item
-                marginLeft={'auto'}
-              >
                 <Button
                   size='small'
                   onClick={handleEditClick}
