@@ -5,7 +5,11 @@ import BaseSkeleton from '../common/BaseSkeleton';
 export default function ProfileSkeleton({ avatarSize }) {
   return (
     <>
-      <Grid item>
+      <Grid
+        item
+        xs={12}
+        md={2}
+      >
         <BaseSkeleton
           variant='circular'
           width={avatarSize.width}
@@ -15,6 +19,8 @@ export default function ProfileSkeleton({ avatarSize }) {
       <Grid
         item
         marginTop={'auto'}
+        xs={12}
+        md={10}
       >
         <BaseSkeleton width='10rem' />
       </Grid>
