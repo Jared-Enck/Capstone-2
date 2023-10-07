@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkfrontend=self.webpackChunkfrontend||[]).push([[974],{974:function(r,e,n){n.r(e),n.d(e,{default:function(){return c}});n(390);var t=n(5793),i=n(5477),a=n(2559);function c(r){var e=r.size;return(0,a.jsxs)(t.Z,{spacing:1,padding:"1.5rem 1.5rem 0rem 2rem",children:[(0,a.jsx)(i.Z,{variant:"h5",color:"primary.text",children:"Collection"}),(0,a.jsxs)(i.Z,{color:"primary.text",children:["Total Games: ",e]}),(0,a.jsx)(i.Z,{color:"primary.text"})]})}}}]);
+//# sourceMappingURL=974.dd88b005.chunk.js.map
