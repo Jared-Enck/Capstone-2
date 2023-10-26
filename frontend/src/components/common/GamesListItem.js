@@ -78,7 +78,7 @@ export default function GamesListItem({
           <Typography
             sx={{
               fontSize: dimensions.fontSize,
-              minWidth: isSmallScreen ? '3.506rem' : '4.207rem',
+              minWidth: '4.207rem',
               textAlign: 'right',
             }}
           >

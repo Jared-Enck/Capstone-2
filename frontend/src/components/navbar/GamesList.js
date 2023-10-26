@@ -14,7 +14,7 @@ export default function GamesList({ games, handleGameClick }) {
             key={i.id}
             item={i}
             clickFunc={handleGameClick}
-            dimensions={{ fontSize: isSmallScreen ? '.9rem' : '1.2rem' }}
+            dimensions={{ fontSize: '1.2rem' }}
             isLastItem={idx === games.length - 1}
             isSmallScreen={isSmallScreen}
           />
