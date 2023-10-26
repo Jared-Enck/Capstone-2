@@ -77,11 +77,11 @@ export const StyledInputBase = styled(InputBase)(({ theme }) => ({
     border: `.1rem solid transparent`,
     borderRadius: theme.shape.borderRadius,
     [theme.breakpoints.down('md')]: {
-      width: '40ch',
+      width: '50ch',
     },
     [theme.breakpoints.down('sm')]: {
       paddingLeft: `calc(1em + ${theme.spacing(0)})`,
-      width: '25ch',
+      width: '30ch',
     },
     '&:focus': {
       border: `.1rem solid ${theme.palette.secondary.main}`,
