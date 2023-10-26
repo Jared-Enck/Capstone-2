@@ -54,12 +54,11 @@ export default function MediaContainer({ game, items }) {
               <MediaCard
                 item={i}
                 handleClick={handleClick}
-                isSmallScreen={isSmallScreen}
               />
             </Grid>
           ))
         ) : (
-          <MediaSkeleton isSmallScreen={isSmallScreen} />
+          <MediaSkeleton />
         )}
       </Grid>
     </ContentContainer>
