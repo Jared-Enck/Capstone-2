@@ -3,7 +3,7 @@ import DataContext from '../../context/DataContext';
 import SearchIcon from '@mui/icons-material/Search';
 import { Collapse, ClickAwayListener } from '@mui/material';
 import SearchBoxResults from './SearchBoxResults';
-import { Search, SearchIconWrapper, StyledInputBase } from '../styled';
+import { Search, SearchIconWrapper, SearchInput } from '../styled';
 
 export default function SearchBar() {
   const {
@@ -39,7 +39,7 @@ export default function SearchBar() {
       <SearchIconWrapper>
         <SearchIcon />
       </SearchIconWrapper>
-      <StyledInputBase
+      <SearchInput
         id='search'
         name='search'
         placeholder='Search games by title...'

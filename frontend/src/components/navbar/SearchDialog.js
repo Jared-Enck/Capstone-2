@@ -4,7 +4,7 @@ import UserContext from '../../context/UserContext';
 import { Stack, Dialog, Box, DialogContent, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Search, StyledInputBase } from '../styled';
+import { SearchInput } from '../styled';
 import CircularLoading from '../common/CircularLoading';
 import NoGamesFound from './NoGamesFound';
 import GamesList from './GamesList';
@@ -58,7 +58,7 @@ export default function SearchDialog({ open, setOpen }) {
         onClose={handleClose}
         sx={{
           '& .MuiPaper-root': {
-            bgcolor: 'primary.dark',
+            bgcolor: 'primary.main',
           },
         }}
       >
@@ -71,19 +71,20 @@ export default function SearchDialog({ open, setOpen }) {
           <IconButton onClick={handleClose}>
             <ArrowBackIcon sx={{ color: 'primary.text' }} />
           </IconButton>
-          <Search>
-            <StyledInputBase
-              id='search'
-              name='search'
-              placeholder='Search games by title...'
-              inputProps={{ 'aria-label': 'search' }}
-              onChange={handleChange}
-              value={searchTerm}
-              autoComplete='off'
-              autoFocus
-            />
-          </Search>
+
+          <SearchInput
+            id='search'
+            name='search'
+            placeholder='Search games by title...'
+            inputProps={{ 'aria-label': 'search' }}
+            onChange={handleChange}
+            value={searchTerm}
+            autoComplete='off'
+            autoFocus
+            sx={{ flexGrow: 1 }}
+          />
         </Stack>
+
         <DialogContent sx={{ color: 'primary.text', padding: 0.5 }}>
           {isLoading ? (
             <Box padding={1}>
