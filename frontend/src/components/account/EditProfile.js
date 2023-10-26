@@ -1,12 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Stack,
-  Box,
-} from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, Stack, Box } from '@mui/material';
 import {
   FormTextField,
   PrimaryButton,
@@ -64,7 +57,7 @@ export default function EditProfile({ open, setOpen, username, avatarSize }) {
   const getChanges = (formData, userData) => {
     const formEntries = Object.entries(formData);
     const initialEntries = Object.entries(userData);
-    const updateData = {};
+    const changes = {};
 
     const entries = formEntries.filter(
       ([key, val], idx) => val !== initialEntries[idx][1]
@@ -72,9 +65,9 @@ export default function EditProfile({ open, setOpen, username, avatarSize }) {
 
     if (!entries.length) return -1;
 
-    entries.map((entry) => (updateData[entry[0]] = entry[1]));
+    entries.map((entry) => (changes[entry[0]] = entry[1]));
 
-    return updateData;
+    return changes;
   };
 
   // handle form submit
@@ -82,12 +75,12 @@ export default function EditProfile({ open, setOpen, username, avatarSize }) {
     e.preventDefault();
 
     // check for any changes
-    const updateData = getChanges(formData, userData);
+    const changes = getChanges(formData, userData);
 
-    if (updateData === -1) return handleClose();
+    if (changes === -1) return handleClose();
 
     // Patch request with updated data
-    const result = await updateUser(updateData, username);
+    const result = await updateUser(changes, username);
 
     if (result) {
       setFormErrors(result.msg);
@@ -111,12 +104,14 @@ export default function EditProfile({ open, setOpen, username, avatarSize }) {
         '& .MuiPaper-root': {
           bgcolor: 'primary.main',
           padding: isSmallScreen ? 1 : '0rem 4rem 1rem 4rem',
+          bottom: isSmallScreen ? 'none' : '20%',
         },
       }}
+      aria-label='edit-profile'
     >
       <DialogTitle
         fontSize={isSmallScreen ? '1.2rem' : '1.5rem'}
-        sx={{ color: 'primary.text', paddingBottom: 0 }}
+        sx={{ color: 'primary.text' }}
       >
         Edit Profile
       </DialogTitle>
@@ -133,6 +128,7 @@ export default function EditProfile({ open, setOpen, username, avatarSize }) {
             avatarSize={avatarSize}
             isSmallScreen={isSmallScreen}
           />
+
           {['username', 'email'].map((name) => {
             const firstLetter = name[0].toUpperCase();
             const label = firstLetter.concat(name.slice(1));
@@ -154,24 +150,28 @@ export default function EditProfile({ open, setOpen, username, avatarSize }) {
               />
             );
           })}
+
+          <Stack
+            direction={'row'}
+            spacing={2}
+          >
+            <CancelButton
+              variant='outlined'
+              onClick={handleClose}
+              className='main-button'
+            >
+              Cancel
+            </CancelButton>
+            <PrimaryButton
+              variant='contained'
+              onClick={handleSubmit}
+              className='main-button'
+            >
+              Submit
+            </PrimaryButton>
+          </Stack>
         </Stack>
       </DialogContent>
-      <DialogActions sx={{ marginRight: 'auto', padding: '5px 0px 0px 24px' }}>
-        <CancelButton
-          variant='outlined'
-          onClick={handleClose}
-          className='main-button'
-        >
-          Cancel
-        </CancelButton>
-        <PrimaryButton
-          variant='contained'
-          onClick={handleSubmit}
-          className='main-button'
-        >
-          Submit
-        </PrimaryButton>
-      </DialogActions>
     </Dialog>
   );
 }
