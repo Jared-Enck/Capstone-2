@@ -10,6 +10,7 @@ import { useTheme } from '@mui/material/styles';
 export default function DataProvider({ children }) {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMediumScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -216,6 +217,7 @@ export default function DataProvider({ children }) {
     <DataContext.Provider
       value={{
         isSmallScreen,
+        isMediumScreen,
         isLoading,
         setIsLoading,
         searchTerm,
