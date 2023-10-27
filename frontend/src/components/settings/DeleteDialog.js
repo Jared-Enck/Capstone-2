@@ -8,7 +8,6 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
-  DialogActions,
   Stack,
   Box,
   TextField,
@@ -97,6 +96,7 @@ export default function DeleteDialog({ open, handleCloseDialog }) {
         <Stack
           direction={'row'}
           spacing={2}
+          sx={{ marginTop: 1 }}
         >
           <CancelButton
             variant='outlined'
