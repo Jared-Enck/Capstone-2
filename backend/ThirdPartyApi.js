@@ -237,25 +237,24 @@ class ThirdPartyApi {
   }
 
   static async getSearchResults(query) {
-    // let results = {};
-    // if (query.name) {
-    //   results = this.checkCommonByName(query.name);
-    // }
     const [key, val] = Object.entries(query)[0];
 
     const queryStr = query.skip
       ? `${key}=${val}&skip=${query.skip}`
       : `${key}=${val}`;
 
-    return await this.bggRequest(
+    const res = await this.bggRequest(
       `search?${queryStr}&type=boardgame`,
       {},
       'get',
       'V2'
     );
-    // const { games, count } = response;
-    // results.foundGames = games;
-    // return { results, count };
+
+    // Exclude fan made expansions from results
+
+    const regexp = new RegExp('fan expansion', 'i');
+
+    return res.filter((i) => !regexp.test(i.name));
   }
 
   static async getCollection(query) {
