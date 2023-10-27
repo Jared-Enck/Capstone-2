@@ -23,7 +23,7 @@ export default function Profile({ itemsOnPage }) {
   const { currentUser, getCurrentUser, userData, token } =
     useContext(UserContext);
 
-  const { isSmallScreen } = useContext(DataContext);
+  const { isSmallScreen, isMediumScreen } = useContext(DataContext);
   const avatarSize = isSmallScreen
     ? { width: '5.5rem', height: '5.5rem' }
     : { width: '7.5rem', height: '7.5rem' };
@@ -109,7 +109,7 @@ export default function Profile({ itemsOnPage }) {
           fallback={
             <CollectionSkeleton
               itemsOnPage={itemsOnPage}
-              isSmallScreen={isSmallScreen}
+              isMediumScreen={isMediumScreen}
             />
           }
         >

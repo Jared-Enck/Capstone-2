@@ -17,7 +17,7 @@ const CollectionStatsComp = lazy(() => import('./CollectionStats'));
 
 export default function Collection({ itemsOnPage }) {
   const [pageContent, setPageContent] = useState('');
-  const { getCollection, isSmallScreen } = useContext(DataContext);
+  const { getCollection, isMediumScreen } = useContext(DataContext);
   const { collection, userGameIDs } = useContext(UserContext);
 
   const [page, pageCount, handleChange, setPage] = usePagination(
@@ -86,7 +86,7 @@ export default function Collection({ itemsOnPage }) {
                 <GameCard
                   game={g}
                   onProfilePage
-                  isSmallScreen={isSmallScreen}
+                  isMediumScreen={isMediumScreen}
                 />
               </Grid>
             ))
@@ -103,7 +103,7 @@ export default function Collection({ itemsOnPage }) {
   ) : (
     <CollectionSkeleton
       itemsOnPage={itemsOnPage}
-      isSmallScreen={isSmallScreen}
+      isMediumScreen={isMediumScreen}
     />
   );
 }

@@ -14,7 +14,7 @@ import { Favorite, FavoriteBorder, Delete } from '@mui/icons-material';
 import DataContext from '../../context/DataContext';
 import UserContext from '../../context/UserContext';
 
-export default function GameCard({ game, onProfilePage, isSmallScreen }) {
+export default function GameCard({ game, onProfilePage, isMediumScreen }) {
   const { setGame, addGame, removeGame } = useContext(DataContext);
   const { currentUser, userGameIDs, navigate } = useContext(UserContext);
   const inCollection = userGameIDs ? userGameIDs.has(game.objectid) : false;
@@ -67,8 +67,7 @@ export default function GameCard({ game, onProfilePage, isSmallScreen }) {
     <Card
       sx={{
         margin: 'auto',
-        width: isSmallScreen ? '16rem' : '20rem',
-        height: isSmallScreen ? '19rem' : '24rem',
+        width: isMediumScreen ? '10rem' : '20rem',
         backgroundColor: 'primary.dark',
         transition: 'all 200ms',
         '&:hover': {
@@ -79,7 +78,7 @@ export default function GameCard({ game, onProfilePage, isSmallScreen }) {
       <CardActionArea onClick={handleCardClick}>
         <CardMedia
           sx={{
-            height: isSmallScreen ? '10rem' : '14rem',
+            height: isMediumScreen ? '8rem' : '14rem',
             objectFit: 'fill',
           }}
           component={'img'}
@@ -90,7 +89,7 @@ export default function GameCard({ game, onProfilePage, isSmallScreen }) {
           <Typography
             textAlign={'center'}
             gutterBottom
-            variant={isSmallScreen ? 'h6' : 'h5'}
+            variant={isMediumScreen ? 'h6' : 'h5'}
             component='div'
             noWrap
           >
@@ -99,8 +98,7 @@ export default function GameCard({ game, onProfilePage, isSmallScreen }) {
           <Grid
             container
             direction={'row'}
-            justifyContent={'center'}
-            spacing={3}
+            justifyContent={'space-evenly'}
             sx={{
               color: 'primary.text',
             }}
@@ -110,13 +108,16 @@ export default function GameCard({ game, onProfilePage, isSmallScreen }) {
               max_players={game.maxplayers}
               min_playtime={game.minplaytime}
               max_playtime={game.maxplaytime}
-              isSmallScreen={isSmallScreen}
+              isMediumScreen={isMediumScreen}
             />
           </Grid>
         </CardContent>
       </CardActionArea>
       {currentUser ? (
-        <CardActions disableSpacing>
+        <CardActions
+          disableSpacing
+          sx={{ padding: 0 }}
+        >
           {!onProfilePage ? quickAddBtn : trashBtn}
         </CardActions>
       ) : null}

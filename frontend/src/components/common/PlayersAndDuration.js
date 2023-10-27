@@ -7,7 +7,7 @@ export default function PlayersAndDuration({
   max_players,
   min_playtime,
   max_playtime,
-  isSmallScreen,
+  isMediumScreen,
 }) {
   /** format string for num of players to only display
    * min_players if it's equal to max_players
@@ -23,7 +23,7 @@ export default function PlayersAndDuration({
       min_players === max_players
         ? min_players
         : min_players + ' - ' + max_players;
-    return [<Person />, players];
+    return [<Person fontSize={isMediumScreen ? 'small' : 'medium'} />, players];
   };
 
   /** format string for duration of playtime to only display
@@ -40,7 +40,10 @@ export default function PlayersAndDuration({
       min_playtime === max_playtime
         ? min_playtime
         : min_playtime + ' - ' + max_playtime;
-    return [<AccessTime />, duration];
+    return [
+      <AccessTime fontSize={isMediumScreen ? 'small' : 'medium'} />,
+      duration,
+    ];
   };
 
   return (
@@ -51,11 +54,16 @@ export default function PlayersAndDuration({
             item
             key={idx}
           >
-            <ListItem sx={{ padding: isSmallScreen ? 0 : null }}>
-              <ListItemIcon sx={{ color: 'primary.text', minWidth: 30 }}>
+            <ListItem sx={{ padding: 0 }}>
+              <ListItemIcon
+                sx={{
+                  color: 'primary.text',
+                  minWidth: isMediumScreen ? 20 : 30,
+                }}
+              >
                 {i[0]}
               </ListItemIcon>
-              <ListItemText>{i[1]}</ListItemText>
+              <ListItemText sx={{ fontSize: '.5rem' }}>{i[1]}</ListItemText>
             </ListItem>
           </Grid>
         );
