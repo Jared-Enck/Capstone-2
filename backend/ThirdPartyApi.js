@@ -250,11 +250,14 @@ class ThirdPartyApi {
       'V2'
     );
 
-    // Exclude fan made expansions from results
+    if (res === -1) return res;
+    else {
+      // Exclude fan made expansions from results
 
-    const regexp = new RegExp('fan expansion', 'i');
+      const regexp = new RegExp('fan expansion', 'i');
 
-    return res.filter((i) => !regexp.test(i.name));
+      return res.filter((i) => !regexp.test(i.name));
+    }
   }
 
   static async getCollection(query) {
