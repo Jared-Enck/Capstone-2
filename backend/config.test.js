@@ -11,20 +11,22 @@ describe('config can come from env', () => {
 
     const config = require('./config');
     expect(config.SECRET_KEY).toEqual('abc');
-    expect(config.PORT).toEqual(3001);
+    expect(config.PORT).toEqual('3001');
     expect(config.DB_URI()).toEqual('socket:/var/run/postgresql?db=other');
     expect(config.BCRYPT_WORK_FACTOR).toEqual(13);
 
     delete env.SECRET_KEY;
     delete env.PORT;
     delete env.BCRYPT_WORK_FACTOR;
-    env.DATABASE = 'game_night';
+    env.DATABASE = 'my_game_nights';
 
-    expect(config.DB_URI()).toEqual('socket:/var/run/postgresql?db=game_night');
+    expect(config.DB_URI()).toEqual(
+      'socket:/var/run/postgresql?db=my_game_nights'
+    );
     env.NODE_ENV = 'test';
 
     expect(config.DB_URI()).toEqual(
-      'socket:/var/run/postgresql?db=game_night_test'
+      'socket:/var/run/postgresql?db=my_game_nights_test'
     );
   });
 });

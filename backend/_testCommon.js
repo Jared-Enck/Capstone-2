@@ -33,9 +33,9 @@ async function commonBeforeAll() {
     INSERT INTO game_collections
       (username, game_id)
     VALUES 
-      ('u1', 'e44jncYuUp'),
-      ('u1', 'nSZTnbgacm'),
-      ('u2', '78ZDzlpvdb')
+      ('u1', '316554'),
+      ('u1', '221194'),
+      ('u2', '270239')
   `);
 
   await db.query(`

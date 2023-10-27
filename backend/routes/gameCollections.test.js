@@ -44,8 +44,7 @@ describe('GET /gameCollections/:username', () => {
 
 describe('POST /gameCollections/:username', () => {
   const addGameObj = {
-    id: '78ZDzlpvdb',
-    name: 'Moonrakers',
+    gameID: '270239',
   };
   it('works for owner', async () => {
     const resp = await request(app)
@@ -75,8 +74,7 @@ describe('POST /gameCollections/:username', () => {
 
 describe('DELETE /gameCollections/:username', () => {
   const removeGameObj = {
-    id: 'nSZTnbgacm',
-    name: 'Dinosaur Island',
+    gameID: '221194',
   };
   it('works for owner', async () => {
     const resp = await request(app)
