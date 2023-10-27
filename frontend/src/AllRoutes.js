@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import UserContext from './context/UserContext';
+import DataContext from './context/DataContext';
 import NotFound from './components/NotFound';
 import Home from './components/Home';
 import LoginForm from './components/account/LoginForm';
@@ -11,6 +12,7 @@ import GameDetailsPage from './components/games/GameDetailsPage';
 
 export default function AllRoutes() {
   const { loginUser, registerUser } = useContext(UserContext);
+  const { isSmallScreen } = useContext(DataContext);
   return (
     <Routes>
       <Route
@@ -31,7 +33,7 @@ export default function AllRoutes() {
       />
       <Route
         path='/profile/:username'
-        element={<Profile itemsOnPage={9} />}
+        element={<Profile itemsOnPage={isSmallScreen ? 8 : 12} />}
       />
       {/* <Route
         path='search/:path/:id'
