@@ -118,7 +118,7 @@ router.get('/V2/search', async function (req, res, next) {
  * Authorization required: login, owner user
  */
 
-router.get('/collection', async function (req, res, next) {
+router.get('/V1/collection', async function (req, res, next) {
   try {
     const query = req.query;
     const results = await ThirdPartyApi.getCollection(query);
@@ -137,6 +137,8 @@ router.get('/search-with-googleapis', async function (req, res, next) {
     return next(err);
   }
 });
+
+// ***Depricated
 
 /** Get /api/game_media 
  * 
@@ -157,13 +159,13 @@ router.get('/search-with-googleapis', async function (req, res, next) {
  * Authorization required: none
 */
 
-router.get('/game_media', async function (req, res, next) {
-  try {
-    const results = await ThirdPartyApi.getGameMedia(req.query);
-    return res.json(results);
-  } catch {
-    return next(err);
-  }
-});
+// router.get('/game_media', async function (req, res, next) {
+//   try {
+//     const results = await ThirdPartyApi.getGameMedia(req.query);
+//     return res.json(results);
+//   } catch {
+//     return next(err);
+//   }
+// });
 
 module.exports = router;
