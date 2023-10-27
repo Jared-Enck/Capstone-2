@@ -24,6 +24,7 @@ export default function GameDetailsSkeleton() {
       <Stack>
         {genSkels().map((s, idx) => (
           <Stack
+            key={idx}
             direction={'row'}
             spacing={12}
             sx={{
