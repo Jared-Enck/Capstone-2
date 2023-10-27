@@ -112,6 +112,7 @@ export default function GameDetails({ game }) {
                       sx={{
                         color: 'primary.text',
                         fontSize: isSmallScreen ? '1.1rem' : '1.3rem',
+                        width: isSmallScreen ? null : '16rem',
                       }}
                     >
                       {row.name}

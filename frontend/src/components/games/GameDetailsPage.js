@@ -1,12 +1,14 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, lazy } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import DataContext from '../../context/DataContext';
 import { Stack, Typography } from '@mui/material';
 import ContentContainer from '../common/ContentContainer';
-import GameDescription from './GameDescription';
 import GameDescSkeleton from './GameDescSkeleton';
-import MediaContainer from '../videos/MediaContainer';
-import GameDetails from './GameDetails';
+import GameDetailsSkeleton from './GameDetailsSkeleton';
+
+const GameDescriptionComp = lazy(() => import('./GameDescription'));
+const MediaContainerComp = lazy(() => import('../videos/MediaContainer'));
+const GameDetailsComp = lazy(() => import('./GameDetails'));
 
 export default function GameDetailsPage() {
   const { game, videos, checkGameCache } = useContext(DataContext);
@@ -42,12 +44,12 @@ export default function GameDetailsPage() {
     <NoGameFound />
   ) : (
     <Stack spacing={'.3rem'}>
-      {game ? <GameDescription game={game} /> : <GameDescSkeleton />}
-      <MediaContainer
+      {game ? <GameDescriptionComp game={game} /> : <GameDescSkeleton />}
+      <MediaContainerComp
         game={game}
         items={videos}
       />
-      <GameDetails game={game} />
+      {game ? <GameDetailsComp game={game} /> : <GameDetailsSkeleton />}
     </Stack>
   );
 }

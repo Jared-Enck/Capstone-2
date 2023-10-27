@@ -44,7 +44,7 @@ export default function MediaContainer({ game, items }) {
         direction={'row'}
         spacing={2}
       >
-        {game ? (
+        {game && items ? (
           items.map((i) => (
             <Grid
               key={i.id.videoId}
