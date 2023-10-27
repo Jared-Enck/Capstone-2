@@ -94,31 +94,34 @@ export default function DeleteDialog({ open, handleCloseDialog }) {
             sx={{ marginBottom: '20px' }}
           />
         </Stack>
+        <Stack
+          direction={'row'}
+          spacing={2}
+        >
+          <CancelButton
+            variant='outlined'
+            onClick={handleCloseDialog}
+            className='main-button'
+          >
+            Cancel
+          </CancelButton>
+          <DeleteButton
+            variant={'contained'}
+            onClick={handleSubmit}
+            className='main-button'
+          >
+            Confirm Delete
+            {isLoading ? (
+              <CircularLoading
+                size='1rem'
+                color='white'
+              />
+            ) : (
+              <Box width={'1rem'} />
+            )}
+          </DeleteButton>
+        </Stack>
       </DialogContent>
-      <DialogActions sx={{ marginRight: 'auto', padding: '0px 0px 10px 20px' }}>
-        <CancelButton
-          variant='outlined'
-          onClick={handleCloseDialog}
-          className='main-button'
-        >
-          Cancel
-        </CancelButton>
-        <DeleteButton
-          variant={'contained'}
-          onClick={handleSubmit}
-          className='main-button'
-        >
-          Confirm Delete
-          {isLoading ? (
-            <CircularLoading
-              size='1rem'
-              color='white'
-            />
-          ) : (
-            <Box width={'1rem'} />
-          )}
-        </DeleteButton>
-      </DialogActions>
     </Dialog>
   );
 }
