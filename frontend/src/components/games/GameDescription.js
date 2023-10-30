@@ -36,8 +36,10 @@ const AddedBadgeBox = styled(Box)(({ theme }) => ({
 const PlayersAndDurationGrid = styled(Grid)(({ theme }) => ({
   height: '2rem',
   color: theme.palette.primary.text,
+  width: '25%',
+  justifyContent: 'space-around',
   [theme.breakpoints.down('sm')]: {
-    justifyContent: 'space-around',
+    width: '100%',
   },
 }));
 
@@ -158,9 +160,7 @@ export default function GameDescription({ game }) {
           direction={'row'}
         >
           <Grid item>
-            <ListItem sx={{ padding: isSmallScreen ? 0 : null }}>
-              <ListItemText>{game.yearpublished}</ListItemText>
-            </ListItem>
+            <ListItemText>{game.yearpublished}</ListItemText>
           </Grid>
           <PlayersAndDuration
             min_players={game.minplayers}
@@ -188,6 +188,7 @@ export default function GameDescription({ game }) {
               sx={{
                 maxWidth: '18rem',
                 maxHeight: '18rem',
+                minHeight: '18rem',
               }}
             />
           </Grid>

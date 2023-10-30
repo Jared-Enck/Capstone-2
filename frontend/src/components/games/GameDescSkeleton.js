@@ -78,8 +78,8 @@ export default function GameDescSkeleton() {
             width={isSmallScreen ? '100%' : 'none'}
           >
             <BaseSkeleton
-              width={isSmallScreen ? '17rem' : '18rem'}
-              height={isSmallScreen ? '17rem' : '18rem'}
+              width={'18rem'}
+              height={'18rem'}
             />
           </Grid>
           <Grid

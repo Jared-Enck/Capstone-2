@@ -4,7 +4,6 @@ import { Container, Typography, Divider, alpha, Stack } from '@mui/material';
 import styled from '@emotion/styled';
 
 const StyledContainer = styled(Container)(({ alphascale, theme }) => ({
-  margin: 0,
   backgroundColor: alpha(`${theme.palette.primary.main}`, alphascale),
   borderRadius: theme.shape.borderRadius,
   alignSelf: 'center',
