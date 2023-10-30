@@ -79,7 +79,8 @@ export default function GameCard({ game, onProfilePage, isMediumScreen }) {
         <CardMedia
           sx={{
             height: isMediumScreen ? '8rem' : '14rem',
-            objectFit: 'fill',
+            objectFit: 'cover',
+            objectPosition: 'top',
           }}
           component={'img'}
           image={game.image}

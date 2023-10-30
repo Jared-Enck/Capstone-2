@@ -188,6 +188,9 @@ export default function GameDescription({ game }) {
               sx={{
                 width: '18rem',
                 height: '18rem',
+                objectFit: 'cover',
+                objectPosition: 'top',
+                borderRadius: '.3rem',
               }}
             />
           </Grid>
