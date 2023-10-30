@@ -186,9 +186,8 @@ export default function GameDescription({ game }) {
               src={game.image}
               alt={game.name}
               sx={{
-                maxWidth: '18rem',
-                maxHeight: '18rem',
-                minHeight: '18rem',
+                width: '18rem',
+                height: '18rem',
               }}
             />
           </Grid>
