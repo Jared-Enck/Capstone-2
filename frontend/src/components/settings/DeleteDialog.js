@@ -70,6 +70,7 @@ export default function DeleteDialog({ open, handleCloseDialog }) {
       sx={{
         '& .MuiPaper-root': {
           bgcolor: 'primary.dark',
+          bottom: isSmallScreen ? 'none' : '20%',
         },
       }}
     >
