@@ -8,10 +8,15 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
-export default function VideoPlayer({ open, video, handleClose, fullScreen }) {
+export default function VideoPlayer({
+  open,
+  video,
+  handleClose,
+  isSmallScreen,
+}) {
   return (
     <Dialog
-      fullScreen={fullScreen}
+      fullScreen={isSmallScreen}
       open={open}
       onClose={handleClose}
       sx={{
@@ -19,10 +24,10 @@ export default function VideoPlayer({ open, video, handleClose, fullScreen }) {
           bgcolor: 'primary.dark',
         },
       }}
-      maxWidth={'lg'}
+      maxWidth={'xl'}
       fullWidth
     >
-      {fullScreen ? (
+      {isSmallScreen ? (
         <DialogTitle
           sx={{
             padding: 0,
@@ -46,7 +51,7 @@ export default function VideoPlayer({ open, video, handleClose, fullScreen }) {
           position: 'relative',
           width: '100%',
           paddingBottom: '56.25%',
-          borderRadius: fullScreen ? 0 : null,
+          borderRadius: isSmallScreen ? 0 : null,
           display: 'flex',
         }}
       >

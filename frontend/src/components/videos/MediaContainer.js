@@ -31,7 +31,7 @@ export default function MediaContainer({ game, items }) {
           open={open}
           video={video}
           handleClose={handleClose}
-          fullScreen={isSmallScreen}
+          isSmallScreen={isSmallScreen}
         />
       ) : null}
       <Grid
