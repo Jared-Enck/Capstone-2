@@ -1,7 +1,7 @@
 // Constants.js
 
 const prod = {
-  BASE_URL: 'https://mygamenights-backend-7938064403b3.herokuapp.com',
+  BASE_URL: 'https://capstone-2-0dbl.onrender.com',
 };
 
 const dev = {
