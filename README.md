@@ -1,7 +1,3 @@
-# MyGameNights
-
-https://mygamenights.com/
-
 ### Description
 
 MyGameNights is a web application for searching board games and creating a digital collection of your games. It has an estimated value of your collection based on the MSRP of the game.
